@@ -1,0 +1,19 @@
+doctype html
+html lang="en"
+  head
+    title Traveltrunk
+    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = yield :javascripts
+    = csrf_meta_tags
+  body
+    = render partial: 'partials/navbar'
+
+    .container
+      - if notice.present?
+        .notice.alert.alert-success = notice
+
+      - if alert.present?
+        .alert.alert-danger = alert
+
+      = yield

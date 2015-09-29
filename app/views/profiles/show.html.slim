@@ -1,0 +1,50 @@
+h1 Profile
+
+p
+  = image_tag @profile.image.url, class: 'img-circle' unless @profile.image.nil?
+
+p
+  strong Name: &nbsp;
+  = "#{@profile.first_name} #{@profile.last_name}"
+
+p
+  strong Date of Birth: &nbsp;
+  = @profile.birth_date
+
+p
+  strong Home Airport: &nbsp;
+  = @profile.home_airport
+
+p
+  strong Gender: &nbsp;
+  = @profile.gender
+
+p
+  strong Address: &nbsp;
+  = @profile.address
+
+p
+  strong Address 1: &nbsp;
+  = @profile.address_1
+
+p
+  strong Address 2: &nbsp;
+  = @profile.address_2
+
+p
+  strong City: &nbsp;
+  = @profile.city
+
+p
+  strong State/Province: &nbsp;
+  = @profile.state
+
+p
+  strong Zip/Postal Code: &nbsp;
+  = @profile.postal_code
+
+p
+  strong County: &nbsp;
+  = @profile.country
+
+= link_to 'Edit Profile', edit_profile_path, class: 'btn btn-primary'
