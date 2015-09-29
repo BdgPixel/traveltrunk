@@ -26,8 +26,8 @@
     / = f.input :country, input_html: { class: 'form-control' }
   .form-group
     = image_tag @profile.image.url, class: 'img-circle' unless @profile.image.nil?
-
     = f.input :image, as: :file, input_html: { class: 'form-control' }
+    = f.input :image_cache, as: :hidden
 
   .form-group
     = f.button :submit

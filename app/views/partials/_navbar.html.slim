@@ -13,10 +13,11 @@
       ul.nav.navbar-nav.navbar-right
         li
           = link_to 'DEALS', '#'
-        li
-          = link_to 'SAVINGS', '#'
 
         - if user_signed_in?
+          li
+            = link_to 'SAVINGS', '#'
+
           li
             .navbar-header
               a.navbar-brand href="#"

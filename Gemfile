@@ -44,6 +44,12 @@ gem 'jquery-ui-rails'
 
 gem 'nprogress-rails'
 
+gem "fog"
+
+gem "fog-aws"
+
+gem 'dotenv-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
