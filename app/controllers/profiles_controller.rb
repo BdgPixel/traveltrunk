@@ -18,6 +18,7 @@ class ProfilesController < ApplicationController
         format.html { redirect_to profile_url, notice: 'Profile was successfully created.' }
         format.json { render :show }
       else
+        puts @profile.errors.full_messages
         format.html { render :new }
         format.json { render json: @profile.errors, status: :unprocessable_entity }
       end
@@ -47,7 +48,7 @@ class ProfilesController < ApplicationController
     end
 
     def profile_params
-      params.require(:profile).permit(:first_name, :last_name, :birth_date, :home_airport,
-        :gender, :address, :address_1, :address_2, :city, :state, :postal_code, :country, :image, :image_cache)
+      params.require(:profile).permit(:first_name, :last_name, :birth_date, :gender, :address,
+        :address_1, :address_2, :city, :state, :postal_code, :country, :image, :image_cache)
     end
 end

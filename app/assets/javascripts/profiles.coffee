@@ -5,5 +5,5 @@
 
 
 $ ->
-  $('#profile_birth_date').datepicker()
+  $('#profile_birth_date').datepicker({ dateFormat: "dd/mm/yy" })
   return
