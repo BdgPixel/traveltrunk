@@ -7,7 +7,8 @@
         span.icon-bar
         span.icon-bar
         span.icon-bar
-      a.navbar-brand href="#"  Travel Trunk
+      = link_to 'TravelTrunk', root_path, class: 'navbar-brand'
+
     /! Collect the nav links, forms, and other content for toggling
     #bs-example-navbar-collapse-1.collapse.navbar-collapse
       ul.nav.navbar-nav.navbar-right
@@ -24,11 +25,13 @@
 
           li.dropdown
             a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-              = image_tag current_user.profile.image.thumb.url unless current_user.profile.nil?
-              | &nbsp;
               - if current_user.no_profile?
+                = image_tag "thumb_default_user.png"
+                | &nbsp;
                 | PROFILE
               - else
+                = image_tag current_user.profile.image.thumb.url
+                | &nbsp;
                 = current_user.profile.first_name
               span.caret
             ul.dropdown-menu

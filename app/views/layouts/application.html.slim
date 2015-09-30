@@ -5,9 +5,8 @@ html lang="en"
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = yield :css
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    = yield :javascripts
     = csrf_meta_tags
-  body
+  body data-controller="#{controller_name}" data-action="#{action_name}"
     = render partial: 'partials/navbar'
 
     .container
@@ -22,3 +21,5 @@ html lang="en"
           = alert
 
       = yield
+
+    = yield :javascripts
