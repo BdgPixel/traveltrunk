@@ -1,22 +1,14 @@
 class ProfilesController < ApplicationController
   before_action :authenticate_user!
+  before_action :set_profile, only: [:show, :edit]
 
   def new
     @profile = Profile.new
   end
 
-  def show
-    @profile = current_user.profile
+  def show; end
 
-    unless @profile
-      redirect_to new_profile_path, alert: "You haven't entered your profile. \n
-        Please fill information below"
-    end
-  end
-
-  def edit
-    @profile = current_user.profile
-  end
+  def edit; end
 
   def create
     @profile = current_user.build_profile(profile_params)
@@ -45,6 +37,15 @@ class ProfilesController < ApplicationController
   end
 
   private
+    def set_profile
+      @profile = current_user.profile
+
+      unless @profile
+        redirect_to new_profile_path, alert: "You haven't entered your profile. \n
+          Please fill information below"
+      end
+    end
+
     def profile_params
       params.require(:profile).permit(:first_name, :last_name, :birth_date, :home_airport,
         :gender, :address, :address_1, :address_2, :city, :state, :postal_code, :country, :image, :image_cache)
