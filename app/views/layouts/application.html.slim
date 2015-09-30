@@ -3,6 +3,7 @@ html lang="en"
   head
     title Traveltrunk
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    = yield :css
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
     = yield :javascripts
     = csrf_meta_tags
@@ -11,9 +12,13 @@ html lang="en"
 
     .container
       - if notice.present?
-        .notice.alert.alert-success = notice
+        .notice.alert.alert-success
+          strong Notice: &nbsp;
+          = notice
 
       - if alert.present?
-        .alert.alert-danger = alert
+        .alert.alert-danger
+          strong Warning! &nbsp;
+          = alert
 
       = yield

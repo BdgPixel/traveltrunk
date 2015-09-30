@@ -1,29 +1,51 @@
+- content_for :css do
+  = stylesheet_link_tag 'profiles'
+
+- content_for :javascripts do
+  = javascript_include_tag 'profiles'
+
 = simple_form_for @profile, method: (@profile.new_record? ? :post : :put), url: profile_url do |f|
+  - if @profile.errors.any?
+    #error_explanation.alert.alert-danger
+      strong Warning! &nbsp;
+      = "#{pluralize(@profile.errors.count, "error")} prohibited this profile from being saved"
+
   .form-group
-    = f.input :first_name, input_html: { class: 'form-control' }
+    = f.input :first_name, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :last_name, input_html: { class: 'form-control' }
+    = f.input :last_name, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :birth_date, as: :string, input_html: { class: 'form-control' }
+    = f.input :birth_date, as: :string, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :home_airport, input_html: { class: 'form-control' }
+    = f.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control' }
+    = f.input :address, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :address, input_html: { class: 'form-control' }
+    = f.input :address_1, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :address_1, input_html: { class: 'form-control' }
+    = f.input :address_2, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :address_2, input_html: { class: 'form-control' }
+    = f.input :city, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :city, input_html: { class: 'form-control' }
+    = f.input :state, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :state, input_html: { class: 'form-control' }
+    = f.input :postal_code, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
   .form-group
-    = f.input :postal_code, input_html: { class: 'form-control' }
-  .form-group
-    = f.input :country, prompt: '- Select a Country -', input_html: { class: 'form-control' }
-    / = f.input :country, input_html: { class: 'form-control' }
+    = f.label :country
+    = country_select("profile", "country", { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control' })
+    - if f.error :country
+      span.error.error-message please select one
+
   .form-group
     = image_tag @profile.image.url, class: 'img-circle' unless @profile.image.nil?
     = f.input :image, as: :file, input_html: { class: 'form-control' }

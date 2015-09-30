@@ -9,7 +9,7 @@ class ProfilesController < ApplicationController
     @profile = current_user.profile
 
     unless @profile
-      redirect_to new_profile_path, notice: "You haven't entered your profile. \n
+      redirect_to new_profile_path, alert: "You haven't entered your profile. \n
         Please fill information below"
     end
   end

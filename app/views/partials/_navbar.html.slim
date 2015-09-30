@@ -26,7 +26,10 @@
             a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
               = image_tag current_user.profile.image.thumb.url unless current_user.profile.nil?
               | &nbsp;
-              = current_user.profile.nil? ? 'PROFILE' : current_user.profile.first_name
+              - if current_user.no_profile?
+                | PROFILE
+              - else
+                = current_user.profile.first_name
               span.caret
             ul.dropdown-menu
               li
