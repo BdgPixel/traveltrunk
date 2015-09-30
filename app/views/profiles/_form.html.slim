@@ -30,11 +30,11 @@
             .form-group
               = profile_form.input :last_name, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
-          .col-md-5
+          .col-md-4
             .form-group
               = profile_form.input :birth_date, as: :string, input_html: { class: 'form-control', id: 'profile_birth_date' }, error_html: { class: 'error-message' }
 
-          .col-md-4
+          .col-md-4.col-md-offset-1.col-md-pull-1
             .form-group
               = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
