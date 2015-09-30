@@ -1,46 +1,69 @@
-h1 Profile
+.row
+  br
+  br
+  .col-xs-12.col-sm-12.col-md-6.col-lg-10.col-xs-offset-0.col-sm-offset-0.col-md-offset-3.col-lg-offset-1.toppad
+    .panel.panel-info
+      .panel-heading
+        h3.panel-title
+          = "#{current_user.profile.first_name} #{current_user.profile.last_name}"
+      .panel-body
+        .row
+          .col-md-3.col-lg-3 align="center"
+            = image_tag current_user.profile.image.url, class: 'img img-circle img-responsive' unless current_user.profile.image.nil?
 
-p
-  = image_tag @profile.image.url, class: 'img-circle' unless @profile.image.nil?
+          .col-md-9.col-lg-9
+            table.table.table-user-information
+              tbody
+                h4 PERSONAL INFORMATION
+                tr
+                  td Date of Birth:
+                  td = current_user.profile.birth_date
+                tr
+                  td Gender:
+                  td = current_user.profile.gender
+                tr
+                  td Address
+                  td = current_user.profile.address
+                tr
+                tr
+                  td Address 1
+                  td = current_user.profile.address_1
+                tr
+                  td Address 2
+                  td = current_user.profile.address_2
+                tr
+                  td City
+                  td = current_user.profile.city
+                tr
+                  td State/Province
+                  td = current_user.profile.state
+                tr
+                  td Zip/Postal Code
+                  td = current_user.profile.postal_code
+                tr
+                  td County
+                  td = current_user.profile.country_name
+            br
+            br
+            table.table.table-user-information
+              tbody
+                h4 BANK INFORMATION
+                tr
+                  td Bank Name:
+                  td = current_user.bank_account.bank_name
+                tr
+                  td Account Number:
+                  td = current_user.bank_account.account_number
+                tr
+                  td Routing Number:
+                  td = current_user.bank_account.routing_number
+                tr
+                  td Amount Transfer:
+                  td = current_user.bank_account.amount_transfer
 
-p
-  strong Name: &nbsp;
-  = "#{@profile.first_name} #{@profile.last_name}"
-
-p
-  strong Date of Birth: &nbsp;
-  = @profile.birth_date
-
-p
-  strong Gender: &nbsp;
-  = @profile.gender
-
-p
-  strong Address: &nbsp;
-  = @profile.address
-
-p
-  strong Address 1: &nbsp;
-  = @profile.address_1
-
-p
-  strong Address 2: &nbsp;
-  = @profile.address_2
-
-p
-  strong City: &nbsp;
-  = @profile.city
-
-p
-  strong State/Province: &nbsp;
-  = @profile.state
-
-p
-  strong Zip/Postal Code: &nbsp;
-  = @profile.postal_code
-
-p
-  strong County: &nbsp;
-  = @profile.country
-
-= link_to 'Edit Profile', edit_profile_path, class: 'btn btn-primary'
+      .panel-footer
+        | &nbsp;
+        span.pull-right
+          = link_to 'Edit Profile', edit_profile_path, class: 'btn btn-primary'
+        br
+        br

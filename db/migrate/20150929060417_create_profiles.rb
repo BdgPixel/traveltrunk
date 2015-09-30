@@ -11,7 +11,7 @@ class CreateProfiles < ActiveRecord::Migration
       t.string :city
       t.string :state
       t.string :postal_code
-      t.string :country
+      t.string :country_code
       t.string :image
       t.references :user, index: true, foreign_key: true
 

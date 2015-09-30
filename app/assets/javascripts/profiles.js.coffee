@@ -6,3 +6,7 @@
 $(document).ready ->
   $('#profile_birth_date').datepicker({ dateFormat: "yy-mm-dd" })
 
+  $('#profile_image').on 'click',(e) ->
+    e.preventDefault()
+    $('#choose_profile_image')[0].click()
+    return
