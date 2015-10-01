@@ -16,7 +16,7 @@
         .col-md-12
           .col-md-4
             .form-group
-              = link_to 'javascripts:void(0)'
+              = link_to 'javascript:void(0)'
                 = image_tag current_user.profile.image.url, id: 'profile_image', class: 'img-circle' unless current_user.profile.image.nil?
                 .hide
                   = profile_form.input :image, as: :file, input_html: { id: 'choose_profile_image' }
