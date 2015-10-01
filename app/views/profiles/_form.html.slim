@@ -16,11 +16,15 @@
         .col-md-12
           .col-md-4
             .form-group
-              = link_to 'javascript:void(0)'
-                = image_tag current_user.profile.image.url, id: 'profile_image', class: 'img-circle' unless current_user.profile.image.nil?
+              .thumbnail
+                = link_to 'javascript:void(0)'
+                  = image_tag current_user.profile.image.url, id: 'profile_image', class: 'img-circle' unless current_user.profile.image.nil?
+                br
+                = profile_form.input_field :image, as: :file, id: 'choose_profile_image',  data: {filename_placement: 'inside' }, class: 'btn btn-block btn-primary btn-file'
                 .hide
-                  = profile_form.input :image, as: :file, input_html: { id: 'choose_profile_image' }
                   = profile_form.input :image_cache, as: :hidden
+                span.text-info
+                  i You can only upload jpg, gif, png
 
           .col-md-4
             .form-group

@@ -10,6 +10,10 @@ $(document).ready ->
 
     return
 
+  $('input[type=file]').bootstrapFileInput();
+  $('.file-inputs').bootstrapFileInput();
+
+
   $('#choose_profile_image').on 'change', ->
     $('#profile_image').attr('width', 226)
     $('#profile_image').attr('height', 226)
