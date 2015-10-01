@@ -94,11 +94,16 @@
 
           .col-md-12
             .form-group
-              = bank_account_form.input :amount_transfer, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = bank_account_form.label :amount_transfer
+              .input-group
+                .input-group-addon $
+                = bank_account_form.input_field :amount_transfer, class: 'form-control'
 
-          .col-md-2
+              = bank_account_form.error :amount_transfer, class: 'error-message'
+
+          .col-md-3
             .form-group
-              = bank_account_form.input :transfer_frequency, collection: ['Weekly', 'Monthly'], prompt: "- Select a transfer_frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = bank_account_form.input :transfer_frequency, collection: ['Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
       .col-md-12
         br
