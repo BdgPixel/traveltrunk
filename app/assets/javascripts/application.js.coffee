@@ -16,4 +16,5 @@
 # = require nprogress
 # = require nprogress-turbolinks
 # = require twitter/bootstrap/dropdown
+# = require bootstrap.file-input
 # = require jquery-ui/datepicker
