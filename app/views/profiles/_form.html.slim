@@ -28,11 +28,11 @@
 
           .col-md-4
             .form-group
-              = profile_form.input :first_name, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
           .col-md-4
             .form-group
-              = profile_form.input :last_name, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
           .col-md-4
             .form-group
@@ -40,7 +40,7 @@
 
           .col-md-4.col-md-offset-1.col-md-pull-1
             .form-group
-              = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
         .col-md-12
           h4 PERSONAL INFORMATION
@@ -48,23 +48,23 @@
 
         .col-md-12
           .form-group
-            = profile_form.input :address, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            = profile_form.input :address, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
         .col-md-12
           .form-group
-            = profile_form.input :address_1, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            = profile_form.input :address_1, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
         .col-md-12
           .form-group
-            = profile_form.input :address_2, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            = profile_form.input :address_2, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
         .col-md-8
           .form-group
-            = profile_form.input :city, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            = profile_form.input :city, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
         .col-md-12.col-md-4
           .form-group
-            = profile_form.input :state, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            = profile_form.input :state, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
         .col-md-4
           .form-group
@@ -86,7 +86,7 @@
         = f.simple_fields_for :bank_account do |bank_account_form|
           .col-md-12
             .form-group
-              = bank_account_form.input :bank_name, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = bank_account_form.input :bank_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
           .col-md-12
             .form-group
@@ -107,7 +107,7 @@
 
           .col-md-3
             .form-group
-              = bank_account_form.input :transfer_frequency, collection: ['Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = bank_account_form.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
       .col-md-12
         br

@@ -18,20 +18,21 @@
               tbody
                 tr
                   td Date of Birth:
-                  td = current_user.profile.birth_date
+                  td = current_user.profile.birth_date.to_time.strftime('%B %m, %Y')
+
                 tr
                   td Gender:
                   td = current_user.profile.gender
                 tr
                   td Address:
-                  td = current_user.profile.address
+                  td = current_user.profile.address.titleize
                 tr
                 tr
                   td Address 1:
-                  td = current_user.profile.address_1
+                  td = current_user.profile.address_1.titleize
                 tr
                   td Address 2:
-                  td = current_user.profile.address_2
+                  td = current_user.profile.address_2.titleize
                 tr
                   td City:
                   td = current_user.profile.city
