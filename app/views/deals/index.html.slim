@@ -1,0 +1,15 @@
+- content_for :javascripts do
+  = javascript_include_tag 'holder'
+
+.row
+  .col-xs-12.col-sm-12
+    .text-center
+      h1 HAWAII
+    .text-center
+      - @hotels_list.each do |hotel|
+        .col-xs-6.col-lg-4 style="margin-top: 20px"
+          center
+            = image_tag "http://origin-images.travelnow.com#{hotel["thumbNailUrl"].gsub("_t.", "_l.")}", class: 'img-responsive'
+          p
+          p.text-center style="margin: auto; width: 200px; height: 50px;"
+            = truncate(hotel["name"].upcase.html_safe, length: 70)
