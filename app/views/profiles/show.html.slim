@@ -11,14 +11,14 @@
             = image_tag current_user.profile.image.url, class: 'img img-circle img-responsive' unless current_user.profile.image.nil?
 
           .col-md-9.col-lg-9
-            h3 = "#{current_user.profile.first_name} #{current_user.profile.last_name}"
+            h1 = current_user.full_name
             br
             h5 PERSONAL INFORMATION
             table.table.table-user-information
               tbody
                 tr
                   td Date of Birth:
-                  td = current_user.profile.birth_date.to_time.strftime('%B %m, %Y')
+                  td = current_user.profile.birth_date.to_time.strftime('%B %d, %Y')
 
                 tr
                   td Gender:

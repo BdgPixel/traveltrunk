@@ -11,4 +11,18 @@ class DealsController < ApplicationController
     response.exception?
     @hotels_list = response.body["HotelListResponse"]["HotelList"]["HotelSummary"]
   end
+
+  def search
+    api = Expedia::Api.new
+    today = Date.today
+    response = api.get_list({
+      :destinationId => params["deals"]["destination"],
+      :arrivalDate => params["deals"]["arrival_date"] ,
+      :departureDate => params["deals"]["depature_date"],
+      :numberOfResults => 12})
+
+    response.exception?
+    @hotels_list = response.body["HotelListResponse"]["HotelList"]["HotelSummary"]
+    render 'index'
+  end
 end

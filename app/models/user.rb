@@ -14,4 +14,9 @@ class User < ActiveRecord::Base
   def no_profile?
     self.profile.nil? || self.profile.new_record?
   end
+
+  def full_name
+    full_name = "#{self.profile.first_name} #{self.profile.last_name}".upcase
+  end
+
 end

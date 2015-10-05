@@ -1,0 +1,25 @@
+#myModal.modal.fade
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+        h4.modal-title Modal title
+      .modal-body
+        .row
+          .col-md-12
+            .form-group
+              label City
+              input.form-control type="text" name="destination"
+          .col-md-4
+            .form-group
+              label Check-in
+              input#arrival-date.form-control type="text" name="arrival_date"
+          .col-md-4
+            .form-group
+              label Check-out
+              input#departure-date.form-control type="text" name="departure_date"
+      .modal-footer
+        button.btn.btn-default data-dismiss="modal" type="button"  Close
+        button.btn.btn-primary type="button"  Save changes
+

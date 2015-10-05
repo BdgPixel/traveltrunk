@@ -1,10 +1,35 @@
+- content_for :css do
+  = stylesheet_link_tag 'deals'
+
 - content_for :javascripts do
-  = javascript_include_tag 'holder'
+  = javascript_include_tag "deals"
 
 .row
   .col-xs-12.col-sm-12
     .text-center
-      h1 HAWAII
+      h1 = link_to "HAWAII", "#", data: { toggle: "popover", placement: "bottom", container: "body", html: true }
+      #popover-content.hide
+        .row
+          = simple_form_for :deals, method: :post, url: deals_search_path, remote: false do |f|
+            .col-md-12
+              .form-group
+                = f.label :destination, 'City'
+                = f.input_field :destination, as: :select, collection: [['Honolulu', '76AC2A5C-6AB7-4B6C-B618-387169A79F5E'], ['Kauai Island', 'A117D333-2C33-799F-33A2-868FFD907FFE'], ['Maui Island', 'A117D333-54C4-AD9E-C922-89F1BC907FFC'], ['Oahu Island', 'A117D333-6BE6-8F9F-33A2-7E681C908000'] ], class: 'form-control'
+
+            .col-md-4
+              .form-group
+                = f.label :arrival_date, 'Check-in'
+                = f.input_field :arrival_date, class: 'form-control'
+
+            .col-md-5
+              .form-group
+                = f.label :departure_date, 'Check-out'
+                = f.input_field :departure_date, class: 'form-control'
+
+            .col-md-4
+              .form-group
+                = f.submit 'Search', class: 'btn btn-primary'
+
     .text-center
       - @hotels_list.each do |hotel|
         .col-xs-6.col-lg-4 style="margin-top: 20px"
@@ -13,3 +38,5 @@
           p
           p.text-center style="margin: auto; width: 200px; height: 50px;"
             = truncate(hotel["name"].upcase.html_safe, length: 70)
+
+/ = render partial: "partials/modal"
