@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
-  get 'deals/index'
-  post 'deals/search' => 'deals#search'
+  get 'deals' => 'deals#index'
+  get 'deals/search' => 'deals#search'
 
   devise_for :users
   root 'home#index'

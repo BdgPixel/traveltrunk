@@ -2,28 +2,57 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-tmp = $.fn.popover.Constructor::show
-$.fn.popover.Constructor::show = ->
-  tmp.call this
-  if @options.callback
-    @options.callback()
+# = require bootstrap-datepicker
+# = require google-api
+# = require jquery.validate
+
+getFormattedDate = (date) ->
+  day = date.getDate()
+  month = date.getMonth() + 1
+  year = date.getFullYear()
+  formattedDate = [month, day, year].join('/')
+
+  formattedDate
+
+today = getFormattedDate(new Date)
+
+disableEnterFormSubmit = ->
+  $('.simple_form.deals').on 'keyup keypress', (e) ->
+    code = e.keyCode or e.which
+    if code == 13
+      e.preventDefault()
+
+      return false
+
+    return
+
+  return
+
+validateSearchForm = ->
+  $('#dealsForm').validate
+    ignore: ".ignore"
+    rules:
+      autocomplete: 'required'
+
+    messages:
+      autocomplete: 'Please enter your destination'
+
+  return
+
+$ ->
+  $('input#deals_arrival_date').datepicker(
+    startDate: today).on 'changeDate', (e) ->
+      $('input#deals_departure_date').datepicker('remove')
+      $('input#deals_departure_date').datepicker(
+        startDate:  getFormattedDate(e.date))
+
+  $('input#deals_departure_date').datepicker startDate: today
+
   return
 
 $(document).ready ->
+  disableEnterFormSubmit()
+  validateSearchForm()
 
-  $('[data-toggle="popover"]').popover
-    html: true
-    title: 'Search Hotel'
-    content: ->
-      $('#popover-content').html()
-    callback: ->
-      $('input#deals_arrival_date').datepicker
-        todayHighlight: true
-
-      $('input#deals_departure_date').datepicker
-        todayHighlight: true
-
-      return
-
-  return
-
+  $('#destinationLabel').on 'click', ->
+     $('#collapseDeals').slideToggle()
