@@ -45,7 +45,7 @@ class DealsController < ApplicationController
     end
 
     session[:last_destination_search] = {
-      :city => params["destination"],
+      :city => params["destination"].upcase,
       :stateProvinceCode => params["administrative_area_level_1"],
       :countryCode => params["country"],
       :arrivalDate => params["arrival_date"] ,
