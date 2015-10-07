@@ -5,9 +5,11 @@ html lang="en"
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = yield :css
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyCAT4MD-BT8TBMYqlhtkaFvth4cRvz-mGE&signed_in=true&libraries=places"
     = csrf_meta_tags
   body data-controller="#{controller_name}" data-action="#{action_name}"
     = render partial: 'partials/navbar'
+    #loading
 
     .container
       - if notice.present?

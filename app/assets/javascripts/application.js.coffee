@@ -18,3 +18,9 @@
 # = require twitter/bootstrap/dropdown
 # = require twitter/bootstrap/collapse
 # = require bootstrap.file-input
+
+$(document).ajaxSend ->
+  $('#loading').show()
+
+$(document).ajaxComplete ->
+  $('#loading').fadeOut("slow");

@@ -55,3 +55,4 @@ geolocate = ->
 
 $(document).ready ->
   initAutocomplete()
+

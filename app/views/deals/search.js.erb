@@ -1,0 +1,11 @@
+$("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
+$("#destinationLabel").text("<%= session[:last_destination_search]['city'].upcase %>")
+
+<%- if @error_response %>
+  $("#error_response").removeClass('hide')
+  $("#error_response").text("<%= @error_response %>")
+<%- else %>
+  $("#error_response").addClass('hide')
+<% end %>
+
+$('#collapseDeals').slideUp()

@@ -1,20 +1,16 @@
-- content_for :css do
-  = stylesheet_link_tag "deals"
-
 - content_for :javascripts do
   = javascript_include_tag "deals"
-  = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyCAT4MD-BT8TBMYqlhtkaFvth4cRvz-mGE&signed_in=true&libraries=places"
 
 .row
   .col-xs-12.col-sm-12
     .text-center
-      h1 = link_to "#{session[:last_destination].nil? ? "HONOLULU, HI, UNITED STATES" : session[:last_destination].upcase}", "javascript:void(0)", id: 'destinationLabel'
+      h1 = link_to "#{session[:last_destination_search].nil? ? "SEARCH" : session[:last_destination_search]['city'].upcase}", "javascript:void(0)", id: 'destinationLabel'
       br
 
     .container
-      #collapseDeals style="display: none"
+      #collapseDeals
         .col-md-12.col-lg-12
-          = simple_form_for :deals, method: :get, url: deals_search_path, remote: false, html: { id: 'dealsForm' } do |f|
+          = simple_form_for :deals, method: :get, url: deals_search_path, remote: true, html: { id: 'dealsForm' } do |f|
             .col-md-12
               .form-group
                 = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where do you want to be?"
@@ -39,30 +35,34 @@
               .form-group
                 = f.input_field :guest_list, as: :select, collection: [["1 Guest", 1], ["2 Guest", 2]], selected: 1, class: "form-control"
 
-            .col-md-3
+            .col-md-4
               .form-group
-                = f.input_field :room_type, as: :check_boxes, collection: [["Entire Home", "Entire Home/apt"]], class: 'ignore'
+                = f.input_field :property_category, as: :check_boxes, collection: [["Hotel", "1"]], class: 'ignore'
 
-            .col-md-3
+            .col-md-4
               .form-group
-                = f.input_field :room_type, as: :check_boxes, collection: [["Private room", "Private room"]], class: 'ignore'
+                = f.input_field :property_category, as: :check_boxes, collection: [["Suite", "2"]], class: 'ignore'
 
-            .col-md-3
+            .col-md-4
               .form-group
-                = f.input_field :room_type, as: :check_boxes, collection: [["Shared room", "Shared room"]], class: 'ignore'
+                = f.input_field :property_category, as: :check_boxes, collection: [["Resort", "3"]], class: 'ignore'
+
+            .col-md-4
+              .form-group
+                = f.input_field :property_category, as: :check_boxes, collection: [["Vacation rental/condo", "4"]],class: 'ignore'
+
+            .col-md-4
+              .form-group
+                = f.input_field :property_category, as: :check_boxes, collection: [["Bed & breakfast", "5"]], class: 'ignore'
+
+            .col-md-4
+              .form-group
+                = f.input_field :property_category, as: :check_boxes, collection: [["All - inclusive", "6"]], class: 'ignore'
 
             .col-md-12
               .form-group
                 = f.submit "Search", class: "btn btn-primary"
 
     hr
-    #collapseDeals.text-center
-      - @hotels_list.each do |hotel|
-        .col-xs-6.col-lg-4.col-deals
-          center
-            = image_tag "http://origin-images.travelnow.com#{hotel["thumbNailUrl"].gsub("_t.", "_l.")}", class: "img-responsive"
-          p
-          p.text-center.content-deals style=""
-            = truncate(hotel["name"].upcase.html_safe, length: 70)
-
-/ = render partial: "partials/modal"
+    h1#notice
+    = render "hotels_list" if session[:last_destination_search]

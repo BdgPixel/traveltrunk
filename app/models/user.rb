@@ -16,7 +16,7 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    full_name = "#{self.profile.first_name} #{self.profile.last_name}".upcase
+    full_name = "#{self.profile.first_name} #{self.profile.last_name}".titleize
   end
 
 end

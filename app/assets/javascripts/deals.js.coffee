@@ -50,9 +50,10 @@ $ ->
 
   return
 
+$(document).on 'click', '#destinationLabel', ->
+  $('#collapseDeals').slideToggle()
+
 $(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
 
-  $('#destinationLabel').on 'click', ->
-     $('#collapseDeals').slideToggle()
