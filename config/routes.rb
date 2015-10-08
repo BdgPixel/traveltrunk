@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   get 'deals' => 'deals#index'
   get 'deals/search' => 'deals#search'
+  get 'deals/:id/show' => 'deals#show', as: 'deals/show'
 
   devise_for :users
   root 'home#index'

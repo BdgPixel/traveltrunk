@@ -4,64 +4,49 @@
 .row
   .col-xs-12.col-sm-12
     .text-center
-      h1 = link_to "#{session[:last_destination_search].nil? ? "SEARCH" : session[:last_destination_search]['destinationString'].upcase}", "javascript:void(0)", id: 'destinationLabel'
+      h1
+        - if session[:last_destination_search].nil? || session[:last_destination_search]['city'].blank?
+          = link_to "SEARCH", "javascript:void(0)", id: 'destinationLabel'
+        - else
+          = link_to "#{session[:last_destination_search]['city'].upcase}", "javascript:void(0)", id: 'destinationLabel'
+
       br
 
     .container
       #collapseDeals
         .col-md-12.col-lg-12
-          = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
-            .col-md-12
-              .form-group
-                = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
-              .hide
-                = f.hidden_field :street_number, id: "street_number"
-                = f.hidden_field :route, id: "route"
-                = f.hidden_field :locality, id: "locality"
-                = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
-                = f.hidden_field :postal_code, id: "postal_code"
-                = f.hidden_field :country, as: :string, id: "country"
+          .col-md-7.col-md-offset-2
+            .panel.panel-default
+              .panel-heading
+              .panel-body
+                = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
+                  .col-md-12
+                    .form-group
+                      = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+                    .hide
+                      = f.hidden_field :street_number, id: "street_number"
+                      = f.hidden_field :route, id: "route"
+                      = f.hidden_field :locality, id: "locality"
+                      = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
+                      = f.hidden_field :postal_code, id: "postal_code"
+                      = f.hidden_field :country, as: :string, id: "country"
 
-            .col-md-6
-              .form-group
-                = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
+                  .col-md-6
+                    .form-group
+                      = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
 
-            .col-md-6
-              .form-group
-                = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
+                  .col-md-6
+                    .form-group
+                      = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
 
-            .col-md-12
-              .form-group
-                = f.input_field :select_guest_list, as: :select, collection: guests_list, selected: 1, class: "form-control"
-                = f.hidden_field :guest_list, id: 'guest_list'
+                  .col-md-12
+                    .form-group
+                      = f.input_field :select_guest_list, as: :select, collection: guests_list, selected: 1, class: "form-control"
+                      = f.hidden_field :guest_list, id: 'guest_list'
 
-            .col-md-4
-              .form-group
-                = f.input_field :property_category, as: :check_boxes, collection: [["Hotel", "1"]], class: 'ignore'
-
-            .col-md-4
-              .form-group
-                = f.input_field :property_category, as: :check_boxes, collection: [["Suite", "2"]], class: 'ignore'
-
-            .col-md-4
-              .form-group
-                = f.input_field :property_category, as: :check_boxes, collection: [["Resort", "3"]], class: 'ignore'
-
-            .col-md-4
-              .form-group
-                = f.input_field :property_category, as: :check_boxes, collection: [["Vacation rental/condo", "4"]],class: 'ignore'
-
-            .col-md-4
-              .form-group
-                = f.input_field :property_category, as: :check_boxes, collection: [["Bed & breakfast", "5"]], class: 'ignore'
-
-            .col-md-4
-              .form-group
-                = f.input_field :property_category, as: :check_boxes, collection: [["All - inclusive", "6"]], class: 'ignore'
-
-            .col-md-12
-              .form-group
-                = f.submit "Save", class: "btn btn-primary"
+                  .col-md-12
+                    .form-group
+                      = f.submit "Save", class: "btn btn-primary"
 
     hr
     h1#notice

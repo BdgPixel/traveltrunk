@@ -6,5 +6,9 @@ module DealsHelper
       [label, n]
     end
   end
+
+  def unescape_expedia_html(string)
+    raw CGI.unescapeHTML(string)
+  end
 end
 

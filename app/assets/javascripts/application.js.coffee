@@ -16,7 +16,7 @@
 # = require nprogress
 # = require nprogress-turbolinks
 # = require twitter/bootstrap/dropdown
-# = require twitter/bootstrap/collapse
+# = require twitter/bootstrap/tooltip
 # = require bootstrap.file-input
 
 $(document).ajaxSend ->

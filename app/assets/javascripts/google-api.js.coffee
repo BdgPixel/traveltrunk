@@ -20,6 +20,7 @@ initAutocomplete = ->
 fillInAddress = ->
   # Get the place details from the autocomplete object.
   place = autocomplete.getPlace()
+  console.log place
   for component of componentForm
     document.getElementById(component).value = ''
     document.getElementById(component).disabled = false
@@ -47,6 +48,38 @@ geolocate = ->
       return
   return
 
+initMap = ->
+  myLatLng =
+    lat: parseFloat $('#lat').val()
+    lng: parseFloat $('#long').val()
+
+  map = new (google.maps.Map)(document.getElementById('map'),
+    center: myLatLng
+    zoom: 15)
+
+  marker = new (google.maps.Marker)(
+    map: map
+    position: myLatLng)
+
+  # infowindow = new (google.maps.InfoWindow)
+  # service = new (google.maps.places.PlacesService)(map)
+  # service.getDetails { placeId: 'ChIJN1t_tDeuEmsRUsoyG83frY4' }, (place, status) ->
+  #   if status == google.maps.places.PlacesServiceStatus.OK
+  #     marker = new (google.maps.Marker)(
+  #       map: map
+  #       position: place.geometry.location)
+  #     google.maps.event.addListener marker, 'click', ->
+  #       infowindow.setContent place.name
+  #       infowindow.open map, this
+  #       return
+  #   return
+  return
+
+
 $(document).ready ->
-  initAutocomplete()
+  if $("#autocomplete").length > 0
+    initAutocomplete()
+
+  if $("#map").length > 0
+    initMap()
 

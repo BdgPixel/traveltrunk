@@ -50,14 +50,13 @@ $ ->
 
   return
 
-$(document).on 'click', '#destinationLabel', ->
-  $('#collapseDeals').slideToggle()
-
-$(document).on 'change', '#search_deals_select_guest_list', ->
-  $('#guest_list').val($('#search_deals_select_guest_list').val())
-
-
 $(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
+
+  $('#destinationLabel').click ->
+    $('#collapseDeals').slideToggle()
+
+  $('#search_deals_select_guest_list').change ->
+    $('#guest_list').val($('#search_deals_select_guest_list').val())
 

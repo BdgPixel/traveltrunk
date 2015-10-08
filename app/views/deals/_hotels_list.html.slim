@@ -2,12 +2,11 @@
   .col-xs-6.col-lg-4.col-deals
     center
       = link_to "#"
-        = image_tag "http://origin-images.travelnow.com#{hotel["thumbNailUrl"].gsub("_t.", "_l.")}", class: "img-responsive", alt: "#{hotel["name"]}"
+        = image_tag "http://origin-images.travelnow.com#{ hotel["thumbNailUrl"].gsub("_t.", "_l.")}", class: "img-responsive", alt: "#{hotel["name"] }"
     p
     p.text-center.content-deals style=""
-      = link_to "#", data: { toggle: "tooltip", placement: "top", titile: hotel["name"].upcase }
+      = link_to deals_show_path("#{ hotel["hotelId"] }"), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase }
         = truncate(hotel["name"].upcase.html_safe, length: 70)
-
 
 - if @error_response
   #error_response.alert.alert-danger = @error_response

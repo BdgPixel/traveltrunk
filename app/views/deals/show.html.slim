@@ -1,0 +1,23 @@
+- content_for :javascripts do
+  = javascript_include_tag "deals"
+
+.row
+  .col-md-12.col-md-12
+    .thumbnail
+      =  image_tag @hotels_list["HotelImages"]["HotelImage"][2]["url"], width: '50%', class: 'img-rounded'
+
+    br
+    h3 = @hotels_list["HotelSummary"]["name"]
+
+    .col-md-6
+      p
+        = unescape_expedia_html @hotels_list["HotelDetails"]["areaInformation"]
+      p
+       = unescape_expedia_html @hotels_list["HotelDetails"]["propertyDescription"]
+
+    .col-md-6
+
+      #map style="height: 500px; width: 100%;"
+      = hidden_field_tag  :lat, @hotels_list["HotelSummary"]["latitude"]
+      = hidden_field_tag  :long, @hotels_list["HotelSummary"]["longitude"]
+
