@@ -6,6 +6,7 @@ class DealsController < ApplicationController
         :destinationString => session[:last_destination_search]["city"],
         :arrivalDate => session[:last_destination_search]["arrivalDate"],
         :departureDate => session[:last_destination_search]["departureDate"],
+        :propertyCategory => session[:last_destination_search]["propertyCategory"],
         :moreResultsAvailable => true,
         :numberOfResults => 12})
 
@@ -32,7 +33,7 @@ class DealsController < ApplicationController
       :destinationString => params["destination"],
       :arrivalDate => params["arrival_date"],
       :departureDate => params["departure_date"],
-      :propertyCategory => params["propertyCategory"],
+      :propertyCategory => params["property_category"].reject(&:empty?).join(','),
       :moreResultsAvailable => true,
       :numberOfResults => 12})
 
@@ -50,6 +51,7 @@ class DealsController < ApplicationController
       :countryCode => params["country"],
       :arrivalDate => params["arrival_date"] ,
       :departureDate => params["departure_date"],
+      :propertyCategory => params["property_category"].reject(&:empty?).join(',')
     }
 
   end
