@@ -1,58 +1,44 @@
 class DealsController < ApplicationController
-  def index
-    if session[:last_destination_search]
-      api = Expedia::Api.new
-      response = api.get_list({
-        :destinationString => session[:last_destination_search]["city"],
-        :arrivalDate => session[:last_destination_search]["arrivalDate"],
-        :departureDate => session[:last_destination_search]["departureDate"],
-        :propertyCategory => session[:last_destination_search]["propertyCategory"],
-        :moreResultsAvailable => true,
-        :numberOfResults => 12})
+  before_action :set_search_data, only: [:index, :search]
 
-      response.exception?
-      if response.exception?.eql? true
-        @error_response = response.presentation_message
-        @hotels_list = []
-      else
-        @hotels_list = response.body["HotelListResponse"]["HotelList"]["HotelSummary"]
+  def index; end
+
+  def search; end
+
+  private
+    def set_search_data
+      if params[:search_deals]
+        session[:last_destination_search] = {
+          :destinationString => params[:search_deals][:destination].upcase,
+          :city => params[:search_deals][:locality],
+          :stateProvinceCode => params[:search_deals][:administrative_area_level_1],
+          :countryCode => params[:search_deals][:country],
+          :arrivalDate => params[:search_deals][:arrival_date] ,
+          :departureDate => params[:search_deals][:departure_date],
+          :propertyCategory => params[:search_deals][:property_category].reject(&:empty?).join(','),
+          :roomGroup => {
+            :room => {
+              :numberOfAdults => params[:search_deals][:guest_list]
+            }
+          },
+          :moreResultsAvailable => true,
+          :numberOfResults => 12
+        }
+      end
+
+      if session[:last_destination_search]
+        api = Expedia::Api.new
+        response = api.get_list(session[:last_destination_search] )
+
+        response.exception?
+        if response.exception?.eql? true
+          @error_response = response.presentation_message
+          @hotels_list = []
+        else
+          @hotels_list = response.body["HotelListResponse"]["HotelList"]["HotelSummary"]
+        end
       end
 
     end
-  end
 
-  def search
-    hotels_list(params["deals"])
-
-    # render 'index'
-  end
-
-  def hotels_list(params)
-    api = Expedia::Api.new
-    response = api.get_list({
-      :destinationString => params["destination"],
-      :arrivalDate => params["arrival_date"],
-      :departureDate => params["departure_date"],
-      :propertyCategory => params["property_category"].reject(&:empty?).join(','),
-      :moreResultsAvailable => true,
-      :numberOfResults => 12})
-
-    response.exception?
-    if response.exception?.eql? true
-      @error_response = response.presentation_message
-      @hotels_list = []
-    else
-      @hotels_list = response.body["HotelListResponse"]["HotelList"]["HotelSummary"]
-    end
-
-    session[:last_destination_search] = {
-      :city => params["destination"].upcase,
-      :stateProvinceCode => params["administrative_area_level_1"],
-      :countryCode => params["country"],
-      :arrivalDate => params["arrival_date"] ,
-      :departureDate => params["departure_date"],
-      :propertyCategory => params["property_category"].reject(&:empty?).join(',')
-    }
-
-  end
 end

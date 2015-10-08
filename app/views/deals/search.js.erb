@@ -1,5 +1,5 @@
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
-$("#destinationLabel").text("<%= session[:last_destination_search][:city] %>")
+$("#destinationLabel").text("<%= session[:last_destination_search][:destinationString] %>")
 
 <%- if @error_response %>
   $("#error_response").removeClass('hide')

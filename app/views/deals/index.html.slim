@@ -4,36 +4,36 @@
 .row
   .col-xs-12.col-sm-12
     .text-center
-      h1 = link_to "#{session[:last_destination_search].nil? ? "SEARCH" : session[:last_destination_search]['city'].upcase}", "javascript:void(0)", id: 'destinationLabel'
+      h1 = link_to "#{session[:last_destination_search].nil? ? "SEARCH" : session[:last_destination_search]['destinationString'].upcase}", "javascript:void(0)", id: 'destinationLabel'
       br
 
     .container
       #collapseDeals
         .col-md-12.col-lg-12
-          = simple_form_for :deals, method: :get, url: deals_search_path, remote: true, html: { id: 'dealsForm' } do |f|
+          = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
             .col-md-12
               .form-group
-                = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where do you want to be?"
-
-                .hide
-                  = f.hidden_field :street_number, id: "street_number"
-                  = f.hidden_field :route, id: "route"
-                  = f.hidden_field :locality, id: "locality"
-                  = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
-                  = f.hidden_field :postal_code, id: "postal_code"
-                  = f.hidden_field :country, as: :string, id: "country"
+                = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+              .hide
+                = f.hidden_field :street_number, id: "street_number"
+                = f.hidden_field :route, id: "route"
+                = f.hidden_field :locality, id: "locality"
+                = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
+                = f.hidden_field :postal_code, id: "postal_code"
+                = f.hidden_field :country, as: :string, id: "country"
 
             .col-md-6
               .form-group
-                = f.input_field :arrival_date, class: "form-control", placeholder: "Check-in"
+                = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
 
             .col-md-6
               .form-group
-                = f.input_field :departure_date, class: "form-control", placeholder: "Check-out"
+                = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
 
             .col-md-12
               .form-group
-                = f.input_field :guest_list, as: :select, collection: [["1 Guest", 1], ["2 Guest", 2]], selected: 1, class: "form-control"
+                = f.input_field :select_guest_list, as: :select, collection: guests_list, selected: 1, class: "form-control"
+                = f.hidden_field :guest_list, id: 'guest_list'
 
             .col-md-4
               .form-group
@@ -61,8 +61,9 @@
 
             .col-md-12
               .form-group
-                = f.submit "Search", class: "btn btn-primary"
+                = f.submit "Save", class: "btn btn-primary"
 
     hr
     h1#notice
-    = render "hotels_list" if session[:last_destination_search]
+    #dealsHotelsList.text-center
+      = render "hotels_list" if session[:last_destination_search]

@@ -29,7 +29,7 @@ disableEnterFormSubmit = ->
   return
 
 validateSearchForm = ->
-  $('#dealsForm').validate
+  $('#searchDealsForm').validate
     ignore: ".ignore"
     rules:
       autocomplete: 'required'
@@ -40,18 +40,22 @@ validateSearchForm = ->
   return
 
 $ ->
-  $('input#deals_arrival_date').datepicker(
+  $('input#search_deals_arrival_date').datepicker(
     startDate: today).on 'changeDate', (e) ->
-      $('input#deals_departure_date').datepicker('remove')
-      $('input#deals_departure_date').datepicker(
+      $('input#search_deals_departure_date').datepicker('remove')
+      $('input#search_deals_departure_date').datepicker(
         startDate:  getFormattedDate(e.date))
 
-  $('input#deals_departure_date').datepicker startDate: today
+  $('input#search_deals_departure_date').datepicker startDate: today
 
   return
 
 $(document).on 'click', '#destinationLabel', ->
   $('#collapseDeals').slideToggle()
+
+$(document).on 'change', '#search_deals_select_guest_list', ->
+  $('#guest_list').val($('#search_deals_select_guest_list').val())
+
 
 $(document).ready ->
   disableEnterFormSubmit()
