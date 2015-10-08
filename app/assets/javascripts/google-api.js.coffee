@@ -20,7 +20,6 @@ initAutocomplete = ->
 fillInAddress = ->
   # Get the place details from the autocomplete object.
   place = autocomplete.getPlace()
-  console.log place
   for component of componentForm
     document.getElementById(component).value = ''
     document.getElementById(component).disabled = false
