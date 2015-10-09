@@ -21,11 +21,6 @@ class DealsController < ApplicationController
           :countryCode => params[:search_deals][:country],
           :arrivalDate => params[:search_deals][:arrival_date] ,
           :departureDate => params[:search_deals][:departure_date],
-          :roomGroup => {
-            :room => {
-              :numberOfAdults => params[:search_deals][:guest_list]
-            }
-          },
           :moreResultsAvailable => true,
           :numberOfResults => 12
         }

@@ -54,7 +54,8 @@ initMap = ->
 
   map = new (google.maps.Map)(document.getElementById('map'),
     center: myLatLng
-    zoom: 15)
+    zoom: 15
+    scrollwheel: false)
 
   marker = new (google.maps.Marker)(
     map: map

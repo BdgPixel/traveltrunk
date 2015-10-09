@@ -59,6 +59,10 @@ gem 'masonry-rails', '~> 0.2.4'
 
 gem 'htmlentities', '~> 4.3.4'
 
+gem 'jquery-rails-cdn'
+
+gem 'galleria-rails', github: 'tristanperalta/galleria-rails'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

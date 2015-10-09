@@ -1,9 +1,9 @@
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
 
-<%- if session[:last_destination_search][:city].blank? %>
+<%- if session[:last_destination_search].nil? %>
   $("#destinationLabel").text("SEARCH")
 <%- else %>
-  $("#destinationLabel").text("<%= session[:last_destination_search][:city].upcase %>")
+  $("#destinationLabel").text("<%= session[:last_destination_search][:destinationString].split(",").first %>")
 <% end %>
 
 <%- if @error_response %>

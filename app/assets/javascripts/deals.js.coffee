@@ -2,7 +2,9 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# = require galleria
 # = require bootstrap-datepicker
+# = require holder
 # = require google-api
 # = require jquery.validate
 
@@ -17,7 +19,7 @@ getFormattedDate = (date) ->
 today = getFormattedDate(new Date)
 
 disableEnterFormSubmit = ->
-  $('.simple_form.deals').on 'keyup keypress', (e) ->
+  $('#searchDealsForm').on 'keyup keypress', (e) ->
     code = e.keyCode or e.which
     if code == 13
       e.preventDefault()
@@ -60,3 +62,8 @@ $(document).ready ->
   $('#search_deals_select_guest_list').change ->
     $('#guest_list').val($('#search_deals_select_guest_list').val())
 
+  if $('#galleria').length > 0
+    Galleria.loadTheme '/assets/galleria.classic.min.js'
+
+    # Initialize Galleria
+    Galleria.run '#galleria'

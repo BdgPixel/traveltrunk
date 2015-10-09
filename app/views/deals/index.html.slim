@@ -5,10 +5,10 @@
   .col-xs-12.col-sm-12
     .text-center
       h1
-        - if session[:last_destination_search].nil? || session[:last_destination_search]['city'].blank?
+        - if session[:last_destination_search].nil?
           = link_to "SEARCH", "javascript:void(0)", id: 'destinationLabel'
         - else
-          = link_to "#{session[:last_destination_search]['city'].upcase}", "javascript:void(0)", id: 'destinationLabel'
+          = link_to title_destination, "javascript:void(0)", id: 'destinationLabel'
 
       br
 
@@ -40,13 +40,9 @@
                       = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
 
                   .col-md-12
-                    .form-group
-                      = f.input_field :select_guest_list, as: :select, collection: guests_list, selected: 1, class: "form-control"
-                      = f.hidden_field :guest_list, id: 'guest_list'
-
-                  .col-md-12
-                    .form-group
-                      = f.submit "Save", class: "btn btn-primary"
+                    .form-group.text-center
+                      .col-md-4
+                      = f.submit "Save", class: "btn btn-primary btn-lg col-md-4 col-offset-4"
 
     hr
     h1#notice

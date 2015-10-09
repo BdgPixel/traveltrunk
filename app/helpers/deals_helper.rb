@@ -10,5 +10,9 @@ module DealsHelper
   def unescape_expedia_html(string)
     raw CGI.unescapeHTML(string)
   end
+
+  def title_destination
+    session[:last_destination_search]["destinationString"].split(",").first
+  end
 end
 
