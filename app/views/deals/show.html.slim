@@ -1,16 +1,17 @@
 - content_for :javascripts do
   = javascript_include_tag "deals"
+  = javascript_include_tag "galleria_theme_path"
 
 .row
-  .col-md-12.col-md-12
+  .col-md-12
     #galleria
       - @hotels_list["HotelImages"]["HotelImage"].each do |hotel_image|
-        = link_to hotel_image["url"].gsub("_b.", "_y.")
+        = link_to hotel_image["url"]
           = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
 
 .row
   .col-md-12
-    h3 = @hotels_list["HotelSummary"]["name"]
+    h3 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
 
   .col-md-6
     p

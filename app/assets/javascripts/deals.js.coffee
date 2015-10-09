@@ -63,7 +63,7 @@ $(document).ready ->
     $('#guest_list').val($('#search_deals_select_guest_list').val())
 
   if $('#galleria').length > 0
-    Galleria.loadTheme '/assets/galleria.classic.min.js'
+    Galleria.loadTheme window.galleria_theme_path
 
     # Initialize Galleria
     Galleria.run '#galleria'
