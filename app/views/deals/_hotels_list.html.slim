@@ -1,11 +1,11 @@
 - @hotels_list.each do |hotel|
   .col-xs-6.col-md-3.col-deals
     center
-      = link_to "#"
+      = link_to deals_show_path("#{ hotel["hotelId"] }")
         = image_tag "http://origin-images.travelnow.com#{ hotel["thumbNailUrl"].gsub("_t.", "_l.")}", class: "img-responsive", alt: "#{hotel["name"] }"
     p
     p.text-center.content-deals style=""
-      = link_to deals_show_path("#{ hotel["hotelId"] }"), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase }
+      = link_to deals_show_path("#{ hotel["hotelId"] }"), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase, no_turbolink: true }
         = truncate(hotel["name"].upcase.html_safe, length: 70)
 
 - if @error_response
