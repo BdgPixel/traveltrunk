@@ -1,7 +1,7 @@
 - @hotels_list.each do |hotel|
   .col-xs-6.col-md-3.col-deals
     center
-      = link_to deals_show_path("#{ hotel["hotelId"] }")
+      = link_to deals_show_path("#{ hotel["hotelId"] }"), data: { no_turbolink: true }
         = image_tag "http://origin-images.travelnow.com#{ hotel["thumbNailUrl"].gsub("_t.", "_l.")}", class: "img-responsive", alt: "#{hotel["name"] }"
     p
     p.text-center.content-deals style=""
