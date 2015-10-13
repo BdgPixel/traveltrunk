@@ -1,23 +1,24 @@
-h2 Log in
+.wrapper-login
+  h2 Log in
 
-= form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-  .form-group
-    = f.label :email
-    br
-    = f.email_field :email, autofocus: true, class: 'form-control'
-
-  .form-group
-    = f.label :password
-    br
-    = f.password_field :password, autocomplete: "off", class: 'form-control'
-
-  - if devise_mapping.rememberable?
+  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
     .form-group
-      = f.check_box :remember_me
-      | &nbsp;
-      = f.label :remember_me
+      = f.label :email
+      br
+      = f.email_field :email, autofocus: true, class: 'form-control'
 
-  .actions.form-group
-    = f.submit "Log in", class: 'btn btn-primary'
+    .form-group
+      = f.label :password
+      br
+      = f.password_field :password, autocomplete: "off", class: 'form-control'
 
-= render "devise/shared/links"
+    - if devise_mapping.rememberable?
+      .form-group
+        = f.check_box :remember_me
+        | &nbsp;
+        = f.label :remember_me
+
+    .actions.form-group
+      = f.submit "Log in", class: 'btn btn-default'
+
+  = render "devise/shared/links"
