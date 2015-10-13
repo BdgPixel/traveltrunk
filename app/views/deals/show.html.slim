@@ -4,15 +4,24 @@
 
 .row
   .col-md-12
-    #galleria
-      - @hotels_list["HotelImages"]["HotelImage"].each do |hotel_image|
-        = link_to hotel_image["url"]
-          = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
+    .pull-right
+      = link_to 'Back', deals_path, class: 'btn btn-default'
+  br
+  br
+  .col-md-12
+    .thumbnail
+      #galleria
+        - @hotels_list["HotelImages"]["HotelImage"].each do |hotel_image|
+          = link_to change_image_type(hotel_image["url"], "b", "z")
+            = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
+        / - (1..25).to_a.map do |n|
+        /   = holder_tag "500x300"
 
 .row
   .col-md-12
     h3 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
-
+    p = "Hight Rate: #{number_to_currency(@hotels_list["HotelSummary"]["highRate"])}"
+    p = "Low Rate: #{number_to_currency(@hotels_list["HotelSummary"]["lowRate"])}"
   .col-md-6
     p
       = unescape_expedia_html @hotels_list["HotelDetails"]["areaInformation"]

@@ -59,9 +59,6 @@ $(document).ready ->
   $('#destinationLabel').click ->
     $('#collapseDeals').slideToggle()
 
-  $('#search_deals_select_guest_list').change ->
-    $('#guest_list').val($('#search_deals_select_guest_list').val())
-
   if $('#galleria').length > 0
     Galleria.loadTheme window.galleria_theme_path
 

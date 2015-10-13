@@ -15,6 +15,9 @@ class DealsController < ApplicationController
     def set_search_data
       if params[:search_deals]
         session[:last_destination_search] = {
+          :latitude => params[:search_deals][:lat],
+          :longitude => params[:search_deals][:lng],
+          :searchRadius => 80,
           :destinationString => params[:search_deals][:destination].upcase,
           :city => params[:search_deals][:locality],
           :stateProvinceCode => params[:search_deals][:administrative_area_level_1],
@@ -22,7 +25,7 @@ class DealsController < ApplicationController
           :arrivalDate => params[:search_deals][:arrival_date] ,
           :departureDate => params[:search_deals][:departure_date],
           :moreResultsAvailable => true,
-          :numberOfResults => 12
+          :numberOfResults => 100
         }
       end
       set_hotel("get_list", session[:last_destination_search])

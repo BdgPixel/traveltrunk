@@ -20,6 +20,10 @@ initAutocomplete = ->
 fillInAddress = ->
   # Get the place details from the autocomplete object.
   place = autocomplete.getPlace()
+  if $('#lat').length > 0 and $('#lng').length > 0
+    $('#lat').val place.geometry.location.lat()
+    $('#lng').val place.geometry.location.lng()
+
   for component of componentForm
     document.getElementById(component).value = ''
     document.getElementById(component).disabled = false
@@ -77,9 +81,8 @@ initMap = ->
 
 
 $(document).ready ->
-  if $("#autocomplete").length > 0
+  if $('#autocomplete').length > 0
     initAutocomplete()
 
-  if $("#map").length > 0
+  if $('#map').length > 0
     initMap()
-

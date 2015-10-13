@@ -14,8 +14,9 @@
 
     .container
       #collapseDeals
-        .col-md-12.col-lg-12
-          .col-md-7.col-md-offset-2
+        .col-md-12
+
+          .col-md-8.col-md-offset-2
             .panel.panel-default
               .panel-heading
               .panel-body
@@ -30,6 +31,8 @@
                       = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
                       = f.hidden_field :postal_code, id: "postal_code"
                       = f.hidden_field :country, as: :string, id: "country"
+                      = f.hidden_field :lat, id: "lat"
+                      = f.hidden_field :lng, id: "lng"
 
                   .col-md-6
                     .form-group
@@ -42,7 +45,7 @@
                   .col-md-12
                     .form-group.text-center
                       .col-md-4
-                      = f.submit "Save", class: "btn btn-primary btn-lg col-md-4 col-offset-4"
+                      = f.submit "Save", class: "btn btn-primary btn-md col-md-4 col-offset-4"
 
     hr
     h1#notice
