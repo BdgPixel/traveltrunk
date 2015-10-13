@@ -61,6 +61,6 @@ $(document).ready ->
 
   if $('#galleria').length > 0
     Galleria.loadTheme window.galleria_theme_path
-
+    Galleria.configure dummy: '/assets/default-no-image.png'
     # Initialize Galleria
     Galleria.run '#galleria'

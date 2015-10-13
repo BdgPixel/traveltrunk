@@ -11,11 +11,10 @@
   .col-md-12
     .thumbnail
       #galleria
-        - @hotels_list["HotelImages"]["HotelImage"].each do |hotel_image|
-          = link_to change_image_type(hotel_image["url"], "b", "z")
-            = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
-        / - (1..25).to_a.map do |n|
-        /   = holder_tag "500x300"
+        - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
+          - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
+            = link_to change_image_type(hotel_image["url"], "b", "z")
+              = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
 
 .row
   .col-md-12
