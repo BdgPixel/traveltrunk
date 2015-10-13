@@ -20,29 +20,30 @@
               .panel-heading
               .panel-body
                 = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
-                  .col-md-12
-                    .form-group
-                      = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
-                    .hide
-                      = f.hidden_field :street_number, id: "street_number"
-                      = f.hidden_field :route, id: "route"
-                      = f.hidden_field :locality, id: "locality"
-                      = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
-                      = f.hidden_field :postal_code, id: "postal_code"
-                      = f.hidden_field :country, as: :string, id: "country"
+                  .wrapper-search-deal
+                    .col-md-12
+                      .form-group
+                        = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+                      .hide
+                        = f.hidden_field :street_number, id: "street_number"
+                        = f.hidden_field :route, id: "route"
+                        = f.hidden_field :locality, id: "locality"
+                        = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
+                        = f.hidden_field :postal_code, id: "postal_code"
+                        = f.hidden_field :country, as: :string, id: "country"
 
-                  .col-md-6
-                    .form-group
-                      = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
+                    .col-md-6
+                      .form-group
+                        = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
 
-                  .col-md-6
-                    .form-group
-                      = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
+                    .col-md-6
+                      .form-group
+                        = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
 
-                  .col-md-12
-                    .form-group.text-center
-                      .col-md-4
-                      = f.submit "Save", class: "btn btn-primary btn-lg col-md-4 col-offset-4"
+                    .col-md-12
+                      .form-group.text-center
+                        .col-md-4
+                        = f.submit "Save", class: "btn btn-default btn-lg col-md-4 col-offset-4"
 
     hr
     h1#notice
