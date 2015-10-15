@@ -64,3 +64,4 @@ $(document).ready ->
     Galleria.configure dummy: '/assets/default-no-image.png'
     # Initialize Galleria
     Galleria.run '#galleria'
+

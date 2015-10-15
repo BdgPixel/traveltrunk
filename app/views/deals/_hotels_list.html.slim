@@ -1,10 +1,7 @@
 - @hotels_list.each do |hotel|
   .col-xs-6.col-md-4.col-deals style=""
-    = link_to deals_show_path("#{ hotel["hotelId"] }"), data: { no_turbolink: true }
+    = link_to deals_show_path("#{ hotel["hotelId"] }"), id: 'test', data: { no_turbolink: true }
       = list_of_deals_div(hotel["thumbNailUrl"])
-    / div style="background: url('http://images.travelnow.com#{ hotel["thumbNailUrl"].gsub("_t.", "_y.") }'); background-size: 100% 100%; height: 300px;"
-    / .center
-      /   = image_tag "http://origin-images.travelnow.com#{ hotel["thumbNailUrl"].gsub("_t.", "_l.")}", class: "img-responsive", alt: "#{hotel["name"] }"
     p
     p.text-center.content-deals style=""
       = link_to deals_show_path("#{ hotel["hotelId"] }"), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase, no_turbolink: true }

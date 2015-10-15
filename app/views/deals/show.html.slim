@@ -13,7 +13,7 @@
       #galleria
         - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
           - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
-            = link_to change_image_type(hotel_image["url"], "b", "z")
+            = link_to hotel_image["url"].gsub("b", "z")
               = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
 
 .row
