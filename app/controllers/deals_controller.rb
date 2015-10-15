@@ -1,6 +1,9 @@
 class DealsController < ApplicationController
   require 'htmlentities'
+
   before_action :set_search_data, only: [:index, :search]
+  before_action :check_like, only: [:like]
+  before_action :authenticate_user!
 
   def index; end
 
@@ -9,6 +12,17 @@ class DealsController < ApplicationController
   def show
     expedia_params_hash = { hotelId: params[:id] }
     set_hotel("get_information", expedia_params_hash)
+
+  end
+
+  def like
+    @hotel_id = params[:id]
+    if @like.present?
+      @like.destroy
+    else
+      like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
+      like.save
+    end
   end
 
   private
@@ -29,7 +43,6 @@ class DealsController < ApplicationController
         }
       end
       set_hotel("get_list", session[:last_destination_search])
-
     end
 
     def set_hotel(event, params)
@@ -53,10 +66,18 @@ class DealsController < ApplicationController
             elsif event.eql? "get_information"
               response.body["HotelInformationResponse"]
             end
+
+          if event.eql? "get_list"
+            @hotel_ids = @hotels_list.map { |hotel| hotel["hotelId"] }
+            @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+          end
+
         end
-
       end
+    end
 
-  end
+    def check_like
+      @like = Like.find_by(hotel_id: params[:id], user_id: current_user.id)
+    end
 
 end

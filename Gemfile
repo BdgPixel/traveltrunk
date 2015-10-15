@@ -87,6 +87,8 @@ group :development, :test do
   gem 'pry-rails'
 
   gem 'letter_opener'
+
+  gem 'quiet_assets'
 end
 
 gem 'rails_12factor', group: :production

@@ -5,7 +5,7 @@
 .row
   .col-md-12
     .pull-right
-      = link_to 'Back', deals_path, class: 'btn btn-default'
+      = link_to 'Back', deals_path, class: 'btn btn-default', data: { no_turbolink: true }
   br
   br
   .col-md-12
@@ -18,9 +18,9 @@
 
 .row
   .col-md-12
-    h3 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
-    p = "Hight Rate: #{number_to_currency(@hotels_list["HotelSummary"]["highRate"])}"
-    p = "Low Rate: #{number_to_currency(@hotels_list["HotelSummary"]["lowRate"])}"
+    h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
+    h3 = "Hight Rate: #{number_to_currency(@hotels_list["HotelSummary"]["highRate"])}"
+    h3 = "Low Rate: #{number_to_currency(@hotels_list["HotelSummary"]["lowRate"])}"
   .col-md-6
     p
       = unescape_expedia_html @hotels_list["HotelDetails"]["areaInformation"]
