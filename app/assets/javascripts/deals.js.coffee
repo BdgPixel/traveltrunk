@@ -57,7 +57,6 @@ loadMoreHotels = (cacheKey, cacheLocation) ->
   $('div.deals-image').removeClass 'lazy'
   url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=55505&minorRev=28&apiKey=5fd6485clmp3oogs8gfb43p2uf&locale=en_US&cacheKey=#{cacheKey}&cacheLocation=#{cacheLocation}&supplierType=E"
   url_image = "http://images.travelnow.com"
-  tags = ""
 
   $.ajax
     url: url
@@ -67,7 +66,7 @@ loadMoreHotels = (cacheKey, cacheLocation) ->
       $('#loading').show()
     success:  (data) ->
       $('#loading').fadeOut("slow");
-
+      console.log window.hotel = data
       $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
         # console.log hotel["thumbNailUrl"]
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
