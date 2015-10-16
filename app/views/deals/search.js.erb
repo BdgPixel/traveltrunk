@@ -15,3 +15,7 @@ $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
 
 $('#collapseDeals').slideUp()
 $('[data-toggle="tooltip"]').tooltip()
+
+$('div.deals-image').lazyload({
+  effect : 'fadeIn'
+});

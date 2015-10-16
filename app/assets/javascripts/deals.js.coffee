@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# = require jquery.lazyload
 # = require galleria
 # = require bootstrap-datepicker
 # = require holder
@@ -67,3 +68,7 @@ $(document).ready ->
 
   if $('[data-toggle="tooltip"]').length > 0
     $('[data-toggle="tooltip"]').tooltip()
+
+  if $('div.deals-image').length > 0
+    $('div.deals-image').lazyload
+      effect : 'fadeIn'

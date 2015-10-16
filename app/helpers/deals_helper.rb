@@ -15,15 +15,9 @@ module DealsHelper
     session[:last_destination_search]["destinationString"].split(",").first
   end
 
-  def list_of_deals_div(list)
-    image_string_url = change_image_type("http://images.travelnow.com#{ list }", 't', 'y')
-
-    # if url = remote_file_exists?(host, image_string_url).eql? false
-    content_tag(:div, nil, class: 'deals-image', style: "background: url('#{ image_string_url }'); background-size: 100% 100%; height: 300px;")
-
-    # else
-      # content_tag(:div, nil, nil, style: "background: url('#{ image_string_url }'); background-size: 100% 100%; height: 300px;")
-    # end
+  def list_of_deals_div(hotel_image)
+    content_tag(:div, nil, class: 'deals-image', data: { original: "http://images.travelnow.com#{ hotel_image }" },
+      style: "background:url('#{asset_url('default-no-image.png')}') no-repeat; background-size: 100% 100%; height: 300px;")
   end
 
   def remote_file_exists?(url)

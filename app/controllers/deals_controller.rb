@@ -39,7 +39,7 @@ class DealsController < ApplicationController
           :arrivalDate => params[:search_deals][:arrival_date] ,
           :departureDate => params[:search_deals][:departure_date],
           :moreResultsAvailable => true,
-          :numberOfResults => 100
+          :numberOfResults => 12
         }
       end
       set_hotel("get_list", session[:last_destination_search])
