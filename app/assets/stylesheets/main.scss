@@ -42,12 +42,15 @@ html {
   //   }
   // }
 
-  // .wrapper-navbar-brand {
+  .wrapper-navbar-brand {
+    position: relative;
+    top: -10px;
 
-  //   img {
-  //     width: 40px;
-  //   }
-  // }
+    img {
+      width: 40px;
+      height: 41px;
+    }
+  }
 }
 
 
@@ -72,9 +75,34 @@ html {
   border-color: transparent;
 }
 
-
 // End Button Style
 
+// Icon Image
+
+.icon-deals {
+  display: inline-block;
+  width: 30px;
+  height: 31px;
+
+  &.btn-back-to-deals {
+    background: image-url("back_deals.png") no-repeat;
+    background-size: cover;
+  }
+}
+
+// End Icon Image
+
+
+// Registration Page
+
+.wrapper-registration {
+
+  .btn-default {
+    @extend .btn-signup;
+  }
+}
+
+// End Registration
 
 // Login Page
 
@@ -82,6 +110,13 @@ html {
 
   .btn-default {
     @extend .btn-login;
+  }
+}
+
+.wrapper-logo-signup {
+
+  img {
+    width: 80%;
   }
 }
 
@@ -101,11 +136,12 @@ html {
   
   h1 {
     font-size: 40px;
+    margin-top: 15px;
   }
 }
 
 .wrapper-img-profile {
-  margin-top: 27px;
+  margin-top: 15px;
 }
 
 // End Profile Page Style

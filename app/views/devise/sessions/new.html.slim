@@ -1,24 +1,31 @@
-.wrapper-login
-  h2 Log in
+.row
+  .col-md-6.col-md-offset-3
+    .wrapper-logo-signup
+      .text-center
+        = image_tag 'logo2.png'
 
-  = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-    .form-group
-      = f.label :email
-      br
-      = f.email_field :email, autofocus: true, class: 'form-control'
+  .col-md-12
+    .wrapper-login
+      h2 Log in
 
-    .form-group
-      = f.label :password
-      br
-      = f.password_field :password, autocomplete: "off", class: 'form-control'
+      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+        .form-group
+          = f.label :email
+          br
+          = f.email_field :email, autofocus: true, class: 'form-control'
 
-    - if devise_mapping.rememberable?
-      .form-group
-        = f.check_box :remember_me
-        | &nbsp;
-        = f.label :remember_me
+        .form-group
+          = f.label :password
+          br
+          = f.password_field :password, autocomplete: "off", class: 'form-control'
 
-    .actions.form-group
-      = f.submit "Log in", class: 'btn btn-default'
+        - if devise_mapping.rememberable?
+          .form-group
+            = f.check_box :remember_me
+            | &nbsp;
+            = f.label :remember_me
 
-  = render "devise/shared/links"
+        .actions.form-group
+          = f.submit "Log in", class: 'btn btn-default'
+
+      = render "devise/shared/links"
