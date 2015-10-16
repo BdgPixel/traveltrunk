@@ -1,54 +1,53 @@
 .wrapper-navbar-traveltrunk
-.nav.navbar.navbar-default
-  .container-fluid
-    /! Brand and toggle get grouped for better mobile display
-    .navbar-header
-      button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
-        span.sr-only Toggle navigation
-        span.icon-bar
-        span.icon-bar
-        span.icon-bar
-      / .wrapper-navbar-brand
-      /     = link_to image_tag("logo.png"), root_path, class: 'navbar-brand'
+  .nav.navbar.navbar-default
+    .container-fluid
+      /! Brand and toggle get grouped for better mobile display
+      .navbar-header
+        button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+        .wrapper-navbar-brand
+            = link_to image_tag("logo2.png"), root_path, class: 'navbar-brand'
 
-      = link_to 'TravelTrunk', root_path, class: 'navbar-brand'
+        / = link_to 'TravelTrunk', root_path, class: 'navbar-brand'
+
+      /! Collect the nav links, forms, and other content for toggling
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        ul.nav.navbar-nav.navbar-right
+          - if user_signed_in?
+            li
+              = link_to 'DEALS', deals_path
+
+            li
+              = link_to 'SAVINGS', '#'
+
+            li
+              .navbar-header
+                a.navbar-brand href="#"
+
+            li.dropdown
+              a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                - if current_user.no_profile?
+                  = image_tag "thumb_default_user.png"
+                  | &nbsp;
+                  | PROFILE
+                - else
+                  = image_tag current_user.profile.image.thumb.url
+                  | &nbsp;
+                  = current_user.profile.first_name.upcase
+                span.caret
+              ul.dropdown-menu
+                li
+                  = link_to 'View Profile', profile_path
+                li
+                  = link_to 'Notification', '#'
+                li.divider role="separator"
+                li = link_to 'Sign Out', destroy_user_session_path, method: :delete
+          - else
+              li = link_to 'SIGN IN', new_user_session_path
 
 
-    /! Collect the nav links, forms, and other content for toggling
-    #bs-example-navbar-collapse-1.collapse.navbar-collapse
-      ul.nav.navbar-nav.navbar-right
-        - if user_signed_in?
-          li
-            = link_to 'DEALS', deals_path
-
-          li
-            = link_to 'SAVINGS', '#'
-
-          li
-            .navbar-header
-              a.navbar-brand href="#"
-
-          li.dropdown
-            a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-              - if current_user.no_profile?
-                = image_tag "thumb_default_user.png"
-                | &nbsp;
-                | PROFILE
-              - else
-                = image_tag current_user.profile.image.thumb.url
-                | &nbsp;
-                = current_user.profile.first_name.upcase
-              span.caret
-            ul.dropdown-menu
-              li
-                = link_to 'View Profile', profile_path
-              li
-                = link_to 'Notification', '#'
-              li.divider role="separator"
-              li = link_to 'Sign Out', destroy_user_session_path, method: :delete
-        - else
-            li = link_to 'SIGN IN', new_user_session_path
-
-
-    /! /.navbar-collapse
-  /! /.container-fluid
+      /! /.navbar-collapse
+    /! /.container-fluid

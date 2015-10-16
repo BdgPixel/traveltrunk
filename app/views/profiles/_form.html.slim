@@ -18,7 +18,7 @@
             .form-group
               .thumbnail
                 = link_to 'javascript:void(0)'
-                  = image_tag current_user.profile.image.url, id: 'profile_image', class: 'img-circle' unless current_user.profile.image.nil?
+                  = image_tag current_user.profile.image.url, id: 'profile_image', class: '' unless current_user.profile.image.nil?
                 br
                 = profile_form.input_field :image, as: :file, id: 'choose_profile_image',  data: {filename_placement: 'inside' }, class: 'btn btn-block btn-primary btn-file'
                 .hide

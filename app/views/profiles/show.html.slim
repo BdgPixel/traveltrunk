@@ -8,13 +8,9 @@
           h3.panel-title PROFILE
         .panel-body
           .row
-            .wrapper-img-profile
-              .col-md-3.col-lg-4 align="center"
-                = image_tag current_user.profile.image.url, class: 'img img-circle img-responsive' unless current_user.profile.image.nil?
-
             .wrapper-user-name
               .col-md-9.col-lg-8
-                h1.text-center = current_user.full_name
+                h1 = current_user.full_name
                 br
                 h5 PERSONAL INFORMATION
                 table.table.table-user-information
@@ -67,6 +63,10 @@
                     tr
                       td Transfer Frequency:
                       td = current_user.bank_account.transfer_frequency
+
+            .wrapper-img-profile
+              .col-md-3.col-lg-4 align="center"
+                = image_tag current_user.profile.image.url, class: 'img img-responsive' unless current_user.profile.image.nil?
 
           .panel-footer
             | &nbsp;
