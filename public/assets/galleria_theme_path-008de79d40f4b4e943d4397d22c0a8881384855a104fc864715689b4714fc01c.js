@@ -1,1 +1,0 @@
-window.galleria_theme_path="/assets/galleria.classic.min-ffeae38f547d75523d4e2ed050d493edba49625aedebb11ad70fc222ddabcdf7.js";

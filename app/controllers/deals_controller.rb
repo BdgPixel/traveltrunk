@@ -38,8 +38,9 @@ class DealsController < ApplicationController
           :countryCode => params[:search_deals][:country],
           :arrivalDate => params[:search_deals][:arrival_date] ,
           :departureDate => params[:search_deals][:departure_date],
+          :options => 'HOTEL_SUMMARY',
           :moreResultsAvailable => true,
-          :numberOfResults => 12
+          :numberOfResults => 21
         }
       end
       set_hotel("get_list", session[:last_destination_search])
@@ -52,7 +53,8 @@ class DealsController < ApplicationController
           if event.eql? "get_list"
             api.get_list(params)
           elsif event.eql? "get_information"
-            api.get_information(params)
+            # api.get_information(params)
+            api.get_information({hotelId: 356564, options: "HOTEL_SUMMARY,HOTEL_DETAILS,HOTEL_IMAGES"})
           end
 
         response.exception?
@@ -70,6 +72,9 @@ class DealsController < ApplicationController
           if event.eql? "get_list"
             @hotel_ids = @hotels_list.map { |hotel| hotel["hotelId"] }
             @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+
+            session[:hotel_list_cache_key] = response.body["HotelListResponse"]["cacheKey"]
+            session[:hotel_list_cache_location] = response.body["HotelListResponse"]["cacheLocation"]
           end
 
         end

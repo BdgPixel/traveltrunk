@@ -1,8 +1,9 @@
 - content_for :javascripts do
   = javascript_include_tag "deals"
+  = javascript_include_tag "galleria_theme_path"
 
 .row
-  .col-xs-12.col-sm-12
+  .col-xs-12.col-md-12
     .text-center
       h1
         - if session[:last_destination_search].nil?
@@ -52,3 +53,14 @@
     h1#notice
     #dealsHotelsList.text-center
       = render "hotels_list" if session[:last_destination_search]
+    br
+    br
+.row
+  .col-md-12
+    center
+      button#loadMore.btn.btn-info data-cache-key="#{session[:hotel_list_cache_key]}" data-cache-location="#{session[:hotel_list_cache_location]}" Load more ...
+
+  br
+  br
+  br
+  br

@@ -59,7 +59,8 @@ html {
 .btn-signup,
 .btn-login,
 .btn-edit-profile,
-.btn-update-profile {
+.btn-update-profile,
+.btn-orange {
   background: rgb(239,62,54); /* Old browsers */
   background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
@@ -91,14 +92,14 @@ html {
 // Profile Page Stlye
 
 .wrapper-profile {
-  
+
   .btn-default {
     @extend .btn-edit-profile;
   }
 }
 
 .wrapper-user-name {
-  
+
   h1 {
     font-size: 40px;
   }

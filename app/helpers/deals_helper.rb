@@ -16,7 +16,7 @@ module DealsHelper
   end
 
   def list_of_deals_div(hotel_image)
-    content_tag(:div, nil, class: 'deals-image', data: { original: "http://images.travelnow.com#{ hotel_image }" },
+    content_tag(:div, nil, class: 'lazy deals-image', data: { original: "http://images.travelnow.com#{ hotel_image }" },
       style: "background:url('#{asset_url('default-no-image.png')}') no-repeat; background-size: 100% 100%; height: 300px;")
   end
 

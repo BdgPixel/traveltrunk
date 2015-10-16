@@ -21,9 +21,13 @@
     h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
     h3 = "Hight Rate: #{number_to_currency(@hotels_list["HotelSummary"]["highRate"])}"
     h3 = "Low Rate: #{number_to_currency(@hotels_list["HotelSummary"]["lowRate"])}"
+    .pull-left
+      button.btn.btn-orange type="button" Book Now
+
+    .col-md-6
+
+
   .col-md-6
-    p
-      = unescape_expedia_html @hotels_list["HotelDetails"]["areaInformation"]
     p
      = unescape_expedia_html @hotels_list["HotelDetails"]["propertyDescription"]
 

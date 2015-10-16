@@ -19,3 +19,6 @@ $('[data-toggle="tooltip"]').tooltip()
 $('div.deals-image').lazyload({
   effect : 'fadeIn'
 });
+
+$("#loadMore").attr("data-cache-key", "<%= session[:hotel_list_cache_key] %>")
+$("#loadMore").attr("data-cache-location", "<%= session[:hotel_list_cache_location] %>")
