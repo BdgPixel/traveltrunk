@@ -44,6 +44,7 @@ class DealsController < ApplicationController
     def set_search_data
       @destination =  current_user.destinations.last
       # if params[:search_deals]
+      if @destination
         session[:last_destination_search] = {
             :latitude => @destination.latitude,
             :longitude => @destination.longitude,
@@ -72,7 +73,7 @@ class DealsController < ApplicationController
         #   :moreResultsAvailable => true,
         #   :numberOfResults => 21
         # }
-      # end
+      end
       set_hotel("get_list", session[:last_destination_search])
     end
 
