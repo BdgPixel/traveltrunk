@@ -3,6 +3,7 @@ Rails.application.routes.draw do
   get 'deals/search' => 'deals#search'
   get 'deals/:id/show' => 'deals#show', as: 'deals/show'
   get 'deals/:id/like' => 'deals#like', as: 'deals/like'
+  post 'deals/create_destination' => 'deals/create_destination'
 
   devise_for :users
   root 'home#index'
