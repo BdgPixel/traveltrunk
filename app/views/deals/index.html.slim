@@ -54,10 +54,11 @@
 
     hr
     h1#notice
-    #dealsHotelsList.text-center
-      = render "hotels_list" if session[:last_destination_search]
-    br
-    br
+    .wrapper-list-hotel
+      #dealsHotelsList.text-center
+        = render "hotels_list" if session[:last_destination_search]
+      br
+      br
 .row
   .col-md-12
     center

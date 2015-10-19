@@ -9,7 +9,9 @@
           span.icon-bar
           span.icon-bar
         .wrapper-navbar-brand
-            = link_to image_tag("logo2.png"), root_path, class: 'navbar-brand'
+            = link_to root_path, class: 'navbar-brand' do
+              = image_tag("logo2.png")
+              span TravelTrunk 
 
         / = link_to 'TravelTrunk', root_path, class: 'navbar-brand'
 

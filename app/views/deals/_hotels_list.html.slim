@@ -13,14 +13,18 @@
         / | &nbsp;
         / strong = "Low Rate: #{number_to_currency(hotel["lowRate"])}"
 
-
     .col-md-2
-      p.text-right.content-deals
-        = link_to deals_like_path(hotel["hotelId"]), id: "likeDeal", remote: true
-          - if @like_ids.include? hotel["hotelId"]
-            span.glyphicon.glyphicon-heart style="font-size: 38px" id="like-#{hotel["hotelId"]}"
-          - else
-            span.glyphicon.glyphicon-heart-empty style="font-size: 38px" id="like-#{hotel["hotelId"]}"
+      .wrapper-like-deals
+        p.text-right.content-deals
+          = link_to deals_like_path(hotel["hotelId"]), id: "likeDeal", remote: true
+            / - if @like_ids.include? hotel["hotelId"]
+            /   span.glyphicon.glyphicon-heart style="font-size: 38px" id="like-#{hotel["hotelId"]}"
+            / - else
+            /   span.glyphicon.glyphicon-heart-empty style="font-size: 38px" id="like-#{hotel["hotelId"]}"
+            - if @like_ids.include? hotel["hotelId"]
+              span.icon.love-active id="like-#{hotel["hotelId"]}"
+            - else
+              span.icon.love-normal id="like-#{hotel["hotelId"]}"
 
 - if @error_response
   #error_response.alert.alert-danger = @error_response
