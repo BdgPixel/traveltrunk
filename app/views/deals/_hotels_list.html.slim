@@ -1,4 +1,5 @@
 - @hotels_list.each do |hotel|
+
   .col-xs-6.col-md-4.col-deals
     = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
       = list_of_deals_div(hotel["thumbNailUrl"].gsub("_t.", "_y.") )
@@ -8,9 +9,9 @@
         = link_to deals_show_path(hotel["hotelId"]), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase, no_turbolink: true }
           = truncate(hotel["name"].upcase.html_safe, length: 20)
       p.text-center
-        strong = "Hight Rate: #{number_to_currency(hotel["highRate"])}"
-        | &nbsp;
-        strong = "Low Rate: #{number_to_currency(hotel["lowRate"])}"
+        strong = "Nightly Rate: #{number_to_currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])}"
+        / | &nbsp;
+        / strong = "Low Rate: #{number_to_currency(hotel["lowRate"])}"
 
 
     .col-md-2

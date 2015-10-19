@@ -73,7 +73,7 @@ loadMoreHotels = (cacheKey, cacheLocation) ->
       $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
-        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Hight Rate: $#{ hotel["highRate"] }</strong>&nbsp;<strong>Low Rate: $#{ hotel["lowRate"] }</strong></p></div>")
+        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Rate: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
         dealsGrid.append $("<div class='col-md-2'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like'><span class='glyphicon glyphicon-heart-empty' style='font-size: 38px' id='like-#{ hotel['hotelId'] }'></span></a></p></div>")
 
         $('#dealsHotelsList').append dealsGrid
@@ -106,7 +106,7 @@ searchDestination = ->
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
         dealsGrid.append $("<a href=\"/deals/#{ hotel['hotelId'] }/show\" data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
-        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Hight Rate: $#{ hotel["highRate"] }</strong>&nbsp;<strong>Low Rate: $#{ hotel["lowRate"] }</strong></p></div>")
+        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Rate: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
         dealsGrid.append $("<div class='col-md-2'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like'><span class='glyphicon glyphicon-heart-empty' style='font-size: 38px' id='like-#{ hotel['hotelId'] }'></span></a></p></div>")
 
         $('#dealsHotelsList').append dealsGrid
