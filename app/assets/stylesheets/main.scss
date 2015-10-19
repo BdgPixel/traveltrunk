@@ -46,9 +46,20 @@ html {
     position: relative;
     top: -10px;
 
+    span {
+      position: relative;
+      top: 12px;
+    }
+
     img {
       width: 40px;
       height: 41px;
+      margin-right: 11px;
+    }
+
+    img,
+    a {
+      float: left;
     }
   }
 }
@@ -63,7 +74,8 @@ html {
 .btn-login,
 .btn-edit-profile,
 .btn-update-profile,
-.btn-orange {
+.btn-orange,
+.btn-like {
   background: rgb(239,62,54); /* Old browsers */
   background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
@@ -139,10 +151,85 @@ html {
     font-size: 40px;
     margin-top: 15px;
   }
+
+  @media screen and (min-width: 320px) {
+    
+    h1 {
+      text-align: left;
+      padding-top: 0em;
+    }
+  }
+
+
+  @media screen and (min-width: 960px) {
+    
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 991px) {
+    
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+    
+    h1 {
+      text-align: left;
+      padding-top: 4.7em;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+    
+    h1 {
+      text-align: left;
+      padding-top: 4.7em;
+    }
+  }
+
+  @media screen and (min-width: 1025px) {
+    
+    h1 {
+      padding-top: 4.7em;
+    }
+  }
+
+  @media screen and (min-width: 1200px) {
+    
+    h1 {
+      padding-top: 4.2em;
+    }
+  }
+
+  @media screen and (min-width: 1280px) {
+    
+    h1 {
+      padding-top: 4.2em;
+    }
+  }
+
+  @media screen and (min-width: 1824px) {
+    
+    h1 {
+      text-align: left;
+      padding-top: 4.2em;
+    }
+  }
 }
 
 .wrapper-img-profile {
   margin-top: 15px;
+
+  @media screen and (min-width: 320px) {
+
+    // img {
+    //   width: 100%;
+    // }
+  }
 }
 
 // End Profile Page Style
@@ -150,7 +237,7 @@ html {
 // Edit Profile Page Style
 
 .wrapper-edit-profile {
-
+  
   h1 {
     padding-left: 10px;
     padding-bottom: 24px;
@@ -173,3 +260,52 @@ html {
 }
 
 // End Deal Page Style
+
+// Result Deals Page Style
+
+.wrapper-list-hotel {
+  overflow: hidden;
+
+  .wrapper-caption-content-deals {
+    margin-top: 15px;
+  }
+}
+
+.wrapper-like-deals {
+  margin-top: 15px;
+
+  // span {
+  //   @extend .btn-like;
+  //   -webkit-background-clip: text;
+  //   -moz-background-clip: content-box;
+  //   -webkit-text-fill-color: transparent;
+  //   -moz-text-fill-color: transparent;
+  //   -moz-text-fill-color: content-box;
+  // }
+
+  .icon {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+
+    &.love-normal {
+      background: image-url("icon_love_normal.png") no-repeat;
+      background-size: cover;
+      &:before {
+        box-sizing: border-box;
+        display: none;
+      }
+    }
+
+    &.love-active {
+      background: image-url("icon_love_active.png") no-repeat;
+      background-size: cover;
+      &:before {
+        box-sizing: border-box;
+        display: none;
+      }
+    }
+  }
+}
+
+// End Result Deals Page Style
