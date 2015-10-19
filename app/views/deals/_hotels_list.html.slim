@@ -1,6 +1,7 @@
 - @hotels_list.each do |hotel|
   .col-xs-6.col-md-4.col-deals
-    = list_of_deals_div(hotel["thumbNailUrl"].gsub("_t.", "_y.") )
+    = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+      = list_of_deals_div(hotel["thumbNailUrl"].gsub("_t.", "_y.") )
 
     .col-md-10
       p.text-center.content-deals

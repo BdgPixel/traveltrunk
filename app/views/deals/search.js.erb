@@ -20,5 +20,5 @@ $('div.deals-image').lazyload({
   effect : 'fadeIn'
 });
 
-$("#loadMore").attr("data-cache-key", "<%= session[:hotel_list_cache_key] %>")
-$("#loadMore").attr("data-cache-location", "<%= session[:hotel_list_cache_location] %>")
+$("#loadMore").attr("data-cache-key", "<%= @hotel_list_cache_key %>")
+$("#loadMore").attr("data-cache-location", "<%= @hotel_list_cache_location %>")
