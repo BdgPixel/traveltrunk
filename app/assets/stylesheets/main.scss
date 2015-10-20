@@ -252,7 +252,61 @@ html {
 
 // Deal Page Style
 
+.wrapper-deals {
+
+  h1 {
+    a {
+      color: #000000;
+    }
+  }
+
+  .btn-default {
+    background-color: #000000;
+    color: #ffffff;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .icon {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+
+    &.next-loadmore {
+      background: image-url("icon_next_loadmore.png") no-repeat;
+      background-size: cover;
+      position: relative;
+      left: 10px;
+      top: 3px;
+    }
+  }
+}
+
 .wrapper-search-deal {
+
+  .icon {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+
+    &.delete {
+      background: image-url("icon_delete_fill_input.png") no-repeat;
+      background-size: cover;
+    }
+  }
+
+  .form-group {
+
+    &:first-child {
+      position: relative;
+    }
+
+    span {
+      position: absolute;
+      right: 11px;
+      top: 7px;
+    }
+  }
 
   .btn-default {
     @extend .btn-save;
@@ -265,6 +319,12 @@ html {
 
 .wrapper-list-hotel {
   overflow: hidden;
+
+  p.content-deals {
+    a {
+      color: #000000;
+    }
+  }
 
   .wrapper-caption-content-deals {
     margin-top: 15px;
