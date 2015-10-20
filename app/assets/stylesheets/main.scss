@@ -90,34 +90,6 @@ html {
 
 // End Button Style
 
-// Icon Image
-
-.wrapper-detail-deals {
-  
-  .icon-deals {
-    display: inline-block;
-    width: 30px;
-    height: 31px;
-
-    &.btn-back-to-deals {
-      background: image-url("icon_back_deals.png") no-repeat;
-      background-size: cover;
-    }
-  }
-
-  span {
-    position: relative;
-    top: -9px;
-    left: 15px;
-    font-weight: bold;
-    color: #000000;
-  }
-}
-
-
-
-// End Icon Image
-
 
 // Registration Page
 
@@ -196,7 +168,7 @@ html {
     
     h1 {
       text-align: left;
-      padding-top: 4.7em;
+      padding-top: 1em;
     }
   }
 
@@ -204,28 +176,28 @@ html {
     
     h1 {
       text-align: left;
-      padding-top: 4.7em;
+      padding-top: 1em;
     }
   }
 
   @media screen and (min-width: 1025px) {
     
     h1 {
-      padding-top: 4.7em;
+      padding-top: 1em;
     }
   }
 
   @media screen and (min-width: 1200px) {
     
     h1 {
-      padding-top: 4.2em;
+      padding-top: 1em;
     }
   }
 
   @media screen and (min-width: 1280px) {
     
     h1 {
-      padding-top: 4.2em;
+      padding-top: 1em;
     }
   }
 
@@ -233,7 +205,7 @@ html {
     
     h1 {
       text-align: left;
-      padding-top: 4.2em;
+      padding-top: 1em;
     }
   }
 }
@@ -243,10 +215,14 @@ html {
 
   @media screen and (min-width: 320px) {
 
-    // img {
-    //   width: 100%;
-    // }
+    img {
+      width: 100%;
+    }
   }
+}
+
+.wrapper-personal-information {
+  margin-top: 25px;
 }
 
 // End Profile Page Style
@@ -386,3 +362,29 @@ html {
 }
 
 // End Result Deals Page Style
+
+// Detal Deals Page Style
+
+.wrapper-detail-deals {
+  
+  .icon-deals {
+    display: inline-block;
+    width: 30px;
+    height: 31px;
+
+    &.btn-back-to-deals {
+      background: image-url("icon_back_deals.png") no-repeat;
+      background-size: cover;
+    }
+  }
+
+  span {
+    position: relative;
+    top: -9px;
+    left: 15px;
+    font-weight: bold;
+    color: #000000;
+  }
+}
+
+// Detal Deals Page Style
