@@ -11,11 +11,9 @@
         / - else
         /   = link_to title_destination, "javascript:void(0)", id: 'destinationLabel'
         - if @destination.nil?
-          = link_to "SEARCH", "javascript:void(0)", id: 'destinationLabel'
+          = link_to "Where would you like to be?", "javascript:void(0)", id: 'destinationLabel'
         - else
           = link_to @destination.destination_string.split(",").first, "javascript:void(0)", id: 'destinationLabel'
-
-
       br
 
     .container
@@ -28,7 +26,12 @@
                   .wrapper-search-deal
                     .col-md-12
                       .form-group
-                        = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+                        .input-group.add-on
+                          = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+                        .input-group-btn
+                          button#btnClearText.btn.btn-default type="button"
+                            span.glyphicon.glyphicon-remove
+
                       .hide
                         = f.hidden_field :street_number, id: "street_number"
                         = f.hidden_field :route, id: "route"
@@ -62,7 +65,7 @@
 .row
   .col-md-12
     .pull-right
-      button#loadMore.btn.btn-info data-cache-key="#{ @hotel_list_cache_key }" data-cache-location="#{ @hotel_list_cache_location }" Load more ...
+      button#loadMore.btn.btn-info data-cache-key="#{ @hotel_list_cache_key }" data-cache-location="#{ @hotel_list_cache_location }" style="#{ @hotels_list ? 'display: block' : 'display: none' }" Load more ...
 
   br
   br

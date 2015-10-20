@@ -46,21 +46,6 @@ validateSearchForm = ->
 
   return
 
-$ ->
-  $('input#search_deals_arrival_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $('input#search_deals_departure_date').datepicker('setDate', $('input#search_deals_arrival_date').val())
-      $('input#search_deals_departure_date').datepicker('show')
-      $('input#search_deals_departure_date').datepicker(
-        startDate:  getFormattedDate(e.date))
-
-  $('input#search_deals_departure_date').datepicker
-    startDate: today
-    autoclose: true
-
-  return
-
 loadMoreHotels = (cacheKey, cacheLocation) ->
   $('div.deals-image').removeClass 'lazy'
   url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=#{ cid }&minorRev=28&apiKey=#{ apiKey }&locale=en_US&cacheKey=#{cacheKey}&cacheLocation=#{cacheLocation}&supplierType=E"
@@ -78,7 +63,7 @@ loadMoreHotels = (cacheKey, cacheLocation) ->
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
         dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
-        dealsGrid.append $("<div class='col-md-2'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like'><span class='glyphicon glyphicon-heart-empty' style='font-size: 38px' id='like-#{ hotel['hotelId'] }'></span></a></p></div>")
+        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
 
         $('#dealsHotelsList').append dealsGrid
 
@@ -102,6 +87,7 @@ searchDestination = ->
       $('#loading').show()
     success:  (data) ->
       $('#dealsHotelsList').html ''
+      console.log data
       $('#loadMore').show()
       $('#loadMore').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
       $('#loadMore').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
@@ -112,7 +98,7 @@ searchDestination = ->
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
         dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
-        dealsGrid.append $("<div class='col-md-2'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like'><span class='glyphicon glyphicon-heart-empty' style='font-size: 38px' id='like-#{ hotel['hotelId'] }'></span></a></p></div>")
+        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
 
         $('#dealsHotelsList').append dealsGrid
 
@@ -141,12 +127,28 @@ searchDestination = ->
 
   return
 
+$ ->
+  $('input#search_deals_arrival_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $('input#search_deals_departure_date').datepicker('remove')
+      $('input#search_deals_departure_date').datepicker('setDate', $('input#search_deals_arrival_date').val())
+      $('input#search_deals_departure_date').datepicker('show')
+      $('input#search_deals_departure_date').datepicker(
+        startDate:  getFormattedDate(e.date))
+
+  $('input#search_deals_departure_date').datepicker startDate: today
+
+  return
+
 $(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
 
   $('#destinationLabel').click ->
     $('#collapseDeals').slideToggle()
+
+    return
 
   if $('#galleria').length > 0
     Galleria.loadTheme window.galleria_theme_path
@@ -170,3 +172,9 @@ $(document).ready ->
     $('form#searchDealsForm').submit (e) ->
       searchDestination()
       e.preventDefault()
+
+  if $('#btnClearText').length > 0
+    $('#btnClearText').click ->
+      $('input#autocomplete').val ''
+
+      return
