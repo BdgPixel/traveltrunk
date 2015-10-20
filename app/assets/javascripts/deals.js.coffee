@@ -98,6 +98,7 @@ searchDestination = ->
       $('#loadMore').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
       $('#loadMore').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
       $('#destinationLabel').text $('#autocomplete').val().split(',')[0]
+      $('#collapseDeals').slideToggle()
 
       console.log window.hotel = data['HotelListResponse']['HotelList']['HotelSummary']
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
@@ -140,13 +141,15 @@ $ ->
     autoclose: true).on 'changeDate', (e) ->
       $('input#search_deals_departure_date').datepicker('remove')
       $('input#search_deals_departure_date').datepicker('setDate', $('input#search_deals_arrival_date').val())
+      $('input#search_deals_departure_date').datepicker('hide')
       $('input#search_deals_departure_date').datepicker('show')
       $('input#search_deals_departure_date').datepicker
         startDate:  getFormattedDate(e.date)
 
   $('input#search_deals_departure_date').datepicker
-    # startDate: today
+    startDate: today
     autoclose: true
+
 
   return
 
