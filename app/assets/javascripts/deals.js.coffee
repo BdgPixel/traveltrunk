@@ -48,12 +48,16 @@ validateSearchForm = ->
 
 $ ->
   $('input#search_deals_arrival_date').datepicker(
-    startDate: today).on 'changeDate', (e) ->
-      $('input#search_deals_departure_date').datepicker('remove')
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $('input#search_deals_departure_date').datepicker('setDate', $('input#search_deals_arrival_date').val())
+      $('input#search_deals_departure_date').datepicker('show')
       $('input#search_deals_departure_date').datepicker(
         startDate:  getFormattedDate(e.date))
 
-  $('input#search_deals_departure_date').datepicker startDate: today
+  $('input#search_deals_departure_date').datepicker
+    startDate: today
+    autoclose: true
 
   return
 
