@@ -19,6 +19,10 @@
   .row
     .col-md-12
       h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
+      p.text-left
+        i.glyphicon.glyphicon-star id="start"
+        |&nbsp;
+        = pluralize(@hotels_list["HotelSummary"]["hotelRating"], "rating")
       h3 = "Hight Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["highRate"]) }"
       h3 = "Low Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["lowRate"]) }"
       .pull-left
