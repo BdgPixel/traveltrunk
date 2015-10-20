@@ -2,37 +2,38 @@
   = javascript_include_tag "deals"
   = javascript_include_tag "galleria_theme_path"
 
-.row
-  .col-md-12
-    .pull-left
-      = link_to raw("<i class='icon-deals btn-back-to-deals'></i>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
-  br
-  br
-  .col-md-12
-    #galleria
-      - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
-        - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
-          = link_to hotel_image["url"].gsub("b", "z")
-            = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
+.wrapper-detail-deals
+  .row
+    .col-md-12
+      .pull-left
+        = link_to raw("<i class='icon-deals btn-back-to-deals'></i><span>Back</span>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
+    br
+    br
+    .col-md-12
+      #galleria
+        - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
+          - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
+            = link_to hotel_image["url"].gsub("b", "z")
+              = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
 
-.row
-  .col-md-12
-    h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
-    h3 = "Hight Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["highRate"]) }"
-    h3 = "Low Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["lowRate"]) }"
-    .pull-left
-      button.btn.btn-orange type="button" Book Now
+  .row
+    .col-md-12
+      h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
+      h3 = "Hight Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["highRate"]) }"
+      h3 = "Low Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["lowRate"]) }"
+      .pull-left
+        button.btn.btn-orange type="button" Book Now
+
+      .col-md-6
+
+
+    .col-md-6
+      p
+       = unescape_expedia_html @hotels_list["HotelDetails"]["propertyDescription"]
 
     .col-md-6
 
-
-  .col-md-6
-    p
-     = unescape_expedia_html @hotels_list["HotelDetails"]["propertyDescription"]
-
-  .col-md-6
-
-    #map style="height: 500px; width: 100%;"
-    = hidden_field_tag  :lat, @hotels_list["HotelSummary"]["latitude"]
-    = hidden_field_tag  :long, @hotels_list["HotelSummary"]["longitude"]
+      #map style="height: 500px; width: 100%;"
+      = hidden_field_tag  :lat, @hotels_list["HotelSummary"]["latitude"]
+      = hidden_field_tag  :long, @hotels_list["HotelSummary"]["longitude"]
 
