@@ -92,16 +92,29 @@ html {
 
 // Icon Image
 
-.icon-deals {
-  display: inline-block;
-  width: 30px;
-  height: 31px;
+.wrapper-detail-deals {
+  
+  .icon-deals {
+    display: inline-block;
+    width: 30px;
+    height: 31px;
 
-  &.btn-back-to-deals {
-    background: image-url("icon_back_deals.png") no-repeat;
-    background-size: cover;
+    &.btn-back-to-deals {
+      background: image-url("icon_back_deals.png") no-repeat;
+      background-size: cover;
+    }
+  }
+
+  span {
+    position: relative;
+    top: -9px;
+    left: 15px;
+    font-weight: bold;
+    color: #000000;
   }
 }
+
+
 
 // End Icon Image
 
@@ -128,8 +141,12 @@ html {
 
 .wrapper-logo-signup {
 
+  h1 {
+    font-size: 60px;
+  }
+
   img {
-    width: 60%;
+    width: 50%;
   }
 }
 
