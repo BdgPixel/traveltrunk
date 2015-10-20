@@ -1,6 +1,8 @@
 - @hotels_list.each do |hotel|
 
   .col-xs-6.col-md-4.col-deals
+    .text-left
+      strong = "Nightly Price: #{number_to_currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])}"
     = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
       = list_of_deals_div(hotel["thumbNailUrl"].gsub("_t.", "_y.") )
 
@@ -9,9 +11,10 @@
         = link_to deals_show_path(hotel["hotelId"]), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase, no_turbolink: true }
           = truncate(hotel["name"].upcase.html_safe, length: 20)
       p.text-center
-        strong = "Nightly Rate: #{number_to_currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])}"
-        / | &nbsp;
-        / strong = "Low Rate: #{number_to_currency(hotel["lowRate"])}"
+        = link_to "javascript:void(0)"
+          span.glyphicon.glyphicon-star id="like-#{hotel["hotelId"]}"
+          | &nbsp;
+          = pluralize(hotel["hotelRating"], "rating")
 
     .col-md-2
       .wrapper-like-deals
@@ -25,6 +28,7 @@
               span.icon.love-active id="like-#{hotel["hotelId"]}"
             - else
               span.icon.love-normal id="like-#{hotel["hotelId"]}"
+
 
 - if @error_response
   #error_response.alert.alert-danger = @error_response

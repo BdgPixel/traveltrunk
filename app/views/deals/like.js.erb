@@ -1,9 +1,9 @@
 <%- if @like.present? %>
-  $("#like-<%= @hotel_id %>").removeClass("glyphicon glyphicon-heart");
-  $("#like-<%= @hotel_id %>").addClass("glyphicon glyphicon-heart-empty");
+  $("#like-<%= @hotel_id %>").removeClass("icon love-active");
+  $("#like-<%= @hotel_id %>").addClass("icon love-normal");
 <%- else %>
-  $("#like-<%= @hotel_id %>").removeClass("glyphicon glyphicon-heart-empty");
-  $("#like-<%= @hotel_id %>").addClass("glyphicon glyphicon-heart");
+  $("#like-<%= @hotel_id %>").removeClass("icon love-normal");
+  $("#like-<%= @hotel_id %>").addClass("icon love-active");
 <% end %>
 
 
