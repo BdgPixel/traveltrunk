@@ -57,13 +57,18 @@ loadMoreHotels = (cacheKey, cacheLocation) ->
     beforeSend: ->
       $('#loading').show()
     success:  (data) ->
-      console.log data
       $('#loading').fadeOut("slow");
+      $('#dealsHotelsList .col-deals').remove()
+
+      $('#loadMore').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
+      $('#loadMore').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
+
       $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
+        console.log hotel
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
-        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
-        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
+        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
+        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
 
         $('#dealsHotelsList').append dealsGrid
 
@@ -97,8 +102,8 @@ searchDestination = ->
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
-        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
-        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
+        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'] }' data-no-turbolink='true'>#{ hotel['name'].substring(0, 16) }</a></p><p class='text-center'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></p></div>")
+        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
 
         $('#dealsHotelsList').append dealsGrid
 
@@ -165,7 +170,7 @@ $(document).ready ->
       effect : 'fadeIn'
 
   if $('#loadMore').length > 0
-    $('#loadMore').on 'click', -> loadMoreHotels($('#loadMore').data('cache-key'), $('#loadMore').data('cache-location'))
+    $('#loadMore').on 'click', -> loadMoreHotels($('#loadMore').attr('data-cache-key'), $('#loadMore').attr('data-cache-location'))
 
   if $('form#searchDealsForm').length > 0
 

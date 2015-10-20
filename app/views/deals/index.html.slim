@@ -28,7 +28,7 @@
                           .form-group
                             = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
                             span
-                              a href="#"
+                              a#btnClearText href="javascript:void(0)"
                                 i.icon.delete
                           .hide
                             = f.hidden_field :street_number, id: "street_number"
@@ -64,7 +64,7 @@
     .col-md-12
       .pull-right
         a#loadMore.btn.btn-default data-cache-key="#{ @hotel_list_cache_key }" data-cache-location="#{ @hotel_list_cache_location }"
-          | Loadmore
+          | Next Page
           i.icon.next-loadmore
 
     br
