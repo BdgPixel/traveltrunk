@@ -1,8 +1,8 @@
 class User < ActiveRecord::Base
   has_one :profile
   has_one :bank_account
+  has_one :destination
   has_many :likes
-  has_many :destinations
 
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account
