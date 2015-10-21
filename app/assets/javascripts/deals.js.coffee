@@ -46,44 +46,66 @@ validateSearchForm = ->
 
   return
 
-loadMoreHotels = (cacheKey, cacheLocation) ->
-  $('div.deals-image').removeClass 'lazy'
-  url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=#{ cid }&minorRev=28&apiKey=#{ apiKey }&locale=en_US&cacheKey=#{cacheKey}&cacheLocation=#{cacheLocation}&supplierType=E"
-  # loadMoreBack = $('#loadMoreBack')
-  loadMoreNext = $('#loadMoreNext')
+loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
 
-  $.ajax
-    url: url
-    type: 'GET'
-    dataType: 'jsonp'
-    beforeSend: ->
-      $('#loading').show()
-      # loadMoreBack.attr('data-cache-key', loadMoreNext.attr('data-cache-key'))
-      # loadMoreBack.attr('data-cache-location', loadMoreNext.attr('data-cache-location'))
-    success:  (data) ->
-      $('#loading').fadeOut("slow");
-      $('#dealsHotelsList .col-deals').remove()
+  page = $(".deals-page[data-page='#{ pageNumber }']")
 
-      $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
-      $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
+  if page.length > 0
+    page.show()
+    $('.deals-page').not(page).hide()
+  else
+    $('div.deals-image').removeClass 'lazy'
+    url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=#{ cid }&minorRev=28&apiKey=#{ apiKey }&locale=en_US&cacheKey=#{cacheKey}&cacheLocation=#{cacheLocation}&supplierType=E"
 
-      console.log data
-      $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
-        dealsWrapper = $('<div class="wrapper-price-deals">')
-        dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
-        dealsGrid.append $("<div class='price-deals'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></div>")
-        dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
-        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
-        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
+    $.ajax
+      url: url
+      type: 'GET'
+      dataType: 'jsonp'
+      beforeSend: ->
+        $('#loading').show()
+      success:  (data) ->
+        $('#loading').fadeOut("slow")
+        $('.deals-page').hide()
+        previousPageNumber = $('.deals-page').length
+        currentPageNumber =  previousPageNumber + 1
+        nextPageNumber = currentPageNumber + 1
 
-        $('#dealsHotelsList').append dealsWrapper.append(dealsGrid)
+        # $('#dealsHotelsList .col-deals').remove()
 
-      $('div.lazy').lazyload
-        effect : 'fadeIn'
+        $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
+        $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
 
-      $('[data-toggle="tooltip"]').tooltip()
+        console.log data
+        dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
+        $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
+          dealsWrapper = $('<div class="wrapper-price-deals">')
+          dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
+          dealsGrid.append $("<div class='price-deals'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></div>")
+          dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
+          dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
+          dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
+          dealsWrapper.append dealsGrid
+          dealsPage.append dealsWrapper
 
-      # loadMoreBack.show()
+        dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Previous Page</a><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div>")
+        $('#dealsHotelsList').append dealsPage
+
+        $('div.lazy').lazyload
+          effect : 'fadeIn'
+
+        $('[data-toggle="tooltip"]').tooltip()
+        $(".loadMoreNext[data-next-page='#{ nextPageNumber }']").on 'click', ->
+
+          loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).data('next-page'))
+
+        $(".loadMoreBack[data-previous-page='#{ previousPageNumber }']").on 'click', ->
+          targetPageNumber = $(this).data('previous-page')
+          targetPage = $(".deals-page[data-page='#{ targetPageNumber }']")
+          console.log targetPage
+          $('.deals-page').not(targetPage).hide()
+          targetPage.show()
+
+
 
   return
 
@@ -151,16 +173,17 @@ $ ->
     startDate: today
     autoclose: true).on 'changeDate', (e) ->
       $('input#search_deals_departure_date').datepicker('remove')
-      $('input#search_deals_departure_date').datepicker('setDate', $('input#search_deals_arrival_date').val())
-      $('input#search_deals_departure_date').datepicker('hide')
-      $('input#search_deals_departure_date').datepicker('show')
       $('input#search_deals_departure_date').datepicker
         startDate:  getFormattedDate(e.date)
+        autoclose: true
+      setTimeout(->
+        $('input#search_deals_departure_date').datepicker('show')
+      , 100)
+
 
   $('input#search_deals_departure_date').datepicker
     startDate: today
     autoclose: true
-
 
   return
 
@@ -187,8 +210,8 @@ $(document).ready ->
     $('div.lazy').lazyload
       effect : 'fadeIn'
 
-  if $('#loadMoreNext').length > 0
-    $('#loadMoreNext').on 'click', -> loadMoreHotels($('#loadMoreNext').attr('data-cache-key'), $('#loadMoreNext').attr('data-cache-location'))
+  if $('.loadMoreNext').length > 0
+    $('.loadMoreNext').on 'click', -> loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).attr('data-next-page'))
 
   if $('form#searchDealsForm').length > 0
 

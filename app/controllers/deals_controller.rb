@@ -57,7 +57,7 @@ class DealsController < ApplicationController
             :departureDate => @destination.departure_date.strftime('%m/%d/%Y'),
             :options => 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
             :moreResultsAvailable => true,
-            :numberOfResults => 21
+            :numberOfResults => 15
           }
         # session[:last_destination_search] = {
         #   :latitude => params[:search_deals][:lat],

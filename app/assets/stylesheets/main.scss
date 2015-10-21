@@ -143,7 +143,7 @@ html {
   }
 
   @media screen and (min-width: 320px) {
-    
+
     h1 {
       text-align: left;
       padding-top: 0em;
@@ -151,14 +151,14 @@ html {
   }
 
   @media screen and (min-width: 600px) {
-    
+
     h1 {
       padding-top: 0em;
     }
   }
 
   @media screen and (min-width: 800px) {
-    
+
     h1 {
       padding-top: 0em;
     }
@@ -166,28 +166,28 @@ html {
 
 
   @media screen and (min-width: 960px) {
-    
+
     h1 {
      padding-top: 0em;
     }
   }
 
   @media screen and (min-width: 961px) {
-    
+
     h1 {
       padding-top: 0em;
     }
   }
 
   @media screen and (min-width: 991px) {
-    
+
     h1 {
       padding-top: 0em;
     }
   }
 
   @media screen and (min-width: 992px) {
-    
+
     h1 {
       text-align: left;
       padding-top: 6em;
@@ -195,7 +195,7 @@ html {
   }
 
   @media screen and (min-width: 1024px) {
-    
+
     h1 {
       text-align: left;
       padding-top: 6em;
@@ -203,28 +203,28 @@ html {
   }
 
   @media screen and (min-width: 1025px) {
-    
+
     h1 {
       padding-top: 6em;
     }
   }
 
   // @media screen and (min-width: 1200px) {
-    
+
   //   h1 {
   //     padding-top: 6em;
   //   }
   // }
 
   // @media screen and (min-width: 1280px) {
-    
+
   //   h1 {
   //     padding-top: 6em;
   //   }
   // }
 
   // @media screen and (min-width: 1824px) {
-    
+
   //   h1 {
   //     text-align: left;
   //     padding-top: 6em;
@@ -252,7 +252,7 @@ html {
 // Edit Profile Page Style
 
 .wrapper-edit-profile {
-  
+
   h1 {
     padding-left: 10px;
     padding-bottom: 24px;
@@ -278,7 +278,7 @@ html {
   .btn-default {
     background-color: #000000;
     color: #ffffff;
-    padding-left: 20px;
+    padding-left: 10px;
     padding-right: 20px;
   }
 
@@ -292,6 +292,13 @@ html {
       background-size: cover;
       position: relative;
       left: 10px;
+      top: 3px;
+    }
+
+    &.previous-loadmore {
+      background: image-url("icon_previous_loadmore.png") no-repeat;
+      background-size: cover;
+      position: relative;
       top: 3px;
     }
   }
@@ -392,7 +399,7 @@ html {
 // Detal Deals Page Style
 
 .wrapper-detail-deals {
-  
+
   .icon-deals {
     display: inline-block;
     width: 30px;

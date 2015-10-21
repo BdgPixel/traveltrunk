@@ -60,12 +60,3 @@
             = render "hotels_list" if session[:last_destination_search]
           br
           br
-
-    .col-md-12
-      .pull-right
-        a#loadMoreNext.btn.btn-default data-cache-key="#{ @hotel_list_cache_key }" data-cache-location="#{ @hotel_list_cache_location }"
-          | Next Page
-          i.icon.next-loadmore
-    br
-    br
-    br
