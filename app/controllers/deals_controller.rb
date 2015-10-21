@@ -42,7 +42,7 @@ class DealsController < ApplicationController
 
   private
     def set_search_data
-      @destination =  current_user.destinations.last
+      @destination =  current_user ? current_user.destinations.last : nil
       # if params[:search_deals]
       if @destination
         session[:last_destination_search] = {

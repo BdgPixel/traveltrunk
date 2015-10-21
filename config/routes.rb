@@ -6,7 +6,7 @@ Rails.application.routes.draw do
   post 'deals/create_destination' => 'deals/create_destination'
 
   devise_for :users
-  root 'home#index'
+  root 'deals#index'
 
   resource :profile, except: [:destroy, :new, :create]
   get 'home/index'
