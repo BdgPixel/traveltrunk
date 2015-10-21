@@ -49,7 +49,7 @@ validateSearchForm = ->
 loadMoreHotels = (cacheKey, cacheLocation) ->
   $('div.deals-image').removeClass 'lazy'
   url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=#{ cid }&minorRev=28&apiKey=#{ apiKey }&locale=en_US&cacheKey=#{cacheKey}&cacheLocation=#{cacheLocation}&supplierType=E"
-  loadMoreBack = $('#loadMoreBack')
+  # loadMoreBack = $('#loadMoreBack')
   loadMoreNext = $('#loadMoreNext')
 
   $.ajax
@@ -58,8 +58,8 @@ loadMoreHotels = (cacheKey, cacheLocation) ->
     dataType: 'jsonp'
     beforeSend: ->
       $('#loading').show()
-      loadMoreBack.attr('data-cache-key', loadMoreNext.attr('data-cache-key'))
-      loadMoreBack.attr('data-cache-location', loadMoreNext.attr('data-cache-location'))
+      # loadMoreBack.attr('data-cache-key', loadMoreNext.attr('data-cache-key'))
+      # loadMoreBack.attr('data-cache-location', loadMoreNext.attr('data-cache-location'))
     success:  (data) ->
       $('#loading').fadeOut("slow");
       $('#dealsHotelsList .col-deals').remove()
@@ -69,20 +69,21 @@ loadMoreHotels = (cacheKey, cacheLocation) ->
 
       console.log data
       $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
+        dealsWrapper = $('<div class="wrapper-price-deals">')
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
-        dealsGrid.append $("<div class='text-left'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></div>")
+        dealsGrid.append $("<div class='price-deals'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></div>")
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
         dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
         dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
 
-        $('#dealsHotelsList').append dealsGrid
+        $('#dealsHotelsList').append dealsWrapper.append(dealsGrid)
 
       $('div.lazy').lazyload
         effect : 'fadeIn'
 
       $('[data-toggle="tooltip"]').tooltip()
 
-      loadMoreBack.show()
+      # loadMoreBack.show()
 
   return
 
@@ -108,13 +109,14 @@ searchDestination = ->
 
       console.log window.hotel = data['HotelListResponse']['HotelList']['HotelSummary']
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
+        dealsWrapper = $('<div class="wrapper-price-deals">')
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
-        dealsGrid.append $("<div class='text-left'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></div>")
+        dealsGrid.append $("<div class='price-deals'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></div>")
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
         dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
         dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
 
-        $('#dealsHotelsList').append dealsGrid
+        $('#dealsHotelsList').append dealsWrapper.append(dealsGrid)
 
       dateArrifal = new Date($('#search_deals_arrival_date').val())
       dateDeparture = new Date($('#search_deals_departure_date').val())
