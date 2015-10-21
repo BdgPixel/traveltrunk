@@ -66,6 +66,7 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
       success:  (data) ->
         $('#loading').fadeOut("slow")
         $('.deals-page').hide()
+
         previousPageNumber = $('.deals-page').length
         currentPageNumber =  previousPageNumber + 1
         nextPageNumber = currentPageNumber + 1
@@ -94,8 +95,8 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
           effect : 'fadeIn'
 
         $('[data-toggle="tooltip"]').tooltip()
-        $(".loadMoreNext[data-next-page='#{ nextPageNumber }']").on 'click', ->
 
+        $(".loadMoreNext[data-next-page='#{ nextPageNumber }']").on 'click', ->
           loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).data('next-page'))
 
         $(".loadMoreBack[data-previous-page='#{ previousPageNumber }']").on 'click', ->
@@ -104,8 +105,6 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
           console.log targetPage
           $('.deals-page').not(targetPage).hide()
           targetPage.show()
-
-
 
   return
 
@@ -124,12 +123,21 @@ searchDestination = ->
       $('#loading').show()
     success:  (data) ->
       $('#dealsHotelsList').html ''
-      $('#loadMoreNext').show()
-      $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
-      $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
+
+      previousPageNumber = $('.deals-page').length
+      currentPageNumber =  previousPageNumber + 1
+      nextPageNumber = currentPageNumber + 1
+
+      # $('#loadMoreNext').show()
+      # $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
+      # $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
+      # $('#loadMoreNext').attr('data-next-page', 2)
       $('#destinationLabel').text $('#autocomplete').val().split(',')[0]
 
-      console.log window.hotel = data['HotelListResponse']['HotelList']['HotelSummary']
+
+
+
+      dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
         dealsWrapper = $('<div class="wrapper-price-deals">')
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
@@ -137,13 +145,17 @@ searchDestination = ->
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
         dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
         dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
+        dealsWrapper.append dealsGrid
+        dealsPage.append dealsWrapper
+        console.log dealsWrapper
 
-        $('#dealsHotelsList').append dealsWrapper.append(dealsGrid)
+      dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div>")
+      $('#dealsHotelsList').append dealsPage
 
-      dateArrifal = new Date($('#search_deals_arrival_date').val())
-      dateDeparture = new Date($('#search_deals_departure_date').val())
-      arrivalDate = [dateArrifal.getFullYear(), dateArrifal.getMonth() + 1, dateArrifal.getDate()].join('/')
-      departureDate = [dateDeparture.getFullYear(), dateDeparture.getMonth() + 1, dateDeparture.getDate()].join('/')
+      arrivalDate = new Date($('#search_deals_arrival_date').val())
+      departureDate = new Date($('#search_deals_departure_date').val())
+      arrivalDate = [arrivalDate.getFullYear(), arrivalDate.getMonth() + 1, arrivalDate.getDate()].join('/')
+      departureDate = [departureDate.getFullYear(), departureDate.getMonth() + 1, departureDate.getDate()].join('/')
 
       $.ajax
         url: '/deals/create_destination'
@@ -165,6 +177,9 @@ searchDestination = ->
 
       $('#collapseDeals').slideToggle()
       $('[data-toggle="tooltip"]').tooltip()
+
+      $(".loadMoreNext[data-next-page='#{ nextPageNumber }']").on 'click', ->
+        loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).data('next-page'))
 
   return
 
