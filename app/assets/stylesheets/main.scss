@@ -139,6 +139,7 @@ html {
   h1 {
     font-size: 40px;
     margin-top: 15px;
+    margin-bottom: 0px;
   }
 
   @media screen and (min-width: 320px) {
@@ -149,8 +150,29 @@ html {
     }
   }
 
+  @media screen and (min-width: 600px) {
+    
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 800px) {
+    
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
 
   @media screen and (min-width: 960px) {
+    
+    h1 {
+     padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 961px) {
     
     h1 {
       padding-top: 0em;
@@ -168,7 +190,7 @@ html {
     
     h1 {
       text-align: left;
-      padding-top: 1em;
+      padding-top: 6em;
     }
   }
 
@@ -176,38 +198,38 @@ html {
     
     h1 {
       text-align: left;
-      padding-top: 1em;
+      padding-top: 6em;
     }
   }
 
   @media screen and (min-width: 1025px) {
     
     h1 {
-      padding-top: 1em;
+      padding-top: 6em;
     }
   }
 
-  @media screen and (min-width: 1200px) {
+  // @media screen and (min-width: 1200px) {
     
-    h1 {
-      padding-top: 1em;
-    }
-  }
+  //   h1 {
+  //     padding-top: 6em;
+  //   }
+  // }
 
-  @media screen and (min-width: 1280px) {
+  // @media screen and (min-width: 1280px) {
     
-    h1 {
-      padding-top: 1em;
-    }
-  }
+  //   h1 {
+  //     padding-top: 6em;
+  //   }
+  // }
 
-  @media screen and (min-width: 1824px) {
+  // @media screen and (min-width: 1824px) {
     
-    h1 {
-      text-align: left;
-      padding-top: 1em;
-    }
-  }
+  //   h1 {
+  //     text-align: left;
+  //     padding-top: 6em;
+  //   }
+  // }
 }
 
 .wrapper-img-profile {
