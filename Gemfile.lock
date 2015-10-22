@@ -1,11 +1,3 @@
-GIT
-  remote: git://github.com/tristanperalta/galleria-rails.git
-  revision: d5bb8994344b3db7bb4e5d319db3f6302cca9a09
-  specs:
-    galleria-rails (0.0.1)
-      jquery-rails
-      railties (>= 3.2.0)
-
 GEM
   remote: https://rubygems.org/
   specs:
@@ -54,6 +46,8 @@ GEM
       rack (>= 0.9.0)
     binding_of_caller (0.7.2)
       debug_inspector (>= 0.0.1)
+    blueimp-gallery (2.11.0.1)
+      railties (>= 3.1.0)
     builder (3.2.2)
     byebug (6.0.2)
     carrierwave (0.10.0)
@@ -362,6 +356,7 @@ PLATFORMS
 
 DEPENDENCIES
   better_errors
+  blueimp-gallery
   byebug
   carrierwave
   coffee-rails (~> 4.1.0)
@@ -371,7 +366,6 @@ DEPENDENCIES
   expedia
   fog
   fog-aws
-  galleria-rails!
   holder_rails
   htmlentities (~> 4.3.4)
   jbuilder (~> 2.0)

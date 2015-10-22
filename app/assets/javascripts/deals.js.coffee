@@ -2,12 +2,16 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# = require blueimp-gallery
+# = require blueimp-gallery-indicator
 # = require jquery.lazyload
-# = require galleria
 # = require bootstrap-datepicker
 # = require holder
 # = require google-api
 # = require jquery.validate
+
+# js not used
+# require galleria
 
 cid = 55505
 apiKey = '5fd6485clmp3oogs8gfb43p2uf'
@@ -211,12 +215,12 @@ $(document).ready ->
 
     return
 
-  if $('#galleria').length > 0
-    Galleria.loadTheme window.galleria_theme_path
-    Galleria.configure dummy: '/assets/default-no-image.png'
-    Galleria.configure showInfo: false
-    # Initialize Galleria
-    Galleria.run '#galleria'
+  # if $('#galleria').length > 0
+  #   Galleria.loadTheme window.galleria_theme_path
+  #   Galleria.configure dummy: '/assets/default-no-image.png'
+  #   Galleria.configure showInfo: false
+  #   # Initialize Galleria
+  #   Galleria.run '#galleria'
 
   if $('[data-toggle="tooltip"]').length > 0
     $('[data-toggle="tooltip"]').tooltip()
@@ -239,3 +243,8 @@ $(document).ready ->
       $('input#autocomplete').val ''
 
       return
+
+  if $('#links').length > 0
+    blueimp.Gallery document.getElementById('links').getElementsByTagName('a'),
+      container: '#blueimp-gallery-carousel'
+      carousel: true
