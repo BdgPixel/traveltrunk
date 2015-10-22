@@ -84,7 +84,7 @@ html {
 .btn-login,
 .btn-edit-profile,
 .btn-update-profile,
-.btn-orange,
+.btn-booknow,
 .btn-like {
   background: rgb(239,62,54); /* Old browsers */
   background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
@@ -406,7 +406,7 @@ html {
 
 // End Result Deals Page Style
 
-// Detal Deals Page Style
+// Detail Deals Page Style
 
 .wrapper-detail-deals {
 
@@ -428,6 +428,10 @@ html {
     font-weight: bold;
     color: #777777;
   }
+
+  .btn-default {
+    @extend .btn-booknow;
+  }
 }
 
-// Detal Deals Page Style
+// Detail Deals Page Style

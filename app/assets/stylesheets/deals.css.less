@@ -127,6 +127,16 @@ body .galleria-container {
 
   .blueimp-gallery > .slides > .slide > .slide-content { 
     max-height: inherit;
+
+    @media screen and (min-width: 320px) {
+      max-width: 100%;
+      width: inherit;
+    }
+
+    @media screen and (min-width: 1824px) {
+      max-width: inherit;
+      width: 100%;
+    }
   }
 
   .blueimp-gallery-carousel {
