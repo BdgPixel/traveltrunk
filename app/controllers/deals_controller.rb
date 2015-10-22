@@ -43,8 +43,8 @@ class DealsController < ApplicationController
   private
     def set_search_data
       @destination =
-        if current_user && current_user.destination
-          current_user.destination
+        if current_user || current_user.destinations
+          current_user.destinations.last
         else
           nil
         end

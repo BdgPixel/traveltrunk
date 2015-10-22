@@ -92,7 +92,7 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
           dealsWrapper.append dealsGrid
           dealsPage.append dealsWrapper
 
-        dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Previous Page</a><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div>")
+        dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Previous Page</a><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div><br><br>")
         $('#dealsHotelsList').append dealsPage
 
         $('div.lazy').lazyload
@@ -146,7 +146,7 @@ searchDestination = ->
         dealsPage.append dealsWrapper
         console.log dealsWrapper
 
-      dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div>")
+      dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div><br><br>")
       $('#dealsHotelsList').append dealsPage
 
       arrivalDate = new Date($('#search_deals_arrival_date').val())
