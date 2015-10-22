@@ -132,14 +132,7 @@ searchDestination = ->
       currentPageNumber =  previousPageNumber + 1
       nextPageNumber = currentPageNumber + 1
 
-      # $('#loadMoreNext').show()
-      # $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
-      # $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
-      # $('#loadMoreNext').attr('data-next-page', 2)
       $('#destinationLabel').text $('#autocomplete').val().split(',')[0]
-
-
-
 
       dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
