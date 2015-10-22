@@ -10,25 +10,26 @@
     br
     br
     .col-md-12
-      #blueimp-gallery-carousel.blueimp-gallery.blueimp-gallery-carousel
-        .slides
-        h3.title
-        a.prev ‹
-        a.next ›
-        a.play-pause
-        ol.indicator
+      .wrapper-gallery-deals
+        #blueimp-gallery-carousel.blueimp-gallery.blueimp-gallery-carousel.blueimp-gallery-controls
+          .slides
+          h3.title
+          a.prev ‹
+          a.next ›
+          a.play-pause
+          ol.indicator
 
-      #links
-        - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
-          - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
-            = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"]
-              = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
+        #links
+          - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
+            - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
+              = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"]
+                = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
 
-      / #galleria
-      /   - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
-      /     - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
-      /       = link_to hotel_image["url"].gsub("b", "z")
-      /         = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
+        / #galleria
+        /   - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
+        /     - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
+        /       = link_to hotel_image["url"].gsub("b", "z")
+        /         = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
 
   .row
     .col-md-12
