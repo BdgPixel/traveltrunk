@@ -21,7 +21,7 @@ class GroupsController < ApplicationController
 
   def invite
     user_id_uniq = params[:invite][:user_id].split(',').uniq
-    group_hashs = user_id_uniq.map { |u| [{ user_id: u, group_id: params[:id] }] }
+    group_hashs = [{ user_id: params[:invite][:user_id], group_id: params[:id] }]
     UsersGroup.create(group_hashs)
 
     respond_to do |format|

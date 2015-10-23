@@ -9,7 +9,7 @@ h1 = @group.name.upcase
   = simple_form_for :invite, method: :get, url: invite_group_path(@group.id) do |f|
     .form-group
       = f.label :user_id, 'Type user emails to invite'
-      = f.input_field :user_id, data: { load: [{id: 1, name: "teguh@41studio.com"}] }
+      = f.input_field :user_id
       / = f.input_field :user_id, data: { load: [{id: 1, name: "teguh@41studio.com"}] }
 
     .actions.form-group
