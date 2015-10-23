@@ -1,0 +1,21 @@
+h1 My Groups
+
+table.table.table-striped
+  thead
+    tr
+      th Group name
+      th
+      th
+      th
+
+  tbody
+    - @groups.each do |group|
+      tr
+        td = group.name
+        td = link_to 'Show', group
+        td = link_to 'Edit', edit_group_path(group)
+        td = link_to 'Destroy', group, data: { :confirm => 'Are you sure?' }, :method => :delete
+
+br
+
+= link_to 'New Group', new_group_path, class: 'btn btn-default'

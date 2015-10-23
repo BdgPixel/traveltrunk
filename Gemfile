@@ -65,6 +65,8 @@ gem 'jquery-rails-cdn'
 
 gem 'blueimp-gallery'
 
+gem 'friendly_id', '~> 5.1'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

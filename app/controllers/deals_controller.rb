@@ -12,7 +12,6 @@ class DealsController < ApplicationController
   def show
     expedia_params_hash = { hotelId: params[:id] }
     set_hotel("get_information", expedia_params_hash)
-
   end
 
   def like
@@ -43,7 +42,7 @@ class DealsController < ApplicationController
   private
     def set_search_data
       @destination =
-        if current_user || current_user.destinations
+        if current_user && current_user.destinations
           current_user.destinations.last
         else
           nil
@@ -93,6 +92,24 @@ class DealsController < ApplicationController
             api.get_information(params)
             # api.get_information({hotelId: 356564, options: "HOTEL_SUMMARY,HOTEL_DETAILS,HOTEL_IMAGES"})
           end
+
+        # if event.eql? "get_information"
+        #   rooms_availability = api.get_availability({
+        #     hotelId: params[:hotelId],
+        #     arrivalDate: session[:last_destination_search]["arrivalDate"],
+        #     departureDate: session[:last_destination_search]["departureDate"],
+        #     options: "HOTEL_DETAILS"
+        #   })
+        #   rooms_availability.exception?
+        #   if rooms_availability.exception?.eql? true
+        #     @error_room_availability = rooms_availability.presentation_message
+        #     @rooms_availability = []
+        #   else
+        #     @rooms_availability = room_availability.body["HotelRoomAvailabilityResponse"]
+        #     yuhuu
+        #   end
+        # end
+
         response.exception?
         if response.exception?.eql? true
           @error_response = response.presentation_message
@@ -104,7 +121,6 @@ class DealsController < ApplicationController
             elsif event.eql? "get_information"
               response.body["HotelInformationResponse"]
             end
-          # yuhuu
 
           if event.eql? "get_list"
             @hotel_ids = @hotels_list.map { |hotel| hotel["hotelId"] }

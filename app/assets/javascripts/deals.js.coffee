@@ -81,6 +81,8 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
         $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
 
         console.log data
+        console.log window.teguh = data["HotelListResponse"]["EanWsError"]
+
         dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
         $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
           dealsWrapper = $('<div class="wrapper-price-deals">')
