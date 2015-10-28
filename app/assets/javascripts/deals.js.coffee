@@ -204,8 +204,8 @@ $(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
 
-  # $('#destinationLabel').click ->
-  #   $('#collapseDeals').slideToggle()
+  $('#slideToggleLink').click ->
+    $('#slideToggle').slideToggle()
 
   #   return
 
