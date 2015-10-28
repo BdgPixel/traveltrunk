@@ -1,21 +1,36 @@
 - content_for :javascripts do
   = javascript_include_tag "groups"
 
-p#notice = notice
-
 h1 = @group.name.upcase
 
-.token-input
-  = simple_form_for :invite, method: :get, url: invite_group_path(@group.id) do |f|
-    .form-group
-      = f.label :user_id, 'Type user emails to invite'
-      = f.input_field :user_id
-      / = f.input_field :user_id, data: { load: [{id: 1, name: "teguh@41studio.com"}] }
+.container
+  .row
+    - @group.users_groups.each do |user_group|
+      - if user_group.accepted_at
+        .col-md-2
+          = image_tag user_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
+          / = holder_tag '140x140', nil, nil, :class => 'img-circle'
+          h3 = user_group.user.profile.first_name
 
-    .actions.form-group
-      = f.button :submit
+br
+br
+
+= link_to 'Invite a friends', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default'
+br
+br
+
+#slideToggle
+  .token-input
+    = simple_form_for :invite, method: :get, url: invite_group_path(@group.id) do |f|
+      .form-group
+        = f.label :user_id, 'Type user emails to invite'
+        = f.input_field :user_id
+        / = f.input_field :user_id, data: { load: [{id: 1, name: "teguh@41studio.com"}] }
+
+      .actions.form-group
+        = f.button :submit
 
 
-= link_to 'Edit', edit_group_path(@group)
-'|
-= link_to 'Back', groups_path
+  = link_to 'Edit', edit_group_path(@group)
+  '|
+  = link_to 'Back', groups_path

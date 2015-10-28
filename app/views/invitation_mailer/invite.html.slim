@@ -1,0 +1,7 @@
+InvitationMailer#invite
+  p = "Hello #{@invite.user.profile.first_name} #{@invite.user.profile.last_name}"
+
+  p Someone invites you to join the group
+
+  p = link_to 'Join the group', confirmation_group_url(@invite.invitation_token)
+/ = @greeting + ", find me in app/views/invitation_mailer/invite.text.slim"

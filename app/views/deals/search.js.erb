@@ -1,9 +1,9 @@
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
 
 <%- if session[:last_destination_search].nil? %>
-  $("#destinationLabel").text("SEARCH")
+  $("#slideToggleLink").text("SEARCH")
 <%- else %>
-  $("#destinationLabel").text("<%= session[:last_destination_search][:destinationString].split(",").first %>")
+  $("#slideToggleLink").text("<%= session[:last_destination_search][:destinationString].split(",").first %>")
 <% end %>
 
 <%- if @error_response %>
@@ -13,7 +13,7 @@ $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
   $("#error_response").addClass('hide')
 <% end %>
 
-$('#collapseDeals').slideUp()
+$('#slideToggle').slideUp()
 $('[data-toggle="tooltip"]').tooltip()
 
 $('div.deals-image').lazyload({

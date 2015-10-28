@@ -6,7 +6,6 @@
 # = require blueimp-gallery-indicator
 # = require jquery.lazyload
 # = require bootstrap-datepicker
-# = require holder
 # = require google-api
 # = require jquery.validate
 
@@ -205,10 +204,10 @@ $(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
 
-  $('#destinationLabel').click ->
-    $('#collapseDeals').slideToggle()
+  # $('#destinationLabel').click ->
+  #   $('#collapseDeals').slideToggle()
 
-    return
+  #   return
 
   # if $('#galleria').length > 0
   #   Galleria.loadTheme window.galleria_theme_path

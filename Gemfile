@@ -67,6 +67,8 @@ gem 'blueimp-gallery'
 
 gem 'friendly_id', '~> 5.1'
 
+gem 'public_activity'
+
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 

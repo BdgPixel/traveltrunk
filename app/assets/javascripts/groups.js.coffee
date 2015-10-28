@@ -3,10 +3,14 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 # = require jquery.tokeninput
+# = require holder
 
 $(document).ready ->
-  $('#invite_user_id').tokenInput( '/groups/users_collection.json', {
+  $('#invite_user_id').tokenInput( '/savings/users_collection.json', {
     allowCustomEntry: true
     preventDuplicates: true
     prePopulate: $('#invite_user_id').data('load')
   })
+
+  # $('.invite-friend-link').click ->
+  #   $('.token-input').slideToggle()

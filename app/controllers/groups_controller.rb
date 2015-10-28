@@ -9,7 +9,9 @@ class GroupsController < ApplicationController
 
   # GET /groups/1
   # GET /groups/1.json
-  def show; end
+  def show
+    @activities = PublicActivity::Activity.all
+  end
 
   def users_collection
     users_list = User.get_autocomplete_data(params[:q])
@@ -20,14 +22,33 @@ class GroupsController < ApplicationController
   end
 
   def invite
-    user_id_uniq = params[:invite][:user_id].split(',').uniq
-    group_hashs = [{ user_id: params[:invite][:user_id], group_id: params[:id] }]
-    UsersGroup.create(group_hashs)
+    group_hashs = params[:invite][:user_id].split(',').uniq
+      .map { |u| { user_id: u, group_id: params[:id] } }
+    # group_hashs = [{ user_id: params[:invite][:user_id], group_id: params[:id] }]
+    users_groups = UsersGroup.create(group_hashs)
+
+    users_groups.each do |users_group|
+      InvitationMailer.invite(users_group).deliver_now
+    end
 
     respond_to do |format|
       format.html { redirect_to group_path(params[:id], notice: 'User was successfully invite.') }
       format.json { render :show, status: :created }
     end
+  end
+
+  def confirmation_group
+    # redirect_to group_url
+    # yuhuu
+    user_group = UsersGroup.find_by(invitation_token: params[:id])
+
+    respond_to do |format|
+      if user_group.update_attributes(accepted_at: Time.now)
+        format.html { redirect_to group_path(user_group.group_id), notice: 'User was successfully join the group.' }
+        format.json { render :show, status: :ok}
+      end
+    end
+
   end
 
   # GET /groups/new

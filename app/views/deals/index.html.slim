@@ -11,12 +11,12 @@
         / - else
         /   = link_to title_destination, "javascript:void(0)", id: 'destinationLabel'
         - if @destination.nil?
-          = link_to "Where would you like to be?", "javascript:void(0)", id: 'destinationLabel'
+          = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink'
         - else
-          = link_to @destination.destination_string.split(",").first, "javascript:void(0)", id: 'destinationLabel'
+          = link_to @destination.destination_string.split(",").first, "javascript:void(0)", id: 'slideToggleLink'
         br
 
-      #collapseDeals
+      #slideToggle
           .col-md-12
             .col-md-8.col-md-offset-2
               .panel.panel-default

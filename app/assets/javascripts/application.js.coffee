@@ -24,3 +24,8 @@ $(document).ajaxSend ->
 
 $(document).ajaxComplete ->
   $('#loading').fadeOut("slow");
+
+$(document).ready ->
+  if $('#slideToggleLink').length > 0
+    $('#slideToggleLink').click ->
+      $('#slideToggle').slideToggle()

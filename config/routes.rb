@@ -1,11 +1,12 @@
 Rails.application.routes.draw do
-  resources :groups do
+  resources :groups, path: 'savings' do
     collection do
       get :users_collection, as: :users_collection
     end
 
     member do
       get 'invite', as: 'invite'
+      get 'confirmation_group', as: 'confirmation'
     end
   end
 
