@@ -12,5 +12,5 @@ $(document).ready ->
     prePopulate: $('#invite_user_id').data('load')
   })
 
-  # $('.invite-friend-link').click ->
-  #   $('.token-input').slideToggle()
+  $('#slideToggleLink').click ->
+    $('#slideToggle').slideToggle()
