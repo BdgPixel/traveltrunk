@@ -2,8 +2,8 @@ class UsersGroup < ActiveRecord::Base
   include PublicActivity::Model
   tracked owner: ->(controller, model) { controller && controller.current_user }
 
-  belongs_to :user
-  belongs_to :group
+  belongs_to :member, class_name: 'User', foreign_key: :user_id
+  belongs_to :joined_group, class_name: 'Group', foreign_key: :group_id
 
   before_create :set_invitation_token
 

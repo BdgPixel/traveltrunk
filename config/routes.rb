@@ -1,14 +1,19 @@
 Rails.application.routes.draw do
-  resources :groups, path: 'savings' do
+  get 'savings' => 'savings#index'
+
+  get 'notifications/index'
+
+  resources :groups do
     collection do
-      get :users_collection, as: :users_collection
+      get 'users_collection'
+      get 'accept_invitation'
     end
 
     member do
       get 'invite', as: 'invite'
-      get 'confirmation_group', as: 'confirmation'
     end
   end
+
 
   get 'deals' => 'deals#index'
   get 'deals/search' => 'deals#search'

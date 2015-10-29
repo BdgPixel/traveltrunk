@@ -1,7 +1,7 @@
 InvitationMailer#invite
-  p = "Hello #{@invite.user.profile.first_name} #{@invite.user.profile.last_name}"
+  p = "Hello #{@invite.member.profile.first_name} #{@invite.member.profile.last_name}"
 
-  p Someone invites you to join the group
+  p =  "#{@current_user.profile.first_name} #{@current_user.profile.last_name} invite you to join the group #{@invite.joined_group.name}"
 
-  p = link_to 'Join the group', confirmation_group_url(@invite.invitation_token)
+  p = link_to 'Join the group', accept_invitation_groups_url(token: @invite.invitation_token)
 / = @greeting + ", find me in app/views/invitation_mailer/invite.text.slim"

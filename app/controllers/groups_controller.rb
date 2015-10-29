@@ -10,11 +10,11 @@ class GroupsController < ApplicationController
   # GET /groups/1
   # GET /groups/1.json
   def show
-    @activities = PublicActivity::Activity.all
+    @joined_members = @group.members.select(:id, :email).map { |u| { id: u.id, name: u.email } }
   end
 
   def users_collection
-    users_list = User.get_autocomplete_data(params[:q])
+    users_list = User.get_autocomplete_data(params[:q], current_user.id)
 
     respond_to do |format|
       format.json { render json: users_list }
@@ -28,7 +28,7 @@ class GroupsController < ApplicationController
     users_groups = UsersGroup.create(group_hashs)
 
     users_groups.each do |users_group|
-      InvitationMailer.invite(users_group).deliver_now
+      InvitationMailer.invite(current_user, users_group).deliver_now
     end
 
     respond_to do |format|
@@ -37,11 +37,9 @@ class GroupsController < ApplicationController
     end
   end
 
-  def confirmation_group
-    # redirect_to group_url
+  def accept_invitation
+    user_group = UsersGroup.find_by(invitation_token: params[:token])
     # yuhuu
-    user_group = UsersGroup.find_by(invitation_token: params[:id])
-
     respond_to do |format|
       if user_group.update_attributes(accepted_at: Time.now)
         format.html { redirect_to group_path(user_group.group_id), notice: 'User was successfully join the group.' }

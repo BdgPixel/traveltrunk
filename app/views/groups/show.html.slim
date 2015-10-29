@@ -8,9 +8,9 @@ h1 = @group.name.upcase
     - @group.users_groups.each do |user_group|
       - if user_group.accepted_at
         .col-md-2
-          = image_tag user_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
+          = image_tag user_group.member.profile.image.url, class: 'img-circle', width: 140, height: 140
           / = holder_tag '140x140', nil, nil, :class => 'img-circle'
-          h3 = user_group.user.profile.first_name
+          h3 = user_group.member.profile.first_name
 
 br
 br
@@ -24,8 +24,8 @@ br
     = simple_form_for :invite, method: :get, url: invite_group_path(@group.id) do |f|
       .form-group
         = f.label :user_id, 'Type user emails to invite'
-        = f.input_field :user_id
-        / = f.input_field :user_id, data: { load: [{id: 1, name: "teguh@41studio.com"}] }
+        / = f.input_field :user_id
+        = f.input_field :user_id, data: { load: @joined_members }
 
       .actions.form-group
         = f.button :submit

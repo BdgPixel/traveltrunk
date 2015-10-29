@@ -1,7 +1,7 @@
 class Group < ActiveRecord::Base
   extend FriendlyId
 
-  has_many :users, through: :users_groups
+  has_many :members, through: :users_groups
   has_many :users_groups
 
   friendly_id :name, use: [:slugged, :finders]
