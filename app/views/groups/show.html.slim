@@ -1,13 +1,17 @@
 - content_for :javascripts do
   = javascript_include_tag "groups"
 
-h1 = @group.name.upcase
+h1
+  = @group.name.upcase
+  | &nbsp; GROUP
 
 .container
   .row
+    h4 Members
+    hr
     - @group.users_groups.each do |user_group|
       - if user_group.accepted_at
-        .col-md-2
+        .col-md-2.text-center
           = image_tag user_group.member.profile.image.url, class: 'img-circle', width: 140, height: 140
           / = holder_tag '140x140', nil, nil, :class => 'img-circle'
           h3 = user_group.member.profile.first_name
@@ -15,7 +19,7 @@ h1 = @group.name.upcase
 br
 br
 
-= link_to 'Invite a friends', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default'
+= link_to 'Invite friends', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default'
 br
 br
 
