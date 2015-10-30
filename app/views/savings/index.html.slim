@@ -29,8 +29,8 @@
             = simple_form_for :invite, method: :get, url: invite_group_path do |f|
               .form-group
                 = f.label :user_id, 'Type user emails to invite'
-                / = f.input_field :user_id
-                = f.input_field :user_id, data: { load: @joined_members }
+                = f.input_field :user_id
+                / = f.input_field :user_id, data: { load: @joined_members }
 
               .actions.form-group
                 = f.submit 'Send Invitation', class: 'btn btn-default'
