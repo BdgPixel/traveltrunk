@@ -1,5 +1,9 @@
 class SavingsController < ApplicationController
   def index
-    @groups = current_user.groups
+    if current_user.group
+      @members = current_user.group.members
+    end
+    @joined_groups = current_user.joined_groups
+    # yuhuu
   end
 end

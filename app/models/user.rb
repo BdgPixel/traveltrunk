@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_many :destinations
   has_many :joined_groups, through: :users_groups
   has_many :users_groups
-  has_many :groups
+  has_one :group
 
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account

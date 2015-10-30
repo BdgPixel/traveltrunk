@@ -1,7 +1,7 @@
 - if activity.trackable
   | &nbsp;invite&nbsp;
   = link_to "#{ activity.trackable.member.profile.first_name } #{ activity.trackable.member.profile.last_name }", '#'
-  | &nbsp; to group &nbsp;
+  | &nbsp;to group&nbsp;
   = link_to activity.trackable.joined_group.name, '#'
 - else
   h1 which has since been removed

@@ -40,18 +40,7 @@ Rails.application.configure do
   # config.action_view.raise_on_missing_translations = true
 
   config.action_mailer.default_url_options = { host: 'localhost', port: 3000 }
-  # config.action_mailer.delivery_method = :letter_opener
-
-  config.action_mailer.delivery_method = :smtp
-
-  config.action_mailer.smtp_settings = {
-    address:              'smtp.mandrillapp.com',
-    port:                 587,
-    domain:               'traveltrunk.herokuapp.com',
-    user_name:            ENV['MANDRILL_USERNAME'],
-    password:             ENV['MANDRILL_API_KEY'],
-    authentication:       'plain',
-    enable_starttls_auto: true  }
+  config.action_mailer.delivery_method = :letter_opener
 
   # config.action_mailer.default_url_options = { host: 'traveltrunk.herokuapp.com' }
 end

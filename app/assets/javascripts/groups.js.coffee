@@ -6,7 +6,7 @@
 # = require holder
 
 $(document).ready ->
-  $('#invite_user_id').tokenInput( '/groups/users_collection.json', {
+  $('#invite_user_id').tokenInput( '/group/users_collection.json', {
     allowCustomEntry: true
     preventDuplicates: false
     prePopulate: $('#invite_user_id').data('load')

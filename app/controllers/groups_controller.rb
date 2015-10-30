@@ -22,17 +22,19 @@ class GroupsController < ApplicationController
   end
 
   def invite
+    group = current_user.group
+
+    unless group
+      group = Group.create(name: "#{current_user.profile.first_name}'s Group", user_id: current_user.id)
+      # group = current_user.group.create(name: "#{current_user.profile.first_name}'s Group")
+    end
     group_hashs = params[:invite][:user_id].split(',').uniq
-      .map { |u| { user_id: u, group_id: params[:id] } }
-    # group_hashs = [{ user_id: params[:invite][:user_id], group_id: params[:id] }]
+      .map { |u| { user_id: u, group_id: group.id } }
+
     users_groups = UsersGroup.create(group_hashs)
 
-    users_groups.each do |users_group|
-      InvitationMailer.invite(current_user, users_group).deliver_now
-    end
-
     respond_to do |format|
-      format.html { redirect_to group_path(params[:id], notice: 'User was successfully invite.') }
+      format.html { redirect_to savings_path, notice: 'User was successfully invited.' }
       format.json { render :show, status: :created }
     end
   end
@@ -42,7 +44,7 @@ class GroupsController < ApplicationController
     # yuhuu
     respond_to do |format|
       if user_group.update_attributes(accepted_at: Time.now)
-        format.html { redirect_to group_path(user_group.group_id), notice: 'User was successfully join the group.' }
+        format.html { redirect_to savings_path, notice: 'You were successfully join the group.' }
         format.json { render :show, status: :ok}
       end
     end

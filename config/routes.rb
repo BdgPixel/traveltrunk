@@ -1,15 +1,12 @@
 Rails.application.routes.draw do
   get 'savings' => 'savings#index'
 
-  get 'notifications/index'
+  get 'notifications' => 'notifications#index'
 
-  resources :groups do
+  resource :group, only: [] do
     collection do
       get 'users_collection'
       get 'accept_invitation'
-    end
-
-    member do
       get 'invite', as: 'invite'
     end
   end
