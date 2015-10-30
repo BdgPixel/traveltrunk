@@ -139,6 +139,15 @@ html {
 
 .wrapper-profile {
 
+  .panel.panel-info,
+  .panel-heading {
+    border-color: transparent;
+  }
+
+  .panel-heading {
+    background-color: #ffffff;
+  }
+
   .btn-default {
     @extend .btn-edit-profile;
   }

@@ -10,7 +10,7 @@
           .row
             .col-md-5.col-lg-4
               .wrapper-img-profile
-                  = image_tag current_user.profile.image.url, class: 'img img-responsive' unless current_user.profile.image.nil?
+                  = image_tag current_user.profile.image.url, class: 'img-circle img-responsive' unless current_user.profile.image.nil?
             .wrapper-user-name
               .col-md-7.col-lg-8
                 h1 = current_user.full_name
