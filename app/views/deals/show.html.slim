@@ -7,10 +7,9 @@
 .wrapper-detail-deals
   .row
     .col-md-12
-      .pull-left
-        h1 = session[:nightly_price]
-        br
-        = link_to raw("<i class='icon-deals btn-back-to-deals'></i><span>Back</span>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
+      h1 = session[:nightly_price]
+      br
+      = link_to raw("<i class='icon-deals btn-back-to-deals'></i><span>Back</span>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
     br
     br
     .col-md-12
