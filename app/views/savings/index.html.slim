@@ -26,7 +26,7 @@
         .panel-heading Invite a Friend
         .panel-body
           .token-input
-            = simple_form_for :invite, method: :get, url: invite_group_path do |f|
+            = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
               .form-group
                 = f.label :user_id, 'Type user emails to invite'
                 = f.input_field :user_id

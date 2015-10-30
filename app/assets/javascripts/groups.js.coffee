@@ -5,7 +5,20 @@
 # = require jquery.tokeninput
 # = require holder
 
+validateInvitationForm = ->
+  $('#invitationForm').validate
+    ignore: ".ignore"
+    rules:
+      autocomplete: 'required'
+
+    messages:
+      autocomplete: 'Please enter your email invitation'
+
+  return
+
 $(document).ready ->
+  validateInvitationForm()
+
   $('#invite_user_id').tokenInput( '/group/users_collection.json', {
     allowCustomEntry: true
     preventDuplicates: false

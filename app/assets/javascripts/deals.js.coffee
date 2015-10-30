@@ -7,7 +7,7 @@
 # = require jquery.lazyload
 # = require bootstrap-datepicker
 # = require google-api
-# = require jquery.validate
+
 
 # js not used
 # require galleria
