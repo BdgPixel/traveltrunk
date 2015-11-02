@@ -3,5 +3,10 @@
   = link_to "#{ activity.trackable.member.profile.first_name } #{ activity.trackable.member.profile.last_name }", '#'
   | &nbsp;to group&nbsp;
   = link_to activity.trackable.joined_group.name, '#'
+  | &nbsp;
+  - if activity.trackable.accepted_at.present?
+    | Accepted
+  - else
+    = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token]), class: 'btn btn-default btn-sm'
 - else
   h1 which has since been removed

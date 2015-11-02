@@ -25,7 +25,9 @@ class User < ActiveRecord::Base
   end
 
   def self.get_autocomplete_data(email, current_user)
-    self.includes(:profile).select(:id, :email).where('email LIKE ? AND id NOT IN (?)', "#{email}%", current_user)
-      .map {|u| { id: u.id, name: "#{u.email} (#{u.profile.first_name})" } }
+    self.joins(:profile).select("users.id, users.email, profiles.first_name")
+    .where("(LOWER(profiles.first_name) LIKE LOWER(:keyword) OR users.email LIKE :keyword)
+      AND users.id NOT IN (:ids)", { keyword: "%#{email}%", ids: current_user} )
+    .map {|u| { id: u.id, name: "#{u.first_name} (#{u.email})" } }
   end
 end

@@ -28,6 +28,7 @@ class GroupsController < ApplicationController
       group = Group.create(name: "#{current_user.profile.first_name}'s Group", user_id: current_user.id)
       # group = current_user.group.create(name: "#{current_user.profile.first_name}'s Group")
     end
+
     group_hashs = params[:invite][:user_id].split(',').uniq
       .map { |u| { user_id: u, group_id: group.id } }
 
@@ -41,7 +42,7 @@ class GroupsController < ApplicationController
 
   def accept_invitation
     user_group = UsersGroup.find_by(invitation_token: params[:token])
-    # yuhuu
+
     respond_to do |format|
       if user_group.update_attributes(accepted_at: Time.now)
         format.html { redirect_to savings_path, notice: 'You were successfully join the group.' }

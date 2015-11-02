@@ -1,7 +1,8 @@
 - @activities.each do |activity|
   .activity
-    = link_to activity.owner.profile.first_name if activity.owner
-    = render_activity activity
+    p
+      = link_to activity.owner.profile.first_name if activity.owner
+      = render_activity activity
 
 
 / - @activities.each do |activity|
