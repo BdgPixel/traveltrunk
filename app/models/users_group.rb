@@ -15,6 +15,11 @@ class UsersGroup < ActiveRecord::Base
     random_token
   end
 
+  def accept_invitation
+    self.create_activity key: "group.accept_invitation", owner: self.member,
+      recipient: self.joined_group.user, parameters: { token: self.invitation_token }
+  end
+
   private
     def set_invitation_token
       self.invitation_token = generate_invitation_token

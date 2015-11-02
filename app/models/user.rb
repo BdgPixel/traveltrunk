@@ -24,10 +24,16 @@ class User < ActiveRecord::Base
     full_name = "#{self.profile.first_name} #{self.profile.last_name}".titleize
   end
 
+  def get_notification(is_read = true)
+    PublicActivity::Activity.order("created_at desc")
+      .where(recipient_id: self.id, recipient_type: "User", is_read: is_read)
+  end
+
   def self.get_autocomplete_data(email, current_user)
     self.joins(:profile).select("users.id, users.email, profiles.first_name")
     .where("(LOWER(profiles.first_name) LIKE LOWER(:keyword) OR users.email LIKE :keyword)
       AND users.id NOT IN (:ids)", { keyword: "%#{email}%", ids: current_user} )
     .map {|u| { id: u.id, name: "#{u.first_name} (#{u.email})" } }
   end
+
 end

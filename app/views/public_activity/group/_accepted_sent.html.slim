@@ -1,0 +1,9 @@
+- if activity.trackable
+  | &nbsp;accepted your invitation to&nbsp;
+  = link_to activity.trackable.joined_group.name, "#"
+  | &nbsp;
+  = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+
+- else
+  h1 which has since been removed
+

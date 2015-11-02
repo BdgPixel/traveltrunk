@@ -26,7 +26,6 @@ class GroupsController < ApplicationController
 
     unless group
       group = Group.create(name: "#{current_user.profile.first_name}'s Group", user_id: current_user.id)
-      # group = current_user.group.create(name: "#{current_user.profile.first_name}'s Group")
     end
 
     group_hashs = params[:invite][:user_id].split(',').uniq
@@ -42,6 +41,7 @@ class GroupsController < ApplicationController
 
   def accept_invitation
     user_group = UsersGroup.find_by(invitation_token: params[:token])
+    user_group.accept_invitation
 
     respond_to do |format|
       if user_group.update_attributes(accepted_at: Time.now)
