@@ -39,50 +39,7 @@ class DealsController < ApplicationController
     render json: destination
   end
 
-  private
-    def set_search_data
-      @destination =
-        if current_user && current_user.destinations
-          current_user.destinations.last
-        else
-          nil
-        end
-      # current_user ? current_user.destination.last : nil
-      # if params[:search_deals]
-      if @destination
-        session[:last_destination_search] = {
-            :latitude => @destination.latitude,
-            :longitude => @destination.longitude,
-            :searchRadius => 80,
-            :destinationString => @destination.destination_string.upcase,
-            :city => @destination.city,
-            :stateProvinceCode => @destinationstate_province_code,
-            :countryCode => @destination.country_code,
-            :arrivalDate => @destination.arrival_date.strftime('%m/%d/%Y'),
-            :departureDate => @destination.departure_date.strftime('%m/%d/%Y'),
-            :options => 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
-            :moreResultsAvailable => true,
-            :numberOfResults => 15
-          }
-        # session[:last_destination_search] = {
-        #   :latitude => params[:search_deals][:lat],
-        #   :longitude => params[:search_deals][:lng],
-        #   :searchRadius => 80,
-        #   :destinationString => params[:search_deals][:destination].upcase,
-        #   :city => params[:search_deals][:locality],
-        #   :stateProvinceCode => params[:search_deals][:administrative_area_level_1],
-        #   :countryCode => params[:search_deals][:country],
-        #   :arrivalDate => params[:search_deals][:arrival_date] ,
-        #   :departureDate => params[:search_deals][:departure_date],
-        #   :options => 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
-        #   :moreResultsAvailable => true,
-        #   :numberOfResults => 21
-        # }
-      end
-      set_hotel("get_list", session[:last_destination_search])
-    end
-
-    def set_hotel(event, params)
+  def set_hotel(event, params)
       if params
         api = Expedia::Api.new
         response =
@@ -133,6 +90,54 @@ class DealsController < ApplicationController
         end
       end
     end
+
+  private
+    def set_search_data
+      @destination =
+        if current_user && current_user.destinations
+          current_user.destinations.last
+        else
+          nil
+        end
+      # current_user ? current_user.destination.last : nil
+      # if params[:search_deals]
+      if @destination
+        arrival_date = Date.today
+        departure_date = arrival_date + (@destination.departure_date - @destination.arrival_date).to_i
+        session[:last_destination_search] = {
+            :latitude => @destination.latitude,
+            :longitude => @destination.longitude,
+            :searchRadius => 80,
+            :destinationString => @destination.destination_string.upcase,
+            :city => @destination.city,
+            :stateProvinceCode => @destinationstate_province_code,
+            :countryCode => @destination.country_code,
+            :arrivalDate => arrival_date.strftime('%m/%d/%Y'),
+            :departureDate => departure_date.strftime('%m/%d/%Y'),
+            :options => 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
+            :moreResultsAvailable => true,
+            :numberOfResults => 15
+          }
+        # session[:last_destination_search] = {
+        #   :latitude => params[:search_deals][:lat],
+        #   :longitude => params[:search_deals][:lng],
+        #   :searchRadius => 80,
+        #   :destinationString => params[:search_deals][:destination].upcase,
+        #   :city => params[:search_deals][:locality],
+        #   :stateProvinceCode => params[:search_deals][:administrative_area_level_1],
+        #   :countryCode => params[:search_deals][:country],
+        #   :arrivalDate => params[:search_deals][:arrival_date] ,
+        #   :departureDate => params[:search_deals][:departure_date],
+        #   :options => 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
+        #   :moreResultsAvailable => true,
+        #   :numberOfResults => 21
+        # }
+      end
+      # set_hotel("get_list", session[:last_destination_search])
+      set_hotel("get_list", session[:last_destination_search])
+    end
+
+
 
     def check_like
       @like = Like.find_by(hotel_id: params[:id], user_id: current_user.id)

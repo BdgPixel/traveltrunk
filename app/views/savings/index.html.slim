@@ -42,8 +42,9 @@
                 .token-input
                   = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
                     .form-group
-                      = f.label :user_id, 'Type user emails to invite'
+                      = f.label :user_id, 'Type email or name to invite'
                       = f.input_field :user_id
+                      p User who have joined or created saving groups will not appear here
                       / = f.input_field :user_id, data: { load: @joined_members }
 
                     .actions.form-group
