@@ -2,6 +2,7 @@
   .activity
     p
       = link_to activity.owner.profile.first_name if activity.owner
+      |&nbsp;
       = render_activity activity
 
 
