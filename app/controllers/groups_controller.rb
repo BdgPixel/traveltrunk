@@ -25,7 +25,7 @@ class GroupsController < ApplicationController
     group = current_user.group
 
     unless group
-      group = Group.create(name: "#{current_user.profile.first_name}'s Group", user_id: current_user.id)
+      group = Group.create(name: "#{current_user.profile.first_name}'s Savings Group", user_id: current_user.id)
     end
 
     group_hashs = params[:invite][:user_id].split(',').uniq
