@@ -72,19 +72,19 @@ class DealsController < ApplicationController
           @error_response = response.presentation_message
           @hotels_list = []
         else
-          @hotels_list =
-            if event.eql? "get_list"
-              response.body["HotelListResponse"]["HotelList"]["HotelSummary"]
-            elsif event.eql? "get_information"
-              response.body["HotelInformationResponse"]
-            end
-
           if event.eql? "get_list"
+            @hotels_list =  response.body["HotelListResponse"]["HotelList"]["HotelSummary"]
             @hotel_ids = @hotels_list.map { |hotel| hotel["hotelId"] }
             @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-
             @hotel_list_cache_key = response.body["HotelListResponse"]["cacheKey"]
             @hotel_list_cache_location = response.body["HotelListResponse"]["cacheLocation"]
+          elsif event.eql? "get_information"
+            @hotels_list =  response.body["HotelInformationResponse"]
+            # @likes = Like.where(hotel_id: params[:hotelId], user_id: current_user)
+            @like = Like.find_by(hotel_id: params[:hotelId], user_id: current_user)
+            @members_liked = User.joins(:likes, :joined_groups)
+              .where("likes.hotel_id = ? AND groups.user_id = ?", params[:hotelId], current_user)
+
           end
 
         end

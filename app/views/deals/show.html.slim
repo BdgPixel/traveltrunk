@@ -36,27 +36,47 @@
 
   .row
     .col-md-12
-      h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
-      p.text-left
-        i.glyphicon.glyphicon-star id="start"
-        |&nbsp;
-        = pluralize(@hotels_list["HotelSummary"]["hotelRating"], "rating")
-      h3 = "Hight Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["highRate"]) }"
-      h3 = "Low Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["lowRate"]) }"
-      .pull-left
-        button.btn.btn-default type="button" Book Now
+      .col-md-7
+        h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
+        p.text-left
+          i.glyphicon.glyphicon-star id="start"
+          |&nbsp;
+          = pluralize(@hotels_list["HotelSummary"]["hotelRating"], "rating")
+
+        h3 = "Hight Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["highRate"]) }"
+        h3 = "Low Rate: #{ number_to_currency(@hotels_list["HotelSummary"]["lowRate"]) }"
+        .pull-left
+          button.btn.btn-default type="button" Book Now
+
+      .col-md-5
+        .col-md-12
+          h3 Your member who liked this hotel:
+        .col-md-10
+          - if @members_liked.empty?
+            p.alert.alert-info No members liked this hotel
+          - else
+            - @members_liked.each do |member|
+              .col-md-1.text-center
+                = link_to "javascript:void(0)"
+                  = image_tag member.profile.image.url, class: 'img-circle', data: { toggle: "tooltip", placement: "top", title: "#{member.profile.first_name}" }, width: 30, height: 30
+
+        .wrapper-like-deals.col-md-2
+          p.content-deals
+            = link_to deals_like_path(params[:id]), id: "likeDeal", remote: true
+              - if @like
+                span.icon.love-active id="like-#{params[:id]}"
+              - else
+                span.icon.love-normal id="like-#{params[:id]}"
+
+      .clearfix
+
+      .col-md-6
+        p
+         = unescape_expedia_html @hotels_list["HotelDetails"]["propertyDescription"]
 
       .col-md-6
 
-    .clearfix
-
-    .col-md-6
-      p
-       = unescape_expedia_html @hotels_list["HotelDetails"]["propertyDescription"]
-
-    .col-md-6
-
-      #map style="height: 500px; width: 100%;"
-      = hidden_field_tag  :lat, @hotels_list["HotelSummary"]["latitude"]
-      = hidden_field_tag  :long, @hotels_list["HotelSummary"]["longitude"]
+        #map style="height: 500px; width: 100%;"
+        = hidden_field_tag  :lat, @hotels_list["HotelSummary"]["latitude"]
+        = hidden_field_tag  :long, @hotels_list["HotelSummary"]["longitude"]
 

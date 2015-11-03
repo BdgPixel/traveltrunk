@@ -11,22 +11,37 @@
           .col-md-2.text-center
             = image_tag joined_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
             h3 = joined_group.user.profile.first_name
+            h3 $ 100
 
           - joined_group.members.each do |member|
             .col-md-2.text-center
               = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
               h3 = member.profile.first_name
+              h3 $ 100
+
+        .col-md-12.text-center
+          h3
+            | Total : $ 200
+            = link_to " Transfer", "#"
+
       - else
         h1 Your Group Savings
         .col-md-2.text-center
           = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
           h3 = current_user.profile.first_name
+          h3 $ 100
 
         - if @members
           - @members.each do |member|
             .col-md-2.text-center
               = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
               h3 = member.profile.first_name
+              h3 $ 100
+
+        .col-md-12.text-center
+          h3
+            | Total : $ 200
+            = link_to " Transfer", "#"
 
         .col-md-12.text-center
           br
@@ -49,3 +64,4 @@
 
                     .actions.form-group
                       = f.submit 'Send Invitation', class: 'btn btn-default'
+
