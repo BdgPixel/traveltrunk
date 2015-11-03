@@ -33,8 +33,7 @@ html lang="en"
 
     = yield :javascripts
     coffee:
-      $(document).ready =>
+      $(document).ready ->
         if $('[data-toggle="tooltip"]').length > 0
-          $('[data-toggle="tooltip"]').tooltip()
-
+            $('[data-toggle="tooltip"]').tooltip()
 
