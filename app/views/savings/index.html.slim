@@ -4,64 +4,66 @@
 .row
   .col-md-12.text-center
     .col-md-12.text-center
-      - if @joined_groups.any?
-        h1 = @joined_groups.first.name
-        - @joined_groups.each do |joined_group|
+      .wrapper-group-saving
+        - if @joined_groups.any?
+          h1 = @joined_groups.first.name
+          - @joined_groups.each do |joined_group|
 
+            .col-md-2.text-center
+              = image_tag joined_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
+              h3 = joined_group.user.profile.first_name
+              h3 $ 100
+
+            - joined_group.members.each do |member|
+              .col-md-2.text-center
+                = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
+                h3 = member.profile.first_name
+                h3 $ 100
+
+          .col-md-12.text-center
+            h3
+              | Total : $ 200
+              = link_to " Transfer", "#"
+
+        - else
+          h1 Your Group Savings
           .col-md-2.text-center
-            = image_tag joined_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
-            h3 = joined_group.user.profile.first_name
+            = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+            h3 = current_user.profile.first_name
             h3 $ 100
 
-          - joined_group.members.each do |member|
-            .col-md-2.text-center
-              = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
-              h3 = member.profile.first_name
-              h3 $ 100
+          - if @members
+            - @members.each do |member|
+              .col-md-2.text-center
+                = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
+                h3 = member.profile.first_name
+                h3 $ 100
 
-        .col-md-12.text-center
-          h3
-            | Total : $ 200
-            = link_to " Transfer", "#"
+          .col-md-12.text-center
+            h3
+              | Total : $ 200
+              = link_to " Transfer", "#"
 
-      - else
-        h1 Your Group Savings
-        .col-md-2.text-center
-          = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
-          h3 = current_user.profile.first_name
-          h3 $ 100
+          .col-md-12.text-center
+            br
+            br
 
-        - if @members
-          - @members.each do |member|
-            .col-md-2.text-center
-              = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
-              h3 = member.profile.first_name
-              h3 $ 100
+            = link_to 'Invite a friend', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default btn-invite-friend'
+            br
+            br
+            .col-md-4
+            .col-md-4.col-offset-4
+              #slideToggle.panel.panel-default
+                .panel-heading Invite a Friend
+                .panel-body
+                  .token-input
+                    = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
+                      .form-group
+                        = f.label :user_id, 'Type email or name to invite'
+                        = f.input_field :user_id
+                        p User who have joined or created saving groups will not appear here
+                        / = f.input_field :user_id, data: { load: @joined_members }
 
-        .col-md-12.text-center
-          h3
-            | Total : $ 200
-            = link_to " Transfer", "#"
-
-        .col-md-12.text-center
-          br
-          br
-          = link_to 'Invite a friend', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-primary'
-          br
-          br
-          .col-md-4
-          .col-md-4.col-offset-4
-            #slideToggle.panel.panel-default
-              .panel-heading Invite a Friend
-              .panel-body
-                .token-input
-                  = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
-                    .form-group
-                      = f.label :user_id, 'Type email or name to invite'
-                      = f.input_field :user_id
-                      p User who have joined or created saving groups will not appear here
-                      / = f.input_field :user_id, data: { load: @joined_members }
-
-                    .actions.form-group
-                      = f.submit 'Send Invitation', class: 'btn btn-default'
+                      .actions.form-group
+                        = f.submit 'Send Invitation', class: 'btn btn-default'
 
