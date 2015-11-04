@@ -12,7 +12,11 @@ module DealsHelper
   end
 
   def title_destination
-    session[:last_destination_search]["destinationString"].split(",").first
+    session[:last_destination_search][:destinationString].split(",").first
+  end
+
+  def currency(price)
+    number_to_currency(price, precision: 0)
   end
 
   def list_of_deals_div(hotel_image)
