@@ -4,7 +4,7 @@
     .wrapper-price-deals
       .col-xs-6.col-md-4.col-deals
         .price-deals
-          strong = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"].to_f.round)
+          strong = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
 
         = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
           = list_of_deals_div(hotel["thumbNailUrl"].gsub("_t.", "_y.") )

@@ -16,7 +16,7 @@ module DealsHelper
   end
 
   def currency(price)
-    number_to_currency(price, precision: 0)
+    number_to_currency(price.to_f.round, precision: 0)
   end
 
   def list_of_deals_div(hotel_image)
