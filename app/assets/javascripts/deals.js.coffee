@@ -93,7 +93,7 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
           dealsWrapper.append dealsGrid
           dealsPage.append dealsWrapper
 
-        dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Previous Page</a><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div><br><br>")
+        dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-orange loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Back</a><a class='btn btn-orange loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next<i class='icon next-loadmore'></i></a></div></div><br><br>")
         $('#dealsHotelsList').append dealsPage
 
         $('div.lazy').lazyload
@@ -139,14 +139,14 @@ searchDestination = ->
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
         dealsWrapper = $('<div class="wrapper-price-deals">')
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
-        dealsGrid.append $("<div class='price-deals'><strong>Nightly Price: $#{ hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"] }</strong></div>")
+        dealsGrid.append $("<div class='price-deals'><strong>$#{ Math.round(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"]) }</strong></div>")
         dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
         dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
         dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
         dealsWrapper.append dealsGrid
         dealsPage.append dealsWrapper
 
-      dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-default loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next Page<i class='icon next-loadmore'></i></a></div></div><br><br>")
+      dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-orange loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next<i class='icon next-loadmore'></i></a></div></div><br><br>")
       $('#dealsHotelsList').append dealsPage
 
       arrivalDate = new Date($('#search_deals_arrival_date').val())
