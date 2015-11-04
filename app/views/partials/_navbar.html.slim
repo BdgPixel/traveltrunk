@@ -32,11 +32,11 @@
             li.dropdown
               a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                 - if current_user.no_profile?
-                  = image_tag "thumb_default_user.png"
+                  = image_tag "thumb_default_user.png", class: "img-circle"
                   | &nbsp;
                   | PROFILE
                 - else
-                  = image_tag current_user.profile.image.thumb.url
+                  = image_tag current_user.profile.image.thumb.url, class: "img-circle"
                   | &nbsp;
                   = current_user.profile.first_name.upcase
                 span.caret
