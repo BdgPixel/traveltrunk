@@ -133,7 +133,7 @@ searchDestination = ->
       currentPageNumber =  previousPageNumber + 1
       nextPageNumber = currentPageNumber + 1
 
-      $('#destinationLabel').text $('#autocomplete').val().split(',')[0]
+      $('#slideToggleLink').text $('#autocomplete').val().split(',')[0]
 
       dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
