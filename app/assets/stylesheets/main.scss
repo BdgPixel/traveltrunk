@@ -86,7 +86,8 @@ html {
 .btn-update-profile,
 .btn-booknow,
 .btn-like,
-.btn-invite-friend {
+.btn-invite-friend,
+.btn-orange {
   background: rgb(239,62,54); /* Old browsers */
   background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
   background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
@@ -296,7 +297,7 @@ html {
   }
 
   .btn-default {
-    background-color: #000000;
+    // background-color: #000000;
     color: #ffffff;
     padding-left: 10px;
     padding-right: 20px;
@@ -451,7 +452,7 @@ html {
 // Saving Page
 
 .wrapper-group-saving {
-  
+
   .btn-default {
     @extend .btn-invite-friend;
   }

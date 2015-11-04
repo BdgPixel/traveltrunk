@@ -17,45 +17,45 @@
         br
 
       #slideToggle
-          .col-md-12
-            .col-md-8.col-md-offset-2
-              .panel.panel-default
-                .panel-body
-                  = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: false, html: { id: 'searchDealsForm' } do |f|
-                    .wrapper-search-deal
-                      .col-md-12
-                        .form-group
-                          = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
-                          span
-                            a#btnClearText href="javascript:void(0)"
-                              i.icon.delete
-                        .hide
-                          = f.hidden_field :street_number, id: "street_number"
-                          = f.hidden_field :route, id: "route"
-                          = f.hidden_field :locality, id: "locality"
-                          = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
-                          = f.hidden_field :postal_code, id: "postal_code"
-                          = f.hidden_field :country, as: :string, id: "country"
-                          = f.hidden_field :lat, id: "lat"
-                          = f.hidden_field :lng, id: "lng"
+        .col-md-12
+          .col-md-8.col-md-offset-2
+            .panel.panel-default
+              .panel-body
+                = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: false, html: { id: 'searchDealsForm' } do |f|
+                  .wrapper-search-deal
+                    .col-md-12
+                      .form-group
+                        = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+                        span
+                          a#btnClearText href="javascript:void(0)"
+                            i.icon.delete
+                      .hide
+                        = f.hidden_field :street_number, id: "street_number"
+                        = f.hidden_field :route, id: "route"
+                        = f.hidden_field :locality, id: "locality"
+                        = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
+                        = f.hidden_field :postal_code, id: "postal_code"
+                        = f.hidden_field :country, as: :string, id: "country"
+                        = f.hidden_field :lat, id: "lat"
+                        = f.hidden_field :lng, id: "lng"
 
-                      .col-md-6
-                        .form-group
-                          = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
+                    .col-md-6
+                      .form-group
+                        = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
 
-                      .col-md-6
-                        .form-group
-                          = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
+                    .col-md-6
+                      .form-group
+                        = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
 
-                      .col-md-12
-                        .form-group.text-center
-                          .col-md-4
-                          = f.submit "Save", class: "btn btn-default btn-md col-md-4 col-offset-4"
+                    .col-md-12
+                      .form-group.text-center
+                        .col-md-4
+                        = f.submit "Save", class: "btn btn-default btn-md col-md-4 col-offset-4"
 
 .row
   hr
   h1#notice
-  .wrapper-list-hotel
+  .wrapper-list-hotel.wrapper-deals
     #dealsHotelsList.text-center
       = render "hotels_list" if session[:last_destination_search]
     br
