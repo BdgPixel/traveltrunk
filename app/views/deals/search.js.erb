@@ -1,9 +1,9 @@
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
 
-<%- if session[:last_destination_search].nil? %>
-  $("#slideToggleLink").text("SEARCH")
+<%- if @destination %>
+  $("#slideToggleLink").text("<%= @destination.title_destination %>")
 <%- else %>
-  $("#slideToggleLink").text("<%= session[:last_destination_search][:destinationString].split(",").first %>")
+  $("#slideToggleLink").text("Where would you like to be?")
 <% end %>
 
 <%- if @error_response %>

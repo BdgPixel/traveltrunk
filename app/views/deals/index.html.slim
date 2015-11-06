@@ -1,6 +1,6 @@
 - content_for :javascripts do
   = javascript_include_tag "deals"
-  / = javascript_include_tag "galleria_theme_path"
+  = javascript_include_tag "galleria_theme_path"
 
 .row
   .wrapper-deals
@@ -10,10 +10,10 @@
         /   = link_to "SEARCH", "javascript:void(0)", id: 'destinationLabel'
         / - else
         /   = link_to title_destination, "javascript:void(0)", id: 'destinationLabel'
-        - if @destination.nil?
-          = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink'
+        - if @destination
+          = link_to @destination.title_destination, "javascript:void(0)", id: 'slideToggleLink'
         - else
-          = link_to title_destination, "javascript:void(0)", id: 'slideToggleLink'
+          = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink'
         br
 
       #slideToggle
@@ -21,23 +21,23 @@
           .col-md-8.col-md-offset-2
             .panel.panel-default
               .panel-body
-                = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: false, html: { id: 'searchDealsForm' } do |f|
+                = simple_form_for :search_deals, method: :get, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
                   .wrapper-search-deal
                     .col-md-12
                       .form-group
-                        = f.input_field :destination, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+                        = f.input_field :destination_string, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
                         span
                           a#btnClearText href="javascript:void(0)"
                             i.icon.delete
                       .hide
-                        = f.hidden_field :street_number, id: "street_number"
-                        = f.hidden_field :route, id: "route"
-                        = f.hidden_field :locality, id: "locality"
-                        = f.hidden_field :administrative_area_level_1, id: "administrative_area_level_1"
-                        = f.hidden_field :postal_code, id: "postal_code"
-                        = f.hidden_field :country, as: :string, id: "country"
-                        = f.hidden_field :lat, id: "lat"
-                        = f.hidden_field :lng, id: "lng"
+                        = hidden_field_tag :street_number, id: "street_number"
+                        = hidden_field_tag :route, id: "route"
+                        = f.hidden_field :city, id: "locality"
+                        = f.hidden_field :state_province_code, id: "administrative_area_level_1"
+                        = hidden_field_tag :postal_code, id: "postal_code"
+                        = f.hidden_field :country_code, as: :string, id: "country"
+                        = f.hidden_field :latitude, id: "lat"
+                        = f.hidden_field :longitude, id: "lng"
 
                     .col-md-6
                       .form-group
@@ -57,6 +57,6 @@
   h1#notice
   .wrapper-list-hotel.wrapper-deals
     #dealsHotelsList.text-center
-      = render "hotels_list" if session[:last_destination_search]
+      // = render "hotels_list" if session[:last_destination_search]
     br
     br

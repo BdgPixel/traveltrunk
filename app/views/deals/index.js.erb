@@ -1,0 +1,4 @@
+$("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
+$('div.lazy').lazyload({ effect : 'fadeIn' });
+$('#slideToggleLink').text("<%= @destination.title_destination %>");
+console.log("<%= @hotel_list_cache_key %>")

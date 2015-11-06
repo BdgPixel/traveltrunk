@@ -11,9 +11,9 @@ module DealsHelper
     raw CGI.unescapeHTML(string)
   end
 
-  def title_destination
-    session[:last_destination_search][:destinationString].split(",").first
-  end
+  # def title_destination
+  #   session[:last_destination_search][:destinationString].split(",").first
+  # end
 
   def currency(price)
     number_to_currency(price.to_f.round, precision: 0)

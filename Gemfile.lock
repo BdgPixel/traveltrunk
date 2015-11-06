@@ -49,7 +49,8 @@ GEM
     blueimp-gallery (2.11.0.1)
       railties (>= 3.1.0)
     builder (3.2.2)
-    byebug (6.0.2)
+    byebug (5.0.0)
+      columnize (= 0.9.0)
     carrierwave (0.10.0)
       activemodel (>= 3.2.0)
       activesupport (>= 3.2.0)
@@ -63,6 +64,7 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.9.1.1)
+    columnize (0.9.0)
     commonjs (0.2.7)
     countries (0.11.5)
       currencies (~> 0.4.2)
@@ -204,6 +206,9 @@ GEM
     holder_rails (2.8.0)
       railties (>= 3.1.0)
     htmlentities (4.3.4)
+    httparty (0.13.7)
+      json (~> 1.8)
+      multi_xml (>= 0.5.2)
     i18n (0.7.0)
     i18n_data (0.7.0)
     inflecto (0.0.2)
@@ -246,6 +251,7 @@ GEM
     mini_portile (0.6.2)
     minitest (5.8.1)
     multi_json (1.11.2)
+    multi_xml (0.5.5)
     multipart-post (2.0.0)
     net-scp (1.2.1)
       net-ssh (>= 2.6.5)
@@ -259,6 +265,9 @@ GEM
       coderay (~> 1.1.0)
       method_source (~> 0.8.1)
       slop (~> 3.4)
+    pry-byebug (3.2.0)
+      byebug (~> 5.0)
+      pry (~> 0.10)
     pry-rails (0.3.4)
       pry (>= 0.9.10)
     public_activity (1.4.2)
@@ -369,7 +378,6 @@ PLATFORMS
 DEPENDENCIES
   better_errors
   blueimp-gallery
-  byebug
   carrierwave
   coffee-rails (~> 4.1.0)
   country_select
@@ -381,6 +389,7 @@ DEPENDENCIES
   friendly_id (~> 5.1)
   holder_rails
   htmlentities (~> 4.3.4)
+  httparty
   jbuilder (~> 2.0)
   jquery-rails
   jquery-rails-cdn
@@ -392,6 +401,7 @@ DEPENDENCIES
   mini_magick
   nprogress-rails
   pg
+  pry-byebug
   pry-rails
   public_activity
   quiet_assets

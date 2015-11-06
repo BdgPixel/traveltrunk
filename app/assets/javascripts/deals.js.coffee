@@ -79,9 +79,6 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
         $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
         $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
 
-        console.log data
-        console.log window.teguh = data["HotelListResponse"]["EanWsError"]
-
         dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
         $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
           roundedPrice = Math.round(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
@@ -93,7 +90,6 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
           dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
           dealsWrapper.append dealsGrid
           dealsPage.append dealsWrapper
-
         dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-orange loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Back</a><a class='btn btn-orange loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next<i class='icon next-loadmore'></i></a></div></div><br><br>")
         $('#dealsHotelsList').append dealsPage
 
@@ -108,7 +104,6 @@ loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
         $(".loadMoreBack[data-previous-page='#{ previousPageNumber }']").on 'click', ->
           targetPageNumber = $(this).data('previous-page')
           targetPage = $(".deals-page[data-page='#{ targetPageNumber }']")
-          console.log targetPage
           $('.deals-page').not(targetPage).hide()
           targetPage.show()
 
@@ -134,12 +129,11 @@ searchDestination = ->
       currentPageNumber =  previousPageNumber + 1
       nextPageNumber = currentPageNumber + 1
 
-      $('#destinationLabel').text $('#autocomplete').val().split(',')[0]
+      $('#slideToggleLink').text $('#autocomplete').val().split(',')[0]
 
       dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
       $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
         roundedPrice = Math.round(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
-        console.log "/deals/#{ hotel['hotelId'] }/show?price=#{ roundedPrice }"
         dealsWrapper = $('<div class="wrapper-price-deals">')
         dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
         dealsGrid.append $("<div class='price-deals'><strong>$#{ roundedPrice }</strong></div>")
@@ -203,6 +197,7 @@ $ ->
   return
 
 $(document).ready ->
+  $.get('/')
   disableEnterFormSubmit()
   validateSearchForm()
 
@@ -228,11 +223,10 @@ $(document).ready ->
   if $('.loadMoreNext').length > 0
     $('.loadMoreNext').on 'click', -> loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).attr('data-next-page'))
 
-  if $('form#searchDealsForm').length > 0
-
-    $('form#searchDealsForm').submit (e) ->
-      searchDestination()
-      e.preventDefault()
+  # if $('form#searchDealsForm').length > 0
+  #   $('form#searchDealsForm').submit (e) ->
+  #     searchDestination()
+  #     e.preventDefault()
 
   if $('#btnClearText').length > 0
     $('#btnClearText').click ->

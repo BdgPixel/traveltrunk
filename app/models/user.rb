@@ -2,7 +2,8 @@ class User < ActiveRecord::Base
   has_one :profile
   has_one :bank_account
   has_many :likes
-  has_many :destinations
+  # has_many :destinations
+  has_one :destination
   has_many :joined_groups, -> { where("users_groups.accepted_at IS NOT NULL") } , through: :users_groups
   has_many :users_groups
   has_one :group
