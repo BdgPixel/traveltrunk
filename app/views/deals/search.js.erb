@@ -1,24 +1,55 @@
-$("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
-
 <%- if @destination %>
   $("#slideToggleLink").text("<%= @destination.title_destination %>")
 <%- else %>
   $("#slideToggleLink").text("Where would you like to be?")
 <% end %>
 
-<%- if @error_response %>
-  $("#error_response").removeClass('hide')
-  $("#error_response").text("<%= @error_response %>")
-<%- else %>
-  $("#error_response").addClass('hide')
+<%- unless @error_response %>
+  $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
+
+  var currentPageNumber =  $('.deals-page').length;
+  var nextPageNumber = currentPageNumber + 1;
+
+  currentPage = $(".deals-page:last");
+  previousButton = $(".loadPrevious:last");
+  nextButton = $(".loadMoreNext:last");
+  currentPage.attr("data-page", currentPageNumber);
+
+  nextButton.attr("data-next-page", nextPageNumber);
+  previousButton.attr("data-previous-page", currentPageNumber - 1).show();
+  $('.deals-page').not(currentPage).hide();
+
+  $('div.lazy').lazyload({ effect : 'fadeIn' });
+  $('[data-toggle="tooltip"]').tooltip();
+
+  $(previousButton).on('click', function(){
+    targetPageNumber = $(this).data('previous-page');
+    console.log(targetPageNumber);
+    targetPage = $(".deals-page[data-page='"+ targetPageNumber +"']");
+    targetPage.show();
+    $('.deals-page').not(targetPage).hide();
+  });
+
+  $(nextButton).on('click', function(){
+    nextPageNumber = $(this).data('next-page');
+    console.log(nextPageNumber);
+    nextPage = $(".deals-page[data-page='" + nextPageNumber + "']");
+    if(nextPage.length > 0){
+      nextPage.show()
+      $('.deals-page').not(nextPage).hide()
+    }else{
+      console.log($(this).data('cache-key'));
+      console.log($(this).data('cache-location'));
+      $.ajax({
+        url: '/deals/next',
+        type: 'GET',
+        data: {
+          cache_key: $(this).data('cache-key'),
+          cache_location: $(this).data('cache-location')
+        }
+      });
+    }
+  });
 <% end %>
 
-$('#slideToggle').slideUp()
-$('[data-toggle="tooltip"]').tooltip()
-
-$('div.deals-image').lazyload({
-  effect : 'fadeIn'
-});
-
-$("#loadMore").attr("data-cache-key", "<%= @hotel_list_cache_key %>")
-$("#loadMore").attr("data-cache-location", "<%= @hotel_list_cache_location %>")
+$('#slideToggle').slideUp();

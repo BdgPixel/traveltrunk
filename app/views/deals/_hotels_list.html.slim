@@ -29,9 +29,19 @@
 
   .col-md-12
     .pull-right
-      a.loadMoreNext.btn.btn-orange data-cache-key="#{ @hotel_list_cache_key }" data-cache-location="#{ @hotel_list_cache_location }" data-next-page="2"
+      / = link_to deals_next_path(cache_key: @hotel_list_cache_key, cache_location: @hotel_list_cache_location), id: 'nextPageDeals', class: "loadMoreNext btn btn-orange", data: { next_page: 1}, remote: true
+      /   | Next
+      /   i.icon.next-loadmore
+      = link_to "javascript:void(0);", class: "loadPrevious btn btn-orange", data: { previous_page: '' }, style: 'display: none'
+        i.icon.previous-loadmore
+        | &nbsp;&nbsp; Back
+
+      = link_to "javascript:void(0);", id: 'nextPageDeals', class: "loadMoreNext btn btn-orange", data: { next_page: '', cache_key: @hotel_list_cache_key, cache_location: @hotel_list_cache_location }
         | Next
         i.icon.next-loadmore
+      / a.loadMoreNext.btn.btn-orange data-cache-key="#{ @hotel_list_cache_key }" data-cache-location="#{ @hotel_list_cache_location }" data-next-page="2"
+      /   | Next
+      /   i.icon.next-loadmore
 
   - if @error_response
     #error_response.alert.alert-danger = @error_response

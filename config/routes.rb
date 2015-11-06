@@ -13,9 +13,11 @@ Rails.application.routes.draw do
 
 
   get 'deals' => 'deals#index'
-  get 'deals/search' => 'deals#search'
   get 'deals/:id/show' => 'deals#show', as: 'deals/show'
   get 'deals/:id/like' => 'deals#like', as: 'deals/like'
+  get 'deals/next' => 'deals/next'
+  get 'deals/previous' => 'deals/previous'
+  post 'deals/search' => 'deals#search'
   post 'deals/create_destination' => 'deals/create_destination'
 
   devise_for :users

@@ -1,10 +1,7 @@
 class DealsController < ApplicationController
   require 'htmlentities'
 
-  # before_action :set_search_data, only: [:index, :search]
   before_action :create_destination, only: [:search]
-  # before_action :set_search_data, only: [:index, :search]
-  # before_action :set_search_data, only: [:search]
   before_action :check_like, only: [:like]
   before_action :authenticate_user!
 
@@ -32,6 +29,22 @@ class DealsController < ApplicationController
     end
   end
 
+  def next
+    if request.xhr?
+      set_search_data
+      respond_to do |format|
+        format.js { render :action => "index" }
+      end
+    end
+  end
+
+  def previous
+    if request.xhr?
+      set_search_data
+      respond_to :js
+    end
+  end
+
   def create_destination
     destination = current_user.destination
     arrival_date = Date.strptime(destination_params[:arrival_date], '%m/%d/%Y')
@@ -46,50 +59,33 @@ class DealsController < ApplicationController
       destination.save
     end
     set_search_data
-    # binding.pry
-    # destination.user_id = current_user.id
-    # destination.destination_string = params["destinationString"]
-    # destination.city = params["city"]
-    # destination.state_province_code = params["stateProvinceCode"]
-    # destination.country_code = params["countryCode"]
-    # destination.latitude = params["lat"]
-    # destination.longitude = params["lng"]
-    # destination.user_id = current_user.id
-    # byebug
-    # render json: destination
   end
 
-  def set_hotel(params)
+  def set_hotel(params, params_cache = nil)
     url = "http://api.ean.com/ean-services/rs/hotel/v3/list"
-    if params
 
-      params.merge!({
+    if params
+      params_api = {
         cid: 55505,
         minorRev: 28,
         apiKey: '5fd6485clmp3oogs8gfb43p2uf',
         locale: 'en_US',
-        currencyCode: 'USD'})
+        currencyCode: 'USD'
+      }
 
-      response = HTTParty.get(url + "?" + params.to_query)
-      puts response.code
-      puts response.message
-      # request = Typhoeus::Request.new(url, params: params, headers: { Accept: 'application/json' })
+      if params_cache
+        puts 'cache'
+        params_api.merge!(params_cache)
+        response = HTTParty.get(url + "?" + params_api.to_query)
+        @params_cache = params_cache
+      else
+        puts 'asdf'
+        params.merge!(params_api)
+        response = HTTParty.get(url + "?" + params.to_query)
+      end
+      response.code
+      response.message
 
-      # request.on_complete do |response|
-      #   if response.success?
-      #     puts("success")
-      #   elsif response.timed_out?
-      #     puts("got a time out")
-      #   elsif response.code.eql? 0
-      #     puts(response.return_message)
-      #   else
-      #     puts("HTTP request failed: " + response.code.to_s)
-      #   end
-      # end
-
-      # request.run
-      # response = JSON.parse(request.response.body || [])
-      # response = request.body
       @hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"]
 
       @hotel_list_cache_key = response["HotelListResponse"]["cacheKey"]
@@ -97,7 +93,6 @@ class DealsController < ApplicationController
 
       @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
       @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-      # binding.pry
     else
       @hotels_list = []
     end
@@ -105,20 +100,13 @@ class DealsController < ApplicationController
 
   private
     def set_search_data
-        # if current_user && current_user.destinations
-        #   current_user.destinations.last
-        # else
-        #   nil
-        # end
-
       if @destination = current_user.destination
         @searchParams = @destination.get_search_params
       end
-      # yuhuu
-      set_hotel(@searchParams)
+      @page = params[:page].to_i + 1
+      params_cache = { cacheKey: params[:cache_key], cacheLocation: params[:cache_location]} if params[:cache_key] && params[:cache_location]
+      set_hotel(@searchParams, params_cache)
     end
-
-
 
     def check_like
       @like = Like.find_by(hotel_id: params[:id], user_id: current_user.id)
@@ -126,6 +114,5 @@ class DealsController < ApplicationController
 
     def destination_params
       params.require(:search_deals).permit(:destination_string, :city, :state_province_code, :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code)
-      # params.require(:search_deals).permit(:destination_string, :city, :state_province_code, :country_code, :latitude, :longitude, :arrival_date, :departure_date)
     end
 end
