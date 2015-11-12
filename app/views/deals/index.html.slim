@@ -6,10 +6,6 @@
   .wrapper-deals
     .col-xs-12.col-md-12
       h1.text-center
-        / - if session[:last_destination_search].nil?
-        /   = link_to "SEARCH", "javascript:void(0)", id: 'destinationLabel'
-        / - else
-        /   = link_to title_destination, "javascript:void(0)", id: 'destinationLabel'
         - if @destination
           = link_to @destination.title_destination, "javascript:void(0)", id: 'slideToggleLink'
         - else

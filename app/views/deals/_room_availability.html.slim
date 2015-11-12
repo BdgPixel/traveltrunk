@@ -1,0 +1,13 @@
+- @room_availability["HotelRoomResponse"].each do |room|
+  / = show_room_images(@room_images, room["roomTypeCode"])
+  .form-group
+    .col-md-2
+      = show_room_images(@room_images, room["roomTypeCode"])
+      / img.img-rounded class="room-#{room['roomTypeCode']}" alt="140x140" data-holder-rendered="true" style="width: 140px; height: 140px;"
+      / = room["HotelImages"]
+    .col-md-10
+      h4 = room["rateDescription"]
+      h4 = currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
+  /   h4 = room["rateDescription"]
+
+= @hotel_information

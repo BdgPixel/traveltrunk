@@ -1,8 +1,5 @@
 - content_for :javascripts do
   = javascript_include_tag "deals"
-  / = javascript_include_tag "galleria_theme_path"
-
-/ = @room_availability["HotelRoomResponse"]
 
 .wrapper-detail-deals
   .row
@@ -23,25 +20,19 @@
           ol.indicator
 
         #links
-          - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
+          - @hotel_information["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
             - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
               = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"]
                 = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
 
-        / #galleria
-        /   - @hotels_list["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
-        /     - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
-        /       = link_to hotel_image["url"].gsub("b", "z")
-        /         = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"]
-
   .row
     .col-md-12
       .col-md-7
-        h2 = unescape_expedia_html(@hotels_list["HotelSummary"]["name"])
+        h2 = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
         p.text-left
           i.glyphicon.glyphicon-star id="start"
           |&nbsp;
-          = pluralize(@hotels_list["HotelSummary"]["hotelRating"], "rating")
+          = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
         h3 = currency(params[:price].to_f.round)
         .pull-left
@@ -71,11 +62,17 @@
 
       .col-md-6
         p
-         = unescape_expedia_html @hotels_list["HotelDetails"]["propertyDescription"]
+         = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
 
       .col-md-6
 
         #map style="height: 500px; width: 100%;"
-        = hidden_field_tag  :lat, @hotels_list["HotelSummary"]["latitude"]
-        = hidden_field_tag  :long, @hotels_list["HotelSummary"]["longitude"]
+        = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
+        = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
+
+      .col-md-12
+        .container
+          .row
+            #roomAvailability.form-horizontal
+
 

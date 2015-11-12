@@ -1,0 +1,3 @@
+<% @room_images.each do |image| %>
+  $(".room-<%= image['roomTypeCode'] %>").first().attr("src", "<%= image['url'] %>");
+<% end %>

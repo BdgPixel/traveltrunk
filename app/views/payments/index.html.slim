@@ -1,0 +1,25 @@
+- content_for :javascripts do
+  = javascript_include_tag "payments"
+
+.col-md-6
+  / form#payment-form action="" method="POST"
+  = simple_form_for :payment, method: :post, url: payments_create_path, html: { id: "payment-form" } do |f|
+    span.payment-errors
+    .form-group
+      = f.input :email, input_html: { value: current_user.email, data: { stripe: "email" } }
+    .form-group
+      / span Card Number
+      = f.input :number, input_html: { data: { stripe: "number" } }
+      / input.form-control data-stripe="number" type="text" /
+    .form-group
+      / span CVC
+      = f.input :cvc, input_html: { data: { stripe: "cvc" } }
+      / input.form-control data-stripe="cvc" type="text" /
+    .form-group
+      / span Expiration (MM/YYYY)
+      = f.input :month, input_html: { data: { stripe: "exp-month" } }
+      = f.input :year, input_html: { data: { stripe: "exp-year" } }
+      / input.form-control data-stripe="exp-month" type="text" /
+      / span /
+      / input.form-control data-stripe="exp-year" type="text" /
+    button type="submit"  Submit Payment

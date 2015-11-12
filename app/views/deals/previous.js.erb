@@ -5,4 +5,3 @@ $("#slideToggleLink").text("<%= @destination.title_destination %>");
 $("#previousPageDeals").show();
 $("#previousPageDeals").attr("href", "<%= deals_previous_path(cache_key: @params_cache[:cacheKey], cache_location: @params_cache[:cacheLocation]) %>");
 $('div.lazy').lazyload({ effect : 'fadeIn' });
-console.log("<%= @params_cache %>");

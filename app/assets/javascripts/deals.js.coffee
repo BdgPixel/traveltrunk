@@ -6,6 +6,7 @@
 # = require blueimp-gallery-indicator
 # = require jquery.lazyload
 # = require bootstrap-datepicker
+# = require holder
 # = require google-api
 
 
@@ -197,7 +198,13 @@ $ ->
   return
 
 $(document).ready ->
-  $.get('/')
+  if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
+    $.get('/deals')
+  else
+    params_path_id = window.location.pathname.split('/')[2]
+    # $.get("/deals/#{ params_path_id }/room_availability")
+
+
   disableEnterFormSubmit()
   validateSearchForm()
 
@@ -238,3 +245,4 @@ $(document).ready ->
     blueimp.Gallery document.getElementById('links').getElementsByTagName('a'),
       container: '#blueimp-gallery-carousel'
       carousel: true
+

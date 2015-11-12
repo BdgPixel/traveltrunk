@@ -17,7 +17,7 @@ $('div.lazy').lazyload({ effect : 'fadeIn' });
 
 $(previousButton).on('click', function(){
   targetPageNumber = $(this).data('previous-page');
-  console.log(targetPageNumber);
+
   targetPage = $(".deals-page[data-page='"+ targetPageNumber +"']");
   targetPage.show();
   $('.deals-page').not(targetPage).hide();
@@ -31,8 +31,6 @@ $(nextButton).on('click', function(){
     nextPage.show()
     $('.deals-page').not(nextPage).hide()
   }else{
-    console.log($(this).data('cache-key'));
-    console.log($(this).data('cache-location'));
     $.ajax({
       url: '/deals/next',
       type: 'GET',
