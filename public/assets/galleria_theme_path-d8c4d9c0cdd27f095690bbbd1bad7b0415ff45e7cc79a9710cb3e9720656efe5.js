@@ -1,0 +1,1 @@
+window.default_image_path="/assets/default-no-image-a61228fe406c941a065163a232688948cb0e1186d2bc2b2727c073bb20728c67.png";
