@@ -50,6 +50,7 @@ class User < ActiveRecord::Base
           source: token
         )
         Customer.create(customer_id: customer.id, user_id: id)
+        customer
       end
 
     rescue Stripe::CardError => e
