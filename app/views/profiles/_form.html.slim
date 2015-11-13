@@ -5,7 +5,7 @@
   = javascript_include_tag 'profiles'
 
 .row
-  = simple_form_for current_user, method: :put, url: profile_url do |f|
+  = simple_form_for current_user, method: :put, url: profile_url, html: { id: "profile-payment-account" } do |f|
     - if current_user.errors.any?
       #error_explanation.alert.alert-danger
         strong Warning! &nbsp;
@@ -84,17 +84,26 @@
           br
 
         = f.simple_fields_for :bank_account do |bank_account_form|
-          .col-md-12
-            .form-group
-              = bank_account_form.input :bank_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+          / .col-md-12
+          /   .form-group
+          /     = bank_account_form.input :bank_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
           .col-md-12
             .form-group
-              = bank_account_form.input :account_number, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = bank_account_form.input :card_number, input_html: { class: 'form-control',  data: { stripe: "number" } }, error_html: { class: 'error-message' }
 
-          .col-md-12
+          .col-md-4
             .form-group
-              = bank_account_form.input :routing_number, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              .payment-errors
+              = bank_account_form.input :exp_month, input_html: { class: 'form-control', data: { stripe: "exp-month" } }
+
+          .col-md-4
+            .form-group
+              = bank_account_form.input :exp_year, input_html: { class: 'form-control', data: { stripe: "exp-year" } }
+
+          / .col-md-12
+          /   .form-group
+          /     = bank_account_form.input :routing_number, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
           .col-md-12
             .form-group
@@ -107,7 +116,7 @@
 
           .col-md-3
             .form-group
-              = bank_account_form.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = bank_account_form.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
         .col-md-12
           br

@@ -5,6 +5,8 @@ Rails.application.routes.draw do
 
   post 'payments/create'
 
+  post 'payments/stripe_webhook'
+
   get 'savings' => 'savings#index'
 
   get 'notifications' => 'notifications#index'

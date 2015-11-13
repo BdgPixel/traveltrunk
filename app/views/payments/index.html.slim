@@ -6,7 +6,7 @@
   = simple_form_for :payment, method: :post, url: payments_create_path, html: { id: "payment-form" } do |f|
     span.payment-errors
     .form-group
-      = f.input :email, input_html: { value: current_user.email, data: { stripe: "email" } }
+      = f.input :email, as: :hidden, input_html: { value: current_user.email, data: { stripe: "email" } }
     .form-group
       / span Card Number
       = f.input :number, input_html: { data: { stripe: "number" } }

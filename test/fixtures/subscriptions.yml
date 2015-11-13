@@ -1,0 +1,17 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  plan_id: MyString
+  amount: 1
+  interval: MyString
+  interval_count: 1
+  plan_name: MyString
+  currency: MyString
+
+two:
+  plan_id: MyString
+  amount: 1
+  interval: MyString
+  interval_count: 1
+  plan_name: MyString
+  currency: MyString

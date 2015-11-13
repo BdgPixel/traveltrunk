@@ -9,6 +9,7 @@ class User < ActiveRecord::Base
   has_one  :group
   has_one  :customer
   has_one  :plan
+  has_many :transactions
 
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account
@@ -42,7 +43,7 @@ class User < ActiveRecord::Base
     Stripe.api_key = api_key
     begin
       if self.customer
-        customer = Stripe::Customer.retrieve(self.customer.customer_id)
+        Stripe::Customer.retrieve(self.customer.customer_id)
       else
         customer = Stripe::Customer.create(
           email: self.email,
@@ -50,29 +51,30 @@ class User < ActiveRecord::Base
         )
         Customer.create(customer_id: customer.id, user_id: id)
       end
+
     rescue Stripe::CardError => e
       logger.error e.message
     end
   end
 
-  def set_stripe_plan(api_key, transfer_interval)
+  def set_stripe_plan(api_key, interval_frequency, interval_count)
     Stripe.api_key  = api_key
     amount_to_cents = self.bank_account.amount_transfer.to_f * 100
 
     begin
-      if self.plan
-        plan = Stripe::Plan.retrieve(self.plan.plan_id)
-      else
-        plan = Stripe::Plan.create(
-          id:             "gold",
-          currency:       "usd",
-          name:           "Amazing Gold Plan",
-          amount:         amount_to_cents.to_i,
-          interval:       transfer_interval[:frequency],
-          interval_count: transfer_interval[:recurring_count]
-        )
-        Plan.create(plan_id: plan.id, user_id: self.id)
-      end
+      plan = Stripe::Plan.create(
+        id:             "plan_user_#{id}",
+        currency:       "usd",
+        name:           "#{self.profile.first_name} savings plan",
+        amount:         amount_to_cents.to_i,
+        interval:       interval_frequency,
+        interval_count: interval_count
+      )
+      # if self.plan
+      #   plan                = Stripe::Plan.retrieve(self.plan.plan_id)
+      # else
+      #   # Plan.create(plan_id: plan.id, user_id: self.id)
+      # end
     rescue Stripe::CardError => e
       logger.error e.message
     end

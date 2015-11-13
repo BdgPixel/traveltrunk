@@ -99,6 +99,9 @@ group :development, :test do
   gem 'letter_opener'
 
   gem 'quiet_assets'
+
+  # Use ultrahook for receive webhooks on localhost
+  gem 'ultrahook', '~> 0.1.4'
 end
 
 gem 'rails_12factor', group: :production
