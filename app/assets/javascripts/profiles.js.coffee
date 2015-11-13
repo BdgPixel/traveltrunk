@@ -3,8 +3,6 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #
 
-# = require stripe
-
 Stripe.setPublishableKey('pk_test_vqvpyrmq9OBE6ZscwpZLNs0P');
 
 jQuery ($) ->
