@@ -91,6 +91,7 @@ class User < ActiveRecord::Base
       if user_subscription
         stripe_subscription = stripe_customer.subscriptions.retrieve(user_subscription.subscription_id)
         stripe_subscription.plan = stripe_plan.id
+        stripe_subscription.metadata = { user_id: self.id }
         stripe_subscription.save
 
         previous_plan = Stripe::Plan.retrieve(user_subscription.plan_id)
@@ -106,7 +107,7 @@ class User < ActiveRecord::Base
         StripeMailer.subscription_updated(self.id).deliver_now
         previous_plan.delete
       else
-        stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id })
+        stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
 
         Subscription.create(
           plan_id:        stripe_plan.id,
