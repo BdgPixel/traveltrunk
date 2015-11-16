@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
 
   before_save :set_stripe_customer, :set_stripe_subscription
 
-  attr_accessor :stripe_token, :skip_callbacks
+  attr_accessor :stripe_token, :execute_stripe_callbacks
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -45,7 +45,7 @@ class User < ActiveRecord::Base
   end
 
   def set_stripe_customer
-    unless self.skip_callbacks
+    if self.execute_stripe_callbacks
       begin
         if self.customer
           puts "update customer"
@@ -69,7 +69,7 @@ class User < ActiveRecord::Base
   end
 
   def set_stripe_subscription
-    unless self.skip_callbacks
+    if self.execute_stripe_callbacks
       customer = Customer.where(user_id: self.id).first
       user_bank_account = self.bank_account
       user_subscription = self.subscription

@@ -21,7 +21,6 @@ class PaymentsController < ApplicationController
 
           if transaction.save
             user = User.find current_user.id
-            user.skip_callbacks = true
             user.total_credit += charge.amount.to_i
             user.save
 
@@ -61,7 +60,6 @@ class PaymentsController < ApplicationController
 
       if transaction.save
         user = User.find(transaction.user_id)
-        user.skip_callbacks = true
         user.total_credit += transaction.amount
         user.save
 
