@@ -15,9 +15,10 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account
 
-  before_save :set_stripe_customer, :set_stripe_subscription
+  before_save :set_stripe_customer, :set_stripe_subscription, unless: :skip_callbacks
 
   attr_accessor :stripe_token
+  cattr_accessor :skip_callbacks
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
@@ -51,9 +52,6 @@ class User < ActiveRecord::Base
         stripe_customer = Stripe::Customer.retrieve(self.customer.customer_id)
         stripe_customer.source = self.stripe_token
         stripe_customer.save
-        # stripe_customer.sources.create({ source: self.stripe_token, default_for_currency: true })
-        # Stripe::Customer.retrieve(self.customer.customer_id)
-        # self.customer.update({ customer_id: stripe_customer.id })
       else
         puts "create new customer"
         stripe_customer = Stripe::Customer.create(
@@ -62,7 +60,6 @@ class User < ActiveRecord::Base
         )
 
         Customer.create(customer_id: stripe_customer.id, user_id: id)
-        # stripe_customer
       end
     rescue Stripe::CardError => e
       logger.error e.message
@@ -122,43 +119,6 @@ class User < ActiveRecord::Base
         )
       end
     end
-
-    # begin
-    #   if self.subscription
-    #     # plan = Stripe::Plan.retrieve(self.plan.plan_id)
-    #     # user_plan = Plan.find_by(plan_id: plan.id)
-    #     # user_plan.destroy
-    #     # plan.delete
-    #   else
-    #   end
-
-    #   plan = Stripe::Plan.create(
-    #     # id:             "plan_user_#{id}",
-    #     id:             "plan_user_#{SecureRandom.hex}",
-    #     currency:       "usd",
-    #     name:           "#{self.profile.first_name} savings plan",
-    #     amount:         amount_to_cents.to_i,
-    #     interval:       interval_frequency,
-    #     interval_count: interval_count
-    #   )
-    #   # Plan.create(plan_id: plan.id, user_id: id)
-    #   Subscription.create(plan_id: plan.id, )
-    #   plan
-    #   # binding.pry
-    # rescue Stripe::CardError => e
-    #   logger.error e.message
-    # end
-  end
-
-  def subscribe_to_plan
-    stripe_customer = Stripe::Customer.retrieve(self.customer.id)
-    stripe_subscription = stripe_customer.subscriptions.create(plan: self.subscription.plan_id)
-    self.subscription.update(subscription_id: stripe_subscription.id)
-  end
-
-  def cancel_subscriptions
-    customer = Stripe::Customer.retrieve(self.customer.customer_id)
-    customer.subscriptions.retrieve(self.subscriptions)
   end
 
   def self.get_autocomplete_data(email, current_user)
@@ -172,6 +132,4 @@ class User < ActiveRecord::Base
       .where("groups.user_id IS NULL OR users.id IS NULL")
       .map {|u| { id: u.id, name: "#{u.first_name} (#{u.email})" } }
   end
-
-
 end

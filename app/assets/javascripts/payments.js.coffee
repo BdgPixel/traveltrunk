@@ -2,7 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-Stripe.setPublishableKey('pk_test_vqvpyrmq9OBE6ZscwpZLNs0P');
+Stripe.setPublishableKey(window.stripe_publishable_key);
 
 jQuery ($) ->
   $('#payment-form').submit (event) ->

@@ -5,53 +5,70 @@
   .col-md-12.text-center
     .col-md-12.text-center
       .wrapper-group-saving
-        - if @joined_groups.any?
-          h1 Your Group's Savings
 
-          br
+        h1 Your Group's Savings
 
-          - @joined_groups.each do |joined_group|
-            ul
-              li
-                .col-md-12.text-center
-                  = image_tag joined_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
-                  h3 = joined_group.user.profile.first_name
-                  h3 $ 100
-              - joined_group.members.each do |member|
-                li
-                  .col-md-12.text-center
-                    = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
-                    h3 = member.profile.first_name
-                    h3 $ 100
+        br
 
+        ul
+          li
             .col-md-12.text-center
-              h1
-                | Total : $ 200
+              = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+              h3 = current_user.profile.first_name
+              h3 = currency_in_usd(current_user.total_credit)
 
-        - else
-          h1 Your Group's Savings
+        .col-md-12.text-center
+          h1
+            | Total : &nbsp;
+            = currency_in_usd(current_user.total_credit)
 
-          br
+        / - if @joined_groups.any?
+        /   h1 Your Group's Savings
 
-          ul
-            li
-              .col-md-12.text-center
-                = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
-                h3 = current_user.profile.first_name
-                h3 = currency(current_user.total_credit)
+        /   br
 
-              - if @members
-                - @members.each do |member|
-                  li
-                    .col-md-12.text-center
-                      = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
-                      h3 = member.profile.first_name
-                      h3 $ 100
+        /   - @joined_groups.each do |joined_group|
+        /     ul
+        /       li
+        /         .col-md-12.text-center
+        /           = image_tag joined_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
+        /           h3 = joined_group.user.profile.first_name
+        /           h3 $ 100
+        /       - joined_group.members.each do |member|
+        /         li
+        /           .col-md-12.text-center
+        /             = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
+        /             h3 = member.profile.first_name
+        /             h3 $ 100
 
-          .col-md-12.text-center
-            h1
-              | Total : &nbsp;
-              = currency(current_user.total_credit)
+        /     .col-md-12.text-center
+        /       h1
+        /         | Total : $ 200
+
+        / - else
+        /   h1 Your Group's Savings
+
+        /   br
+
+        /   ul
+        /     li
+        /       .col-md-12.text-center
+        /         = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+        /         h3 = current_user.profile.first_name
+        /         h3 = currency(current_user.total_credit)
+
+        /       - if @members
+        /         - @members.each do |member|
+        /           li
+        /             .col-md-12.text-center
+        /               = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
+        /               h3 = member.profile.first_name
+        /               h3 $ 100
+
+        /   .col-md-12.text-center
+        /     h1
+        /       | Total : &nbsp;
+        /       = currency(current_user.total_credit)
 
           / - if @members.size < 4
           /   .col-md-12.text-center

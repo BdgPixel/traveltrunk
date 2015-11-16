@@ -5,46 +5,66 @@ class PaymentsController < ApplicationController
   end
 
   def create
-    token              = params[:stripeToken]
-    api_key            = 'sk_test_ZqnJoRfoLZjcJQzgBjmqpJGy'
-    amount_to_cents    = current_user.bank_account.amount_transfer.to_f * 100
-    transfer_interval  = current_user.bank_account.transfer_type
+    if !params[:payment][:amount].empty?
+      begin
+        amount_to_cents    = params[:payment][:amount].to_f * 100
 
-    # customer = current_user.set_stripe_customer(api_key, token)
-    # plan     = current_user.set_stripe_plan(api_key, transfer_interval)
-    yuhuu
-    # customer.subscriptions.create(plan: plan.id)
+        charge = Stripe::Charge.create(
+          amount: amount_to_cents.to_i, # amount in cents, again
+          currency: "usd",
+          source: params[:stripeToken],
+          description: "Manual payment"
+        )
 
-      # charge = Stripe::Charge.create(
-      #   :amount => amount_to_cents.to_i, # amount in cents, again
-      #   :currency => "usd",
-      #   customer: customer.id
-      #   :source => token,
-      #   :description => "Example charge"
-      # )
+        if charge.paid
+          transaction = current_user.transactions.new(amount: charge.amount, transaction_type: 'deposit')
+
+          if transaction.save
+            User.skip_callbacks = true
+            user = User.find current_user.id
+            user.total_credit += charge.amount.to_i
+            user.save
+            redirect_to payments_thank_you_page_path(charge_id: charge.id)
+          else
+            redirect_to payments_path, alert: 'Some errors occured'
+          end
+        else
+          redirect_to payments_path, alert: 'Some errors occured'
+        end
+      rescue Stripe::CardError => e
+        redirect_to payments_path, alert: e.message
+      end
+    else
+      redirect_to payments_path, alert: "Amount can't be blank"
+    end
+  end
+
+  def thank_you_page
+    @charge = Stripe::Charge.retrieve(params[:charge_id])
   end
 
   def stripe_webhook
     response = JSON.parse(request.body.read)
 
-    if response["type"].eql? "invoice.payment_succeeded"
-      response = response["data"]["object"]
+    if response['type'].eql? 'invoice.payment_succeeded'
+      response = response['data']['object']
 
       transaction = Transaction.new(
-        user_id: response["lines"]["data"].first["metadata"]["user_id"],
-        invoice_id: response["id"],
-        amount: response["amount_due"],
-        customer_id: response["customer"],
-        transaction_type: "deposit"
+        user_id: response['lines']['data'].first['metadata']['user_id'],
+        invoice_id: response['id'],
+        amount: response['amount_due'],
+        customer_id: response['customer'],
+        transaction_type: 'deposit'
       )
 
       if transaction.save
+        User.skip_callbacks = true
         user = User.find(transaction.user_id)
         user.total_credit += transaction.amount
         user.save
       end
     end
+
     render nothing: true, status: 200
-    # status 200
   end
 end

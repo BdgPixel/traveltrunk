@@ -1,26 +1,64 @@
 - content_for :javascripts do
   = javascript_include_tag 'https://js.stripe.com/v2/'
-  = javascript_include_tag "payments"
+  = javascript_include_tag 'variables', 'payments'
 
-.col-md-6
+= simple_form_for :payment, method: :post, url: payments_create_path, html: { id: "payment-form" } do |f|
+  .col-md-6
+    .panel.panel-primary
+      .panel-heading
+        h3.panel-title Add Money Form
+
+      .panel-body
+        .row
+          .col-md-12
+            .form-group
+              = f.label :amount, required: false
+              .input-group
+                .input-group-addon $
+                = f.input_field :amount, as: :integer, class: 'form-control', required: false
+          .col-md-12
+            .form-group
+              = label_tag :card_number
+              input[type="text" size="20" data-stripe="number" class="form-control"]
+
+              .payment-errors
+
+          .col-md-6
+            .form-group
+              = label_tag "Expiration Month (MM)"
+              input[type="text" size="2" data-stripe="exp-month" class="form-control"]
+
+          .col-md-6
+            .form-group
+              = label_tag "Expiration Year (YYYY)"
+              input[type="text" size="4" data-stripe="exp-year" class="form-control"]
+
+        .col-md-12
+          .row
+            .col-md-12
+              br
+              center
+                .form-group
+                  = f.submit :submit, class: 'btn btn-primary'
+
   / form#payment-form action="" method="POST"
-  = simple_form_for :payment, method: :post, url: payments_create_path, html: { id: "payment-form" } do |f|
-    span.payment-errors
-    .form-group
-      = f.input :email, as: :hidden, input_html: { value: current_user.email, data: { stripe: "email" } }
-    .form-group
-      / span Card Number
-      = f.input :number, input_html: { data: { stripe: "number" } }
-      / input.form-control data-stripe="number" type="text" /
-    .form-group
-      / span CVC
-      = f.input :cvc, input_html: { data: { stripe: "cvc" } }
-      / input.form-control data-stripe="cvc" type="text" /
-    .form-group
-      / span Expiration (MM/YYYY)
-      = f.input :month, input_html: { data: { stripe: "exp-month" } }
-      = f.input :year, input_html: { data: { stripe: "exp-year" } }
-      / input.form-control data-stripe="exp-month" type="text" /
-      / span /
-      / input.form-control data-stripe="exp-year" type="text" /
-    button type="submit"  Submit Payment
+  / = simple_form_for :payment, method: :post, url: payments_create_path, html: { id: "payment-form" } do |f|
+  /   span.payment-errors
+  /   .form-group
+  /     = f.input :email, as: :hidden, input_html: { value: current_user.email, data: { stripe: "email" } }
+  /   .form-group
+  /     / span Card Number
+  /     = f.input :number, input_html: { data: { stripe: "number" } }
+  /     / input.form-control data-stripe="number" type="text" /
+  /   .form-group
+  /     / span CVC
+  /     = f.input :cvc, input_html: { data: { stripe: "cvc" } }
+  /     / input.form-control data-stripe="cvc" type="text" /
+  /   .form-group
+  /     / span Expiration (MM/YYYY)
+  /     = f.input :month, input_html: { data: { stripe: "exp-month" } }
+  /     = f.input :year, input_html: { data: { stripe: "exp-year" } }
+  /     / input.form-control data-stripe="exp-month" type="text" /
+  /     / span /
+  /     / input.form-control data-stripe="exp-year" type="text" /
+  /   button type="submit"  Submit Payment

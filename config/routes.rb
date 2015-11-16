@@ -2,9 +2,7 @@ Rails.application.routes.draw do
   get 'payments' => 'payments#index'
 
   post 'payments/create'
-
-  post 'payments/create'
-
+  get 'payments/thank_you_page'
   post 'payments/stripe_webhook'
 
   get 'savings' => 'savings#index'
