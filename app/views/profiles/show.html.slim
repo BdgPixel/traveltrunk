@@ -53,18 +53,21 @@
                         td = current_user.profile.country_name
                   br
                   h5 SAVINGS PLAN
-                  table.table.table-user-information
-                    tbody
-                      tr
-                        td width='250px' Plan Name:
-                        td = current_user.subscription.plan_name
-                      tr
-                        td Amount:
-                        td = currency_in_usd(current_user.subscription.amount)
-                      tr
-                        td Frequency:
-                        td = current_user.bank_account.transfer_frequency
-
+                  - if current_user.subscription
+                    table.table.table-user-information
+                      tbody
+                        tr
+                          td width='250px' Plan Name:
+                          td = current_user.subscription.plan_name
+                        tr
+                          td Amount:
+                          td = currency_in_usd(current_user.subscription.amount)
+                        tr
+                          td Frequency:
+                          td = current_user.bank_account.transfer_frequency
+                  - else
+                    .alert.alert-info
+                      | You dont have saving plan
 
 
           .panel-footer
