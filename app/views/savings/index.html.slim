@@ -38,7 +38,7 @@
               .col-md-12.text-center
                 = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
                 h3 = current_user.profile.first_name
-                h3 $ 100
+                h3 = currency(current_user.total_credit)
 
               - if @members
                 - @members.each do |member|
@@ -50,28 +50,29 @@
 
           .col-md-12.text-center
             h1
-              | Total : $ 200
+              | Total : &nbsp;
+              = currency(current_user.total_credit)
 
-          - if @members.size < 4
-            .col-md-12.text-center
-              br
-              br
-              = link_to 'Invite a friend', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default btn-invite-friend'
-              br
-              br
-              .col-md-4
-              .col-md-4.col-offset-4
-                #slideToggle.panel.panel-default
-                  .panel-heading Invite a Friend
-                  .panel-body
-                    .token-input
-                      = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
-                        .form-group
-                          = f.label :user_id, 'Type email or name to invite'
-                          = f.input_field :user_id
-                          p User who have joined or created saving groups will not appear here
-                          / = f.input_field :user_id, data: { load: @joined_members }
+          / - if @members.size < 4
+          /   .col-md-12.text-center
+          /     br
+          /     br
+          /     = link_to 'Invite a friend', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default btn-invite-friend'
+          /     br
+          /     br
+          /     .col-md-4
+          /     .col-md-4.col-offset-4
+          /       #slideToggle.panel.panel-default
+          /         .panel-heading Invite a Friend
+          /         .panel-body
+          /           .token-input
+          /             = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
+          /               .form-group
+          /                 = f.label :user_id, 'Type email or name to invite'
+          /                 = f.input_field :user_id
+          /                 p User who have joined or created saving groups will not appear here
+          /                 / = f.input_field :user_id, data: { load: @joined_members }
 
-                        .actions.form-group
-                          = f.submit 'Send Invitation', class: 'btn btn-default'
+          /               .actions.form-group
+          /                 = f.submit 'Send Invitation', class: 'btn btn-default'
 

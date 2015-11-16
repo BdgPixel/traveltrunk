@@ -10,28 +10,27 @@ class ProfilesController < ApplicationController
   end
 
   def update
-
     respond_to do |format|
-      if current_user.update_attributes(user_params)
-        token              = params[:stripeToken]
-        api_key            = 'sk_test_ZqnJoRfoLZjcJQzgBjmqpJGy'
-        amount_to_cents    = current_user.bank_account.amount_transfer.to_f * 100
+      if current_user.update_attributes(user_params.merge({ stripe_token: params[:stripeToken] }))
+        # token              = params[:stripeToken]
+        # amount_to_cents    = current_user.bank_account.amount_transfer.to_f * 100
 
-        interval_frequency, interval_count = current_user.bank_account.transfer_type
+        # interval_frequency, interval_count = current_user.bank_account.transfer_type
+        # customer = current_user.set_stripe_customer(token)
+        # plan     = current_user.set_stripe_plan(api_key, interval_frequency, interval_count)
 
-        customer = current_user.set_stripe_customer(api_key, token)
-        plan     = current_user.set_stripe_plan(api_key, interval_frequency, interval_count)
+        # subscription = customer.subscriptions.create(plan: plan.id, metadata: { user_id: current_user.id })
 
-        customer.subscriptions.create(plan: plan.id, metadata: { user_id: current_user.id })
-        # yuhuu
-        Subscription.create(
-          plan_id:        plan.id,
-          amount:         plan.amount,
-          currency:       plan.currency,
-          interval:       plan.interval,
-          interval_count: plan.interval_count,
-          plan_name:      plan.name
-        )
+        # Subscription.create(
+        #   plan_id:        plan.id,
+        #   subscription_id: subscription.id,
+        #   amount:         plan.amount,
+        #   currency:       plan.currency,
+        #   interval:       plan.interval,
+        #   interval_count: plan.interval_count,
+        #   plan_name:      plan.name
+        # )
+        # binding.pry
 
         format.html { redirect_to profile_url, notice: 'Profile was successfully updated.' }
         format.json { render :show }

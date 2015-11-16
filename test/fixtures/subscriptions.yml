@@ -7,6 +7,7 @@ one:
   interval_count: 1
   plan_name: MyString
   currency: MyString
+  user_id: 
 
 two:
   plan_id: MyString
@@ -15,3 +16,4 @@ two:
   interval_count: 1
   plan_name: MyString
   currency: MyString
+  user_id: 
