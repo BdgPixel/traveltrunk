@@ -49,9 +49,10 @@ class PaymentsController < ApplicationController
 
     if response['type'].eql? 'invoice.payment_succeeded'
       response = response['data']['object']
+      puts response
 
       transaction = Transaction.new(
-        user_id: response['lines']['data'].first['metadata']['user_id'],
+        user_id: response['lines']['data'].last['metadata']['user_id'],
         invoice_id: response['id'],
         amount: response['amount_due'],
         customer_id: response['customer'],
@@ -63,7 +64,7 @@ class PaymentsController < ApplicationController
         user.total_credit += transaction.amount
         user.save
 
-        StripeMailer.subscription_charged(current_user.id, transaction.amount).deliver_now
+        StripeMailer.subscription_charged(user.id, transaction.amount).deliver_now
       end
     end
 

@@ -91,23 +91,30 @@ class User < ActiveRecord::Base
         stripe_customer = Stripe::Customer.retrieve(customer.customer_id)
 
         if user_subscription
-          stripe_subscription = stripe_customer.subscriptions.retrieve(user_subscription.subscription_id)
-          stripe_subscription.plan = stripe_plan.id
-          stripe_subscription.metadata = { user_id: self.id }
-          stripe_subscription.save
-
           previous_plan = Stripe::Plan.retrieve(user_subscription.plan_id)
+          # stripe_customer = Stripe::Customer.retrieve({customer.customer_id})
+          stripe_customer.subscriptions.retrieve(user_subscription.subscription_id).delete
+          previous_plan.delete
+
+          stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
+
+          # stripe_subscription = stripe_customer.subscriptions.retrieve(user_subscription.subscription_id)
+          # stripe_subscription.plan = stripe_plan.id
+          # stripe_subscription.metadata = { user_id: self.id }
+          # stripe_subscription.save
+
 
           user_subscription.update_attributes({
             plan_id:        stripe_plan.id,
             amount:         stripe_plan.amount,
             interval:       stripe_plan.interval,
             interval_count: stripe_plan.interval_count,
+            subscription_id: stripe_subscription.id,
             plan_name:      plan_name
           })
 
           StripeMailer.subscription_updated(self.id).deliver_now
-          previous_plan.delete
+          # previous_plan.delete
         else
           stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
 
