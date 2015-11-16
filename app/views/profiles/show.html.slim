@@ -23,7 +23,7 @@
                   table.table.table-user-information
                     tbody
                       tr
-                        td Date of Birth:
+                        td width='250px' Date of Birth:
                         td = current_user.profile.birth_date.to_time.strftime('%B %d, %Y')
 
                       tr
@@ -52,24 +52,18 @@
                         td County:
                         td = current_user.profile.country_name
                   br
-                  h5 BANK INFORMATION
+                  h5 SAVINGS PLAN
                   table.table.table-user-information
                     tbody
-                      / tr
-                      /   td Bank Name:
-                      /   td = current_user.bank_account.bank_name
-                      / tr
-                      /   td Account Number:
-                      /   td = current_user.bank_account.account_number
-                      / tr
-                      /   td Routing Number:
-                      /   td = current_user.bank_account.routing_number
-                      / tr
-                      /   td Amount Transfer:
-                      /   td = number_to_currency(current_user.bank_account.amount_transfer, precision: 2)
-                      / tr
-                      /   td Transfer Frequency:
-                      /   td = current_user.bank_account.transfer_frequency
+                      tr
+                        td width='250px' Plan Name:
+                        td = current_user.subscription.plan_name
+                      tr
+                        td Amount:
+                        td = currency_in_usd(current_user.subscription.amount)
+                      tr
+                        td Frequency:
+                        td = current_user.bank_account.transfer_frequency
 
 
 

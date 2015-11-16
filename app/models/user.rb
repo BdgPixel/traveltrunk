@@ -75,11 +75,12 @@ class User < ActiveRecord::Base
     if user_subscription.nil? || user_bank_account.changed.include?('amount_transfer') || user_bank_account.changed.include?('transfer_frequency')
       interval_frequency, interval_count = user_bank_account.transfer_type
       amount_to_cents = (user_bank_account.amount_transfer.to_f * 100).to_i
+      plan_name = "#{self.profile.first_name.titleize} #{user_bank_account.transfer_frequency} Savings Plan"
 
       stripe_plan = Stripe::Plan.create(
         id:             SecureRandom.hex,
         currency:       'usd',
-        name:           "#{self.profile.first_name.titleize} #{user_bank_account.transfer_frequency} Savings Plan",
+        name:           plan_name,
         amount:         amount_to_cents,
         interval:       interval_frequency,
         interval_count: interval_count
@@ -88,7 +89,6 @@ class User < ActiveRecord::Base
       stripe_customer = Stripe::Customer.retrieve(customer.customer_id)
 
       if user_subscription
-        puts "update subscription"
         stripe_subscription = stripe_customer.subscriptions.retrieve(user_subscription.subscription_id)
         stripe_subscription.plan = stripe_plan.id
         stripe_subscription.save
@@ -99,12 +99,13 @@ class User < ActiveRecord::Base
           plan_id:        stripe_plan.id,
           amount:         stripe_plan.amount,
           interval:       stripe_plan.interval,
-          interval_count: stripe_plan.interval_count
+          interval_count: stripe_plan.interval_count,
+          plan_name:      plan_name
         })
 
+        StripeMailer.subscription_updated(self.id).deliver_now
         previous_plan.delete
       else
-        puts "create subscription"
         stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id })
 
         Subscription.create(
@@ -117,6 +118,8 @@ class User < ActiveRecord::Base
           plan_name:      stripe_plan.name,
           user_id: id
         )
+
+        StripeMailer.subscription_created(self.id).deliver_now
       end
     end
   end

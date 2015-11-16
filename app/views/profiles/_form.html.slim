@@ -81,7 +81,7 @@
 
         .col-md-9
           br
-          h4 BANK INFORMATION
+          h4 SAVINGS PLAN
           br
 
         = f.simple_fields_for :bank_account do |bank_account_form|
@@ -103,15 +103,15 @@
               .col-md-3
                 .form-group
                   = label_tag "Expiration Month (MM)"
-                  input[type="text" size="2" data-stripe="exp-month" class="form-control"]
-
-                  / = bank_account_form.input :exp_month, input_html: { class: 'form-control', data: { stripe: "exp-month" } }
+                  = select_month nil, { use_two_digit_numbers: true }, { name: nil, id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+                  / input[type="text" size="2" data-stripe="exp-month" class="form-control"]
 
               .col-md-3
                 .form-group
                   / = bank_account_form.input :exp_year, input_html: { class: 'form-control', data: { stripe: "exp-year" } }
                   = label_tag "Expiration Year (YYYY)"
-                  input[type="text" size="4" data-stripe="exp-year" class="form-control"]
+                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: nil, id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+                  / input[type="text" size="4" data-stripe="exp-year" class="form-control"]
 
               / .col-md-12
               /   .form-group

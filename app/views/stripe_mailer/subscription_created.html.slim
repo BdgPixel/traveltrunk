@@ -1,0 +1,8 @@
+SubscriptionMailer#created
+  p = "Hello #{@profile.first_name} #{@profile.last_name}"
+
+  p
+    | You've successfully created your savings plan with name <b>#{@subscription.plan_name}</b><br/>
+    | #{currency_in_usd(@subscription.amount)} / #{pluralize(@subscription.interval_count, @subscription.interval)}
+
+

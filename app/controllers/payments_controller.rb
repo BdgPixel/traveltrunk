@@ -24,6 +24,8 @@ class PaymentsController < ApplicationController
             user = User.find current_user.id
             user.total_credit += charge.amount.to_i
             user.save
+
+            StripeMailer.payment_succeed(current_user.id, transaction.amount).deliver_now
             redirect_to payments_thank_you_page_path(charge_id: charge.id)
           else
             redirect_to payments_path, alert: 'Some errors occured'
@@ -62,6 +64,8 @@ class PaymentsController < ApplicationController
         user = User.find(transaction.user_id)
         user.total_credit += transaction.amount
         user.save
+
+        StripeMailer.subscription_charged(current_user.id, transaction.amount).deliver_now
       end
     end
 
