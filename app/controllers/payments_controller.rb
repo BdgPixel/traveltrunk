@@ -20,8 +20,8 @@ class PaymentsController < ApplicationController
           transaction = current_user.transactions.new(amount: charge.amount, transaction_type: 'deposit')
 
           if transaction.save
-            User.skip_callbacks = true
             user = User.find current_user.id
+            user.skip_callbacks = true
             user.total_credit += charge.amount.to_i
             user.save
 
@@ -60,8 +60,8 @@ class PaymentsController < ApplicationController
       )
 
       if transaction.save
-        User.skip_callbacks = true
         user = User.find(transaction.user_id)
+        user.skip_callbacks = true
         user.total_credit += transaction.amount
         user.save
 
