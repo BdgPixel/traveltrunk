@@ -4,7 +4,6 @@
 
 <% if !@is_first_page && @hotels_list.empty? %>
   $(".loadMoreNext:last").remove();
-
 <% else %>
   $("#dealsHotelsList").append("<%= j render 'hotels_list' %>");
 
