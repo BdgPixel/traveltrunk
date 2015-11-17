@@ -30,7 +30,11 @@ class User < ActiveRecord::Base
   end
 
   def full_name
-    full_name = "#{self.profile.first_name} #{self.profile.last_name}".titleize
+    "#{self.profile.first_name} #{self.profile.last_name}".titleize
+  end
+
+  def total_credit_in_usd
+    (self.total_credit / 100).round
   end
 
   def get_notification(is_read = true)
@@ -105,16 +109,16 @@ class User < ActiveRecord::Base
 
 
           user_subscription.update_attributes({
-            plan_id:        stripe_plan.id,
-            amount:         stripe_plan.amount,
-            interval:       stripe_plan.interval,
-            interval_count: stripe_plan.interval_count,
-            subscription_id: stripe_subscription.id,
-            plan_name:      plan_name
+            plan_id:          stripe_plan.id,
+            amount:           stripe_plan.amount,
+            interval:         stripe_plan.interval,
+            interval_count:   stripe_plan.interval_count,
+            subscription_id:  stripe_subscription.id,
+            plan_name:        plan_name
           })
 
           StripeMailer.subscription_updated(self.id).deliver_now
-          # previous_plan.delete
+          previous_plan.delete
         else
           stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
 

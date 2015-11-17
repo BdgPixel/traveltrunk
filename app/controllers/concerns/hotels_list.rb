@@ -1,6 +1,6 @@
 module HotelsList
   def api_params_hash(options = nil)
-    options     = options || "HOTEL_SUMMARY,ROOM_RATE_DETAILS"
+    # options     = options || "HOTEL_SUMMARY,ROOM_RATE_DETAILS"
     params_hash = {
       cid:          55505,
       minorRev:     30,
@@ -36,30 +36,40 @@ module HotelsList
   end
 
   def get_hotels_list(custom_params, params_cache = nil)
-    url = "http://api.ean.com/ean-services/rs/hotel/v3/list?"
+    if current_user.total_credit_in_usd > 0
+      @is_first_page =  params_cache.nil?
+      url = "http://api.ean.com/ean-services/rs/hotel/v3/list?"
 
-    if custom_params
-      url_custom_params = url +
-        if params_cache
-          api_params_hash.merge!(params_cache).to_query
+      if custom_params
+        custom_params.merge!({ maxRate: current_user.total_credit_in_usd })
+
+        url_custom_params = url +
+          if params_cache
+            api_params_hash.merge!(params_cache).to_query
+          else
+            custom_params.merge!(api_params_hash).to_query
+          end
+
+        response  = HTTParty.get(url_custom_params)
+
+        if response["HotelListResponse"]["EanWsError"]
+          @hotels_list = []
+          @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
         else
-          custom_params.merge!(api_params_hash("HOTEL_SUMMARY")).to_query
+          @hotel_ids                 = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
+          @like_ids                  = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+
+          @hotels_list               = response["HotelListResponse"]["HotelList"]["HotelSummary"]
+          @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
+          @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
         end
-
-      if params_cache
-        response      = HTTParty.get(url_custom_params)
-        @params_cache = params_cache
       else
-        response      = HTTParty.get(url_custom_params)
+        @error_response = "You haven't selected any destinations"
+        @hotels_list = []
       end
-
-      @hotel_ids                 = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-      @like_ids                  = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-
-      @hotels_list               = response["HotelListResponse"]["HotelList"]["HotelSummary"]
-      @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
-      @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
-
+    else
+      @error_response = "You don't have any credits"
+      @hotels_list = []
     end
   end
 end
