@@ -118,7 +118,7 @@ class User < ActiveRecord::Base
           })
 
           StripeMailer.subscription_updated(self.id).deliver_now
-          previous_plan.delete
+          # previous_plan.delete
         else
           stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
 
