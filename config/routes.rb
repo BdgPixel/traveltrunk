@@ -1,8 +1,7 @@
 Rails.application.routes.draw do
-  get 'payments' => 'payments#index'
-
+  get  'payments' => 'payments#index'
   post 'payments/create'
-  get 'payments/thank_you_page'
+  get  'payments/thank_you_page'
   post 'payments/stripe_webhook'
 
   get 'savings' => 'savings#index'
@@ -24,6 +23,7 @@ Rails.application.routes.draw do
   get  'deals/previous' => 'deals/previous'
   get  'deals/:id/room_availability' => 'deals#room_availability', as: 'deals/room_availability'
   get  'deals/:id/room_images' => 'deals#room_images', as: 'deals/room_images'
+  get  'deals/book' => 'deals#book', as: 'deals/book'
   post 'deals/search' => 'deals#search'
   post 'deals/create_destination' => 'deals/create_destination'
 

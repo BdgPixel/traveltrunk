@@ -6,7 +6,7 @@
     .col-md-12.text-center
       .wrapper-group-saving
 
-        h1 Your Group's Savings
+        h1 = "#{current_user.profile.first_name.titleize} #{current_user.bank_account.transfer_frequency} Savings Plan"
 
         br
 

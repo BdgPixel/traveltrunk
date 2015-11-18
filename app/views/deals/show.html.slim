@@ -20,7 +20,7 @@
           ol.indicator
 
         #links
-          - @hotel_information["HotelImages"]["HotelImage"][0..19].each do |hotel_image|
+          - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
             - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
               = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"]
                 = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
@@ -35,8 +35,8 @@
           = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
         h3 = currency(params[:price].to_f.round)
-        .pull-left
-          button.btn.btn-default type="button" Book Now
+        / .pull-left
+        /   button.btn.btn-default type="button" Book Now
 
       .col-md-5
         .col-md-12
@@ -61,8 +61,9 @@
       .clearfix
 
       .col-md-6
-        p
-         = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
+        #roomAvailability.form-horizontal
+        / p
+         / = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
 
       .col-md-6
 
@@ -73,6 +74,5 @@
       .col-md-12
         .container
           .row
-            #roomAvailability.form-horizontal
-
+            / #roomAvailability.form-horizontal
 

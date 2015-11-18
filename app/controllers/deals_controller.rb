@@ -21,6 +21,21 @@ class DealsController < ApplicationController
     get_hotel_information(expedia_params_hash)
   end
 
+  def book
+    searchParams     = current_user.get_current_destination
+    room_params_hash = {
+      hotelId:        params[:id],
+      arrivalDate:    searchParams[:arrivalDate],
+      departureDate:  searchParams[:departureDate],
+      rateCode:       params[:rate_code],
+      roomTypeCode:   params[:room_type_code],
+      options:        0,
+      includeDetails: true
+    }
+
+    get_room_availability(room_params_hash)
+  end
+
   def room_availability
     if request.xhr?
       searchParams     = current_user.get_current_destination
@@ -33,8 +48,8 @@ class DealsController < ApplicationController
       }
 
       get_room_availability(room_params_hash)
-      get_room_images({ hotelId: params[:id] })
-
+      # get_room_availability
+      # get_room_images({ hotelId: params[:id] })
       respond_to :js
     end
   end
@@ -45,7 +60,7 @@ class DealsController < ApplicationController
       hotel_id_hash = { hotelId: params[:id] }
 
       get_room_images(hotel_id_hash)
-      # binding.pry
+
       respond_to do |format|
         format.js { render :reload_image }
       end

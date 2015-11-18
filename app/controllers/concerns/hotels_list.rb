@@ -18,11 +18,23 @@ module HotelsList
     @room_images       = response["HotelRoomImageResponse"]["RoomImages"]["RoomImage"]
   end
 
-  def get_room_availability(custom_params)
-    url                = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
-    url_custom_params  = url + custom_params.merge!(api_params_hash).to_query
-    response           = HTTParty.get(url_custom_params)
-    @room_availability = response["HotelRoomAvailabilityResponse"]
+  def get_room_availability(room_params)
+    url                 = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
+    complete_params     = room_params.merge!(api_params_hash)
+    url_room_params     = url + complete_params.to_query
+    begin
+      response           = HTTParty.get(url_room_params)
+
+      if response["HotelRoomAvailabilityResponse"]["EanWsError"]
+        @error_response = response["HotelRoomAvailabilityResponse"]["EanWsError"]["presentationMessage"]
+        @room_availability    = []
+      else
+        @room_availability = response["HotelRoomAvailabilityResponse"]
+      end
+    rescue HTTParty::Error  => e
+       # logger.error e.message
+       @error_response = e.message
+    end
   end
 
   def get_hotel_information(custom_params)
@@ -31,8 +43,20 @@ module HotelsList
 
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
     url_custom_params  = url + custom_params.merge!(api_params_hash(0)).to_query
-    response           = HTTParty.get(url_custom_params)
-    @hotel_information = response["HotelInformationResponse"]
+
+    begin
+      response           = HTTParty.get(url_custom_params)
+
+      if response["HotelInformationResponse"]["EanWsError"]
+        @error_response = response["HotelInformationResponse"]["EanWsError"]["presentationMessage"]
+        @hotel_information    = []
+      else
+        @hotel_information = response["HotelInformationResponse"]
+      end
+
+    rescue HTTParty::Error  => e
+      @error_response = e.message
+    end
   end
 
   def get_hotels_list(custom_params, params_cache = nil)
@@ -50,18 +74,22 @@ module HotelsList
             custom_params.merge!(api_params_hash).to_query
           end
 
-        response  = HTTParty.get(url_custom_params)
+        begin
+          response  = HTTParty.get(url_custom_params)
 
-        if response["HotelListResponse"]["EanWsError"]
-          @hotels_list = []
-          @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
-        else
-          @hotel_ids                 = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-          @like_ids                  = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+          if response["HotelListResponse"]["EanWsError"]
+            @hotels_list = []
+            @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
+          else
+            @hotel_ids                 = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
+            @like_ids                  = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
 
-          @hotels_list               = response["HotelListResponse"]["HotelList"]["HotelSummary"]
-          @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
-          @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
+            @hotels_list               = response["HotelListResponse"]["HotelList"]["HotelSummary"]
+            @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
+            @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
+          end
+        rescue HTTParty::Error => e
+          @error_response = e.message
         end
       else
         @error_response = "You haven't selected any destinations"

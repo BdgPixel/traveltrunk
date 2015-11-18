@@ -67,7 +67,7 @@ class User < ActiveRecord::Base
         end
       rescue Stripe::CardError => e
         logger.error e.message
-        puts e.message
+        # puts e.message
       end
     end
   end

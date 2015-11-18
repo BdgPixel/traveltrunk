@@ -202,7 +202,7 @@ $(document).ready ->
     $.get('/deals')
   else
     params_path_id = window.location.pathname.split('/')[2]
-    # $.get("/deals/#{ params_path_id }/room_availability")
+    $.get("/deals/#{ params_path_id }/room_availability")
 
 
   disableEnterFormSubmit()
