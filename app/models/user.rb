@@ -44,8 +44,27 @@ class User < ActiveRecord::Base
 
   def get_current_destination
     if destination  = self.destination
-      searchParams = destination.get_search_params
+      search_params = destination.get_search_params
     end
+  end
+
+  def expedia_room_params(hotel_id, rate_code = nil, room_type_code = nil)
+    current_search = self.get_current_destination
+
+    room_hash = {}
+
+    room_hash[:hotelId]       = hotel_id
+    room_hash[:arrivalDate]   = current_search[:arrivalDate]
+    room_hash[:departureDate] = current_search[:departureDate]
+
+    if rate_code && room_type_code
+      room_hash[:rateCode]     = rate_code
+      room_hash[:roomTypeCode] = room_type_code
+    end
+
+    room_hash[:options]        =  0
+    room_hash[:includeDetails] =  true
+    room_hash
   end
 
   def set_stripe_customer
@@ -106,7 +125,6 @@ class User < ActiveRecord::Base
           # stripe_subscription.plan = stripe_plan.id
           # stripe_subscription.metadata = { user_id: self.id }
           # stripe_subscription.save
-
 
           user_subscription.update_attributes({
             plan_id:          stripe_plan.id,

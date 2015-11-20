@@ -4,67 +4,15 @@
       tr
         th Room type
         th Options
-        th Avg rate per night
+        th Total Rate
         th
 
       tbody
         - if @room_availability["@size"].eql? "1"
-          tr
-            td
-              = @room_availability["HotelRoomResponse"]["rateDescription"].split(",").first
-              - if @room_availability["HotelRoomResponse"]["BedTypes"]["@size"].eql? "1"
-                p = @room_availability["HotelRoomResponse"]["BedTypes"]["description"]
-              - else
-                p
-                  - @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"].each do |bed_type|
-                    = bed_type["description"]
-                    br
-            td
-              ul
-                - unless room["ValueAdds"].nil?
-                  - if @room_availability["ValueAdds"]["@size"].eql? "1"
-                    li = @room_availability["ValueAdds"]["ValueAdd"]["description"]
-                  - else
-                    - @room_availability["HotelRoomResponse"]["ValueAdds"]["ValueAdd"].each do |option|
-                      li = option["description"]
-            td.text-right
-              = currency(@room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
-
-            td
-              = link_to "Book Now", "#", class: "btn btn-default"
-              / = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: @room_availability["rateCode"], room_type_code: @room_availability["roomTypeCode"]), class: "btn btn-default"
-              / button.btn.btn-default type="button" Book Now
-
+          = show_tags_room_availability(@room_availability["HotelRoomResponse"])
         - else
           - @room_availability["HotelRoomResponse"].each do |room|
-            tr
-              td
-                = room["rateDescription"].split(",").first
-                - if room["BedTypes"]["@size"].eql? "1"
-                  p = room["BedTypes"]["description"]
-                - else
-                  p
-                    - room["BedTypes"]["BedType"].each do |bed_type|
-                      = bed_type["description"]
-                      br
-              td
-                ul
-                  - unless room["ValueAdds"].nil?
-                    - if room["ValueAdds"]["@size"].eql? "1"
-                      li = room["ValueAdds"]["ValueAdd"]["description"]
-                    - else
-                      - room["ValueAdds"]["ValueAdd"].each do |option|
-                        li = option["description"]
-
-              td.text-right
-                = currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
-
-              td
-                = link_to "Book Now", "#", class: "btn btn-default"
-                / = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["roomTypeCode"]), class: "btn btn-default"
-                / button.btn.btn-default type="button" Book Now
-            / = show_room_images(@room_images, room["roomTypeCode"])
-
+            = show_tags_room_availability(room)
 
 - if @error_response
   #error_response.alert.alert-info

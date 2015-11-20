@@ -8,6 +8,7 @@ module HotelsList
       locale:       "en_US",
       currencyCode: "USD",
       supplierType: "E",
+      numberOfResults: 200
     }
   end
 
@@ -23,16 +24,15 @@ module HotelsList
     complete_params     = room_params.merge!(api_params_hash)
     url_room_params     = url + complete_params.to_query
     begin
-      response           = HTTParty.get(url_room_params)
+      response = HTTParty.get(url_room_params)
 
       if response["HotelRoomAvailabilityResponse"]["EanWsError"]
-        @error_response = response["HotelRoomAvailabilityResponse"]["EanWsError"]["presentationMessage"]
-        @room_availability    = []
+        @room_availability = []
+        @error_response    = response["HotelRoomAvailabilityResponse"]["EanWsError"]["presentationMessage"]
       else
         @room_availability = response["HotelRoomAvailabilityResponse"]
       end
     rescue HTTParty::Error  => e
-       # logger.error e.message
        @error_response = e.message
     end
   end
@@ -45,11 +45,11 @@ module HotelsList
     url_custom_params  = url + custom_params.merge!(api_params_hash(0)).to_query
 
     begin
-      response           = HTTParty.get(url_custom_params)
+      response = HTTParty.get(url_custom_params)
 
       if response["HotelInformationResponse"]["EanWsError"]
-        @error_response = response["HotelInformationResponse"]["EanWsError"]["presentationMessage"]
-        @hotel_information    = []
+        @hotel_information = []
+        @error_response    = response["HotelInformationResponse"]["EanWsError"]["presentationMessage"]
       else
         @hotel_information = response["HotelInformationResponse"]
       end
@@ -61,8 +61,8 @@ module HotelsList
 
   def get_hotels_list(custom_params, params_cache = nil)
     if current_user.total_credit_in_usd > 0
-      @is_first_page =  params_cache.nil?
-      url = "http://api.ean.com/ean-services/rs/hotel/v3/list?"
+      url            = "http://api.ean.com/ean-services/rs/hotel/v3/list?"
+      @is_first_page = params_cache.nil?
 
       if custom_params
         custom_params.merge!({ maxRate: current_user.total_credit_in_usd })
@@ -73,31 +73,86 @@ module HotelsList
           else
             custom_params.merge!(api_params_hash).to_query
           end
-
+        # binding.pry
         begin
-          response  = HTTParty.get(url_custom_params)
+          response = HTTParty.get(url_custom_params)
 
           if response["HotelListResponse"]["EanWsError"]
-            @hotels_list = []
+            @hotels_list    = []
             @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
           else
-            @hotel_ids                 = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-            @like_ids                  = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+            # @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
+            # @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+            # binding.pry
 
-            @hotels_list               = response["HotelListResponse"]["HotelList"]["HotelSummary"]
-            @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
-            @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
+            @hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
+              hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= (current_user.total_credit / 100.0)
+            end
+
+            if @hotels_list.empty?
+              @error_response = "There is no hotels that match your criteria and saving credits"
+            end
+
+            # @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
+            # @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
           end
         rescue HTTParty::Error => e
           @error_response = e.message
         end
       else
+        @hotels_list    = []
         @error_response = "You haven't selected any destinations"
-        @hotels_list = []
       end
     else
+      @hotels_list    = []
       @error_response = "You don't have any credits"
-      @hotels_list = []
     end
+    # binding.pry
   end
+
+
+
+  # def get_hotels_list(custom_params, params_cache = nil)
+  #   if current_user.total_credit_in_usd > 0
+  #     url            = "http://api.ean.com/ean-services/rs/hotel/v3/list?"
+  #     @is_first_page = params_cache.nil?
+
+  #     if custom_params
+  #       custom_params.merge!({ maxRate: current_user.total_credit_in_usd })
+
+  #       url_custom_params = url +
+  #         if params_cache
+  #           api_params_hash.merge!(params_cache).to_query
+  #         else
+  #           custom_params.merge!(api_params_hash).to_query
+  #         end
+  #       # binding.pry
+  #       begin
+  #         response = HTTParty.get(url_custom_params)
+
+  #         if response["HotelListResponse"]["EanWsError"]
+  #           @hotels_list    = []
+  #           @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
+  #         else
+  #           @hotel_ids                 = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
+  #           @like_ids                  = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+
+  #           @hotels_list               = response["HotelListResponse"]["HotelList"]["HotelSummary"]
+  #           @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
+  #           @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
+  #         end
+  #       rescue HTTParty::Error => e
+  #         @error_response = e.message
+  #       end
+  #     else
+  #       @hotels_list    = []
+  #       @error_response = "You haven't selected any destinations"
+  #     end
+  #   else
+  #     @hotels_list    = []
+  #     @error_response = "You don't have any credits"
+  #   end
+  # end
+
+
 end

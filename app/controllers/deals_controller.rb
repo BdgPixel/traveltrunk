@@ -22,31 +22,14 @@ class DealsController < ApplicationController
   end
 
   def book
-    searchParams     = current_user.get_current_destination
-    room_params_hash = {
-      hotelId:        params[:id],
-      arrivalDate:    searchParams[:arrivalDate],
-      departureDate:  searchParams[:departureDate],
-      rateCode:       params[:rate_code],
-      roomTypeCode:   params[:room_type_code],
-      options:        0,
-      includeDetails: true
-    }
-
+    room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
     get_room_availability(room_params_hash)
   end
 
   def room_availability
     if request.xhr?
-      searchParams     = current_user.get_current_destination
-      room_params_hash = {
-        hotelId:        params[:id],
-        arrivalDate:    searchParams[:arrivalDate],
-        departureDate:  searchParams[:departureDate],
-        options:        0,
-        includeDetails: true
-      }
 
+      room_params_hash = current_user.expedia_room_params(params[:id])
       get_room_availability(room_params_hash)
       # get_room_availability
       # get_room_images({ hotelId: params[:id] })
@@ -109,55 +92,57 @@ class DealsController < ApplicationController
     set_search_data
   end
 
-  # def set_hotel(custom_params, params_cache = nil, type_list = nil)
-  #   url =
-  #     if type_list
-  #       "http://api.ean.com/ean-services/rs/hotel/v3/info"
-  #     else
-  #       "http://api.ean.com/ean-services/rs/hotel/v3/list"
-  #     end
+=begin
+  def set_hotel(custom_params, params_cache = nil, type_list = nil)
+    url =
+      if type_list
+        "http://api.ean.com/ean-services/rs/hotel/v3/info"
+      else
+        "http://api.ean.com/ean-services/rs/hotel/v3/list"
+      end
 
-  #   if custom_params
-  #     params_api = {
-  #       cid:      55505,
-  #       minorRev: 30,
-  #       apiKey:   "5fd6485clmp3oogs8gfb43p2uf",
-  #       locale:       "en_US",
-  #       currencyCode: "USD",
-  #       supplierType: "E"
-  #     }
+    if custom_params
+      params_api = {
+        cid:      55505,
+        minorRev: 30,
+        apiKey:   "5fd6485clmp3oogs8gfb43p2uf",
+        locale:       "en_US",
+        currencyCode: "USD",
+        supplierType: "E"
+      }
 
-  #     if type_list
-  #       custom_params = custom_params.merge!(params_api)
-  #       response = HTTParty.get(url + "?" + custom_params.to_query)
-  #       @hotel_information = response["HotelInformationResponse"]
-  #       @like = Like.find_by(hotel_id: params[:hotelId], user_id: current_user)
-  #       @members_liked = User.joins(:likes, :joined_groups).where("likes.hotel_id = ? AND groups.user_id = ?", params[:hotelId], current_user)
-  #       # yuhuu
-  #     else
-  #       if params_cache
-  #         custom_params = params_api.merge!(params_cache)
-  #         response = HTTParty.get(url + "?" + custom_params.to_query)
-  #         @params_cache = params_cache
-  #       else
-  #         custom_params = custom_params.merge!(params_api)
-  #         response = HTTParty.get(url + "?" + custom_params.to_query)
-  #       end
+      if type_list
+        custom_params = custom_params.merge!(params_api)
+        response = HTTParty.get(url + "?" + custom_params.to_query)
+        @hotel_information = response["HotelInformationResponse"]
+        @like = Like.find_by(hotel_id: params[:hotelId], user_id: current_user)
+        @members_liked = User.joins(:likes, :joined_groups).where("likes.hotel_id = ? AND groups.user_id = ?", params[:hotelId], current_user)
+        # yuhuu
+      else
+        if params_cache
+          custom_params = params_api.merge!(params_cache)
+          response = HTTParty.get(url + "?" + custom_params.to_query)
+          @params_cache = params_cache
+        else
+          custom_params = custom_params.merge!(params_api)
+          response = HTTParty.get(url + "?" + custom_params.to_query)
+        end
 
-  #       response.code
-  #       response.message
+        response.code
+        response.message
 
-  #       @hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"]
+        @hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"]
 
-  #       @hotel_list_cache_key = response["HotelListResponse"]["cacheKey"]
-  #       @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
+        @hotel_list_cache_key = response["HotelListResponse"]["cacheKey"]
+        @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
 
-  #       @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-  #       @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-  #     end
+        @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
+        @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+      end
 
-  #   end
-  # end
+    end
+  end
+=end
 
   private
     def set_search_data

@@ -1,1 +1,38 @@
-h1 = @room_abalability
+p
+  h3 = @room_availability["hotelName"]
+p
+  = @room_availability["hotelAddress"]
+  | &nbsp;City&nbsp;
+  = @room_availability["hotelCity"]
+  | &nbsp;State&nbsp;
+  = @room_availability["hotelStateProvince"]
+  | &nbsp;Country&nbsp;
+  = @room_availability["hotelCountry"]
+  br
+  | Requested Room&nbsp;
+  = @room_availability["numberOfRoomsRequested"]
+p
+  | Checkin&nbsp;
+  = format_string_expedia_to_date(@room_availability["arrivalDate"])
+
+  | &nbsp;Checkout&nbsp;
+  = format_string_expedia_to_date(@room_availability["departureDate"])
+
+p
+  = @room_availability["checkInInstructions"].html_safe
+p
+  | Room Description
+  = @room_availability["roomTypeDescription"]
+p
+  = currency(@room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+p
+  strong Cancellation Policy
+  | &nbsp;
+  = unescape_expedia_html @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["cancellationPolicy"]
+p
+  | Are you sure you want to book ?
+  br
+  button.btn.btn-default.btn-md.btn-orange type="button"
+    | Yes
+  button.btn.btn-default.btn-md.btn-default type="button"
+    | Cancel
