@@ -12,6 +12,28 @@ module HotelsList
     }
   end
 
+  def book_reservation(custom_params)
+    url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?"
+    expedia_api = api_params_hash
+    expedia_api.delete(:numberOfResults)
+
+    url_custom_params = url + custom_params.merge(expedia_api).to_query
+
+    begin
+      response = HTTParty.post(url_custom_params)
+      if response["HotelRoomReservationResponse"]["EanWsError"]
+        redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:room_type_code])
+      else
+        @reservation = response["HotelRoomReservationResponse"]
+
+        ReservationMailer.reservation_created(@reservation).deliver_now
+        redirect_to deals_path
+      end
+    rescue Exception => e
+      @error_response = e.message
+    end
+  end
+
   def get_room_images(custom_params)
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/roomImages?"
     url_custom_params  = url + custom_params.merge!(api_params_hash).to_query
@@ -83,20 +105,20 @@ module HotelsList
           else
             # @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
             # @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-            # binding.pry
 
             @hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
               hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= (current_user.total_credit / 100.0)
             end
-
             if @hotels_list.empty?
               @error_response = "There is no hotels that match your criteria and saving credits"
+            else
+              @hotels_list
             end
 
             # @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
             # @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
           end
-        rescue HTTParty::Error => e
+        rescue Exception => e
           @error_response = e.message
         end
       else
@@ -107,7 +129,6 @@ module HotelsList
       @hotels_list    = []
       @error_response = "You don't have any credits"
     end
-    # binding.pry
   end
 
 

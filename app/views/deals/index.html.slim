@@ -21,27 +21,27 @@
                   .wrapper-search-deal
                     .col-md-12
                       .form-group
-                        = f.input_field :destination_string, id: "autocomplete", class: "form-control", placeholder: "Where would you like to be?"
+                        = f.input_field :destination_string, id: "autocomplete", value: @destination.destination_string, class: "form-control", placeholder: "Where would you like to be?"
                         span
                           a#btnClearText href="javascript:void(0)"
                             i.icon.delete
-                      .hide
-                        = hidden_field_tag :street_number, id: "street_number"
-                        = hidden_field_tag :route, id: "route"
+                      .show
+                        = hidden_field_tag :street_number, nil, id: "street_number"
+                        = hidden_field_tag :route, nil, id: "route"
+                        = hidden_field_tag :postal_code, nil, id: "postal_code"
                         = f.hidden_field :city, id: "locality"
                         = f.hidden_field :state_province_code, id: "administrative_area_level_1"
-                        = hidden_field_tag :postal_code, id: "postal_code"
                         = f.hidden_field :country_code, as: :string, id: "country"
-                        = f.hidden_field :latitude, id: "lat"
-                        = f.hidden_field :longitude, id: "lng"
+                        = f.hidden_field :latitude, id: "lat", value: @destination.latitude
+                        = f.hidden_field :longitude, id: "lng", value: @destination.longitude
 
                     .col-md-6
                       .form-group
-                        = f.input_field :arrival_date, class: "form-control", placeholder: "Arriving when?"
+                        = f.input_field :arrival_date, value: @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control", placeholder: "Arriving when?"
 
                     .col-md-6
                       .form-group
-                        = f.input_field :departure_date, class: "form-control", placeholder: "Departing when?"
+                        = f.input_field :departure_date, value: @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control", placeholder: "Departing when?"
 
                     .col-md-12
                       .form-group.text-center

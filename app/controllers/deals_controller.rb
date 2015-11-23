@@ -26,6 +26,52 @@ class DealsController < ApplicationController
     get_room_availability(room_params_hash)
   end
 
+  def create_book
+    xml_string =
+      "<HotelRoomReservationRequest>
+        <hotelId>#{params[:confirmation_book][:hotel_id]}</hotelId>
+        <arrivalDate>#{current_user.destination.arrival_date.strftime('%m/%d/%Y')}</arrivalDate>
+        <departureDate>#{current_user.destination.departure_date.strftime('%m/%d/%Y')}</departureDate>
+        <supplierType>E</supplierType>
+        <rateKey>#{params[:confirmation_book][:rate_key]}</rateKey>
+        <roomTypeCode>#{params[:confirmation_book][:room_type_code]}</roomTypeCode>
+        <rateCode>#{params[:confirmation_book][:rate_code]}</rateCode>
+        <chargeableRate>#{params[:confirmation_book][:total]}</chargeableRate>
+        <RoomGroup>
+            <Room>
+                <numberOfAdults>1</numberOfAdults>
+                <firstName>test</firstName>
+                <lastName>tester</lastName>
+                <bedTypeId>#{params[:confirmation_book][:bed_type].split(' ').join(',')}</bedTypeId>
+                <smokingPreference>#{params[:confirmation_book][:smoking_preferences]}</smokingPreference>
+            </Room>
+        </RoomGroup>
+        <ReservationInfo>
+            <email>#{current_user.email}</email>
+            <firstName>#{current_user.profile.first_name}</firstName>
+            <lastName>#{current_user.profile.last_name}</lastName>
+            <homePhone>2145370159</homePhone>
+            <workPhone>2145370159</workPhone>
+            <creditCardType>CA</creditCardType>
+            <creditCardNumber>5401999999999999</creditCardNumber>
+            <creditCardIdentifier>123</creditCardIdentifier>
+            <creditCardExpirationMonth>11</creditCardExpirationMonth>
+            <creditCardExpirationYear>2017</creditCardExpirationYear>
+        </ReservationInfo>
+        <AddressInfo>
+            <address1>travelnow</address1>
+            <city>#{current_user.profile.city}</city>
+            <stateProvinceCode>#{current_user.profile.state}</stateProvinceCode>
+            <countryCode>#{current_user.profile.country_code}</countryCode>
+            <postalCode>#{current_user.profile.postal_code}</postalCode>
+        </AddressInfo>
+    </HotelRoomReservationRequest>"
+
+    xml_params =  { xml: xml_string.gsub(" ", "").gsub("\n", "") }
+
+    book_reservation(xml_params)
+  end
+
   def room_availability
     if request.xhr?
 
@@ -81,7 +127,10 @@ class DealsController < ApplicationController
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
     custom_params = destination_params
-    custom_params.merge!({ "arrival_date" => arrival_date, "departure_date" => departure_date })
+    custom_params.merge!({
+      arrival_date:   arrival_date,
+      departure_date: departure_date
+    })
 
     if destination
       destination.update(custom_params)

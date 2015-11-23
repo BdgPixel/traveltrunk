@@ -24,6 +24,9 @@
             - if remote_file_exists?(hotel_image["url"].gsub("b", "z"))
               = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"]
                 = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
+            - else
+              = link_to hotel_image["url"], title: hotel_image["caption"]
+                = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
 
   .row
     .col-md-12

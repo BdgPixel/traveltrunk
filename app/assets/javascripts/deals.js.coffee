@@ -199,7 +199,9 @@ $ ->
 
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
-    $.get('/deals')
+    $.get '/deals', ->
+      $('[data-toggle="tooltip"]').tooltip();
+      return
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get("/deals/#{ params_path_id }/room_availability")
