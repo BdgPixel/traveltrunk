@@ -250,9 +250,9 @@ $(document).ready ->
       container: '#blueimp-gallery-carousel'
       carousel: true
 
-  # if $('#hotelRating').length > 0
-  #   rating_count = parseFloat($('#hotelRating').data('rating'))
-  #   $('#hotelRating').raty
-  #     half: true
-  #     readOnly: true
-  #     score: rating_count
+  if $('#hotelRating').length > 0
+    rating_count = parseFloat($('#hotelRating').data('rating'))
+    $('#hotelRating').raty
+      half: true
+      readOnly: true
+      score: rating_count
