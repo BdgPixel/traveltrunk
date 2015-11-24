@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'destinations/clear'
+
   get  'payments' => 'payments#index'
   post 'payments/create'
   get  'payments/thank_you_page'

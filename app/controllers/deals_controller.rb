@@ -133,6 +133,7 @@ class DealsController < ApplicationController
     })
 
     if destination
+      # binding.pry
       destination.update(custom_params)
     else
       destination = current_user.build_destination(custom_params)
