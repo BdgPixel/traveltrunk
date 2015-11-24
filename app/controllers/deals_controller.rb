@@ -8,6 +8,7 @@ class DealsController < ApplicationController
 
   def index
     @destination = current_user.destination
+
     if request.xhr?
       set_search_data
       respond_to :js
