@@ -256,3 +256,6 @@ $(document).ready ->
       half: true
       readOnly: true
       score: rating_count
+      starOn: window.star_on_image_path
+      starOff: window.star_off_image_path
+      starHalf: window.star_half_image_path
