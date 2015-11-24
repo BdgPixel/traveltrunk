@@ -32,12 +32,9 @@
     .col-md-12
       .col-md-7
         h2 = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
-        p.text-left
-          i.glyphicon.glyphicon-star id="start"
-          |&nbsp;
+        .text-left
+          #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
           = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
-
-        h3 = currency(params[:price].to_f.round)
 
       .col-md-5
         .col-md-12

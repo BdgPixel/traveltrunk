@@ -47,7 +47,7 @@ class PaymentsController < ApplicationController
   def stripe_webhook
     response = JSON.parse(request.body.read)
 
-    if response['type'].eql? 'invoice.payment_succeeded'
+    if response['type'].eql?('invoice.payment_succeeded') && response['data']['object']['amount_due'] > 0
       response = response['data']['object']
       puts response
 

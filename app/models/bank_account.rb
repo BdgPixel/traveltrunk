@@ -24,13 +24,13 @@ class BankAccount < ActiveRecord::Base
   def transfer_type
     case  transfer_frequency
     when "Daily"
-      ["day", 1]
+      ["day", 1, 1]
     when "Weekly"
-      ["week", 1]
+      ["week", 1, 7]
     when "Bi Weekly"
-      ["week", 2]
+      ["week", 2, 14]
     else
-      ["month", 1]
+      ["month", 1, 31]
     end
   end
 

@@ -86,21 +86,20 @@ class User < ActiveRecord::Base
         end
       rescue Stripe::CardError => e
         logger.error e.message
-        # puts e.message
       end
     end
   end
 
   def set_stripe_subscription
     if self.execute_stripe_callbacks
-      customer = Customer.where(user_id: self.id).first
+      customer          = Customer.where(user_id: self.id).first
       user_bank_account = self.bank_account
       user_subscription = self.subscription
 
       if user_subscription.nil? || user_bank_account.changed.include?('amount_transfer') || user_bank_account.changed.include?('transfer_frequency')
-        interval_frequency, interval_count = user_bank_account.transfer_type
+        interval_frequency, interval_count, trial_period_days = user_bank_account.transfer_type
         amount_to_cents = (user_bank_account.amount_transfer.to_f * 100).to_i
-        plan_name = "#{self.profile.first_name.titleize} #{user_bank_account.transfer_frequency} Savings Plan"
+        plan_name       = "#{self.profile.first_name.titleize} #{user_bank_account.transfer_frequency} Savings Plan"
 
         stripe_plan = Stripe::Plan.create(
           id:             SecureRandom.hex,
@@ -108,23 +107,19 @@ class User < ActiveRecord::Base
           name:           plan_name,
           amount:         amount_to_cents,
           interval:       interval_frequency,
-          interval_count: interval_count
+          interval_count: interval_count,
+          trial_period_days: user_subscription ? trial_period_days : nil
         )
 
         stripe_customer = Stripe::Customer.retrieve(customer.customer_id)
 
         if user_subscription
           previous_plan = Stripe::Plan.retrieve(user_subscription.plan_id)
-          # stripe_customer = Stripe::Customer.retrieve({customer.customer_id})
+
           stripe_customer.subscriptions.retrieve(user_subscription.subscription_id).delete
           previous_plan.delete
 
           stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
-
-          # stripe_subscription = stripe_customer.subscriptions.retrieve(user_subscription.subscription_id)
-          # stripe_subscription.plan = stripe_plan.id
-          # stripe_subscription.metadata = { user_id: self.id }
-          # stripe_subscription.save
 
           user_subscription.update_attributes({
             plan_id:          stripe_plan.id,
@@ -136,7 +131,6 @@ class User < ActiveRecord::Base
           })
 
           StripeMailer.subscription_updated(self.id).deliver_now
-          # previous_plan.delete
         else
           stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
 
