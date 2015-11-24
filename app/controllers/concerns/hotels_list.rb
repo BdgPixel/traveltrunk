@@ -106,13 +106,20 @@ module HotelsList
             # @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
             # @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
 
-            @hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
+            hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
               hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= (current_user.total_credit / 100.0)
             end
-            if @hotels_list.empty?
+
+
+
+            if hotels_list.empty?
               @error_response = "There is no hotels that match your criteria and saving credits"
             else
-              @hotels_list
+              @hotels_list =
+                hotels_list.sort do |hotel_x, hotel_y|
+                  hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
+                end
+
             end
 
             # @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
