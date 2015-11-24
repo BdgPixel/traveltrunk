@@ -3,21 +3,16 @@
 <%- else %>
   $("#slideToggleLink").text("Where would you like to be?")
 <% end %>
-console.log("<%= @error_response %>");
+
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
 
 <%- unless @error_response %>
 
   var currentPageNumber =  $('.deals-page').length;
-  var nextPageNumber = currentPageNumber + 1;
 
   currentPage = $(".deals-page:last");
-  previousButton = $(".loadPrevious:last");
-  nextButton = $(".loadMoreNext:last");
   currentPage.attr("data-page", currentPageNumber);
 
-  nextButton.attr("data-next-page", nextPageNumber);
-  previousButton.attr("data-previous-page", currentPageNumber - 1).show();
   $('.deals-page').not(currentPage).hide();
 
   $('div.lazy').lazyload({ effect : 'fadeIn' });

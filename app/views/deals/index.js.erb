@@ -5,50 +5,10 @@
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
 
 var currentPageNumber =  $('.deals-page').length;
-var nextPageNumber    = currentPageNumber + 1;
 
-// # // currentPage     = $(".deals-page:last");
-// # // previousButton  = $(".loadPrevious:last");
-// # // nextButton      = $(".loadMoreNext:last");
-// # // currentPage.attr("data-page", currentPageNumber);
+currentPage     = $(".deals-page:last");
+currentPage.attr("data-page", currentPageNumber);
 
-// # // nextButton.attr("data-next-page", nextPageNumber);
-// # // previousButton.attr("data-previous-page", currentPageNumber - 1).show();
-// # // $('.deals-page').not(currentPage).hide();
+$('.deals-page').not(currentPage).hide();
 
 $('div.lazy').lazyload({ effect : 'fadeIn' });
-
-// <% if @is_first_page %>
-//   $(previousButton).remove();
-// <% else %>
-//   $(previousButton).on('click', function(){
-//     targetPageNumber = $(this).data('previous-page');
-
-//     targetPage = $(".deals-page[data-page='"+ targetPageNumber +"']");
-//     targetPage.show();
-//     $('.deals-page').not(targetPage).hide();
-//   });
-// <% end %>
-
-// $(nextButton).on('click', function(){
-//   nextPageNumber = $(this).data('next-page');
-//   nextPage = $(".deals-page[data-page='" + nextPageNumber + "']");
-
-//   if(nextPage.length > 0){
-//     nextPage.show()
-//     $('.deals-page').not(nextPage).hide()
-//   } else {
-//     $.ajax({
-//       url: '/deals/next',
-//       type: 'GET',
-//       data: {
-//         cache_key: $(this).data('cache-key'),
-//         cache_location: $(this).data('cache-location')
-//       }
-//     });
-//   }
-// });
-
-// <% if !@is_first_page && @hotels_list.empty? %>
-//   $(".loadMoreNext:last").remove();
-// <% end %>
