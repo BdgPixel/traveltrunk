@@ -4,6 +4,12 @@ class PaymentsController < ApplicationController
   def index
   end
 
+  def clear_stripe
+    Subscription.delete_all
+    Transaction.delete_all
+    Customer.delete_all
+  end
+
   def create
     if !params[:payment][:amount].empty?
       begin

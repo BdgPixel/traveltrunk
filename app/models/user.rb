@@ -114,10 +114,15 @@ class User < ActiveRecord::Base
         stripe_customer = Stripe::Customer.retrieve(customer.customer_id)
 
         if user_subscription
-          previous_plan = Stripe::Plan.retrieve(user_subscription.plan_id)
+          previous_plan = Stripe::Plan.retrieve(user_subscription.plan_id) rescue nil
 
-          stripe_customer.subscriptions.retrieve(user_subscription.subscription_id).delete
-          previous_plan.delete
+          if previous_plan
+            puts "delet previous plan"
+            stripe_customer.subscriptions.retrieve(user_subscription.subscription_id).delete
+            previous_plan.delete
+          else
+            puts "not delete previous plan"
+          end
 
           stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: self.id } })
 
