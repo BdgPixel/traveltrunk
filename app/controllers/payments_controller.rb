@@ -8,6 +8,7 @@ class PaymentsController < ApplicationController
     Subscription.delete_all
     Transaction.delete_all
     Customer.delete_all
+    redirect_to deals_path
   end
 
   def create
