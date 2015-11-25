@@ -2,6 +2,7 @@ module HotelsList
   def api_params_hash(options = nil)
     # options     = options || "HOTEL_SUMMARY,ROOM_RATE_DETAILS"
     params_hash = {
+      apiExperience: "PARTNER_WEBSITE",
       cid:          55505,
       minorRev:     30,
       apiKey:       "5fd6485clmp3oogs8gfb43p2uf",
@@ -35,10 +36,19 @@ module HotelsList
   end
 
   def get_room_images(custom_params)
-    url                = "http://api.ean.com/ean-services/rs/hotel/v3/roomImages?"
-    url_custom_params  = url + custom_params.merge!(api_params_hash).to_query
-    response           = HTTParty.get(url_custom_params)
-    @room_images       = response["HotelRoomImageResponse"]["RoomImages"]["RoomImage"]
+    url         = "http://api.ean.com/ean-services/rs/hotel/v3/roomImages?"
+    expedia_api = api_params_hash
+
+    expedia_api.delete(:numberOfResults)
+
+    url_room_images  = url + custom_params.merge!(expedia_api).to_query
+
+    begin
+      response           = HTTParty.get(url_room_images)
+      @room_images       = response["HotelRoomImageResponse"]["RoomImages"]["RoomImage"]
+    rescue Exception => e
+      @error_response = e.message
+    end
   end
 
   def get_room_availability(room_params)
@@ -76,7 +86,7 @@ module HotelsList
         @hotel_information = response["HotelInformationResponse"]
       end
 
-    rescue HTTParty::Error  => e
+    rescue Exception  => e
       @error_response = e.message
     end
   end

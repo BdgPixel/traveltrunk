@@ -62,8 +62,10 @@ class User < ActiveRecord::Base
       room_hash[:roomTypeCode] = room_type_code
     end
 
-    room_hash[:options]        =  0
-    room_hash[:includeDetails] =  true
+    room_hash[:RoomGroup]         = { Room: { numberOfAdults: 1 } }
+    room_hash[:includeRoomImages] = true
+    room_hash[:options]           = "ROOM_TYPES"
+    room_hash[:includeDetails]    = true
     room_hash
   end
 

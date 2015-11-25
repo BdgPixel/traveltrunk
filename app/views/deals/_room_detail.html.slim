@@ -1,0 +1,39 @@
+tr
+  td
+    - if room["RoomImages"]
+      - if room["RoomImages"]["@size"].eql? "1"
+        = image_tag room["RoomImages"]["RoomImage"]["url"]
+      - else
+        = image_tag room["RoomImages"]["RoomImage"].first["url"]
+    br
+    br
+    = room["rateDescription"]
+    br
+    ul
+      - if room["BedTypes"]["@size"].eql? "1"
+        li #{room["BedTypes"]["BedType"]["description"]}
+      - else
+        - room["BedTypes"]["BedType"].each do |bed_type|
+          li #{bed_type["description"]}
+
+  td
+    ul
+      - unless room["ValueAdds"].nil?
+        - if room["ValueAdds"]["@size"].eql? "1"
+          li #{room["ValueAdds"]["ValueAdd"]["description"]}
+        - else
+          - room["ValueAdds"]["ValueAdd"].each do |amenity|
+            li #{amenity["description"]}
+
+  td colspan="2"
+    strong Rates per night:
+    br
+    = currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@nightlyRateTotal"])
+    br
+    br
+    strong Total booking price
+    br
+    = currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+    br
+    = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["roomTypeCode"]), class: "btn btn-default"
+  td

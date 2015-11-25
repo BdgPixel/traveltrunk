@@ -5,7 +5,7 @@ class BankAccount < ActiveRecord::Base
 
   attr_accessor :exp_month, :exp_year, :card_number, :stripe_token
 
-  validates :account_number, :amount_transfer, presence: true
+  validates :amount_transfer, presence: true
   validates :transfer_frequency, presence: { message: 'please select one' }
 
   # def bank_account

@@ -4,15 +4,15 @@
       tr
         th Room type
         th Amenities
-        th Total Rate
+        th colspan="2" Total Rate
         th
 
       tbody
         - if @room_availability["@size"].eql? "1"
-          = show_tags_room_availability(@room_availability["HotelRoomResponse"])
+          = render "room_detail", room: @room_availability["HotelRoomResponse"]
         - else
-          - @room_availability["HotelRoomResponse"].each do |room|
-            = show_tags_room_availability(room)
+          - @room_availability["HotelRoomResponse"].uniq.each do |room|
+            = render "room_detail", room: room
 
 - if @error_response
   #error_response.alert.alert-info

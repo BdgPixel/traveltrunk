@@ -11,7 +11,9 @@ class ProfilesController < ApplicationController
 
   def update
     respond_to do |format|
-      if current_user.update_attributes(user_params.merge({ stripe_token: params[:stripeToken], execute_stripe_callbacks: true }))
+      # binding.pry
+      custom_params = user_params.merge({ stripe_token: params[:stripeToken], execute_stripe_callbacks: true})
+      if current_user.update_attributes(custom_params)
         # token              = params[:stripeToken]
         # amount_to_cents    = current_user.bank_account.amount_transfer.to_f * 100
 

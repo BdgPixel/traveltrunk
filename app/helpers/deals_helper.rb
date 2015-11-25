@@ -1,48 +1,4 @@
 module DealsHelper
-  def show_tags_room_availability(room)
-    tags = ""
-
-    tags += "<tr>"
-      tags += "<td>"
-        tags += room["rateDescription"].split(",").first
-        tags += "<ul>"
-          if room["BedTypes"]["@size"].eql? "1"
-            tags += "<li>#{room["BedTypes"]["description"]}</li>"
-          else
-            room["BedTypes"]["BedType"].each do |bed_type|
-              tags += "<li>#{bed_type["description"]}</li>"
-            end
-          end
-        tags += "</ul>"
-      tags += "</td>"
-
-      tags += "<td>"
-        tags += "<ul>"
-          unless room["ValueAdds"].nil?
-            if room["ValueAdds"]["@size"].eql? "1"
-              tags += "<li>#{room["ValueAdds"]["ValueAdd"]["description"]}</li>"
-            else
-              room["ValueAdds"]["ValueAdd"].each do |option|
-                tags += "<li>#{option["description"]}</li>"
-              end
-            end
-          end
-        tags += "</ul>"
-      tags += "</td>"
-
-      tags += "<td>"
-        tags += currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
-      tags += "</td>"
-
-      tags += "<td>"
-        tags += "<a href='#{deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["roomTypeCode"])}' class='btn btn-default'>Book Now</a>"
-      tags += "</td>"
-
-    tags += "</tr>"
-
-    tags.html_safe
-  end
-
   def guests_list
     (1..16).to_a.map do |n|
       label = pluralize(n, "Guest")
