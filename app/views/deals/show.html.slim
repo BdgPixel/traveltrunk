@@ -59,18 +59,17 @@
 
       .clearfix
 
-      .col-md-6
+      .col-md-12
         #roomAvailability.form-horizontal
         / p
          / = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
-
-      .col-md-6
-
-        #map style="height: 500px; width: 100%;"
-        = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
-        = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
 
       .col-md-12
         .container
           .row
             / #roomAvailability.form-horizontal
+      .col-md-12
+        hr
+        #map style="height: 500px; width: 100%;"
+        = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
+        = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
