@@ -1,21 +1,20 @@
 class User < ActiveRecord::Base
-  has_one  :profile
-  has_one  :bank_account
+  has_one  :profile, dependent: :destroy
+  has_one  :bank_account, dependent: :destroy
   has_many :likes
   # has_many :destinations
-  has_one  :destination
+  has_one  :destination, dependent: :destroy
   has_many :joined_groups, -> { where("users_groups.accepted_at IS NOT NULL") } , through: :users_groups
   has_many :users_groups
-  has_one  :group
-  has_one  :customer
-  has_one  :plan
-  has_many :transactions
-  has_one :subscription
+  has_one  :group, dependent: :destroy
+  has_one  :customer, dependent: :destroy
+  has_many :transactions, dependent: :destroy
+  has_one :subscription, dependent: :destroy
 
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account
 
-  before_save :set_stripe_customer, :set_stripe_subscription
+  after_save :set_stripe_customer, :set_stripe_subscription
 
   attr_accessor :stripe_token, :execute_stripe_callbacks
 

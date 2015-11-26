@@ -5,22 +5,26 @@
   .col-md-12.text-center
     .col-md-12.text-center
       .wrapper-group-saving
+        - if @error_message
+          #error_message.alert.alert-info
+            strong Notice: &nbsp;
+            = @error_message
+        - else
+          h1 = "#{current_user.profile.first_name.titleize} #{current_user.bank_account.transfer_frequency} Savings Plan"
 
-        h1 = "#{current_user.profile.first_name.titleize} #{current_user.bank_account.transfer_frequency} Savings Plan"
+          br
 
-        br
+          ul
+            li
+              .col-md-12.text-center
+                = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+                h3 = current_user.profile.first_name
+                h3 = currency_in_usd(current_user.total_credit)
 
-        ul
-          li
-            .col-md-12.text-center
-              = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
-              h3 = current_user.profile.first_name
-              h3 = currency_in_usd(current_user.total_credit)
-
-        .col-md-12.text-center
-          h1
-            | Total : &nbsp;
-            = currency_in_usd(current_user.total_credit)
+          .col-md-12.text-center
+            h1
+              | Total : &nbsp;
+              = currency_in_usd(current_user.total_credit)
 
         / - if @joined_groups.any?
         /   h1 Your Group's Savings
@@ -92,4 +96,5 @@
 
           /               .actions.form-group
           /                 = f.submit 'Send Invitation', class: 'btn btn-default'
+
 
