@@ -7,7 +7,8 @@
             strong = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
           = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-            = list_of_deals_div(hotel["thumbNailUrl"].gsub("_t.", "_y.") )
+            = list_of_deals_div(hotel["thumbNailUrl"])
+            / = image_tag "http://images.travelnow.com#{hotel["thumbNailUrl"].gsub('_t.', '_y.')}",  class: 'lazy deals-image'
 
           .col-md-10
             p.text-center.content-deals

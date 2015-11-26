@@ -7,7 +7,7 @@ tr
         = image_tag room["RoomImages"]["RoomImage"].first["url"]
     br
     br
-    = room["rateDescription"]
+    = room["rateDescription"].html_safe
     br
     ul
       - if room["BedTypes"]["@size"].eql? "1"

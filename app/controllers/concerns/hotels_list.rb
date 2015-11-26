@@ -64,7 +64,7 @@ module HotelsList
       else
         @room_availability = response["HotelRoomAvailabilityResponse"]
       end
-    rescue HTTParty::Error  => e
+    rescue Exception  => e
        @error_response = e.message
     end
   end

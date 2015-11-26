@@ -169,8 +169,8 @@ searchDestination = ->
         success:  (data) ->
           $('#loading').fadeOut("slow");
 
-      $('div.lazy').lazyload
-        effect : 'fadeIn'
+      # $('div.lazy').lazyload
+      #   effect : 'fadeIn'
 
       $('#collapseDeals').slideToggle()
       $('[data-toggle="tooltip"]').tooltip()
@@ -227,9 +227,9 @@ $(document).ready ->
   # if $('[data-toggle="tooltip"]').length > 0
   #   $('[data-toggle="tooltip"]').tooltip()
 
-  if $('div.lazy').length > 0
-    $('div.lazy').lazyload
-      effect : 'fadeIn'
+  # if $('div.lazy').length > 0
+  #   $('div.lazy').lazyload
+  #     effect : 'fadeIn'
 
   if $('.loadMoreNext').length > 0
     $('.loadMoreNext').on 'click', -> loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).attr('data-next-page'))

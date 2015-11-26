@@ -24,8 +24,10 @@ module DealsHelper
   end
 
   def list_of_deals_div(hotel_image)
-    content_tag(:div, nil, class: 'lazy deals-image', data: { original: "http://images.travelnow.com#{ hotel_image }" },
-      style: "background:url('#{asset_url('default-no-image.png')}') no-repeat; background-size: 100% 100%; height: 300px;")
+    content_tag(:div, nil, class: 'lazy deals-image',
+      style: "background:url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_y.') }'), url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_b.') }'), url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_l.') }') no-repeat grey; background-size: 100% 100%; height: 300px;")
+    # content_tag(:div, nil, class: 'lazy deals-image', data: { original: "http://images.travelnow.com#{ hotel_image }" },
+    #   style: "background:url('#{asset_url('default-no-image.png')}') no-repeat; background-size: 100% 100%; height: 300px;")
   end
 
   def remote_file_exists?(url)
