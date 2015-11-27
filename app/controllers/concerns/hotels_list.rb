@@ -52,6 +52,7 @@ module HotelsList
   end
 
   def get_room_availability(room_params)
+    # binding.pry
     url                 = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
     complete_params     = room_params.merge!(api_params_hash)
     url_room_params     = url + complete_params.to_query
@@ -61,10 +62,12 @@ module HotelsList
       if response["HotelRoomAvailabilityResponse"]["EanWsError"]
         @room_availability = []
         @error_response    = response["HotelRoomAvailabilityResponse"]["EanWsError"]["presentationMessage"]
+        @category_room_message = response["HotelRoomAvailabilityResponse"]["EanWsError"]["category"]
+        # binding.pry
       else
         @room_availability = response["HotelRoomAvailabilityResponse"]
       end
-    rescue Exception  => e
+    rescue Exception => e
        @error_response = e.message
     end
   end

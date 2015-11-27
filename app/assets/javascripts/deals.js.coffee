@@ -206,7 +206,10 @@ $(document).ready ->
       return
   else
     params_path_id = window.location.pathname.split('/')[2]
-    $.get("/deals/#{ params_path_id }/room_availability")
+    $.get "/deals/#{ params_path_id }/room_availability", ->
+      $('#slideToggleLink').click ->
+        $('#slideToggle').slideToggle()
+      return
 
 
   disableEnterFormSubmit()
@@ -253,6 +256,16 @@ $(document).ready ->
   if $('#hotelRating').length > 0
     rating_count = parseFloat($('#hotelRating').data('rating'))
     $('#hotelRating').raty
+      half: true
+      readOnly: true
+      score: rating_count
+      starOn: window.star_on_image_path
+      starOff: window.star_off_image_path
+      starHalf: window.star_half_image_path
+
+  if $('#roomRating').length > 0
+    rating_count = parseFloat($('#roomRating').data('rating'))
+    $('#roomRating').raty
       half: true
       readOnly: true
       score: rating_count

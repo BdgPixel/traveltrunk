@@ -14,7 +14,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account
 
-  after_save :set_stripe_customer, :set_stripe_subscription
+  before_save :set_stripe_customer, :set_stripe_subscription
 
   attr_accessor :stripe_token, :execute_stripe_callbacks
 
@@ -56,6 +56,7 @@ class User < ActiveRecord::Base
     room_hash[:arrivalDate]   = current_search[:arrivalDate]
     room_hash[:departureDate] = current_search[:departureDate]
 
+    # binding.pry
     if rate_code && room_type_code
       room_hash[:rateCode]     = rate_code
       room_hash[:roomTypeCode] = room_type_code

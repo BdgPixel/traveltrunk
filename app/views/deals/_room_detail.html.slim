@@ -1,5 +1,5 @@
 tr
-  td
+  td width="300px"
     - if room["RoomImages"]
       - if room["RoomImages"]["@size"].eql? "1"
         = image_tag room["RoomImages"]["RoomImage"]["url"]
@@ -9,6 +9,7 @@ tr
     br
     = room["rateDescription"].html_safe
     br
+    br
     ul
       - if room["BedTypes"]["@size"].eql? "1"
         li #{room["BedTypes"]["BedType"]["description"]}
@@ -17,6 +18,8 @@ tr
           li #{bed_type["description"]}
 
   td
+    - if @category_room_message
+      h4 category_room_message
     ul
       - unless room["ValueAdds"].nil?
         - if room["ValueAdds"]["@size"].eql? "1"
@@ -26,15 +29,26 @@ tr
             li #{amenity["description"]}
 
   td
-    strong Rates per night:
+    = link_to "javascript:void(0)", id: "slideToggleLink"
+      strong Rates per night:
     br
-    = currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@nightlyRateTotal"])
-    br
-    br
-    strong Total booking price
-    br
-    = currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+    #slideToggleOff
+      = convert_string_to_date(arrival_date, departure_date, room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"], "show")
+    / = room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"]
     br
     br
-    = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["roomTypeCode"]), class: "btn btn-default"
+    .col-md-6
+      strong
+        | Surcharge Total:&nbsp;
+    .col-md-4
+      label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"])
+    br
+    .col-md-6
+      strong
+        | Total booking price
+    .col-md-4
+      label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+    br
+    br
   td
+    = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]), class: "btn btn-default"

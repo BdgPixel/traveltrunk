@@ -23,6 +23,12 @@ module DealsHelper
     amount_in_usd = (amount / 100.0)
   end
 
+  def number_of_days
+    early_date = Date.parse current_user.destination.arrival_date.to_s
+    later_date = Date.parse current_user.destination.departure_date.to_s
+    (later_date - early_date).to_i
+  end
+
   def list_of_deals_div(hotel_image)
     content_tag(:div, nil, class: 'lazy deals-image',
       style: "background:url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_y.') }'), url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_b.') }'), url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_l.') }') no-repeat grey; background-size: 100% 100%; height: 300px;")

@@ -23,7 +23,7 @@
         = f.hidden_field :total, value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
       .form-group
-        - if @room_availability["HotelRoomResponse"]["BedTypes"]["@size"].eql? (1)
+        - if @room_availability["HotelRoomResponse"]["BedTypes"]["@size"].eql? ("1")
           = f.hidden_field :bed_type, value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"]["@id"]
         - else
           = f.hidden_field :bed_type, value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"].map { |bed| bed["@id"] }
@@ -36,10 +36,10 @@
         /   .form-group
         /     = f.input :email, input_html: { value: current_user.email, class: 'form-control', readonly: true }
 
-        .col-md-8
-          .form-group
-            = f.label :name, "First and last name "
-            = f.input_field :name, value: "#{current_user.profile.first_name} #{current_user.profile.last_name}", class: "form-control", readonly: true
+        / .col-md-8
+        /   .form-group
+        /     = f.label :name, "First and last name "
+        /     = f.input_field :name, value: "#{current_user.profile.first_name} #{current_user.profile.last_name}", class: "form-control", readonly: true
 
         / .col-md-8
         /   .form-group
@@ -62,35 +62,35 @@
         /   .form-group
         /     = f.input :postal_code, input_html: { class: "form-control" }
 
-        .col-md-8
-          .form-group
-            = f.input :home_phone, input_html: { class: "form-control" }
+        / .col-md-8
+        /   .form-group
+        /     = f.input :home_phone, input_html: { class: "form-control" }
 
-        .col-md-8
-          .form-group
-            = f.input :work_phone, input_html: { class: "form-control" }
+        / .col-md-8
+        /   .form-group
+        /     = f.input :work_phone, input_html: { class: "form-control" }
 
-        .col-md-8
-          .form-group
-            = f.input :card_type, input_html: { class: "form-control" }
+        / .col-md-8
+        /   .form-group
+        /     = f.input :card_type, input_html: { class: "form-control" }
 
-        .col-md-8
-          .form-group
-            = f.input :card_number, input_html: { class: "form-control" }
+        / .col-md-8
+        /   .form-group
+        /     = f.input :card_number, input_html: { class: "form-control" }
 
-        .col-md-8
-          .form-group
-            = f.input :card_identifier, input_html: { class: "form-control" }
+        / .col-md-8
+        /   .form-group
+        /     = f.input :card_identifier, input_html: { class: "form-control" }
 
-        .col-md-8
-          .form-group
-            = f.label :exp_mont, "Expiration Month (MM)"
-            = f.input_field :exp_mont, class: "form-control"
+        / .col-md-8
+        /   .form-group
+        /     = f.label :exp_mont, "Expiration Month (MM)"
+        /     = f.input_field :exp_mont, class: "form-control"
 
-        .col-md-8
-          .form-group
-            = f.label :exp_year, "Expiration Year (YYYY)"
-            = f.input_field :exp_year, class: "form-control"
+        / .col-md-8
+        /   .form-group
+        /     = f.label :exp_year, "Expiration Year (YYYY)"
+        /     = f.input_field :exp_year, class: "form-control"
 
         .col-md-8
           .form-group
