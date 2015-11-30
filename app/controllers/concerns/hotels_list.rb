@@ -27,6 +27,10 @@ module HotelsList
         @error_response    = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
       else
         @reservation = response["HotelRoomReservationResponse"]
+
+        total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100)
+        current_user.update_attributes(total_credit: total_credit)
+
         ReservationMailer.reservation_created(@reservation, current_user.id).deliver_now
         redirect_to deals_path, notice: 'Booking success'
       end
