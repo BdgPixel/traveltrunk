@@ -23,12 +23,12 @@ module HotelsList
     begin
       response = HTTParty.post(url_custom_params)
       if response["HotelRoomReservationResponse"]["EanWsError"]
-        redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:room_type_code])
+        redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:confirmation_book][:room_type_code])
+        @error_response    = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
       else
         @reservation = response["HotelRoomReservationResponse"]
-
-        ReservationMailer.reservation_created(@reservation).deliver_now
-        redirect_to deals_path
+        ReservationMailer.reservation_created(@reservation, current_user.id).deliver_now
+        redirect_to deals_path, notice: 'Booking success'
       end
     rescue Exception => e
       @error_response = e.message
@@ -52,8 +52,8 @@ module HotelsList
   end
 
   def get_room_availability(room_params)
-    # binding.pry
     url                 = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
+    # binding.pry
     complete_params     = room_params.merge!(api_params_hash)
     url_room_params     = url + complete_params.to_query
     begin

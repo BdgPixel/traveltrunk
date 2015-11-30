@@ -46,10 +46,7 @@
           strong Cancellation Policy
           | &nbsp;
           = unescape_expedia_html @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["cancellationPolicy"]
-        p
-          | Are you sure you want to book ?
-          br
-          = render "form_book"
+
       .col-md-6
         table.table
           tr
@@ -71,6 +68,10 @@
             td
               = number_to_currency(@room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
             / td = convert_string_to_date @room_availability["arrivalDate"]
+        p
+          | Are you sure you want to book ?
+          br
+          = render "form_book"
         / br
         / br
         / p

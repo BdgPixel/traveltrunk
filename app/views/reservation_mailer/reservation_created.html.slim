@@ -2,7 +2,7 @@ ReservationMailer#created
   p = "Hello #{@profile.first_name} #{@profile.last_name}"
 
   p
-    | Your  itinerary #{@reservation['itineraryId'}
+    | Your  itinerary #{@reservation['itineraryId']}
 
   p
     | Confirmation number: #{@reservation['confirmationNumbers']}
@@ -20,7 +20,7 @@ ReservationMailer#created
     | City #{@reservation['hotelCity']}
 
   p
-    | Country code #{@reservation['countryCode'}
+    | Country code #{@reservation['countryCode']}
 
   p
     | Postal code #{@reservation['hotelPostalCode']}
@@ -31,4 +31,4 @@ ReservationMailer#created
     | Number of adults #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']}
 
   p
-    | Total rate #{currency(@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])}
+    | Total rate #{number_to_currency(@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])}

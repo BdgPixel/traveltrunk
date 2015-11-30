@@ -8,6 +8,15 @@ class DealsController < ApplicationController
 
   def index
     @destination = current_user.destination
+    if @destination
+      new_arrival_date = Date.today
+
+      if @destination.arrival_date < new_arrival_date
+        puts 'update'
+        @destination.departure_date = new_arrival_date + (@destination.departure_date - @destination.arrival_date).to_i
+        @destination.arrival_date = new_arrival_date
+      end
+    end
 
     if request.xhr?
       set_search_data
@@ -24,15 +33,19 @@ class DealsController < ApplicationController
 
   def book
     room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
+    # yuhuu
+    # binding.pry
     get_room_availability(room_params_hash)
   end
 
   def create_book
+    current_destination = current_user.destination.get_search_params
+
     xml_string =
       "<HotelRoomReservationRequest>
         <hotelId>#{params[:confirmation_book][:hotel_id]}</hotelId>
-        <arrivalDate>#{current_user.destination.arrival_date.strftime('%m/%d/%Y')}</arrivalDate>
-        <departureDate>#{current_user.destination.departure_date.strftime('%m/%d/%Y')}</departureDate>
+        <arrivalDate>#{current_destination[:arrivalDate]}</arrivalDate>
+        <departureDate>#{current_destination[:departureDate]}</departureDate>
         <supplierType>E</supplierType>
         <rateKey>#{params[:confirmation_book][:rate_key]}</rateKey>
         <roomTypeCode>#{params[:confirmation_book][:room_type_code]}</roomTypeCode>
