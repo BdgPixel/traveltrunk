@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post '/rate' => 'rater#create', :as => 'rate'
+  post '/rate' => 'rate#create', :as => 'rate'
   get 'destinations/clear'
 
   get  'payments' => 'payments#index'

@@ -13,10 +13,14 @@
         p
           h3 = @room_availability["hotelName"]
         p
-          - if @room_availability["HotelRoomResponse"]["RoomImages"]["@size"].eql?("1")
-            = image_tag @room_availability["HotelRoomResponse"]["RoomImages"]["RoomImage"]["url"], class: "img-responsive"
+          - if @room_availability["HotelRoomResponse"]["RoomImages"]
+            - if @room_availability["HotelRoomResponse"]["RoomImages"]["@size"].eql?("1")
+              = image_tag @room_availability["HotelRoomResponse"]["RoomImages"]["RoomImage"]["url"], class: "img-responsive"
+            - else
+              = image_tag @room_availability["HotelRoomResponse"]["RoomImages"]["RoomImage"].first["url"], class: "img-responsive"
           - else
-            = image_tag @room_availability["HotelRoomResponse"]["RoomImages"]["RoomImage"].first["url"], class: "img-responsive"
+            = image_tag 'default-no-image-thumb.png', class: "img-responsive"
+
         p
           #roomRating data-rating="#{@room_availability["tripAdvisorRating"]}"
           = pluralize(@room_availability["tripAdvisorRating"], "rating")

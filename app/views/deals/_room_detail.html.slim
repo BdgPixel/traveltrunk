@@ -5,6 +5,9 @@ tr
         = image_tag room["RoomImages"]["RoomImage"]["url"]
       - else
         = image_tag room["RoomImages"]["RoomImage"].first["url"]
+    - else
+      = image_tag "default-no-image-thumb.png"
+
     br
     br
     = room["rateDescription"].html_safe
