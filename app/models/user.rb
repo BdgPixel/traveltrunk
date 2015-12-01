@@ -8,8 +8,9 @@ class User < ActiveRecord::Base
   has_many :users_groups
   has_one  :group, dependent: :destroy
   has_one  :customer, dependent: :destroy
-  has_many :transactions, dependent: :destroy
   has_one :subscription, dependent: :destroy
+  has_many :transactions, dependent: :destroy
+  has_many :reservations, dependent: :destroy
 
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account

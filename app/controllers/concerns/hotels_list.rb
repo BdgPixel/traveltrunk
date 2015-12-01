@@ -27,12 +27,6 @@ module HotelsList
         @error_response    = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
       else
         @reservation = response["HotelRoomReservationResponse"]
-
-        total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100)
-        current_user.update_attributes(total_credit: total_credit)
-
-        ReservationMailer.reservation_created(@reservation, current_user.id).deliver_now
-        redirect_to deals_path, notice: 'Booking success'
       end
     rescue Exception => e
       @error_response = e.message
@@ -104,7 +98,7 @@ module HotelsList
       @is_first_page = params_cache.nil?
 
       if custom_params
-        custom_params.merge!({ maxRate: current_user.total_credit_in_usd })
+        # custom_params.merge!({ maxRate: current_user.total_credit_in_usd })
 
         url_custom_params = url +
           if params_cache

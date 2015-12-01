@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-  post '/rate' => 'rate#create', :as => 'rate'
+  post '/rate' => 'rater#create', :as => 'rate'
   get 'destinations/clear'
 
   get  'payments' => 'payments#index'
@@ -28,6 +28,7 @@ Rails.application.routes.draw do
   get  'deals/:id/room_availability' => 'deals#room_availability', as: 'deals/room_availability'
   get  'deals/:id/room_images' => 'deals#room_images', as: 'deals/room_images'
   get  'deals/book' => 'deals#book', as: 'deals/book'
+  get  'deals/thank_you_page'
   post 'deals/create_book' => 'deals#create_book', as: 'deals/create_book'
   post 'deals/search' => 'deals#search'
   post 'deals/create_destination' => 'deals/create_destination'

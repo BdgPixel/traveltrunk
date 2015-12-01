@@ -1,0 +1,34 @@
+ThankYouPage#created
+  p = "Hello #{current_user.profile.first_name} #{current_user.profile.last_name}"
+
+  p
+    | Your  itinerary #{@reservation.itinerary}
+
+  p
+    | Confirmation number: #{@reservation.confirmation_number}
+
+  p
+    | Arrival date #{@reservation.arrival_date} and departure date #{@reservation.departure_date}
+
+  p
+    | Hotel name #{@reservation.hotel_name}
+
+  p
+    | Hotel address #{@reservation.hotel_address}
+
+  p
+    | City #{@reservation.city}
+
+  p
+    | Country code #{@reservation.country_code}
+
+  p
+    | Postal code #{@reservation.postal_code}
+
+  p | Room booked #{@reservation.number_of_room} and room description #{@reservation.room_description}
+
+  p
+    | Number of adults #{@reservation.number_of_adult}
+
+  p
+    | Total rate #{number_to_currency(@reservation.total)}

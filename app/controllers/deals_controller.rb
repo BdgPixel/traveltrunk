@@ -84,6 +84,46 @@ class DealsController < ApplicationController
     xml_params =  { xml: xml_string.gsub(" ", "").gsub("\n", "") }
 
     book_reservation(xml_params)
+
+    if !@error_response
+      total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100)
+      # current_user.update_attributes(total_credit: total_credit)
+      arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
+      departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
+
+      reservation_params = {
+        itinerary: @reservation["itineraryId"],
+        confirmation_number: @reservation["confirmationNumbers"],
+        hotel_name: @reservation["hotelName"],
+        hotel_address: @reservation["hotelAddress"],
+        city: @reservation["hotelCity"],
+        country_code: @reservation["hotelCountryCode"],
+        postal_code: @reservation["hotelPostalCode"],
+        number_of_room: @reservation["numberOfRoomsBooked"],
+        room_description: @reservation["roomDescription"],
+        number_of_adult: @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
+        total: @reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0,
+        arrival_date: arrival_date,
+        departure_date: departure_date
+      }
+      reservation = current_user.reservations.new(reservation_params)
+      # yuhuu
+      reservation.save
+      redirect_to deals_thank_you_page_path(reservation.id), notice: "Booking success"
+
+      # respond_to do |format|
+      #   if reservation.save
+      #     # ReservationMailer.reservation_created(@reservation, current_user.id).deliver_now
+      #     format.html { redirect_to deals_thank_you_page_path, notice: "Booking success" }
+      #   end
+      # end
+      # binding.pry
+    end
+  end
+
+  def thank_you_page
+    # yuhuu
+    @reservation = current_user.reservations.first
   end
 
   def room_availability
