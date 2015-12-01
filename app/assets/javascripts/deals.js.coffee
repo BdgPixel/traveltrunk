@@ -207,7 +207,7 @@ $(document).ready ->
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->
-      $('#slideToggleLink').click ->
+      $('body').click ->
         $('#slideToggle').slideToggle()
       return
 
@@ -215,7 +215,7 @@ $(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
 
-  $('#slideToggleLink').click ->
+  $('body').click ->
     $('#slideToggle').slideToggle()
 
   #   return
