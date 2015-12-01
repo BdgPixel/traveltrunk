@@ -1,5 +1,9 @@
 tr
   td width="300px"
+    strong = room["rateDescription"].html_safe
+    br
+    br
+
     - if room["RoomImages"]
       - if room["RoomImages"]["@size"].eql? "1"
         = image_tag room["RoomImages"]["RoomImage"]["url"]
@@ -10,10 +14,7 @@ tr
 
     br
     br
-    = room["rateDescription"].html_safe
-    br
-    br
-    ul
+    ul.room-availability
       - if room["BedTypes"]["@size"].eql? "1"
         li #{room["BedTypes"]["BedType"]["description"]}
       - else
@@ -23,7 +24,7 @@ tr
   td
     - if @category_room_message
       h4 category_room_message
-    ul
+    ul.room-availability
       - unless room["ValueAdds"].nil?
         - if room["ValueAdds"]["@size"].eql? "1"
           li #{room["ValueAdds"]["ValueAdd"]["description"]}
