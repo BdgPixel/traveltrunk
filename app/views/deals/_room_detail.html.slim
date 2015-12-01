@@ -33,20 +33,20 @@ tr
             li #{amenity["description"]}
 
   td width="350px"
-    = link_to "javascript:void(0)", id: "slideToggleLink"
-      strong Rates per night:
-    br
-    #slideToggleOff
-      = convert_string_to_date(arrival_date, departure_date, room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"], "show")
-    / = room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"]
-    br
-    br
-    .col-md-6
-      strong
-        | Surcharge Total:&nbsp;
-    .col-md-4
-      label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"])
-    br
+    / = link_to "javascript:void(0)", id: "slideToggleLink"
+    /   strong Rates per night:
+    / br
+    / #slideToggleOff
+    /   = convert_string_to_date(arrival_date, departure_date, room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"], "show")
+    / / = room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"]
+    / br
+    / br
+    / .col-md-6
+    /   strong
+    /     | Surcharge Total:&nbsp;
+    / .col-md-4
+    /   label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"])
+    / br
     .col-md-6
       strong
         | Total booking price
