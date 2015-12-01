@@ -133,8 +133,8 @@ module HotelsList
 
             end
 
-            # @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
-            # @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
+            @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
+            @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
           end
         rescue Exception => e
           @error_response = e.message

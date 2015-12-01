@@ -2,6 +2,7 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
+# = require jquery.bootpag
 # = require blueimp-gallery
 # = require blueimp-gallery-indicator
 # = require jquery.lazyload
@@ -207,7 +208,7 @@ $(document).ready ->
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->
-      $('body').click ->
+      $('.slide').click ->
         $('#slideToggle').slideToggle()
       return
 
@@ -215,7 +216,7 @@ $(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
 
-  $('body').click ->
+  $('.slide').click ->
     $('#slideToggle').slideToggle()
 
   #   return
@@ -258,10 +259,11 @@ $(document).ready ->
     $('#hotelRating').raty
       half: true
       readOnly: true
+      size: 24
       score: rating_count
-      starOn: window.star_on_image_path
-      starOff: window.star_off_image_path
-      starHalf: window.star_half_image_path
+      starOn: window.star_on_mid_image_path
+      starOff: window.star_off_mid_image_path
+      starHalf: window.star_half_mid_image_path
 
   if $('#roomRating').length > 0
     rating_count = parseFloat($('#roomRating').data('rating'))
@@ -269,6 +271,6 @@ $(document).ready ->
       half: true
       readOnly: true
       score: rating_count
-      starOn: window.star_on_image_path
-      starOff: window.star_off_image_path
-      starHalf: window.star_half_image_path
+      starOn: window.star_on_mid_image_path
+      starOff: window.star_off_mid_image_path
+      starHalf: window.star_half_mid_image_path

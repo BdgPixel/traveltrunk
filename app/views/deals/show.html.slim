@@ -35,7 +35,7 @@
         h2 = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
         .text-left
           #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
-          = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
+          .rating-text = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
       .col-md-5
         .col-md-12
