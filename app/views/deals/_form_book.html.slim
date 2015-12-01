@@ -2,34 +2,34 @@
   .row
     .col-md-12
       .form-group
-        = f.hidden_field :hotel_id, value: params[:id]
+        = f.hidden_field :hotel_id
 
       .form-group
-        = f.hidden_field :arrival_date, value: @room_availability["arrivalDate"]
+        = f.hidden_field :arrival_date
 
       .form-group
-        = f.hidden_field :departure_date, value: @room_availability["departureDate"]
+        = f.hidden_field :departure_date
 
       .form-group
-        = f.hidden_field :rate_code, value: params[:rate_code]
+        = f.hidden_field :rate_code
 
       .form-group
-        = f.hidden_field :room_type_code, value: params[:room_type_code]
+        = f.hidden_field :room_type_code
 
-      .form-group
-        = f.hidden_field :rate_key, value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["rateKey"]
+      / .form-group
+      /   = f.hidden_field :rate_key, value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["rateKey"]
 
-      .form-group
-        = f.hidden_field :total, value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+      / .form-group
+      /   = f.hidden_field :total, value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
-      .form-group
-        - if @room_availability["HotelRoomResponse"]["BedTypes"]["@size"].eql? ("1")
-          = f.hidden_field :bed_type, value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"]["@id"]
-        - else
-          = f.hidden_field :bed_type, value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"].map { |bed| bed["@id"] }
+      / .form-group
+      /   - if @room_availability["HotelRoomResponse"]["BedTypes"]["@size"].eql? ("1")
+      /     = f.hidden_field :bed_type, value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"]["@id"]
+      /   - else
+      /     = f.hidden_field :bed_type, value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"].map { |bed| bed["@id"] }
 
-      .form-group
-        = f.hidden_field :smoking_preferences, value: @room_availability["HotelRoomResponse"]["smokingPreferences"]
+      / .form-group
+      /   = f.hidden_field :smoking_preferences, value: @room_availability["HotelRoomResponse"]["smokingPreferences"]
 
       .row
         / .col-md-8
@@ -96,5 +96,5 @@
           .form-group
             = f.button :submit, "Yes", class: 'btn btn-orange btn-md'
             | &nbsp;
-            button.btn.btn-default.btn-md.btn-default type="button"
-              | Cancel
+            button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+              | No

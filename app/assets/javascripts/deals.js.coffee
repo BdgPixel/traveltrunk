@@ -181,6 +181,51 @@ searchDestination = ->
 
   return
 
+roomSelected = ->
+  # $('.bs-example-modal-lg').modal('show')
+
+  $('.room-selected').click ->
+    $('.bs-example-modal-lg').modal({ backdrop: 'static' })
+    $('.modal .modal-header h3').text(rooms.hotelName)
+
+    # $('.modal .modal-header #roomRating').html('rating', rooms.tripAdvisorRating)
+    $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating').attr('data-rating', rooms.tripAdvisorRating)
+
+    $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating .rating-text').text(rooms.tripAdvisorRating + " ratings")
+
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-addr').text(rooms.hotelAddress)
+
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-city').html("&nbsp;City&nbsp; #{rooms.hotelCity}")
+
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-state').html("&nbsp;State&nbsp; #{rooms.hotelStateProvince}")
+
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
+
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .checkin-intructions').html(rooms.checkInInstructions)
+
+    $('#confirmation_book_hotel_id').val($(this).data('id'))
+    $('#confirmation_book_arrival_date').val(rooms.arrivalDate)
+    $('#confirmation_book_departure_date').val(rooms.departureDate)
+    $('#confirmation_book_rate_code').val($(this).data('rate-code'))
+    $('#confirmation_book_room_type_code').val($(this).data('room-type-code'))
+
+    if $('#roomRating').length > 0
+      rating_count = parseFloat($('#roomRating').data('rating'))
+      $('#roomRating').raty
+        half: true
+        readOnly: true
+        score: rating_count
+        starOn: window.star_on_mid_image_path
+        starOff: window.star_off_mid_image_path
+        starHalf: window.star_half_image_path
+
+    # $.get '/deals/book',
+    #   id: $(this).data('id')
+    #   rate_code: $(this).data('rate-code')
+    #   room_type_code: $(this).data('room-type-code')
+    # .done (data) ->
+
+
 $ ->
   $('input#search_deals_arrival_date').datepicker(
     startDate: today
@@ -208,6 +253,7 @@ $(document).ready ->
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->
+      roomSelected()
       $('.slide').click ->
         $('#slideToggle').slideToggle()
       return
@@ -265,12 +311,4 @@ $(document).ready ->
       starOff: window.star_off_mid_image_path
       starHalf: window.star_half_mid_image_path
 
-  if $('#roomRating').length > 0
-    rating_count = parseFloat($('#roomRating').data('rating'))
-    $('#roomRating').raty
-      half: true
-      readOnly: true
-      score: rating_count
-      starOn: window.star_on_mid_image_path
-      starOff: window.star_off_mid_image_path
-      starHalf: window.star_half_mid_image_path
+

@@ -73,3 +73,13 @@
         #map style="height: 500px; width: 100%;"
         = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
         = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
+
+= render partial: 'book'
+/ button.btn.btn-primary data-target=".bs-example-modal-lg" data-toggle="modal" type="button"  Large modal
+/ .modal.fade.bs-example-modal-lg aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+/   .modal-dialog.modal-lg
+/     .modal-content
+/       .modal-header
+/         h4 hello
+/       .modal-body
+        / p lorem ipsum set doler set amet

@@ -33,9 +33,11 @@ class DealsController < ApplicationController
 
   def book
     room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
-    # yuhuu
-    # binding.pry
-    get_room_availability(room_params_hash)
+
+    if request.xhr?
+      get_room_availability(room_params_hash)
+      respond_to :js
+    end
   end
 
   def create_book

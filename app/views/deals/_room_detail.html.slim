@@ -55,4 +55,6 @@ tr
     br
     br
   td
-    = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]), class: "btn btn-default"
+    = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"],  rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]}
+    / = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]), class: "btn btn-default"
+
