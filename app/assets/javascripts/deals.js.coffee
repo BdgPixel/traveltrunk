@@ -181,49 +181,60 @@ searchDestination = ->
 
   return
 
-roomSelected = ->
-  # $('.bs-example-modal-lg').modal('show')
+# roomSelected = ->
+#   $('.room-selected').on 'click', ->
+#     rateCode = $(this).data('rate-code')
+#     roomTypeCode = $(this).data('room-type-code')
 
-  $('.room-selected').click ->
-    $('.bs-example-modal-lg').modal({ backdrop: 'static' })
-    $('.modal .modal-header h3').text(rooms.hotelName)
+#     $('.bs-example-modal-lg').modal({ backdrop: 'static' })
+#     $('.modal .modal-header h3').text(rooms.hotelName)
 
-    # $('.modal .modal-header #roomRating').html('rating', rooms.tripAdvisorRating)
-    $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating').attr('data-rating', rooms.tripAdvisorRating)
+#     # $('.modal .modal-header #roomRating').html('rating', rooms.tripAdvisorRating)
+#     $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating').attr('data-rating', rooms.tripAdvisorRating)
+#     $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating .rating-text').text(rooms.tripAdvisorRating + " ratings")
+#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-addr').text(rooms.hotelAddress)
+#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-city').html("&nbsp;City&nbsp; #{rooms.hotelCity}")
+#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-state').html("&nbsp;State&nbsp; #{rooms.hotelStateProvince}")
+#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
+#     $('.modal .modal-body .row .col-md-12 .col-md-6 .checkin-intructions').html(rooms.checkInInstructions)
+#     $('#confirmation_book_hotel_id').val($(this).data('id'))
+#     $('#confirmation_book_arrival_date').val(rooms.arrivalDate)
+#     $('#confirmation_book_departure_date').val(rooms.departureDate)
+#     $('#confirmation_book_rate_code').val(rateCode)
+#     $('#confirmation_book_room_type_code').val(roomTypeCode)
 
-    $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating .rating-text').text(rooms.tripAdvisorRating + " ratings")
+#     # $.each rooms.HotelRoomResponse, (key, room) ->
+#       # if room['rateCode'] == rateCode
+#         # $('#confirmation_book_total').val(room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
+#     room = $.grep(rooms.HotelRoomResponse, (e, index) ->
+#       e.rateCode == rateCode
+#     )
+#     console.log room[0]
+#     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
 
-    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-addr').text(rooms.hotelAddress)
+#     if room[0]['BedTypes']['@size'] == '1'
+#       $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType'])
+#     else
+#       $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
+#         b['@id']
+#       )
 
-    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-city').html("&nbsp;City&nbsp; #{rooms.hotelCity}")
 
-    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-state').html("&nbsp;State&nbsp; #{rooms.hotelStateProvince}")
+#     if $('#roomRating').length > 0
+#       rating_count = parseFloat($('#roomRating').data('rating'))
+#       $('#roomRating').raty
+#         half: true
+#         readOnly: true
+#         score: rating_count
+#         starOn: window.star_on_mid_image_path
+#         starOff: window.star_off_mid_image_path
+#         starHalf: window.star_half_image_path
 
-    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
-
-    $('.modal .modal-body .row .col-md-12 .col-md-6 .checkin-intructions').html(rooms.checkInInstructions)
-
-    $('#confirmation_book_hotel_id').val($(this).data('id'))
-    $('#confirmation_book_arrival_date').val(rooms.arrivalDate)
-    $('#confirmation_book_departure_date').val(rooms.departureDate)
-    $('#confirmation_book_rate_code').val($(this).data('rate-code'))
-    $('#confirmation_book_room_type_code').val($(this).data('room-type-code'))
-
-    if $('#roomRating').length > 0
-      rating_count = parseFloat($('#roomRating').data('rating'))
-      $('#roomRating').raty
-        half: true
-        readOnly: true
-        score: rating_count
-        starOn: window.star_on_mid_image_path
-        starOff: window.star_off_mid_image_path
-        starHalf: window.star_half_image_path
-
-    # $.get '/deals/book',
-    #   id: $(this).data('id')
-    #   rate_code: $(this).data('rate-code')
-    #   room_type_code: $(this).data('room-type-code')
-    # .done (data) ->
+#     # $.get '/deals/book',
+#     #   id: $(this).data('id')
+#     #   rate_code: $(this).data('rate-code')
+#     #   room_type_code: $(this).data('room-type-code')
+#     # .done (data) ->
 
 
 $ ->
@@ -237,7 +248,6 @@ $ ->
       setTimeout(->
         $('input#search_deals_departure_date').datepicker('show')
       , 100)
-
 
   $('input#search_deals_departure_date').datepicker
     startDate: today
@@ -254,16 +264,48 @@ $(document).ready ->
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected()
-      $('.slide').click ->
-        $('#slideToggle').slideToggle()
+      # $('#slideToggleLink').click ->
+      #   $('#slideToggle').slideToggle()
       return
 
 
   disableEnterFormSubmit()
   validateSearchForm()
 
-  $('.slide').click ->
-    $('#slideToggle').slideToggle()
+  if $('#slideToggleLink').length > 0
+  #   toggle_flag = 0
+  #   $('#slideToggleLink').on('click', (e) ->
+  #     $('#slideToggle').slideDown()
+  #     return
+  #   ).on 'click', 'slide', (e) ->
+  #     e.stopPropagation()
+  #     return
+
+    # $('.slide').on('click', (e) ->
+    #   $('#slideToggle').slideUp()
+    #   return
+    # ).on 'click', 'panel', (e) ->
+    #   e.stopPropagation()
+    #   return
+    $('#slideToggleLink').on 'click', (e) ->
+      $('#slideToggle').slideDown()
+      return
+
+    $('.slide').on 'click', (e) ->
+      if e.target != this
+        return
+      $('#slideToggle').slideUp()
+      return
+
+    # $('.slide').on 'click', (e) ->
+    #   if e.target != this
+    #     return
+    #   alert 'clicked the foobar'
+    #   return
+
+
+    # ---
+
 
   #   return
 

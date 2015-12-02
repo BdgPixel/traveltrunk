@@ -32,7 +32,7 @@ tr
           - room["ValueAdds"]["ValueAdd"].each do |amenity|
             li #{amenity["description"]}
 
-  td width="350px"
+  td
     / = link_to "javascript:void(0)", id: "slideToggleLink"
     /   strong Rates per night:
     / br
@@ -48,12 +48,9 @@ tr
     /   label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"])
     / br
     .col-md-6
-      strong
-        | Total booking price
-    .col-md-4
-      label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
-    br
-    br
+      h3
+        label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+      = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
   td
     = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"],  rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]}
     / = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]), class: "btn btn-default"

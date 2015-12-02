@@ -13,7 +13,7 @@
             strong Notice: &nbsp;
             = @error_message
         - else
-          h1 = "#{current_user.profile.first_name.titleize} Savings"
+          h1 = change_last_character(current_user.profile.first_name)
 
           br
 
