@@ -10,6 +10,7 @@
 # = require holder
 # = require google-api
 # = require jquery.raty
+# = require jquery.raty-fa
 # = require ratyrate
 
 
@@ -262,11 +263,11 @@ $(document).ready ->
       return
   else
     params_path_id = window.location.pathname.split('/')[2]
-    $.get "/deals/#{ params_path_id }/room_availability", ->
-      roomSelected()
+    # $.get "/deals/#{ params_path_id }/room_availability", ->
+      # roomSelected()
       # $('#slideToggleLink').click ->
       #   $('#slideToggle').slideToggle()
-      return
+      # return
 
 
   disableEnterFormSubmit()
@@ -344,13 +345,20 @@ $(document).ready ->
 
   if $('#hotelRating').length > 0
     rating_count = parseFloat($('#hotelRating').data('rating'))
-    $('#hotelRating').raty
-      half: true
-      readOnly: true
-      size: 24
-      score: rating_count
-      starOn: window.star_on_mid_image_path
-      starOff: window.star_off_mid_image_path
-      starHalf: window.star_half_mid_image_path
 
+    $('div#hotelRating').raty
+      half   : true
+      readOnly: true
+      score: rating_count
+
+
+    # $('#hotelRating').raty
+    #   half: true
+    #   readOnly: true
+    #   size: 24
+    #   score: rating_count
+    #   starOn: window.star_on_mid_image_path
+    #   starOff: window.star_off_mid_image_path
+    #   starHalf: window.star_half_mid_image_path
+    #   starType : 'i'
 

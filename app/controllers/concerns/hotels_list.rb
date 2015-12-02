@@ -121,16 +121,15 @@ module HotelsList
               hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= (current_user.total_credit / 100.0)
             end
 
-
-
             if hotels_list.empty?
               @error_response = "There is no hotels that match your criteria and saving credits"
             else
-              @hotels_list =
+              hotels_list =
                 hotels_list.sort do |hotel_x, hotel_y|
                   hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                 end
-
+              # binding.pry
+              @hotels_list = hotels_list.in_groups_of(3)
             end
 
             @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]

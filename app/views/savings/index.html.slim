@@ -24,6 +24,8 @@
                   = image_tag current_user.profile.image.url, class: 'img-circle img-responsive'
 
           .col-md-12.text-center
+            / i.fa.fa-star
+            / #rating
             h1
               | Total : &nbsp;
               = currency_in_usd(current_user.total_credit)

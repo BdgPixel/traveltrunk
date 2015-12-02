@@ -1,30 +1,33 @@
 - unless @error_response
   .deals-page data-page="1"
-    - @hotels_list.each do |hotel|
-      .wrapper-price-deals
-        .col-xs-6.col-md-4.col-deals
-          .price-deals
-            h4
-              strong
-                = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+    - @hotels_list.each do |group|
 
-          = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-            = list_of_deals_div(hotel["thumbNailUrl"])
-            / = image_tag "http://images.travelnow.com#{hotel["thumbNailUrl"].gsub('_t.', '_y.')}",  class: 'lazy deals-image'
+      .row
+        - group.compact.each do |hotel|
+          .wrapper-price-deals
+            .col-xs-6.col-md-4.col-deals
+              .price-deals
+                h4
+                  strong
+                    = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-          .col-md-10
-            p.text-center.content-deals
-              = link_to deals_show_path(id: hotel["hotelId"]), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase, no_turbolink: true }
-                = hotel["name"].upcase.html_safe
+              = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+                = list_of_deals_div(hotel["thumbNailUrl"])
+                / = image_tag "http://images.travelnow.com#{hotel["thumbNailUrl"].gsub('_t.', '_y.')}",  class: 'lazy deals-image'
 
-            / .col-md-2
-            /   .wrapper-like-deals
-            /     p.text-right.content-deals
-            /       = link_to deals_like_path(hotel["hotelId"]), id: "likeDeal", remote: true
-            /         - if @like_ids.include? hotel["hotelId"]
-            /           span.icon.love-active id="like-#{hotel["hotelId"]}"
-            /         - else
-            /           span.icon.love-normal id="like-#{hotel["hotelId"]}"
+              .col-md-10
+                p.text-center.content-deals
+                  = link_to deals_show_path(id: hotel["hotelId"]), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase, no_turbolink: true }
+                    = hotel["name"].upcase.html_safe
+
+                / .col-md-2
+                /   .wrapper-like-deals
+                /     p.text-right.content-deals
+                /       = link_to deals_like_path(hotel["hotelId"]), id: "likeDeal", remote: true
+                /         - if @like_ids.include? hotel["hotelId"]
+                /           span.icon.love-active id="like-#{hotel["hotelId"]}"
+                /         - else
+                    /           span.icon.love-normal id="like-#{hotel["hotelId"]}"
 
     .col-md-12
       .pull-right
