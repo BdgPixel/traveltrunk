@@ -4,31 +4,46 @@
 - content_for :javascripts do
   = javascript_include_tag 'groups'
 
+/ .row
+/   .col-md-12.text-center
+/     .row
+/       .col-md-12.text-center
+/         .wrapper-group-saving
+
+/           h1 = "#{current_user.profile.first_name.titleize} #{current_user.bank_account.transfer_frequency} Savings Plan"
+
+/           br
+
+/           ul
+/             li
+/               .col-md-12.text-center
+/                 / = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+/                 = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+/                 h3 = current_user.profile.first_name
+/                 h3 = currency_in_usd(current_user.total_credit)
+
+/           .col-md-12.text-center
+/             h1
+/               | Total : &nbsp;
+/               = currency_in_usd(current_user.total_credit)
+
+
+
 .row
-  .col-md-12.text-center
-    .col-md-12.text-center
-      .wrapper-group-saving
-        - if @error_message
-          #error_message.alert.alert-info
-            strong Notice: &nbsp;
-            = @error_message
-        - else
-          h1 = change_last_character(current_user.profile.first_name)
+  .col-md-12.col-lg-12
+    .wrapper-group-saving
+       h1.text-center = change_last_character(current_user.profile.first_name)
 
-          br
+  .wrapper-group-saving-img
+    .col-md-6.col-lg-3.col-md-offset-3.col-lg-offset-4
+      = image_tag current_user.profile.image.url, class: 'img-circle'
 
-          ul
-            li
-              .col-md-12.text-center
-                .wrapper-img-profile
-                  = image_tag current_user.profile.image.url, class: 'img-circle img-responsive'
-
-          .col-md-12.text-center
-            / i.fa.fa-star
-            / #rating
-            h1
-              | Total : &nbsp;
-              = currency_in_usd(current_user.total_credit)
+      .text-center
+        h3 = current_user.profile.first_name
+        h3 = currency_in_usd(current_user.total_credit)
+        h1
+          | Total : &nbsp;
+          = currency_in_usd(current_user.total_credit)
 
         / - if @joined_groups.any?
         /   h1 Your Group's Savings
