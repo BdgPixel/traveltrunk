@@ -16,8 +16,9 @@
       .form-group
         = f.input_field :room_type_code
 
-      / .form-group
-      /   = f.hidden_field :rate_key, value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["rateKey"]
+      .form-group
+        = f.hidden_field :rate_key
+        / , value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["rateKey"]
 
       .form-group
         = f.input_field :total

@@ -182,54 +182,68 @@ searchDestination = ->
 
   return
 
-# roomSelected = ->
-#   $('.room-selected').on 'click', ->
-#     rateCode = $(this).data('rate-code')
-#     roomTypeCode = $(this).data('room-type-code')
+# formatStringSxpediaSoDate = (date) ->
+#   date = new Date date
 
-#     $('.bs-example-modal-lg').modal({ backdrop: 'static' })
-#     $('.modal .modal-header h3').text(rooms.hotelName)
+roomSelected = ->
+  $('.room-selected').on 'click', ->
+    rateCode = $(this).data('rate-code')
+    roomTypeCode = $(this).data('room-type-code')
 
-#     # $('.modal .modal-header #roomRating').html('rating', rooms.tripAdvisorRating)
-#     $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating').attr('data-rating', rooms.tripAdvisorRating)
-#     $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating .rating-text').text(rooms.tripAdvisorRating + " ratings")
-#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-addr').text(rooms.hotelAddress)
-#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-city').html("&nbsp;City&nbsp; #{rooms.hotelCity}")
-#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-state').html("&nbsp;State&nbsp; #{rooms.hotelStateProvince}")
-#     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
-#     $('.modal .modal-body .row .col-md-12 .col-md-6 .checkin-intructions').html(rooms.checkInInstructions)
-#     $('#confirmation_book_hotel_id').val($(this).data('id'))
-#     $('#confirmation_book_arrival_date').val(rooms.arrivalDate)
-#     $('#confirmation_book_departure_date').val(rooms.departureDate)
-#     $('#confirmation_book_rate_code').val(rateCode)
-#     $('#confirmation_book_room_type_code').val(roomTypeCode)
+    $('.bs-example-modal-lg').modal({ backdrop: 'static' })
+    $('.modal .modal-header h3').text(rooms.hotelName)
 
-#     # $.each rooms.HotelRoomResponse, (key, room) ->
-#       # if room['rateCode'] == rateCode
-#         # $('#confirmation_book_total').val(room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
-#     room = $.grep(rooms.HotelRoomResponse, (e, index) ->
-#       e.rateCode == rateCode
-#     )
-#     console.log room[0]
-#     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
+    # $('.modal .modal-header #roomRating').html('rating', rooms.tripAdvisorRating)
+    $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating').attr('data-rating', rooms.tripAdvisorRating)
+    $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating .rating-text').text(rooms.tripAdvisorRating + " ratings")
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-addr').text(rooms.hotelAddress)
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-city').html("&nbsp;City&nbsp; #{rooms.hotelCity}")
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-state').html("&nbsp;State&nbsp; #{rooms.hotelStateProvince}")
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .checkin-intructions').html(rooms.checkInInstructions)
 
-#     if room[0]['BedTypes']['@size'] == '1'
-#       $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType'])
-#     else
-#       $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
-#         b['@id']
-#       )
+    # arrivalDate =
+    # $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-checkin-checkout').html("&nbsp;Checkin&nbsp; #{rooms.arrivalDate.to_date.strftime("%B %d, %Y")}")
+
+    $('#confirmation_book_hotel_id').val($(this).data('id'))
+    $('#confirmation_book_arrival_date').val(rooms.arrivalDate)
+    $('#confirmation_book_departure_date').val(rooms.departureDate)
+    $('#confirmation_book_rate_code').val(rateCode)
+    $('#confirmation_book_room_type_code').val(roomTypeCode)
+
+    # $.each rooms.HotelRoomResponse, (key, room) ->
+      # if room['rateCode'] == rateCode
+        # $('#confirmation_book_total').val(room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
+    room = $.grep(rooms.HotelRoomResponse, (e, index) ->
+      e.rateCode == rateCode
+
+    )
+    console.log room[0]['RoomImages']['RoomImage'][0]['url']
+    $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
+    $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
+
+    if room[0]['RoomImages']
+      if room[0]["RoomImages"]["@size"] == ("1")
+        $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage']['url'])
+      else
+        $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage'][0]['url'])
+    else
+      $('#roomImage').attr('src', window.default_no_image_thumb_path)
+
+    if room[0]['BedTypes']['@size'] == '1'
+      $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
+    else
+      $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
+        b['@id']
+      )
 
 
-#     if $('#roomRating').length > 0
-#       rating_count = parseFloat($('#roomRating').data('rating'))
-#       $('#roomRating').raty
-#         half: true
-#         readOnly: true
-#         score: rating_count
-#         starOn: window.star_on_mid_image_path
-#         starOff: window.star_off_mid_image_path
-#         starHalf: window.star_half_image_path
+    if $('#roomRating').length > 0
+      rating_count = parseFloat($('#roomRating').data('rating'))
+      $('div#roomRating').raty
+        half   : true
+        readOnly: true
+        score: rating_count
 
 #     # $.get '/deals/book',
 #     #   id: $(this).data('id')
@@ -264,7 +278,7 @@ $(document).ready ->
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->
-      # roomSelected()
+      roomSelected()
       # $('#slideToggleLink').click ->
       #   $('#slideToggle').slideToggle()
       return
