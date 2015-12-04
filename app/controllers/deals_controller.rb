@@ -90,11 +90,14 @@ class DealsController < ApplicationController
     book_reservation(xml_params)
 
     if !@error_response
-      total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100)
+      total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100).to_i
       # current_user.update_attributes(total_credit: total_credit)
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
       departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
-      current_user.update(total_credit: total_credit.to_i)
+
+      user = User.find current_user.id
+      user.total_credit = total_credit
+      user.save(validate: false)
 
       reservation_params = {
         itinerary: @reservation["itineraryId"],
