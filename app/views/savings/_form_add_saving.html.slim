@@ -1,0 +1,15 @@
+#modalSavingsForm.modal.fade aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+        h3 Title
+      .modal-body
+        = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true do |f|
+          .form-group
+            = f.input :credit_card
+          .form-group
+            = f.input :amount
+          .form-group
+            = f.submit "Update", class: "btn btn-default"

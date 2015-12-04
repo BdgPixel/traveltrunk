@@ -52,6 +52,7 @@ tr
         label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
       = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
   td
-    = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"],  rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]}
-    / = link_to "Book Now", deals_book_path(id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]), class: "btn btn-default"
-
+    - if current_user.total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
+      = link_to "Add to savings", "#", class: "btn btn-default", data: { toggle: "modal", target: "#modalSavingsForm" }
+    - else
+      = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"],  rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"]}

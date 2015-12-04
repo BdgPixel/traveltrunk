@@ -75,11 +75,11 @@
         = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
 
 = render partial: 'book'
-/ button.btn.btn-primary data-target=".bs-example-modal-lg" data-toggle="modal" type="button"  Large modal
-/ .modal.fade.bs-example-modal-lg aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
-/   .modal-dialog.modal-lg
+= render partial: 'savings/form_add_saving'
+/ #modalSavingsForm.modal.fade.modal-sm aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+/   .modal-dialog
 /     .modal-content
 /       .modal-header
-/         h4 hello
-/       .modal-body
-        / p lorem ipsum set doler set amet
+/         button.close aria-label="Close" data-dismiss="modal" type="button"
+/           span aria-hidden="true" &times;
+/         h3 Title
