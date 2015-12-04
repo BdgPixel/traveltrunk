@@ -32,9 +32,10 @@
 
     .col-md-12
       .row
-        hr
-        p#pagination-info
-          | 1 - 15 of #{@num_of_hotels} Hotels
+        - if @num_of_hotels > 15
+          hr
+          p#pagination-info
+            | 1 - 15 of #{@num_of_hotels} Hotels
 
         #pagination
         / = link_to "javascript:void(0);", id: 'nextPageDeals', class: "loadMoreNext btn btn-orange", data: { next_page: '', cache_key: @hotel_list_cache_key, cache_location: @hotel_list_cache_location }
@@ -45,11 +46,7 @@
 
     /       i.icon.next-loadmore
 
-p.demo
-
 - if @error_response
-  #error_response.alert.alert-info
+  #error_response.alert.alert-info style="margin-top: 20px"
     strong Notice: &nbsp;
     = @error_response
-- else
-  #error_response.alert.alert-info.hide

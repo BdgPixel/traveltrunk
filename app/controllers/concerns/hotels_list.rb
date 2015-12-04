@@ -146,6 +146,7 @@ module HotelsList
             @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
           end
         rescue Exception => e
+          @hotels_list    = []
           @error_response = e.message
         end
       else

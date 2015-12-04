@@ -54,17 +54,17 @@ validateSearchForm = ->
 
   return
 
-@initPagination = (numOfpages, numOfHotels)->
-  if numOfpages && numOfHotels
+@initDealsPage = (numOfpages, numOfHotels)->
+  if numOfpages && numOfHotels && numOfHotels > 15
     $('#pagination')
       .pagination
         pages: numOfpages
         cssStyle: 'light-theme'
         displayedPages: 3
-        edges: 1,
+        edges: 1
         onPageClick: (pageNumber, event)->
           selectedPage = $("#page-#{pageNumber}")
-          selectedPage.fadeIn()
+          selectedPage.show()
           $(".deal-pages").not(selectedPage).hide()
 
           prevPage = pageNumber - 1
@@ -74,6 +74,8 @@ validateSearchForm = ->
           $("p#pagination-info").text(startRange + " - " + endRange + ' of ' + numOfHotels + " Hotels")
           
           false
+
+  $('div.lazy').lazyload()
 
 # loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
 

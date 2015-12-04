@@ -4,7 +4,9 @@ class Profile < ActiveRecord::Base
   mount_uploader :image, ImageUploader
 
   validates :first_name, :last_name, :birth_date, :address,
-    :city, :state, :postal_code, presence: true
+    :city, :state, :postal_code, :favorite_place, :vacation_moment,
+    :travel_destination, presence: true
+
   validates :gender, presence: { message: 'please select one' }
   validates :country_code, presence: { message: 'please select one' }
 

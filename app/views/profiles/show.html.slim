@@ -13,8 +13,32 @@
                   = image_tag current_user.profile.image.url, class: 'img-circle img-responsive' unless current_user.profile.image.nil?
             .wrapper-user-name
               .col-md-7.col-lg-8
-                h1 = current_user.full_name
+                h1[style="padding-top: 0px !important"]
+                  = current_user.full_name
+
                 br
+
+                p
+                  b Where's your favorite place to travel to?
+                .panel.panel-default
+                  .panel-body
+                    p = current_user.profile.favorite_place
+
+                p
+                  b Fondest vacation moment
+                .panel.panel-default
+                  .panel-body
+                    p = current_user.profile.favorite_place
+
+                p
+                  b Name a place you dream of traveling to.
+                .panel.panel-default
+                  .panel-body
+                    = current_user.profile.travel_destination
+
+                / h1 = current_user.full_name
+                / br
+  
               .clearfix
 
               .col-md-12.col-lg-12

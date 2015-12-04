@@ -27,21 +27,41 @@
                 span.text-info
                   i You can only upload jpg, gif, png
 
-          .col-md-4
-            .form-group
-              = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+          .col-md-8
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
-          .col-md-4
-            .form-group
-              = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+              .col-md-6[style="padding-right: 0px"]
+                .form-group
+                  = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
-          .col-md-4
-            .form-group
-              = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+          .col-md-8
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
 
-          .col-md-4.col-md-offset-1.col-md-pull-1
-            .form-group
-              = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+              .col-md-6
+                .form-group
+                  = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
+          .col-md-8
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :favorite_place, label: 'Where\'s your favorite place to travel to?', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
+              .col-md-6[style="padding-right: 0px"]
+                .form-group
+                  = profile_form.input :vacation_moment, label: 'Fondest vacation moment', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
+          .col-md-8
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :travel_destination, label: 'Name a place you dream of traveling to.', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
         .col-md-12
           h4 PERSONAL INFORMATION
@@ -132,12 +152,12 @@
                 .form-group
                   = bank_account_form.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
+      .col-md-12
+        .row
           .col-md-12
-            .row
-              .col-md-12
-                br
-                center
-                  .form-group
-                    = f.button :submit, 'Update Profile', class: 'btn btn-default'
-                br
-                br
+            br
+            center
+              .form-group
+                = f.button :submit, 'Update Profile', class: 'btn btn-default'
+            br
+            br
