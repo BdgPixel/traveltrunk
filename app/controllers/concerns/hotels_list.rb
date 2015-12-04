@@ -129,7 +129,9 @@ module HotelsList
                   hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                 end
               # binding.pry
-              @hotels_list = hotels_list.in_groups_of(3)
+              @num_of_hotels = hotels_list.size
+              @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
+              @num_of_pages = @hotels_list.size
             end
 
             @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]

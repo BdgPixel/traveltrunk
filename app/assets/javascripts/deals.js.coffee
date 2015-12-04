@@ -9,10 +9,10 @@
 # = require bootstrap-datepicker
 # = require holder
 # = require google-api
+# = require jquery.simplePagination
 # = require jquery.raty
 # = require jquery.raty-fa
 # = require ratyrate
-
 
 # js not used
 # require galleria
@@ -53,6 +53,27 @@ validateSearchForm = ->
       autocomplete: 'Please enter your destination'
 
   return
+
+@initPagination = (numOfpages, numOfHotels)->
+  if numOfpages && numOfHotels
+    $('#pagination')
+      .pagination
+        pages: numOfpages
+        cssStyle: 'light-theme'
+        displayedPages: 3
+        edges: 1,
+        onPageClick: (pageNumber, event)->
+          selectedPage = $("#page-#{pageNumber}")
+          selectedPage.fadeIn()
+          $(".deal-pages").not(selectedPage).hide()
+
+          prevPage = pageNumber - 1
+          startRange = (prevPage * 15) + 1
+          endRange = pageNumber * 15
+          endRange = numOfHotels if endRange > numOfHotels
+          $("p#pagination-info").text(startRange + " - " + endRange + ' of ' + numOfHotels + " Hotels")
+          
+          false
 
 loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
 
@@ -307,6 +328,12 @@ $(document).ready ->
       return
 
     $('.slide').on 'click', (e) ->
+      if e.target != this
+        return
+      $('#slideToggle').slideUp()
+      return
+
+    $('.text-header-slide').on 'click', (e) ->
       if e.target != this
         return
       $('#slideToggle').slideUp()

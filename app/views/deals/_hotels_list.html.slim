@@ -1,38 +1,44 @@
 - unless @error_response
   .deals-page data-page="1"
-    - @hotels_list.each do |group|
+    - @hotels_list.each_with_index do |page, index|
+      div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
+        - page.compact.each do |group|
+          .row
+            - group.compact.each do |hotel|
+              .wrapper-price-deals
+                .col-xs-6.col-md-4.col-deals
+                  .price-deals
+                    h4
+                      strong
+                        = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-      .row
-        - group.compact.each do |hotel|
-          .wrapper-price-deals
-            .col-xs-6.col-md-4.col-deals
-              .price-deals
-                h4
-                  strong
-                    = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+                  = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+                    = list_of_deals_div(hotel["thumbNailUrl"])
+                    / = image_tag "http://images.travelnow.com#{hotel["thumbNailUrl"].gsub('_t.', '_y.')}",  class: 'lazy deals-image'
 
-              = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                = list_of_deals_div(hotel["thumbNailUrl"])
-                / = image_tag "http://images.travelnow.com#{hotel["thumbNailUrl"].gsub('_t.', '_y.')}",  class: 'lazy deals-image'
+                  .col-md-10
+                    p.text-center.content-deals
+                      = link_to deals_show_path(id: hotel["hotelId"])
+                        = CGI.unescapeHTML(hotel["name"])
 
-              .col-md-10
-                p.text-center.content-deals
-                  = link_to deals_show_path(id: hotel["hotelId"]), data: { toggle: "tooltip", placement: "top", title: hotel["name"].upcase, no_turbolink: true }
-                    = hotel["name"].upcase.html_safe
-
-                / .col-md-2
-                /   .wrapper-like-deals
-                /     p.text-right.content-deals
-                /       = link_to deals_like_path(hotel["hotelId"]), id: "likeDeal", remote: true
-                /         - if @like_ids.include? hotel["hotelId"]
-                /           span.icon.love-active id="like-#{hotel["hotelId"]}"
-                /         - else
-                    /           span.icon.love-normal id="like-#{hotel["hotelId"]}"
+                    / .col-md-2
+                    /   .wrapper-like-deals
+                    /     p.text-right.content-deals
+                    /       = link_to deals_like_path(hotel["hotelId"]), id: "likeDeal", remote: true
+                    /         - if @like_ids.include? hotel["hotelId"]
+                    /           span.icon.love-active id="like-#{hotel["hotelId"]}"
+                    /         - else
+                        /           span.icon.love-normal id="like-#{hotel["hotelId"]}"
 
     .col-md-12
-      .pull-right
-        = link_to "javascript:void(0);", id: 'nextPageDeals', class: "loadMoreNext btn btn-orange", data: { next_page: '', cache_key: @hotel_list_cache_key, cache_location: @hotel_list_cache_location }
-          | Next
+      .row
+        hr
+        p#pagination-info
+          | 1 - 15 of #{@num_of_hotels} Hotels
+
+        #pagination
+        / = link_to "javascript:void(0);", id: 'nextPageDeals', class: "loadMoreNext btn btn-orange", data: { next_page: '', cache_key: @hotel_list_cache_key, cache_location: @hotel_list_cache_location }
+        /   | Next
     /     = link_to "javascript:void(0);", class: "loadPrevious btn btn-orange", data: { previous_page: '' }, style: 'display: none'
     /       i.icon.previous-loadmore
     /       | &nbsp;&nbsp; Back

@@ -4,7 +4,7 @@
 
 .row
   #slide.wrapper-deals
-    .col-xs-12.col-md-12.slide
+    .col-xs-12.col-md-12.slide style="padding-bottom: 30px"
       .text-header-slide
         h1.text-center
           - if @destination
@@ -16,7 +16,7 @@
       #slideToggle
         / .col-md-12
         .col-md-8.col-md-offset-2
-          .panel.panel-default
+          .panel.panel-default style="margin-bottom: 0px"
             .panel-body
               = simple_form_for :search_deals, method: :post, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
                 .wrapper-search-deal
@@ -49,9 +49,7 @@
                       .col-md-4
                       = f.submit "Save", class: "btn btn-default btn-md col-md-4 col-offset-4"
 
-.row
-  hr
-  h1#notice
+.row style="border-top: 1px solid #e2e2e2"
   .wrapper-list-hotel.wrapper-deals
     #dealsHotelsList
       // = render "hotels_list" if session[:last_destination_search]
