@@ -53,7 +53,7 @@ validateSearchForm = ->
 
   return
 
-@initDealsPage = (numOfpages, numOfHotels)->
+window.initDealsPage = (numOfpages, numOfHotels)->
   if numOfpages && numOfHotels && numOfHotels > 15
     $('#pagination')
       .pagination
@@ -71,7 +71,7 @@ validateSearchForm = ->
           endRange = pageNumber * 15
           endRange = numOfHotels if endRange > numOfHotels
           $("p#pagination-info").text(startRange + " - " + endRange + ' of ' + numOfHotels + " Hotels")
-          
+
           false
 
   $('div.lazy').lazyload()
@@ -208,7 +208,7 @@ listOfMonts = (month) ->
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   months[month]
 
-@roomSelected = (selector)->
+window.roomSelected = (selector)->
   $(selector).on 'click', ->
     console.log(window.clicked_element = this)
     rateCode = $(this).data('rate-code')
