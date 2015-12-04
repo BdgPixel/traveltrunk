@@ -182,18 +182,18 @@ searchDestination = ->
 
   return
 
-# formatStringSxpediaSoDate = (date) ->
-#   date = new Date date
+listOfMonts = (month) ->
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  months[month]
 
 roomSelected = ->
   $('.room-selected').on 'click', ->
     rateCode = $(this).data('rate-code')
     roomTypeCode = $(this).data('room-type-code')
+    numberOfRoomsRequested = rooms.numberOfRoomsRequested
 
     $('.bs-example-modal-lg').modal({ backdrop: 'static' })
     $('.modal .modal-header h3').text(rooms.hotelName)
-
-    # $('.modal .modal-header #roomRating').html('rating', rooms.tripAdvisorRating)
     $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating').attr('data-rating', rooms.tripAdvisorRating)
     $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating .rating-text').text(rooms.tripAdvisorRating + " ratings")
     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-addr').text(rooms.hotelAddress)
@@ -202,23 +202,36 @@ roomSelected = ->
     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
     $('.modal .modal-body .row .col-md-12 .col-md-6 .checkin-intructions').html(rooms.checkInInstructions)
 
-    # arrivalDate =
-    # $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-checkin-checkout').html("&nbsp;Checkin&nbsp; #{rooms.arrivalDate.to_date.strftime("%B %d, %Y")}")
-
     $('#confirmation_book_hotel_id').val($(this).data('id'))
     $('#confirmation_book_arrival_date').val(rooms.arrivalDate)
     $('#confirmation_book_departure_date').val(rooms.departureDate)
     $('#confirmation_book_rate_code').val(rateCode)
     $('#confirmation_book_room_type_code').val(roomTypeCode)
 
-    # $.each rooms.HotelRoomResponse, (key, room) ->
-      # if room['rateCode'] == rateCode
-        # $('#confirmation_book_total').val(room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     room = $.grep(rooms.HotelRoomResponse, (e, index) ->
       e.rateCode == rateCode
-
     )
-    console.log room[0]['RoomImages']['RoomImage'][0]['url']
+
+    arrivalDate = new Date(rooms.arrivalDate)
+    departureDate = new Date(rooms.departureDate)
+    dates = []
+    d = arrivalDate
+
+    while d <= departureDate
+      dates.push(new Date(d))
+      d.setDate d.getDate() + 1
+
+    dates.pop()
+    table = $("table.table:last tbody")
+    table.html('')
+
+    $.each dates, (key, date) ->
+      month = listOfMonts(date.getMonth())
+      table.append("<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@averageRate']}</td></tr>")
+
+    table.append("<tr><td><b>Total taxes and fees</b></td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
+    table.append("<tr><td><b>Total</b></td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
+
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
 
@@ -236,7 +249,6 @@ roomSelected = ->
       $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
         b['@id']
       )
-
 
     if $('#roomRating').length > 0
       rating_count = parseFloat($('#roomRating').data('rating'))
@@ -272,9 +284,7 @@ $ ->
 
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
-    $.get '/deals', ->
-      $('[data-toggle="tooltip"]').tooltip();
-      return
+    $.get '/deals'
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->

@@ -2,39 +2,39 @@
   .row
     .col-md-12
       .form-group
-        = f.input_field :hotel_id
+        = f.hidden_field :hotel_id
 
       .form-group
-        = f.input_field :arrival_date
+        = f.hidden_field :arrival_date
 
       .form-group
-        = f.input_field :departure_date
+        = f.hidden_field :departure_date
 
       .form-group
-        = f.input_field :rate_code
+        = f.hidden_field :rate_code
 
       .form-group
-        = f.input_field :room_type_code
+        = f.hidden_field :room_type_code
 
       .form-group
         = f.hidden_field :rate_key
-        / , value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["rateKey"]
 
       .form-group
-        = f.input_field :total
-        / , value: @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+        = f.hidden_field :total
 
       .form-group
-        = f.input_field :bed_type
-        / , value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"]["@id"]
-      /   - if @room_availability["HotelRoomResponse"]["BedTypes"]["@size"].eql? ("1")
-      /   - else
-      /     = f.hidden_field :bed_type, value: @room_availability["HotelRoomResponse"]["BedTypes"]["BedType"].map { |bed| bed["@id"] }
+        = f.hidden_field :bed_type
 
       / .form-group
       /   = f.hidden_field :smoking_preferences, value: @room_availability["HotelRoomResponse"]["smokingPreferences"]
 
       .row
+        .col-md-8
+          .form-group
+            = f.button :submit, "Yes", class: 'btn btn-orange btn-md'
+            | &nbsp;
+            button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+              | No
         / .col-md-8
         /   .form-group
         /     = f.input :email, input_html: { value: current_user.email, class: 'form-control', readonly: true }
@@ -95,9 +95,3 @@
         /     = f.label :exp_year, "Expiration Year (YYYY)"
         /     = f.input_field :exp_year, class: "form-control"
 
-        .col-md-8
-          .form-group
-            = f.button :submit, "Yes", class: 'btn btn-orange btn-md'
-            | &nbsp;
-            button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
-              | No

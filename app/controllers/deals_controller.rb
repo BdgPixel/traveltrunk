@@ -111,7 +111,7 @@ class DealsController < ApplicationController
       reservation = current_user.reservations.new(reservation_params)
       # yuhuu
       reservation.save
-      redirect_to deals_thank_you_page_path(reservation.id), notice: "Booking success"
+      redirect_to deals_thank_you_page_path, notice: "Booking success"
 
       # respond_to do |format|
       #   if reservation.save
