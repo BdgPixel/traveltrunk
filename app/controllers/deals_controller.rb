@@ -94,6 +94,7 @@ class DealsController < ApplicationController
       # current_user.update_attributes(total_credit: total_credit)
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
       departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
+      current_user.update(total_credit: total_credit.to_i)
 
       reservation_params = {
         itinerary: @reservation["itineraryId"],
@@ -111,7 +112,7 @@ class DealsController < ApplicationController
         departure_date: departure_date
       }
       reservation = current_user.reservations.new(reservation_params)
-      # yuhuu
+
       reservation.save
       redirect_to deals_thank_you_page_path, notice: "Booking success"
 

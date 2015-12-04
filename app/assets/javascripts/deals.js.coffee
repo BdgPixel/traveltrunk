@@ -324,6 +324,11 @@ $(document).ready ->
     $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected('.room-selected')
       appendCreditform()
+
+      $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
+        $('#formAddToSavings').get(0).reset()
+        $('.payment-errors').html("")
+
       return
 
   disableEnterFormSubmit()
