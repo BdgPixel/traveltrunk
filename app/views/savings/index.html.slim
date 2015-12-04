@@ -39,8 +39,8 @@
       = image_tag current_user.profile.image.url, class: 'img-circle'
 
       .text-center
-        h3 = current_user.profile.first_name
-        h3 = currency_in_usd(current_user.total_credit)
+        / h3 = current_user.profile.first_name
+        / h3 = currency_in_usd(current_user.total_credit)
         h1
           | Total : &nbsp;
           = currency_in_usd(current_user.total_credit)

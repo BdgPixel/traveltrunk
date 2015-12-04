@@ -4,12 +4,27 @@
       .modal-header
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true" &times;
-        h3 Title
+        h3 Add to savings
       .modal-body
-        = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true do |f|
+        = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true, html: { id: 'formAddToSavings' } do |f|
+          = f.hidden_field :id, value: params[:id]
+          = f.hidden_field :rate_code
+          = f.hidden_field :total
           .form-group
-            = f.input :credit_card
+            = f.input :card_number, as: :integer, input_html: { class: "form-control" }
+            .payment-errors
+
           .form-group
-            = f.input :amount
+            = label_tag "Expiration Month (MM)"
+            = select_month nil, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
           .form-group
-            = f.submit "Update", class: "btn btn-default"
+            = label_tag "Expiration Year (YYYY)"
+            = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+          .form-group
+            = f.input :amount, as: :integer, input_html: { class: "form-control" }
+          .form-group
+            = f.submit "Update", class: "btn btn-orange"
+            | &nbsp;
+            button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+              | Cancel
+

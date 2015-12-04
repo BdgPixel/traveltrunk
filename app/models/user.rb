@@ -1,4 +1,6 @@
 class User < ActiveRecord::Base
+  include PublicActivity::Model
+
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
   has_many :likes

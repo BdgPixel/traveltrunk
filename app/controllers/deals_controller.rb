@@ -6,6 +6,8 @@ class DealsController < ApplicationController
   before_action :check_like,         only: [:like]
   before_action :authenticate_user!
 
+  skip_before_filter :verify_authenticity_token, only: [:update_credit]
+
   def index
     @destination = current_user.destination
     if @destination
@@ -28,23 +30,14 @@ class DealsController < ApplicationController
 
   def show
     expedia_params_hash = { hotelId: params[:id] }
-    unless hotel_information = Rails.cache.read(hotel_information)
-      hotel_information = get_hotel_information(expedia_params_hash)
-      Rails.cache.write("hotel_information", hotel_information, expires_in: 2.weeks)
-    end
-    @hotel_information = hotel_information
+    get_hotel_information(expedia_params_hash)
   end
 
   def book
     room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
 
     if request.xhr?
-      unless room_availability = Rails.cache.read(room_availability)
-        room_availability = get_room_availability(room_params_hash)
-        Rails.cache.write("room_availability", room_availability, expires_in: 2.weeks)
-      end
-      @room_availability = room_availability
-      # get_room_availability(room_params_hash)
+      get_room_availability(room_params_hash)
       respond_to :js
     end
   end
@@ -133,17 +126,38 @@ class DealsController < ApplicationController
   end
 
   def update_credit
-    total_credit = current_user.total_credit
-    total_credit = params[:update_credit][:amount] * 100
+    begin
+      amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
+      charge= Stripe::Charge.create(
+        :amount => amount_in_cents,
+        :currency => "usd",
+        :source => {
+          number: params[:update_credit][:card_number],
+          exp_month: params[:update_credit][:exp_month],
+          exp_year: params[:update_credit][:exp_year],
+          object: 'card'
+        },
+        :description => "Add to savings"
+      )
 
-    respond_to do |format|
-      if current_user.update_attributes(total_credit: total_credit)
-        format.js {}
-        format.html {}
-      else
-        format.js {}
-        format.html {}
+      if charge.paid
+        transaction = current_user.transactions.new(amount: charge.amount, transaction_type: 'deposit')
+
+        if transaction.save
+          total_credit = current_user.total_credit + amount_in_cents
+          current_user.update_attributes(total_credit: total_credit)
+          @user_total_credit = current_user.total_credit / 100.0
+
+          StripeMailer.payment_succeed(current_user.id, transaction.amount).deliver_now
+
+          @transaction_amount = transaction.amount / 100.0
+          current_user.create_activity key: "payment.manual", owner: current_user,
+            recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @user_total_credit }
+        end
       end
+
+    rescue Stripe::CardError => e
+      @error_response = e.message
     end
   end
 

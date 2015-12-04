@@ -10,7 +10,6 @@
 # = require holder
 # = require google-api
 # = require jquery.raty
-# = require jquery.raty-fa
 # = require ratyrate
 
 
@@ -186,8 +185,9 @@ listOfMonts = (month) ->
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   months[month]
 
-roomSelected = ->
-  $('.room-selected').on 'click', ->
+@roomSelected = (selector)->
+  $(selector).on 'click', ->
+    console.log(window.clicked_element = this)
     rateCode = $(this).data('rate-code')
     roomTypeCode = $(this).data('room-type-code')
     numberOfRoomsRequested = rooms.numberOfRoomsRequested
@@ -251,12 +251,29 @@ roomSelected = ->
       )
 
     if $('#roomRating').length > 0
-      rating_count = parseFloat($('#roomRating').data('rating'))
-      $('div#roomRating').raty
-        half   : true
-        readOnly: true
-        score: rating_count
+      # $('div#roomRating').raty
+      #   half   : true
+      #   readOnly: true
+      #   score: rating_count
+      rating_count = parseFloat($('#roomRating').attr('data-rating'))
 
+      $('#roomRating').raty
+        half: true
+        readOnly: true
+        size: 24
+        score: rating_count
+        starOn: window.star_on_mid_image_path
+        starOff: window.star_off_mid_image_path
+        starHalf: window.star_half_mid_image_path
+
+
+
+appendCreditform = ->
+  $('.append-credit').on 'click', ->
+    rateCode = $(this).data('rate-code')
+    $(this).addClass("form-#{rateCode}")
+    $('#update_credit_rate_code').val(rateCode)
+    $('#update_credit_total').val($(this).data('total'))
 
 $ ->
   $('input#search_deals_arrival_date').datepicker(
@@ -282,7 +299,8 @@ $(document).ready ->
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->
-      roomSelected()
+      roomSelected('.room-selected')
+      appendCreditform()
       return
 
   disableEnterFormSubmit()
@@ -335,19 +353,18 @@ $(document).ready ->
   if $('#hotelRating').length > 0
     rating_count = parseFloat($('#hotelRating').data('rating'))
 
-    $('div#hotelRating').raty
-      half   : true
-      readOnly: true
-      score: rating_count
-
-
-    # $('#hotelRating').raty
-    #   half: true
+    # $('div#hotelRating').raty
+    #   half   : true
     #   readOnly: true
-    #   size: 24
     #   score: rating_count
-    #   starOn: window.star_on_mid_image_path
-    #   starOff: window.star_off_mid_image_path
-    #   starHalf: window.star_half_mid_image_path
-    #   starType : 'i'
+
+
+    $('#hotelRating').raty
+      half: true
+      readOnly: true
+      size: 24
+      score: rating_count
+      starOn: window.star_on_mid_image_path
+      starOff: window.star_off_mid_image_path
+      starHalf: window.star_half_mid_image_path
 
