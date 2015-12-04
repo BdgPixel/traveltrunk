@@ -32,3 +32,6 @@ ThankYouPage#created
 
   p
     | Total rate #{number_to_currency(@reservation.total)}
+
+  P
+    = link_to "Back to hotel list", deals_path, class: "btn btn-orange"

@@ -2,7 +2,7 @@
   = javascript_include_tag "deals"
   = javascript_include_tag "variables"
 
-#modalPage.modal.fade.bs-example-modal-lg aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+#modalBook.modal.fade.bs-example-modal-lg aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
   .modal-dialog.modal-lg
     .modal-content
       .modal-header
@@ -33,7 +33,7 @@
 
                 p
                   #roomRating
-                    .rating-text
+                  .rating-text
                   / data-rating="#{@room_availability["tripAdvisorRating"]}"
                     / = pluralize(@room_availability["tripAdvisorRating"], "rating")
                 p.hotel-info-addr
@@ -46,11 +46,11 @@
 
                 p.checkin-intructions
 
-                p.form-book
-                  | Would you still like to book this hotel ?
-                  br
-                  = render "form_book"
                 p.hotel-checkin-checkout
+                / p.form-book
+                  / | Would you still like to book this hotel ?
+                  / br
+                  / = render "form_book"
               /     | Checkin&nbsp;
               /     = format_string_expedia_to_date(@room_availability["arrivalDate"])
 
@@ -71,17 +71,20 @@
               .col-md-6
                 table.table
                   tr
-                    td.numberOfRooms
-                      = @room_availability["numberOfRoomsRequested"]
-                      strong &nbsp;Room
-              /       td
-              /         | avg/night
+                    td.number-of-rooms
+                      / = @room_availability["numberOfRoomsRequested"]
+                      / strong &nbsp;Room
+                    td.list-of-dates
+                p.form-book
+                  | Would you still like to book this hotel ?
+                  br
+                  = render "form_book"
+                      / | avg/night
               /     / - (current_user.destination.arrival_date..current_user.destination.departure_date).to_a.each do |date|
               /     = convert_string_to_date(@room_availability["arrivalDate"], @room_availability["departureDate"], @room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
 
               /         / td = number_to_currency(@room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
               /     tr
-              /       td Total taxes and fees&nbsp;
               /       td = number_to_currency(@room_availability["HotelRoomResponse"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"])
               /     tr
               /       td

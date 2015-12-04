@@ -75,65 +75,65 @@ validateSearchForm = ->
           
           false
 
-loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
+# loadMoreHotels = (cacheKey, cacheLocation, pageNumber) ->
 
-  page = $(".deals-page[data-page='#{ pageNumber }']")
+#   page = $(".deals-page[data-page='#{ pageNumber }']")
 
-  if page.length > 0
-    page.show()
-    $('.deals-page').not(page).hide()
-  else
-    $('div.deals-image').removeClass 'lazy'
-    url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=#{ cid }&minorRev=28&apiKey=#{ apiKey }&locale=en_US&cacheKey=#{cacheKey}&cacheLocation=#{cacheLocation}&supplierType=E"
+#   if page.length > 0
+#     page.show()
+#     $('.deals-page').not(page).hide()
+#   else
+#     $('div.deals-image').removeClass 'lazy'
+#     url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=#{ cid }&minorRev=28&apiKey=#{ apiKey }&locale=en_US&cacheKey=#{cacheKey}&cacheLocation=#{cacheLocation}&supplierType=E"
 
-    $.ajax
-      url: url
-      type: 'GET'
-      dataType: 'jsonp'
-      beforeSend: ->
-        $('#loading').show()
-      success:  (data) ->
-        $('#loading').fadeOut("slow")
-        $('.deals-page').hide()
+#     $.ajax
+#       url: url
+#       type: 'GET'
+#       dataType: 'jsonp'
+#       beforeSend: ->
+#         $('#loading').show()
+#       success:  (data) ->
+#         $('#loading').fadeOut("slow")
+#         $('.deals-page').hide()
 
-        previousPageNumber = $('.deals-page').length
-        currentPageNumber =  previousPageNumber + 1
-        nextPageNumber = currentPageNumber + 1
+#         previousPageNumber = $('.deals-page').length
+#         currentPageNumber =  previousPageNumber + 1
+#         nextPageNumber = currentPageNumber + 1
 
-        # $('#dealsHotelsList .col-deals').remove()
+#         # $('#dealsHotelsList .col-deals').remove()
 
-        $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
-        $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
+#         $('#loadMoreNext').attr('data-cache-key', data['HotelListResponse']['cacheKey'])
+#         $('#loadMoreNext').attr('data-cache-Location', data['HotelListResponse']['cacheLocation'])
 
-        dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
-        $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
-          roundedPrice = Math.round(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
-          dealsWrapper = $('<div class="wrapper-price-deals">')
-          dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
-          dealsGrid.append $("<div class='price-deals'><strong>$#{ roundedPrice }</strong></div>")
-          dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show?price=#{ roundedPrice }' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
-          dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show?price=#{ roundedPrice }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
-          dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
-          dealsWrapper.append dealsGrid
-          dealsPage.append dealsWrapper
-        dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-orange loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Back</a><a class='btn btn-orange loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next<i class='icon next-loadmore'></i></a></div></div><br><br>")
-        $('#dealsHotelsList').append dealsPage
+#         dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
+#         $.each data["HotelListResponse"]["HotelList"]["HotelSummary"], (key, hotel) ->
+#           roundedPrice = Math.round(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
+#           dealsWrapper = $('<div class="wrapper-price-deals">')
+#           dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
+#           dealsGrid.append $("<div class='price-deals'><strong>$#{ roundedPrice }</strong></div>")
+#           dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show?price=#{ roundedPrice }' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
+#           dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show?price=#{ roundedPrice }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
+#           dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
+#           dealsWrapper.append dealsGrid
+#           dealsPage.append dealsWrapper
+#         dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-orange loadMoreBack' data-previous-page='#{ previousPageNumber }'><i class='icon previous-loadmore pull-left'></i>&nbsp;&nbsp;Back</a><a class='btn btn-orange loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next<i class='icon next-loadmore'></i></a></div></div><br><br>")
+#         $('#dealsHotelsList').append dealsPage
 
-        $('div.lazy').lazyload
-          effect : 'fadeIn'
+#         $('div.lazy').lazyload
+#           effect : 'fadeIn'
 
-        $('[data-toggle="tooltip"]').tooltip()
+#         $('[data-toggle="tooltip"]').tooltip()
 
-        $(".loadMoreNext[data-next-page='#{ nextPageNumber }']").on 'click', ->
-          loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).data('next-page'))
+#         $(".loadMoreNext[data-next-page='#{ nextPageNumber }']").on 'click', ->
+#           loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).data('next-page'))
 
-        $(".loadMoreBack[data-previous-page='#{ previousPageNumber }']").on 'click', ->
-          targetPageNumber = $(this).data('previous-page')
-          targetPage = $(".deals-page[data-page='#{ targetPageNumber }']")
-          $('.deals-page').not(targetPage).hide()
-          targetPage.show()
+#         $(".loadMoreBack[data-previous-page='#{ previousPageNumber }']").on 'click', ->
+#           targetPageNumber = $(this).data('previous-page')
+#           targetPage = $(".deals-page[data-page='#{ targetPageNumber }']")
+#           $('.deals-page').not(targetPage).hide()
+#           targetPage.show()
 
-  return
+#   return
 
 searchDestination = ->
   lat = $('#lat').val()
@@ -203,28 +203,25 @@ searchDestination = ->
 
   return
 
-# formatStringSxpediaSoDate = (date) ->
-#   date = new Date date
+listOfMonts = (month) ->
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  months[month]
 
 roomSelected = ->
   $('.room-selected').on 'click', ->
     rateCode = $(this).data('rate-code')
     roomTypeCode = $(this).data('room-type-code')
+    numberOfRoomsRequested = rooms.numberOfRoomsRequested
 
     $('.bs-example-modal-lg').modal({ backdrop: 'static' })
     $('.modal .modal-header h3').text(rooms.hotelName)
-
-    # $('.modal .modal-header #roomRating').html('rating', rooms.tripAdvisorRating)
     $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating').attr('data-rating', rooms.tripAdvisorRating)
-    $('.modal .modal-body .row .col-md-12 .col-md-6 #roomRating .rating-text').text(rooms.tripAdvisorRating + " ratings")
+    $('.modal .modal-body .row .col-md-12 .col-md-6 .rating-text').text(rooms.tripAdvisorRating + " ratings")
     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-addr').text(rooms.hotelAddress)
     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-city').html("&nbsp;City&nbsp; #{rooms.hotelCity}")
     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-state').html("&nbsp;State&nbsp; #{rooms.hotelStateProvince}")
     $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
     $('.modal .modal-body .row .col-md-12 .col-md-6 .checkin-intructions').html(rooms.checkInInstructions)
-
-    # arrivalDate =
-    # $('.modal .modal-body .row .col-md-12 .col-md-6 .hotel-checkin-checkout').html("&nbsp;Checkin&nbsp; #{rooms.arrivalDate.to_date.strftime("%B %d, %Y")}")
 
     $('#confirmation_book_hotel_id').val($(this).data('id'))
     $('#confirmation_book_arrival_date').val(rooms.arrivalDate)
@@ -232,14 +229,30 @@ roomSelected = ->
     $('#confirmation_book_rate_code').val(rateCode)
     $('#confirmation_book_room_type_code').val(roomTypeCode)
 
-    # $.each rooms.HotelRoomResponse, (key, room) ->
-      # if room['rateCode'] == rateCode
-        # $('#confirmation_book_total').val(room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     room = $.grep(rooms.HotelRoomResponse, (e, index) ->
       e.rateCode == rateCode
-
     )
-    console.log room[0]['RoomImages']['RoomImage'][0]['url']
+
+    arrivalDate = new Date(rooms.arrivalDate)
+    departureDate = new Date(rooms.departureDate)
+    dates = []
+    d = arrivalDate
+
+    while d <= departureDate
+      dates.push(new Date(d))
+      d.setDate d.getDate() + 1
+
+    dates.pop()
+    table = $("table.table:last tbody")
+    table.html('')
+
+    $.each dates, (key, date) ->
+      month = listOfMonts(date.getMonth())
+      table.append("<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@averageRate']}</td></tr>")
+
+    table.append("<tr><td><b>Total taxes and fees</b></td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
+    table.append("<tr><td><b>Total</b></td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
+
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
 
@@ -258,19 +271,12 @@ roomSelected = ->
         b['@id']
       )
 
-
     if $('#roomRating').length > 0
       rating_count = parseFloat($('#roomRating').data('rating'))
       $('div#roomRating').raty
         half   : true
         readOnly: true
         score: rating_count
-
-#     # $.get '/deals/book',
-#     #   id: $(this).data('id')
-#     #   rate_code: $(this).data('rate-code')
-#     #   room_type_code: $(this).data('room-type-code')
-#     # .done (data) ->
 
 
 $ ->
@@ -293,36 +299,17 @@ $ ->
 
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
-    $.get '/deals', ->
-      $('[data-toggle="tooltip"]').tooltip();
-      return
+    $.get '/deals'
   else
     params_path_id = window.location.pathname.split('/')[2]
     $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected()
-      # $('#slideToggleLink').click ->
-      #   $('#slideToggle').slideToggle()
       return
-
 
   disableEnterFormSubmit()
   validateSearchForm()
 
   if $('#slideToggleLink').length > 0
-  #   toggle_flag = 0
-  #   $('#slideToggleLink').on('click', (e) ->
-  #     $('#slideToggle').slideDown()
-  #     return
-  #   ).on 'click', 'slide', (e) ->
-  #     e.stopPropagation()
-  #     return
-
-    # $('.slide').on('click', (e) ->
-    #   $('#slideToggle').slideUp()
-    #   return
-    # ).on 'click', 'panel', (e) ->
-    #   e.stopPropagation()
-    #   return
     $('#slideToggleLink').on 'click', (e) ->
       $('#slideToggle').slideDown()
       return
@@ -338,18 +325,6 @@ $(document).ready ->
         return
       $('#slideToggle').slideUp()
       return
-
-    # $('.slide').on 'click', (e) ->
-    #   if e.target != this
-    #     return
-    #   alert 'clicked the foobar'
-    #   return
-
-
-    # ---
-
-
-  #   return
 
   # if $('#galleria').length > 0
   #   Galleria.loadTheme window.galleria_theme_path

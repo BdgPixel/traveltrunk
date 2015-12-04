@@ -28,14 +28,23 @@ class DealsController < ApplicationController
 
   def show
     expedia_params_hash = { hotelId: params[:id] }
-    get_hotel_information(expedia_params_hash)
+    unless hotel_information = Rails.cache.read(hotel_information)
+      hotel_information = get_hotel_information(expedia_params_hash)
+      Rails.cache.write("hotel_information", hotel_information, expires_in: 2.weeks)
+    end
+    @hotel_information = hotel_information
   end
 
   def book
     room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
 
     if request.xhr?
-      get_room_availability(room_params_hash)
+      unless room_availability = Rails.cache.read(room_availability)
+        room_availability = get_room_availability(room_params_hash)
+        Rails.cache.write("room_availability", room_availability, expires_in: 2.weeks)
+      end
+      @room_availability = room_availability
+      # get_room_availability(room_params_hash)
       respond_to :js
     end
   end
@@ -111,7 +120,7 @@ class DealsController < ApplicationController
       reservation = current_user.reservations.new(reservation_params)
       # yuhuu
       reservation.save
-      redirect_to deals_thank_you_page_path(reservation.id), notice: "Booking success"
+      redirect_to deals_thank_you_page_path, notice: "Booking success"
 
       # respond_to do |format|
       #   if reservation.save
@@ -120,6 +129,21 @@ class DealsController < ApplicationController
       #   end
       # end
       # binding.pry
+    end
+  end
+
+  def update_credit
+    total_credit = current_user.total_credit
+    total_credit = params[:update_credit][:amount] * 100
+
+    respond_to do |format|
+      if current_user.update_attributes(total_credit: total_credit)
+        format.js {}
+        format.html {}
+      else
+        format.js {}
+        format.html {}
+      end
     end
   end
 

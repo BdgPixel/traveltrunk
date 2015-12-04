@@ -56,6 +56,9 @@ module HotelsList
     url_room_params     = url + complete_params.to_query
     begin
       response = HTTParty.get(url_room_params)
+      # unless response = Rails.cache.read(response)
+      #   Rails.cache.write("response", response, expires_in: 2.weeks)
+      # end
 
       if response["HotelRoomAvailabilityResponse"]["EanWsError"]
         @room_availability = []
@@ -71,6 +74,7 @@ module HotelsList
   end
 
   def get_hotel_information(custom_params)
+
     @like              = Like.find_by(hotel_id: custom_params[:hotelId], user_id: current_user)
     @members_liked     = User.joins(:likes, :joined_groups).where("likes.hotel_id = ? AND groups.user_id = ?", custom_params[:hotelId], current_user)
 
@@ -79,6 +83,10 @@ module HotelsList
 
     begin
       response = HTTParty.get(url_custom_params)
+
+      # unless response = Rails.cache.read(response)
+      #   Rails.cache.write("response", response, expires_in: 2.weeks)
+      # end
 
       if response["HotelInformationResponse"]["EanWsError"]
         @hotel_information = []
