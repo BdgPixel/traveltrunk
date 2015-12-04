@@ -1,7 +1,2 @@
 $("#roomAvailability").html("<%= j render partial: 'room_availability' %>");
-
 var rooms = <%= raw @room_availability.to_json %>;
-
-// params_path_id = window.location.pathname.split('/')[2];
-// $.get("/deals/" + params_path_id + "/room_images");
-

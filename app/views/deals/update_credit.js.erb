@@ -1,0 +1,26 @@
+<% if @error_response %>
+  $('.payment-errors').html("<%= @error_response %>");
+<% else %>
+  userTotalCredit = <%= raw @user_total_credit %>
+  console.log(userTotalCredit);
+  savingButtons = $(".append-credit")
+  savingButtons = savingButtons.filter(function(){ return $(this).data("total") <= userTotalCredit  })
+
+  for(var i=0; i < savingButtons.length; i++){
+    currentButton = savingButtons[i];
+    $(currentButton).text('Book Now')
+      .unbind('click')
+      .removeClass('append-credit')
+      .addClass('room-selected')
+      .attr('data-target', '.modal-lg');
+
+    roomSelected(currentButton);
+  }
+
+  $('#modalSavingsForm').modal('hide');
+  $('#formAddToSavings').get(0).reset()
+  $('.payment-errors').html("");
+  $('#transferSuccessMessage').text("You successfully transfer money <%= number_to_currency(@transaction_amount) %> to your TravelTrunk account. Your total credit is <%= number_to_currency(@user_total_credit) %>")
+  $('#modalTransferSuccess').modal('show')
+<% end %>
+

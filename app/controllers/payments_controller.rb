@@ -72,7 +72,10 @@ class PaymentsController < ApplicationController
         user.save
 
         StripeMailer.subscription_charged(user.id, transaction.amount).deliver_now
+        user.create_activity key: "payment.recurring", owner: user,
+          recipient: user, parameters: { amount: (transaction.amount / 100.0), total_credit: user.total_credit }
       end
+
     end
 
     render nothing: true, status: 200
