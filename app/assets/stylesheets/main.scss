@@ -36,22 +36,6 @@ html {
 // Navigation Style
 
 .wrapper-navbar-traveltrunk {
-
-  // .navbar-default {
-  //   background-color: transparent;
-  //   border-radius: 0px;
-  //   border-color: transparent;
-  // }
-
-  // .navbar-nav > li > a {
-  //   color: #ffffff;
-
-  //   &:hover {
-  //     color: #ffffff;
-  //     text-decoration: underline;
-  //   }
-  // }
-
   .wrapper-navbar-brand {
     position: relative;
     top: -10px;
@@ -229,28 +213,6 @@ html {
       padding-top: 6em;
     }
   }
-
-  // @media screen and (min-width: 1200px) {
-
-  //   h1 {
-  //     padding-top: 6em;
-  //   }
-  // }
-
-  // @media screen and (min-width: 1280px) {
-
-  //   h1 {
-  //     padding-top: 6em;
-  //   }
-  // }
-
-  // @media screen and (min-width: 1824px) {
-
-  //   h1 {
-  //     text-align: left;
-  //     padding-top: 6em;
-  //   }
-  // }
 }
 
 .wrapper-img-profile {
@@ -297,7 +259,6 @@ html {
   }
 
   .btn-default {
-    // background-color: #000000;
     color: #ffffff;
     padding-left: 10px;
     padding-right: 20px;
@@ -458,6 +419,7 @@ html {
   }
   h1.text-center {
     font-size: 3.0em;
+    padding-left: 25px;
   }
 }
 

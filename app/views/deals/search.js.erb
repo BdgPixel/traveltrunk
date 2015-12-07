@@ -7,13 +7,6 @@
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
 
 <%- unless @error_response %>
-  // var currentPageNumber =  $('.deals-page').length;
-
-  // currentPage = $(".deals-page:last");
-  // currentPage.attr("data-page", currentPageNumber);
-
-  // $('.deals-page').not(currentPage).hide();
-
   initDealsPage(<%= raw @num_of_pages %>, <%= raw @num_of_hotels %>);
 <% end %>
 

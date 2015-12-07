@@ -133,9 +133,6 @@ searchDestination = ->
         success:  (data) ->
           $('#loading').fadeOut("slow");
 
-      # $('div.lazy').lazyload
-      #   effect : 'fadeIn'
-
       $('#collapseDeals').slideToggle()
       $('[data-toggle="tooltip"]').tooltip()
 
@@ -214,10 +211,6 @@ window.roomSelected = (selector)->
       )
 
     if $('#roomRating').length > 0
-      # $('div#roomRating').raty
-      #   half   : true
-      #   readOnly: true
-      #   score: rating_count
       rating_count = parseFloat($('#roomRating').attr('data-rating'))
 
       $('#roomRating').raty
@@ -289,27 +282,8 @@ $(document).ready ->
       $('#slideToggle').slideUp()
       return
 
-  # if $('#galleria').length > 0
-  #   Galleria.loadTheme window.galleria_theme_path
-  #   Galleria.configure dummy: '/assets/default-no-image.png'
-  #   Galleria.configure showInfo: false
-  #   # Initialize Galleria
-  #   Galleria.run '#galleria'
-
-  # if $('[data-toggle="tooltip"]').length > 0
-  #   $('[data-toggle="tooltip"]').tooltip()
-
-  # if $('div.lazy').length > 0
-  #   $('div.lazy').lazyload
-  #     effect : 'fadeIn'
-
   if $('.loadMoreNext').length > 0
     $('.loadMoreNext').on 'click', -> loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).attr('data-next-page'))
-
-  # if $('form#searchDealsForm').length > 0
-  #   $('form#searchDealsForm').submit (e) ->
-  #     searchDestination()
-  #     e.preventDefault()
 
   if $('#btnClearText').length > 0
     $('#btnClearText').click ->
@@ -324,12 +298,6 @@ $(document).ready ->
 
   if $('#hotelRating').length > 0
     rating_count = parseFloat($('#hotelRating').data('rating'))
-
-    # $('div#hotelRating').raty
-    #   half   : true
-    #   readOnly: true
-    #   score: rating_count
-
 
     $('#hotelRating').raty
       half: true

@@ -1,7 +1,6 @@
 .wrapper-navbar-traveltrunk
   .nav.navbar.navbar-default
     .container-fluid
-      /! Brand and toggle get grouped for better mobile display
       .navbar-header
         button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
           span.sr-only Toggle navigation
@@ -13,9 +12,6 @@
               = image_tag("logo1.png")
               span TravelTrunk
 
-        / = link_to 'TravelTrunk', root_path, class: 'navbar-brand'
-
-      /! Collect the nav links, forms, and other content for toggling
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right
           - if user_signed_in?
@@ -45,7 +41,3 @@
                 li = link_to 'Sign Out', destroy_user_session_path, method: :delete
           - else
               li = link_to 'SIGN UP', new_user_session_path
-
-
-      /! /.navbar-collapse
-    /! /.container-fluid

@@ -4,7 +4,7 @@ class User < ActiveRecord::Base
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
   has_many :likes
-  # has_many :destinations
+
   has_one  :destination, dependent: :destroy
   has_many :joined_groups, -> { where("users_groups.accepted_at IS NOT NULL") } , through: :users_groups
   has_many :users_groups
@@ -59,7 +59,6 @@ class User < ActiveRecord::Base
     room_hash[:arrivalDate]   = current_search[:arrivalDate]
     room_hash[:departureDate] = current_search[:departureDate]
 
-    # binding.pry
     if rate_code && room_type_code
       room_hash[:rateCode]     = rate_code
       room_hash[:roomTypeCode] = room_type_code

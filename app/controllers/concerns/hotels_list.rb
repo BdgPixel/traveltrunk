@@ -1,6 +1,5 @@
 module HotelsList
   def api_params_hash(options = nil)
-    # options     = options || "HOTEL_SUMMARY,ROOM_RATE_DETAILS"
     params_hash = {
       apiExperience: "PARTNER_WEBSITE",
       cid:          55505,
@@ -51,20 +50,17 @@ module HotelsList
 
   def get_room_availability(room_params)
     url                 = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
-    # binding.pry
+
     complete_params     = room_params.merge!(api_params_hash)
     url_room_params     = url + complete_params.to_query
     begin
       response = HTTParty.get(url_room_params)
-      # unless response = Rails.cache.read(response)
-      #   Rails.cache.write("response", response, expires_in: 2.weeks)
-      # end
 
       if response["HotelRoomAvailabilityResponse"]["EanWsError"]
         @room_availability = []
         @error_response    = response["HotelRoomAvailabilityResponse"]["EanWsError"]["presentationMessage"]
         @category_room_message = response["HotelRoomAvailabilityResponse"]["EanWsError"]["category"]
-        # binding.pry
+
       else
         @room_availability = response["HotelRoomAvailabilityResponse"]
       end
@@ -83,10 +79,6 @@ module HotelsList
 
     begin
       response = HTTParty.get(url_custom_params)
-
-      # unless response = Rails.cache.read(response)
-      #   Rails.cache.write("response", response, expires_in: 2.weeks)
-      # end
 
       if response["HotelInformationResponse"]["EanWsError"]
         @hotel_information = []
@@ -156,50 +148,4 @@ module HotelsList
       @error_response = "You don't have any credits"
     end
   end
-
-
-
-  # def get_hotels_list(custom_params, params_cache = nil)
-  #   if current_user.total_credit_in_usd > 0
-  #     url            = "http://api.ean.com/ean-services/rs/hotel/v3/list?"
-  #     @is_first_page = params_cache.nil?
-
-  #     if custom_params
-  #       custom_params.merge!({ maxRate: current_user.total_credit_in_usd })
-
-  #       url_custom_params = url +
-  #         if params_cache
-  #           api_params_hash.merge!(params_cache).to_query
-  #         else
-  #           custom_params.merge!(api_params_hash).to_query
-  #         end
-  #       # binding.pry
-  #       begin
-  #         response = HTTParty.get(url_custom_params)
-
-  #         if response["HotelListResponse"]["EanWsError"]
-  #           @hotels_list    = []
-  #           @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
-  #         else
-  #           @hotel_ids                 = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-  #           @like_ids                  = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-
-  #           @hotels_list               = response["HotelListResponse"]["HotelList"]["HotelSummary"]
-  #           @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
-  #           @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
-  #         end
-  #       rescue HTTParty::Error => e
-  #         @error_response = e.message
-  #       end
-  #     else
-  #       @hotels_list    = []
-  #       @error_response = "You haven't selected any destinations"
-  #     end
-  #   else
-  #     @hotels_list    = []
-  #     @error_response = "You don't have any credits"
-  #   end
-  # end
-
-
 end
