@@ -90,7 +90,7 @@ class DealsController < ApplicationController
 
     if !@error_response
       total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100).to_i
-      # current_user.update_attributes(total_credit: total_credit)
+
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
       departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
 
@@ -118,13 +118,6 @@ class DealsController < ApplicationController
       reservation.save
       redirect_to deals_thank_you_page_path, notice: "Booking success"
 
-      # respond_to do |format|
-      #   if reservation.save
-      #     # ReservationMailer.reservation_created(@reservation, current_user.id).deliver_now
-      #     format.html { redirect_to deals_thank_you_page_path, notice: "Booking success" }
-      #   end
-      # end
-      # binding.pry
     end
   end
 
@@ -165,7 +158,6 @@ class DealsController < ApplicationController
   end
 
   def thank_you_page
-    # yuhuu
     @reservation = current_user.reservations.first
   end
 
@@ -174,8 +166,7 @@ class DealsController < ApplicationController
 
       room_params_hash = current_user.expedia_room_params(params[:id])
       get_room_availability(room_params_hash)
-      # get_room_availability
-      # get_room_images({ hotelId: params[:id] })
+
       respond_to :js
     end
   end
@@ -230,7 +221,6 @@ class DealsController < ApplicationController
     })
 
     if destination
-      # binding.pry
       destination.update(custom_params)
     else
       destination = current_user.build_destination(custom_params)
@@ -239,58 +229,6 @@ class DealsController < ApplicationController
     set_search_data
   end
 
-=begin
-  def set_hotel(custom_params, params_cache = nil, type_list = nil)
-    url =
-      if type_list
-        "http://api.ean.com/ean-services/rs/hotel/v3/info"
-      else
-        "http://api.ean.com/ean-services/rs/hotel/v3/list"
-      end
-
-    if custom_params
-      params_api = {
-        cid:      55505,
-        minorRev: 30,
-        apiKey:   "5fd6485clmp3oogs8gfb43p2uf",
-        locale:       "en_US",
-        currencyCode: "USD",
-        supplierType: "E"
-      }
-
-      if type_list
-        custom_params = custom_params.merge!(params_api)
-        response = HTTParty.get(url + "?" + custom_params.to_query)
-        @hotel_information = response["HotelInformationResponse"]
-        @like = Like.find_by(hotel_id: params[:hotelId], user_id: current_user)
-        @members_liked = User.joins(:likes, :joined_groups).where("likes.hotel_id = ? AND groups.user_id = ?", params[:hotelId], current_user)
-        # yuhuu
-      else
-        if params_cache
-          custom_params = params_api.merge!(params_cache)
-          response = HTTParty.get(url + "?" + custom_params.to_query)
-          @params_cache = params_cache
-        else
-          custom_params = custom_params.merge!(params_api)
-          response = HTTParty.get(url + "?" + custom_params.to_query)
-        end
-
-        response.code
-        response.message
-
-        @hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"]
-
-        @hotel_list_cache_key = response["HotelListResponse"]["cacheKey"]
-        @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
-
-        @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-        @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-      end
-
-    end
-  end
-=end
-
   private
     def set_search_data
       if @destination = current_user.destination
@@ -298,7 +236,7 @@ class DealsController < ApplicationController
       end
       @page = params[:page].to_i + 1
       params_cache = { cacheKey: params[:cache_key], cacheLocation: params[:cache_location] } if params[:cache_key] && params[:cache_location]
-      # set_hotel(@searchParams, params_cache)
+
       get_hotels_list(@searchParams, params_cache)
     end
 

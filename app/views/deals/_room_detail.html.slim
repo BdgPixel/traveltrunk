@@ -33,20 +33,6 @@ tr
             li #{amenity["description"]}
 
   td
-    / = link_to "javascript:void(0)", id: "slideToggleLink"
-    /   strong Rates per night:
-    / br
-    / #slideToggleOff
-    /   = convert_string_to_date(arrival_date, departure_date, room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"], "show")
-    / / = room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"]
-    / br
-    / br
-    / .col-md-6
-    /   strong
-    /     | Surcharge Total:&nbsp;
-    / .col-md-4
-    /   label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"])
-    / br
     .col-md-6
       h3
         label = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
@@ -58,4 +44,4 @@ tr
         = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
     - else
       h3
-        = link_to "Book Now", "#", class: "room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+        = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }

@@ -12,7 +12,7 @@
           = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"]
         - else
           - @room_availability["HotelRoomResponse"].uniq.each do |room|
-            / - binding.pry
+
             = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"]
 
 - if @error_response
