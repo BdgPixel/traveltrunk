@@ -12,6 +12,7 @@
   .wrapper-group-saving-img
     .col-md-6.col-lg-3.col-md-offset-3.col-lg-offset-4
       = image_tag current_user.profile.image.url, class: 'img-circle'
+
       .text-center
         h1.text-total-credits
           | Total : &nbsp;
@@ -19,7 +20,8 @@
         p
           = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
           |&nbsp;&nbsp;
-          = link_to "Invite Friends", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
+          = link_to "Invite Friends", "#", class: "display append-credit", data: { toggle: "modal", target: "" }
 
   = render partial: 'savings/form_add_saving'
   = render partial: 'savings/transfer_success'
+

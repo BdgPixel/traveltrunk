@@ -106,15 +106,13 @@ module HotelsList
       @is_first_page = params_cache.nil?
 
       if custom_params
-        # custom_params.merge!({ maxRate: current_user.total_credit_in_usd })
-
         url_custom_params = url +
           if params_cache
             api_params_hash.merge!(params_cache).to_query
           else
             custom_params.merge!(api_params_hash).to_query
           end
-        # binding.pry
+
         begin
           response = HTTParty.get(url_custom_params)
 
@@ -122,8 +120,8 @@ module HotelsList
             @hotels_list    = []
             @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
           else
-            # @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-            # @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
+            @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
+            @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
 
             hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
               hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= (current_user.total_credit / 100.0)
@@ -136,7 +134,7 @@ module HotelsList
                 hotels_list.sort do |hotel_x, hotel_y|
                   hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                 end
-              # binding.pry
+
               @num_of_hotels = hotels_list.size
               @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
               @num_of_pages = @hotels_list.size
