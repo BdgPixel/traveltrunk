@@ -14,7 +14,6 @@ class DealsController < ApplicationController
       new_arrival_date = Date.today
 
       if @destination.arrival_date < new_arrival_date
-        puts 'update'
         @destination.departure_date = new_arrival_date + (@destination.departure_date - @destination.arrival_date).to_i
         @destination.arrival_date = new_arrival_date
       end
