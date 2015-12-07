@@ -17,6 +17,10 @@
     roomSelected(currentButton);
   }
 
+  if ($('text-total-credits').length > 0) {
+    $('text-total-credits').html("Total : &nbsp;<%= currency_in_usd(current_user.total_credit) %>");
+  }
+
   $('#modalSavingsForm').modal('hide');
   $('#formAddToSavings').get(0).reset()
   $('.payment-errors').html("");

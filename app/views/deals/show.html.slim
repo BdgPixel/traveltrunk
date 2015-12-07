@@ -38,37 +38,15 @@
           #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
           .rating-text = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
-      / .col-md-5
-      /   .col-md-12
-      /     h3 Your member who liked this hotel:
-      /   .col-md-10
-      /     - if @members_liked.empty?
-      /       p.alert.alert-info No members liked this hotel
-      /     - else
-      /       - @members_liked.each do |member|
-      /         .col-md-1.text-center
-      /           = link_to "javascript:void(0)"
-      /             = image_tag member.profile.image.url, class: 'img-circle', data: { toggle: "tooltip", placement: "top", title: "#{member.profile.first_name}" }, width: 30, height: 30
-
-      /   .wrapper-like-deals.col-md-2
-      /     p.content-deals
-      /       = link_to deals_like_path(params[:id]), id: "likeDeal", remote: true
-      /         - if @like
-      /           span.icon.love-active id="like-#{params[:id]}"
-      /         - else
-      /           span.icon.love-normal id="like-#{params[:id]}"
-
       .clearfix
 
       .col-md-12
         #roomAvailability.form-horizontal
-        / p
-         / = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
 
       .col-md-12
         .container
           .row
-            / #roomAvailability.form-horizontal
+
       .col-md-12
         hr
         #map style="height: 500px; width: 100%;"

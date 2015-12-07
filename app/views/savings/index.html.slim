@@ -4,31 +4,6 @@
 - content_for :javascripts do
   = javascript_include_tag 'groups'
 
-/ .row
-/   .col-md-12.text-center
-/     .row
-/       .col-md-12.text-center
-/         .wrapper-group-saving
-
-/           h1 = "#{current_user.profile.first_name.titleize} #{current_user.bank_account.transfer_frequency} Savings Plan"
-
-/           br
-
-/           ul
-/             li
-/               .col-md-12.text-center
-/                 / = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
-/                 = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
-/                 h3 = current_user.profile.first_name
-/                 h3 = currency_in_usd(current_user.total_credit)
-
-/           .col-md-12.text-center
-/             h1
-/               | Total : &nbsp;
-/               = currency_in_usd(current_user.total_credit)
-
-
-
 .row
   .col-md-12.col-lg-12
     .wrapper-group-saving
@@ -37,83 +12,14 @@
   .wrapper-group-saving-img
     .col-md-6.col-lg-3.col-md-offset-3.col-lg-offset-4
       = image_tag current_user.profile.image.url, class: 'img-circle'
-
       .text-center
-        / h3 = current_user.profile.first_name
-        / h3 = currency_in_usd(current_user.total_credit)
-        h1
+        h1.text-total-credits
           | Total : &nbsp;
           = currency_in_usd(current_user.total_credit)
+        p
+          = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
+          |&nbsp;&nbsp;
+          = link_to "Invite Friends", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
 
-        / - if @joined_groups.any?
-        /   h1 Your Group's Savings
-
-        /   br
-
-        /   - @joined_groups.each do |joined_group|
-        /     ul
-        /       li
-        /         .col-md-12.text-center
-        /           = image_tag joined_group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
-        /           h3 = joined_group.user.profile.first_name
-        /           h3 $ 100
-        /       - joined_group.members.each do |member|
-        /         li
-        /           .col-md-12.text-center
-        /             = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
-        /             h3 = member.profile.first_name
-        /             h3 $ 100
-
-        /     .col-md-12.text-center
-        /       h1
-        /         | Total : $ 200
-
-        / - else
-        /   h1 Your Group's Savings
-
-        /   br
-
-        /   ul
-        /     li
-        /       .col-md-12.text-center
-        /         = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
-        /         h3 = current_user.profile.first_name
-        /         h3 = currency(current_user.total_credit)
-
-        /       - if @members
-        /         - @members.each do |member|
-        /           li
-        /             .col-md-12.text-center
-        /               = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
-        /               h3 = member.profile.first_name
-        /               h3 $ 100
-
-        /   .col-md-12.text-center
-        /     h1
-        /       | Total : &nbsp;
-        /       = currency(current_user.total_credit)
-
-          / - if @members.size < 4
-          /   .col-md-12.text-center
-          /     br
-          /     br
-          /     = link_to 'Invite a friend', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default btn-invite-friend'
-          /     br
-          /     br
-          /     .col-md-4
-          /     .col-md-4.col-offset-4
-          /       #slideToggle.panel.panel-default
-          /         .panel-heading Invite a Friend
-          /         .panel-body
-          /           .token-input
-          /             = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
-          /               .form-group
-          /                 = f.label :user_id, 'Type email or name to invite'
-          /                 = f.input_field :user_id
-          /                 p User who have joined or created saving groups will not appear here
-          /                 / = f.input_field :user_id, data: { load: @joined_members }
-
-          /               .actions.form-group
-          /                 = f.submit 'Send Invitation', class: 'btn btn-default'
-
-
+  = render partial: 'savings/form_add_saving'
+  = render partial: 'savings/transfer_success'
