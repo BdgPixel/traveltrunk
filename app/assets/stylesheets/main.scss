@@ -461,28 +461,28 @@ html {
 .wrapper-group-saving-img {
 
   @media (min-width: 768px) {
-    
+
     .col-lg-offset-4 {
       margin-left: 0%;
     }
   }
 
   @media (min-width: 992px) {
-    
+
     .col-lg-offset-4 {
       margin-left: 25%;
     }
   }
 
   @media (min-width: 1024px) {
-    
+
     .col-lg-offset-4 {
       margin-left: 25%;
     }
   }
 
   @media (min-width: 1200px) {
-    
+
     .col-lg-offset-4 {
       margin-left: 36.333333%;
     }
@@ -490,7 +490,7 @@ html {
 
 
   @media (min-width: 1820px) {
-    
+
     .col-lg-offset-4 {
       margin-left: 36.333333%;
     }
@@ -501,5 +501,10 @@ html {
     width: 100%;
   }
 }
+
+.modal-backdrop {
+  background-color: #ffffff;
+}
+
 
 // End Saving Page
