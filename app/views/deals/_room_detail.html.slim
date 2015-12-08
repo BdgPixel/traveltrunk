@@ -2,18 +2,20 @@ tr
   td width="300px"
     strong = room["rateDescription"].html_safe
     br
-    br
 
     - if room["RoomImages"]
+      br
       - if room["RoomImages"]["@size"].eql? "1"
         = image_tag room["RoomImages"]["RoomImage"]["url"]
       - else
         = image_tag room["RoomImages"]["RoomImage"].first["url"]
+      br
+      br
     - else
+      p
+        i Image Not Available
       = image_tag "default-no-image-thumb.png"
 
-    br
-    br
     ul.room-availability
       - if room["BedTypes"]["@size"].eql? "1"
         li #{room["BedTypes"]["BedType"]["description"]}
@@ -40,8 +42,6 @@ tr
 
   td
     - if current_user.total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
-      h3
-        = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+      = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
     - else
-      h3
-        = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+      = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }

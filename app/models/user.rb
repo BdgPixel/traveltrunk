@@ -5,7 +5,7 @@ class User < ActiveRecord::Base
   has_one  :bank_account, dependent: :destroy
   has_many :likes
 
-  has_one  :destination, dependent: :destroy
+  has_one  :destination, dependent: :destroy, as: :destinationable
   has_many :joined_groups, -> { where("users_groups.accepted_at IS NOT NULL") } , through: :users_groups
   has_many :users_groups
   has_one  :group, dependent: :destroy
@@ -51,23 +51,28 @@ class User < ActiveRecord::Base
   end
 
   def expedia_room_params(hotel_id, rate_code = nil, room_type_code = nil)
-    current_search = self.get_current_destination
-
+    destinationable = self.group || self.joined_groups.first || self
+    destination = destinationable.destination
     room_hash = {}
 
-    room_hash[:hotelId]       = hotel_id
-    room_hash[:arrivalDate]   = current_search[:arrivalDate]
-    room_hash[:departureDate] = current_search[:departureDate]
+    if destination
+      current_search = destination.get_search_params
 
-    if rate_code && room_type_code
-      room_hash[:rateCode]     = rate_code
-      room_hash[:roomTypeCode] = room_type_code
+      room_hash[:hotelId]       = hotel_id
+      room_hash[:arrivalDate]   = current_search[:arrivalDate]
+      room_hash[:departureDate] = current_search[:departureDate]
+
+      if rate_code && room_type_code
+        room_hash[:rateCode]     = rate_code
+        room_hash[:roomTypeCode] = room_type_code
+      end
+
+      room_hash[:RoomGroup]         = { Room: { numberOfAdults: 1 } }
+      room_hash[:includeRoomImages] = true
+      room_hash[:options]           = "ROOM_TYPES"
+      room_hash[:includeDetails]    = true
     end
 
-    room_hash[:RoomGroup]         = { Room: { numberOfAdults: 1 } }
-    room_hash[:includeRoomImages] = true
-    room_hash[:options]           = "ROOM_TYPES"
-    room_hash[:includeDetails]    = true
     room_hash
   end
 

@@ -1,7 +1,6 @@
 - content_for :javascripts do
   = javascript_include_tag 'https://js.stripe.com/v2/'
-  = javascript_include_tag "deals"
-  = javascript_include_tag "variables"
+  = javascript_include_tag "deals", "variables"
 
 .wrapper-detail-deals
   .row
@@ -33,30 +32,37 @@
   .row
     .col-md-12
       .col-md-7
-        h2 = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
+        h3 = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
         .text-left
           #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
           .rating-text = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
-      .col-md-5
-        .col-md-12
-          h3 Your member who liked this hotel:
-        .col-md-10
-          - if @members_liked.empty?
-            p.alert.alert-info No members liked this hotel
-          - else
-            - @members_liked.each do |member|
-              .col-md-1.text-center
-                = link_to "javascript:void(0)"
-                  = image_tag member.profile.image.url, class: 'img-circle', data: { toggle: "tooltip", placement: "top", title: "#{member.profile.first_name}" }, width: 30, height: 30
+          .row
+            .wrapper-like-deals
+              .row
+                .col-md-1
+                  p.content-deals
+                    = link_to deals_like_path(params[:id]), id: "likeDeal", remote: true
+                      - if @like
+                        span.icon.love-active id="like-#{params[:id]}"
+                      - else
+                        span.icon.love-normal id="like-#{params[:id]}"
 
-        .wrapper-like-deals.col-md-2
-          p.content-deals
-            = link_to deals_like_path(params[:id]), id: "likeDeal", remote: true
-              - if @like
-                span.icon.love-active id="like-#{params[:id]}"
-              - else
-                span.icon.love-normal id="like-#{params[:id]}"
+                .col-md-11 style="line-height: 10px"
+                  | Like this hotel!
+
+      .col-md-5
+        - if @members_liked
+          .col-md-12
+            h4 style="margin-top: 20px; margin-bottom: 10px;" Your friends liked this hotel:
+          .col-md-10
+            - if @members_liked.empty?
+              p.alert.alert-info No one liked the hotel
+            - else
+              - @members_liked.each do |member|
+                .col-md-2 style="padding: 0 8px"
+                  = link_to "javascript:void(0)"
+                    = image_tag member.profile.image.url, class: 'img-circle img-responsive', data: { toggle: "tooltip", placement: "top", title: "#{member.profile.first_name}" }
 
       .clearfix
 
@@ -72,6 +78,9 @@
         #map style="height: 500px; width: 100%;"
         = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
         = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
+
+      .col-md-12
+        iframe src="http://www.tripadvisor.com/WidgetEmbed-cdspropertysummary?display=true&partnerId=[TripAdvisorDesktopKey]&lang=en&locationId=[EANhotelID]"
 
 = render partial: 'book'
 = render partial: 'savings/form_add_saving'

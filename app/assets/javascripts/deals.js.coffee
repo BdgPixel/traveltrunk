@@ -12,6 +12,7 @@
 # = require jquery.simplePagination
 # = require jquery.raty
 # = require ratyrate
+# = require savings_form_validation
 
 # js not used
 # require galleria

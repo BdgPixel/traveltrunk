@@ -70,9 +70,15 @@ module HotelsList
   end
 
   def get_hotel_information(custom_params)
+    group = current_user.group || current_user.joined_groups.first
 
     @like              = Like.find_by(hotel_id: custom_params[:hotelId], user_id: current_user)
-    @members_liked     = User.joins(:likes, :joined_groups).where("likes.hotel_id = ? AND groups.user_id = ?", custom_params[:hotelId], current_user)
+    # @members_liked     = User.joins(:likes, :joined_groups).where("likes.hotel_id = ? AND groups.user_id = ?", custom_params[:hotelId], current_user)
+    if group
+      @members_liked =
+        User.joins(:likes).joins("LEFT JOIN users_groups ON users_groups.user_id = users.id")
+          .where("hotel_id = ? AND (users_groups.group_id = ? OR users.id = ?)", custom_params[:hotelId], group.id, current_user.id)
+    end
 
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
     url_custom_params  = url + custom_params.merge!(api_params_hash(0)).to_query
@@ -92,18 +98,15 @@ module HotelsList
     end
   end
 
-  def get_hotels_list(custom_params, params_cache = nil)
-    if current_user.total_credit_in_usd > 0
-      url            = "http://api.ean.com/ean-services/rs/hotel/v3/list?"
-      @is_first_page = params_cache.nil?
+  def get_hotels_list(destination)
 
-      if custom_params
-        url_custom_params = url +
-          if params_cache
-            api_params_hash.merge!(params_cache).to_query
-          else
-            custom_params.merge!(api_params_hash).to_query
-          end
+    if destination
+      custom_params = destination.get_search_params
+      destinationable = destination.destinationable
+      total_credit = destinationable.total_credit / 100.0
+
+      if total_credit > 0
+        url_custom_params = "http://api.ean.com/ean-services/rs/hotel/v3/list?#{custom_params.merge!(api_params_hash).to_query}"
 
         begin
           response = HTTParty.get(url_custom_params)
@@ -112,11 +115,8 @@ module HotelsList
             @hotels_list    = []
             @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
           else
-            @hotel_ids = response["HotelListResponse"]["HotelList"]["HotelSummary"].map { |hotel| hotel["hotelId"] }
-            @like_ids = Like.where(hotel_id: @hotel_ids, user_id: current_user.id).pluck(:hotel_id)
-
             hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
-              hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= (current_user.total_credit / 100.0)
+              hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
             end
 
             if hotels_list.empty?
@@ -131,9 +131,6 @@ module HotelsList
               @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
               @num_of_pages = @hotels_list.size
             end
-
-            @hotel_list_cache_key      = response["HotelListResponse"]["cacheKey"]
-            @hotel_list_cache_location = response["HotelListResponse"]["cacheLocation"]
           end
         rescue Exception => e
           @hotels_list    = []
@@ -141,11 +138,11 @@ module HotelsList
         end
       else
         @hotels_list    = []
-        @error_response = "You haven't selected any destinations"
+        @error_response = "You don't have any credits"
       end
     else
       @hotels_list    = []
-      @error_response = "You don't have any credits"
+      @error_response = "You haven't selected any destinations"
     end
   end
 end

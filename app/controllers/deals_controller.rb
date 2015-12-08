@@ -9,7 +9,9 @@ class DealsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
   def index
-    @destination = current_user.destination
+    destinationable = current_user.group || current_user.joined_groups.first || current_user
+    @destination = destinationable.destination
+
     if @destination
       new_arrival_date = Date.today
 
@@ -211,7 +213,6 @@ class DealsController < ApplicationController
   end
 
   def create_destination
-    destination = current_user.destination
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
     custom_params = destination_params
@@ -220,24 +221,21 @@ class DealsController < ApplicationController
       departure_date: departure_date
     })
 
-    if destination
-      destination.update(custom_params)
+    destinationable = current_user.group || current_user.joined_groups.first || current_user
+
+    if @destination = destinationable.destination
+      @destination.update(custom_params)
     else
-      destination = current_user.build_destination(custom_params)
-      destination.save
+      @destination = destinationable.build_destination(custom_params)
+      @destination.save
     end
+
     set_search_data
   end
 
   private
     def set_search_data
-      if @destination = current_user.destination
-        @searchParams = @destination.get_search_params
-      end
-      @page = params[:page].to_i + 1
-      params_cache = { cacheKey: params[:cache_key], cacheLocation: params[:cache_location] } if params[:cache_key] && params[:cache_location]
-
-      get_hotels_list(@searchParams, params_cache)
+      get_hotels_list(@destination)
     end
 
     def check_like

@@ -3,6 +3,7 @@
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
 # = require jquery.tokeninput
+# = require savings_form_validation
 
 validateInvitationForm = ->
   $('#invitationForm').validate

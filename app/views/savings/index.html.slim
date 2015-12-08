@@ -5,43 +5,29 @@
   = javascript_include_tag 'groups'
 
 .row
-  .col-md-12.col-lg-12
-    .wrapper-group-saving
-      h1.text-center = change_last_character(current_user.profile.first_name)
+  - if current_user.group
+    - if current_user.group.members.any?
+      = render 'people', group: current_user.group
+    - else
+      = render 'single_person'
+  - elsif current_user.joined_groups.any?
+    = render 'people', group: current_user.joined_groups.first
+  - else
+    = render 'single_person'
 
-  .wrapper-group-saving-img
-    .col-md-6.col-lg-3.col-md-offset-3.col-lg-offset-4
-      = image_tag current_user.profile.image.url, class: 'img-circle'
-
+  .row
+    .col-md-12
       .text-center
-        h1.text-total-credits
-          | Total : &nbsp;
-          = currency_in_usd(current_user.total_credit)
         p
           = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
-          |&nbsp;&nbsp;
+          |&emsp;&emsp;&emsp;
           = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
 
   .col-md-12
-    / = link_to 'Invite a friend', 'javascript:void(0)', id:'slideToggleLink', class: 'invite-friend-link btn btn-default btn-invite-friend'
-
     .col-md-4.col-offset-4
       = render partial: 'savings/form_invite_friend'
-      / #slideToggle.panel.panel-default
-      /   .panel-heading Invite a Friend
-      /   .panel-body
-      /     .token-input
-      /       = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
-      /         .form-group
-      /           = f.label :user_id, 'Type email or name to invite'
-      /           = f.input_field :user_id
-      /           p User who have joined or created saving groups will not appear here
-      /           / = f.input_field :user_id, data: { load: @members  }
 
-      /         .actions.form-group
-      /           = f.submit 'Send Invitation', class: 'btn btn-default'
+  = render 'savings/form_add_saving'
+  = render 'savings/transfer_success'
 
-
-  = render partial: 'savings/form_add_saving'
-  = render partial: 'savings/transfer_success'
 

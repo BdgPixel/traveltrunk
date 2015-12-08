@@ -1,6 +1,6 @@
 - if activity.trackable
   | invite you to&nbsp;
-  = link_to activity.trackable.joined_group.name, '#'
+  = link_to "His Group's Savings", '#'
   | &nbsp;
   = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
   - if activity.trackable.accepted_at.nil?

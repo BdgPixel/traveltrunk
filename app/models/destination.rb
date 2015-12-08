@@ -1,10 +1,5 @@
 class Destination < ActiveRecord::Base
-  belongs_to :user
-
-  def custom_save(params)
-    puts params
-    puts user_id
-  end
+  belongs_to :destinationable, polymorphic: true
 
   def get_search_params
     new_arrival_date = Date.today
