@@ -26,8 +26,7 @@ module DealsHelper
   end
 
   def list_of_deals_div(hotel_image)
-    # content_tag(:div, nil, class: 'lazy deals-image',
-    #   style: "background:url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_y.') }'), url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_b.') }'), url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_l.') }') no-repeat grey; background-size: 100% 100%; height: 300px;")
+
     content_tag(:div, nil, class: 'lazy deals-image', data: { original: "http://images.travelnow.com#{ hotel_image.gsub('_t.', '_y.') }" },
       style: "background:url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_b.') }'), url('http://images.travelnow.com#{ hotel_image.gsub('_t.', '_l.') }') no-repeat grey; background-size: 100% 100%; height: 300px;")
   end
@@ -43,13 +42,5 @@ module DealsHelper
     room_images = room_images.select { |image_hash| image_hash["roomTypeCode"].eql? room_type_code }
     image_tag(room_images.first["url"], class: "img-rounded", style: "width: 140px; height: 140px;").html_safe
   end
-
-  # def change_image_type(url, old_type, new_type)
-  #   url.gsub!("_#{old_type}.", "_#{new_type}.")
-  #   if remote_file_exists?(url).eql? false
-  #     url = asset_url "default-no-image.png"
-  #   end
-  #   url
-  # end
 end
 

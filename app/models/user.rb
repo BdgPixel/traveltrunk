@@ -10,7 +10,7 @@ class User < ActiveRecord::Base
   has_many :users_groups
   has_one  :group, dependent: :destroy
   has_one  :customer, dependent: :destroy
-  has_one :subscription, dependent: :destroy
+  has_one  :subscription, dependent: :destroy
   has_many :transactions, dependent: :destroy
   has_many :reservations, dependent: :destroy
 
@@ -161,14 +161,14 @@ class User < ActiveRecord::Base
   end
 
   def self.get_autocomplete_data(email, current_user)
-    self.joins(:profile)
+    User.joins("FULL OUTER JOIN profiles ON profiles.user_id = users.id")
       .joins("FULL OUTER JOIN users_groups ON users_groups.user_id = users.id")
       .joins("FULL OUTER JOIN groups ON groups.user_id = users.id")
-      .select("users.id, users.email, profiles.first_name")
+      .select("users.id, users.email, profiles.first_name, profiles.image")
       .where("(LOWER(profiles.first_name) LIKE LOWER(:keyword) OR users.email LIKE :keyword)
-        AND users.id NOT IN (:ids)", { keyword: "%#{email}%", ids: current_user} )
+        AND users.id NOT IN (:ids)", { keyword: "%#{email}%", ids: [current_user]} )
       .where("users_groups.user_id IS NULL OR users.id IS NULL")
       .where("groups.user_id IS NULL OR users.id IS NULL")
-      .map {|u| { id: u.id, name: "#{u.first_name} (#{u.email})" } }
+      .map {|u| { id: u.id, name: "#{u.profile.try(:first_name) || 'No Name'}", email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png' } }
   end
 end

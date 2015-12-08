@@ -1,0 +1,22 @@
+#modalInviteFriends.modal.fade aria-labelledby="myLargeModalLabel" data-backdrop="static" role="dialog" tabindex="-1"
+  .modal-dialog
+    = simple_form_for :invite, method: :get, url: invite_group_path, html: { id: 'invitationForm' } do |f|
+      .modal-content
+        .modal-header
+          button.close aria-label="Close" data-dismiss="modal" type="button"
+            span aria-hidden="true" &times;
+          h3 Invite a Friend
+        .modal-body
+          .token-input
+            .form-group
+              = f.label :user_id, 'Type email or name to invite'
+              = f.input_field :user_id
+              p User who have joined or created saving groups will not appear here
+              / = f.input_field :user_id, data: { load: @members  }
+
+            .actions.form-group
+
+        .modal-footer
+          = f.submit 'Send Invitation', class: 'btn btn-default btn-orange'
+          button.btn.btn-default data-dismiss="modal" type="button" Close
+
