@@ -77,7 +77,7 @@ module HotelsList
     if group
       @members_liked =
         User.joins(:likes).joins("LEFT JOIN users_groups ON users_groups.user_id = users.id")
-          .where("hotel_id = ? AND (users_groups.group_id = ? OR users.id = ?)", custom_params[:hotelId], group.id, current_user.id)
+          .where("hotel_id = ? AND (users_groups.group_id = ? OR users.id IN ?)", custom_params[:hotelId], group.id, [current_user.id, group.user_id])
     end
 
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
