@@ -4,6 +4,8 @@
 - content_for :javascripts do
   = javascript_include_tag 'groups'
 
+= render 'partials/notice'
+
 .row
   - if current_user.group
     - if current_user.group.members.any?
