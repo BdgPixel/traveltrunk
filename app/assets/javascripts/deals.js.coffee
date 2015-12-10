@@ -57,6 +57,7 @@ window.initDealsPage = (numOfpages, numOfHotels)->
           selectedPage = $("#page-#{pageNumber}")
           selectedPage.show()
           $(".deal-pages").not(selectedPage).hide()
+          $('html, body').animate { scrollTop: 0 }, 'slow'
 
           prevPage = pageNumber - 1
           startRange = (prevPage * 15) + 1
