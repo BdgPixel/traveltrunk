@@ -39,8 +39,9 @@ Rails.application.routes.draw do
 
   root 'deals#index'
 
-  resource :profile, except: [:destroy, :new, :create]
-
-  get 'home/index'
+  resource :profile, except: [:destroy, :new, :create] do
+    post 'update_bank_account'
+    put 'update_bank_account'
+  end
 
 end

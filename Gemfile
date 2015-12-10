@@ -51,17 +51,9 @@ gem "fog-aws"
 
 gem 'dotenv-rails'
 
-gem 'expedia'
-
-gem 'holder_rails'
-
-gem 'masonry-rails', '~> 0.2.4'
-
 gem 'htmlentities', '~> 4.3.4'
 
-gem 'jquery-rails-cdn'
-
-# gem 'galleria-rails', github: 'tristanperalta/galleria-rails'
+# gem 'jquery-rails-cdn'
 
 gem 'blueimp-gallery'
 
@@ -74,19 +66,6 @@ gem 'httparty'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 gem 'ratyrate'
-
-gem 'jquery-bootstrap-pagination'
-
-gem "font-awesome-rails"
-
-# Use ActiveModel has_secure_password
-# gem 'bcrypt', '~> 3.1.7'
-
-# Use Unicorn as the app server
-# gem 'unicorn'
-
-# Use Capistrano for deployment
-# gem 'capistrano-rails', group: :development
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
@@ -105,9 +84,6 @@ group :development, :test do
   gem 'letter_opener'
 
   gem 'quiet_assets'
-
-  # Use ultrahook for receive webhooks on localhost
-  gem 'ultrahook', '~> 0.1.4'
 end
 
 gem 'rails_12factor', group: :production

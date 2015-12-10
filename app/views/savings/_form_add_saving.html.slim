@@ -4,7 +4,7 @@
       .modal-header
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true" &times;
-        h3 Would you like us to submit this transaction now?
+        h3 Add to savings
       .modal-body
         = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true, html: { id: 'formAddToSavings' } do |f|
           = f.hidden_field :id, value: params[:id]

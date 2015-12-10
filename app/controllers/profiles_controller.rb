@@ -7,13 +7,14 @@ class ProfilesController < ApplicationController
   def edit
     current_user.build_profile unless current_user.profile
     current_user.build_bank_account unless current_user.bank_account
+    @bank_account = current_user.bank_account
   end
 
   def update
     respond_to do |format|
+      # custom_params = user_params.merge({ stripe_token: params[:stripeToken], execute_stripe_callbacks: true})
       # binding.pry
-      custom_params = user_params.merge({ stripe_token: params[:stripeToken], execute_stripe_callbacks: true})
-      if current_user.update_attributes(custom_params)
+      if current_user.update_attributes(user_params)
         # token              = params[:stripeToken]
         # amount_to_cents    = current_user.bank_account.amount_transfer.to_f * 100
 
@@ -34,7 +35,20 @@ class ProfilesController < ApplicationController
         # )
         # binding.pry
 
-        format.html { redirect_to profile_url, notice: 'Profile was successfully updated.' }
+        format.html { redirect_to edit_profile_url, notice: 'Profile was successfully updated.' }
+        format.json { render :edit }
+      else
+        format.html { render :edit }
+        format.json { render json: current_user.errors, status: :unprocessable_entity }
+      end
+    end
+  end
+
+  def update_bank_account
+    custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken], execute_stripe_callbacks: true})
+    respond_to do |format|
+      if current_user.bank_account.update_attributes(bank_account_params)
+        format.html { redirect_to profile_url, notice: 'Payment was successfully updated.' }
         format.json { render :show }
       else
         format.html { render :edit }
@@ -53,8 +67,11 @@ class ProfilesController < ApplicationController
 
     def user_params
       params.require(:user).permit(profile_attributes: [:id, :first_name, :last_name, :birth_date, :gender, :address,
-        :favorite_place, :vacation_moment, :travel_destination, :address_1, :address_2, :city, :state, :postal_code, :country_code, :image, :image_cache],
-        bank_account_attributes: [:id, :bank_name, :account_number, :routing_number, :amount_transfer, :transfer_frequency]
-        )
+        :favorite_place, :vacation_moment, :travel_destination, :address_1, :address_2, :city, :state, :postal_code, :country_code,
+        :image, :image_cache])
+    end
+
+    def bank_account_params
+      params.require(:bank_account).permit(:id, :bank_name, :account_number, :routing_number, :amount_transfer, :transfer_frequency)
     end
 end

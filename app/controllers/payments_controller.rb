@@ -1,16 +1,6 @@
 class PaymentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:stripe_webhook]
 
-  def index
-  end
-
-  def clear_stripe
-    Subscription.delete_all
-    Transaction.delete_all
-    Customer.delete_all
-    redirect_to deals_path
-  end
-
   def create
     if !params[:payment][:amount].empty?
       begin

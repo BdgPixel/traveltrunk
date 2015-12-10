@@ -2,24 +2,15 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 
-# = require jquery.bootpag
 # = require blueimp-gallery
 # = require blueimp-gallery-indicator
 # = require jquery.lazyload
 # = require bootstrap-datepicker
-# = require holder
 # = require google-api
 # = require jquery.simplePagination
 # = require jquery.raty
 # = require ratyrate
 # = require savings_form_validation
-
-# js not used
-# require galleria
-
-cid = 55505
-apiKey = '5fd6485clmp3oogs8gfb43p2uf'
-url_image = "http://images.travelnow.com"
 
 getFormattedDate = (date) ->
   day = date.getDate()
@@ -28,8 +19,6 @@ getFormattedDate = (date) ->
   formattedDate = [month, day, year].join('/')
 
   formattedDate
-
-today = getFormattedDate(new Date)
 
 disableEnterFormSubmit = ->
   $('#searchDealsForm').on 'keyup keypress', (e) ->
@@ -77,78 +66,12 @@ window.initDealsPage = (numOfpages, numOfHotels)->
 
   $('div.lazy').lazyload()
 
-searchDestination = ->
-  lat = $('#lat').val()
-  lng = $('#lng').val()
-  arrivalDate = $('#search_deals_arrival_date').val()
-  departureDate = $('#search_deals_departure_date').val()
-
-  url = "http://api.ean.com/ean-services/rs/hotel/v3/list?cid=#{ cid }&minorRev=28&apiKey=#{ apiKey }&locale=en_US&currencyCode=USD&latitude=#{ lat }&longitude=#{ lng }&arrivalDate=#{ arrivalDate }&departureDate=#{ departureDate }&options=HOTEL_SUMMARY,ROOM_RATE_DETAILS&searchRadius=80&numberOfResults=21"
-  $.ajax
-    url: url
-    type: 'GET'
-    dataType: 'jsonp'
-    beforeSend: ->
-      $('#loading').show()
-    success:  (data) ->
-      $('#dealsHotelsList').html ''
-
-      previousPageNumber = $('.deals-page').length
-      currentPageNumber =  previousPageNumber + 1
-      nextPageNumber = currentPageNumber + 1
-
-      $('#slideToggleLink').text $('#autocomplete').val().split(',')[0]
-
-      dealsPage = $("<div class='deals-page' data-page='#{ currentPageNumber }' >")
-      $.each data['HotelListResponse']['HotelList']['HotelSummary'], (key, hotel) ->
-        roundedPrice = Math.round(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@averageRate"])
-        dealsWrapper = $('<div class="wrapper-price-deals">')
-        dealsGrid = $('<div class="col-xs-6 col-md-4 col-deals">')
-        dealsGrid.append $("<div class='price-deals'><strong>$#{ roundedPrice }</strong></div>")
-        dealsGrid.append $("<a href='/deals/#{ hotel['hotelId'] }/show?price=#{ roundedPrice }' data-no-turbolink='true'><div class='lazy deals-image' data-original='#{ url_image }#{ hotel['thumbNailUrl'].replace('_t.', '_y.') }' style=\"background:url('#{ window.default_image_path }') no-repeat; background-size: 100% 100%; height: 300px;\"></div></a>")
-        dealsGrid.append $("<div class='col-md-10'><p class='text-center content-deals'><a href='/deals/#{ hotel['hotelId'] }/show?price=#{ roundedPrice }' data-toggle='tooltip' data-placement='top' data-title='#{ hotel['name'].toUpperCase() }' data-no-turbolink='true'>#{ hotel['name'].toUpperCase() }</a></p></div>")
-        dealsGrid.append $("<div class='col-md-2'><div class='wrapper-like-deals'><p id='likeDeal' class='text-right content-deals'><a href='/deals/#{ hotel['hotelId'] }/like' data-remote='true'><span class='icon love-normal' id='like-#{ hotel['hotelId'] }'></span></a></p></div></div>")
-        dealsWrapper.append dealsGrid
-        dealsPage.append dealsWrapper
-
-      dealsPage.append $("<div class='col-md-12'><div class='pull-right'><a class='btn btn-orange loadMoreNext' data-cache-key='#{ data['HotelListResponse']['cacheKey'] }' data-cache-Location='#{ data['HotelListResponse']['cacheLocation'] }' data-next-page='#{ nextPageNumber }' >Next<i class='icon next-loadmore'></i></a></div></div><br><br>")
-      $('#dealsHotelsList').append dealsPage
-
-      arrivalDate = new Date($('#search_deals_arrival_date').val())
-      departureDate = new Date($('#search_deals_departure_date').val())
-      arrivalDate = [arrivalDate.getFullYear(), arrivalDate.getMonth() + 1, arrivalDate.getDate()].join('/')
-      departureDate = [departureDate.getFullYear(), departureDate.getMonth() + 1, departureDate.getDate()].join('/')
-
-      $.ajax
-        url: '/deals/create_destination'
-        type: 'POST'
-        data:
-          destinationString: $('#autocomplete').val()
-          city: $('#locality').val()
-          stateProvinceCode: $('#administrative_area_level_1').val()
-          countryCode: $('#country').val()
-          lat: $('#lat').val()
-          lng: $('#lng').val()
-          arrivalDate: arrivalDate
-          departureDate: departureDate
-        success:  (data) ->
-          $('#loading').fadeOut("slow");
-
-      $('#collapseDeals').slideToggle()
-      $('[data-toggle="tooltip"]').tooltip()
-
-      $(".loadMoreNext[data-next-page='#{ nextPageNumber }']").on 'click', ->
-        loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).data('next-page'))
-
-  return
-
 listOfMonts = (month) ->
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   months[month]
 
 window.roomSelected = (selector)->
   $(selector).on 'click', ->
-    console.log(window.clicked_element = this)
     rateCode = $(this).data('rate-code')
     roomTypeCode = $(this).data('room-type-code')
     numberOfRoomsRequested = rooms.numberOfRoomsRequested
@@ -231,6 +154,8 @@ appendCreditform = ->
     $('#update_credit_total').val($(this).data('total'))
 
 $ ->
+  today = getFormattedDate(new Date)
+
   $('input#search_deals_arrival_date').datepicker(
     startDate: today
     autoclose: true).on 'changeDate', (e) ->

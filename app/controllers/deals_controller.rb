@@ -186,15 +186,17 @@ class DealsController < ApplicationController
     end
   end
 
-  def like
-    @hotel_id = params[:id]
-    if @like.present?
-      @like.destroy
-    else
-      like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
-      like.save
-    end
-  end
+  # commented but will be used later
+  #
+  # def like
+  #   @hotel_id = params[:id]
+  #   if @like.present?
+  #     @like.destroy
+  #   else
+  #     like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
+  #     like.save
+  #   end
+  # end
 
   def next
     if request.xhr?

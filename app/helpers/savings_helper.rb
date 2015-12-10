@@ -4,7 +4,7 @@ module SavingsHelper
     number_to_currency(amount_in_usd)
   end
 
-  def change_last_character(name)
+  def add_apostrophe(name)
     char = name[-1,1].downcase
     if char.eql?("s")
       name = "#{name}' savings".titleize

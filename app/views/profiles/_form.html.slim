@@ -6,11 +6,11 @@
   = javascript_include_tag 'variables', 'profiles'
 
 .row
-  = simple_form_for current_user, method: :put, url: profile_url, html: { id: "profile-payment-account" } do |f|
+  = simple_form_for current_user, method: :put, url: profile_url do |f|
     - if current_user.errors.any?
       #error_explanation.alert.alert-danger
         strong Warning! &nbsp;
-        = "#{pluralize(current_user.errors.count, "error")} prohibited this profile and bank account from being saved"
+        = "#{pluralize(current_user.errors.count, "error")} prohibited this profile from being saved"
 
     = f.simple_fields_for :profile do |profile_form|
       .wrapper-edit-profile
@@ -100,6 +100,16 @@
               span.error.error-message please select one
 
         .col-md-12
+          .row
+            .col-md-12
+              br
+              center
+                .form-group
+                  = f.button :submit, 'Update Profile', class: 'btn btn-default'
+              br
+              br
+
+        .col-md-12
           br
           br
           br
@@ -110,46 +120,47 @@
           h4 SAVINGS PLAN
           br
 
-        = f.simple_fields_for :bank_account do |bank_account_form|
-          .col-md-12
-            .row
-              .col-md-6
-                .form-group
-                  = label_tag :card_number
-                  input[type="text" size="20" data-stripe="number" class="form-control"]
-                  .payment-errors
+  / = f.simple_fields_for :bank_account do |bank_account_form|
+  = simple_form_for :bank_account, method: :put, url: update_bank_account_profile_url, html: { id: "profile-payment-account" } do |bank_account_form|
+    .col-md-12
+      .row
+        .col-md-6
+          .form-group
+            = label_tag :card_number
+            input[type="text" size="20" data-stripe="number" class="form-control"]
+            .payment-errors
 
-              .col-md-3
-                .form-group
-                  = label_tag "Expiration Month (MM)"
-                  = select_month nil, { use_two_digit_numbers: true }, { name: nil, id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+        .col-md-3
+          .form-group
+            = label_tag "Expiration Month (MM)"
+            = select_month nil, { use_two_digit_numbers: true }, { name: nil, id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
 
-              .col-md-3
-                .form-group
-                  = label_tag "Expiration Year (YYYY)"
-                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: nil, id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+        .col-md-3
+          .form-group
+            = label_tag "Expiration Year (YYYY)"
+            = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: nil, id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
 
-          .col-md-12
-            .row
-              .col-md-6
-                .form-group
-                  = bank_account_form.label :amount_transfer
-                  .input-group
-                    .input-group-addon $
-                    = bank_account_form.input_field :amount_transfer, class: 'form-control'
+    .col-md-12
+      .row
+        .col-md-6
+          .form-group
+            = bank_account_form.label :amount_transfer
+            .input-group
+              .input-group-addon $
+              = bank_account_form.input_field :amount_transfer, class: 'form-control', data: { stripe: 'amount-transfer' }
 
-                  = bank_account_form.error :amount_transfer, class: 'error-message'
+            = bank_account_form.error :amount_transfer, class: 'error-message'
 
-              .col-md-6
-                .form-group
-                  = bank_account_form.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+        .col-md-6
+          .form-group
+            = bank_account_form.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
-      .col-md-12
-        .row
-          .col-md-12
-            br
-            center
-              .form-group
-                = f.button :submit, 'Update Profile', class: 'btn btn-default'
-            br
-            br
+    .col-md-12
+      .row
+        .col-md-12
+          br
+          center
+            .form-group
+              = bank_account_form.button :submit, 'Update Savings', class: 'btn btn-default'
+          br
+          br

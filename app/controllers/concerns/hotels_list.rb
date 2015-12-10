@@ -70,16 +70,14 @@ module HotelsList
   end
 
   def get_hotel_information(custom_params)
-    group = current_user.group || current_user.joined_groups.first
+    # commented but will be used later
+    #
+    # group = current_user.current_group
+    # if group
+    #   @members_liked = current_user.members_liked( custom_params[:hotelId])
+    # end
 
     @like              = Like.find_by(hotel_id: custom_params[:hotelId], user_id: current_user)
-    # @members_liked     = User.joins(:likes, :joined_groups).where("likes.hotel_id = ? AND groups.user_id = ?", custom_params[:hotelId], current_user)
-    if group
-      @members_liked =
-        User.joins(:likes).joins("LEFT JOIN users_groups ON users_groups.user_id = users.id")
-          .where("hotel_id = ? AND (users_groups.group_id = ? OR users.id IN (?))", custom_params[:hotelId], group.id, [current_user.id, group.user_id])
-    end
-
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
     url_custom_params  = url + custom_params.merge!(api_params_hash(0)).to_query
 
