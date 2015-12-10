@@ -9,6 +9,6 @@ h2 Resend confirmation instructions
     = f.email_field :email, autofocus: true, value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control'
 
   .actions.form-group
-    = f.submit "Resend confirmation instructions", class: 'btn btn-primary'
+    = f.submit "Resend", class: 'btn btn-primary'
 
 / = render "devise/shared/links"

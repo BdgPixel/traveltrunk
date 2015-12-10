@@ -15,6 +15,16 @@
               .col-md-6
                 = f.input :card_number, as: :integer, input_html: { class: "form-control" }
                 = image_tag asset_path('cards/mastercard.png')
+                |&nbsp;
+                = image_tag asset_path('cards/visa.png')
+                |&nbsp;
+                = image_tag asset_path('cards/amex.png')
+                |&nbsp;
+                = image_tag asset_path('cards/discover.png')
+                |&nbsp;
+                = image_tag asset_path('cards/diners.png')
+                |&nbsp;
+                = image_tag asset_path('cards/jcb.png')
               .col-md-6
                 = f.input :cvv, as: :integer, input_html: { class: "form-control" }
 
@@ -33,12 +43,17 @@
           .form-group
             .row
               .col-md-4
-                = f.input :amount, input_html: { class: "form-control", placeholder: "$0.00"}
+                = f.input :amount, input_html: { class: "form-control update_credit_amount", placeholder: "$0.00"}
 
           .modal-footer
-            | Would you like us to submit this transaction now?&nbsp;
-            = f.submit "Submit", class: "btn btn-orange"
-            | &nbsp;
-            button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
-              | Cancel
+            .text-center
+              | Would you like us to submit this transaction now?
+              br
+              br
+            .row
+              .col-md-4.col-md-offset-4
+                = f.submit "Submit", class: "btn btn-orange"
+                | &nbsp;
+                button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+                  | Cancel
 

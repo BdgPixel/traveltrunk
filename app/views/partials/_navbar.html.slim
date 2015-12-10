@@ -30,7 +30,7 @@
                 - else
                   = image_tag current_user.profile.image.thumb.url, class: "img-circle"
                   | &nbsp;
-                  = "#{current_user.profile.first_name.upcase} #{current_user.profile.last_name.upcase}"
+                  = current_user.profile.first_name.upcase
                 span.caret
               ul.dropdown-menu
                 li
