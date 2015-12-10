@@ -11,6 +11,8 @@
 # = require jquery.raty
 # = require ratyrate
 # = require savings_form_validation
+# = require autoNumeric-min
+
 
 getFormattedDate = (date) ->
   day = date.getDate()
@@ -234,3 +236,5 @@ $(document).ready ->
       starOff: window.star_off_mid_image_path
       starHalf: window.star_half_mid_image_path
 
+  # if $('#update_credit_amount').lenth > 0
+  #   $(selector).autoNumeric('init', {options});

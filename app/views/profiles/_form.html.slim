@@ -147,7 +147,7 @@
             = bank_account_form.label :amount_transfer
             .input-group
               .input-group-addon $
-              = bank_account_form.input_field :amount_transfer, class: 'form-control', data: { stripe: 'amount-transfer' }
+              = bank_account_form.input_field :amount_transfer, class: 'form-control', data: { stripe: 'amount-transfer' }, placeholder: "0.00"
 
             = bank_account_form.error :amount_transfer, class: 'error-message'
 

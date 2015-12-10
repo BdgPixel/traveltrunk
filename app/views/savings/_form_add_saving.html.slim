@@ -11,18 +11,31 @@
           = f.hidden_field :rate_code
           = f.hidden_field :total
           .form-group
-            = f.input :card_number, as: :integer, input_html: { class: "form-control" }
+            .row
+              .col-md-6
+                = f.input :card_number, as: :integer, input_html: { class: "form-control" }
+                = image_tag asset_path('cards/mastercard.png')
+              .col-md-6
+                = f.input :cvv, as: :integer, input_html: { class: "form-control" }
+
             .payment-errors
 
           .form-group
-            = label_tag "Expiration Month (MM)"
-            = select_month nil, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+            .row
+              .col-md-6
+                = label_tag "Expiration Month (MM)"
+                = select_month nil, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+
+              .col-md-6
+                = label_tag "Expiration Year (YYYY)"
+                = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+
           .form-group
-            = label_tag "Expiration Year (YYYY)"
-            = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
-          .form-group
-            = f.input :amount, as: :integer, input_html: { class: "form-control" }
-          .form-group
+            .row
+              .col-md-4
+                = f.input :amount, input_html: { class: "form-control", placeholder: "$0.00"}
+
+          .modal-footer
             = f.submit "Submit", class: "btn btn-orange"
             | &nbsp;
             button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
