@@ -146,7 +146,7 @@ class DealsController < ApplicationController
           current_user.update_attributes(total_credit: total_credit)
           @user_total_credit = current_user.total_credit / 100.0
 
-          StripeMailer.payment_succeed(current_user.id, transaction.amount).deliver_now
+          StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
 
           @transaction_amount = transaction.amount / 100.0
           current_user.create_activity key: "payment.manual", owner: current_user,

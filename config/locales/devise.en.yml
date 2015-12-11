@@ -20,7 +20,7 @@ en:
       confirmation_instructions:
         subject: "Thank you for joining Travel Trunk!"
       reset_password_instructions:
-        subject: "Reset password instructions"
+        subject: "Password Reset"
       unlock_instructions:
         subject: "Unlock instructions"
     omniauth_callbacks:

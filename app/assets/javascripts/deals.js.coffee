@@ -13,6 +13,7 @@
 # = require savings_form_validation
 # = require autoNumeric-min
 
+root = exports ? this
 
 getFormattedDate = (date) ->
   day = date.getDate()
@@ -45,7 +46,7 @@ validateSearchForm = ->
 
   return
 
-window.initDealsPage = (numOfpages, numOfHotels)->
+root.initDealsPage = (numOfpages, numOfHotels)->
   if numOfpages && numOfHotels && numOfHotels > 15
     $('#pagination')
       .pagination
@@ -73,7 +74,7 @@ listOfMonts = (month) ->
   months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
   months[month]
 
-window.roomSelected = (selector)->
+root.roomSelected = (selector)->
   $(selector).on 'click', ->
     rateCode = $(this).data('rate-code')
     roomTypeCode = $(this).data('room-type-code')
@@ -156,31 +157,57 @@ appendCreditform = ->
     $('#update_credit_rate_code').val(rateCode)
     $('#update_credit_total').val($(this).data('total'))
 
-$ ->
-  today = getFormattedDate(new Date)
-
-  $('input#search_deals_arrival_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $('input#search_deals_departure_date').datepicker('remove')
-      $('input#search_deals_departure_date').datepicker
-        startDate:  getFormattedDate(e.date)
-        autoclose: true
-      setTimeout(->
-        $('input#search_deals_departure_date').datepicker('show')
-      , 100)
-
-  $('input#search_deals_departure_date').datepicker
-    startDate: today
-    autoclose: true
-
-  return
-
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
+    disableEnterFormSubmit()
+    validateSearchForm()
     $.get '/deals'
+
+    today = getFormattedDate(new Date)
+
+    $('input#search_deals_arrival_date').datepicker(
+      startDate: today
+      autoclose: true).on 'changeDate', (e) ->
+        $('input#search_deals_departure_date').datepicker('remove')
+        $('input#search_deals_departure_date').datepicker
+          startDate:  getFormattedDate(e.date)
+          autoclose: true
+        setTimeout(->
+          $('input#search_deals_departure_date').datepicker('show')
+        , 100)
+
+    $('input#search_deals_departure_date').datepicker
+      startDate: today
+      autoclose: true
+
+
+    if $('#slideToggleLink').length > 0
+      $('#slideToggleLink').on 'click', (e) ->
+        $('#slideToggle').slideToggle()
+        return
+
+      $('.slide').on 'click', (e) ->
+        if e.target != this
+          return
+        $('#slideToggle').slideUp()
+        return
+
+      $('.text-header-slide').on 'click', (e) ->
+        if e.target != this
+          return
+        $('#slideToggle').slideUp()
+        return
+
+    if $('#btnClearText').length > 0
+      $('#btnClearText').click ->
+        $('input#autocomplete').val ''
+
+        return
+
   else
+    initAutoNumeric('#update_credit_formatted_amount')
     params_path_id = window.location.pathname.split('/')[2]
+
     $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected('.room-selected')
       appendCreditform()
@@ -191,51 +218,19 @@ $(document).ready ->
 
       return
 
-  disableEnterFormSubmit()
-  validateSearchForm()
+    if $('#hotelRating').length > 0
+      rating_count = parseFloat($('#hotelRating').data('rating'))
 
-  if $('#slideToggleLink').length > 0
-    $('#slideToggleLink').on 'click', (e) ->
-      $('#slideToggle').slideToggle()
-      return
+      $('#hotelRating').raty
+        half: true
+        readOnly: true
+        size: 24
+        score: rating_count
+        starOn: window.star_on_mid_image_path
+        starOff: window.star_off_mid_image_path
+        starHalf: window.star_half_mid_image_path
 
-    $('.slide').on 'click', (e) ->
-      if e.target != this
-        return
-      $('#slideToggle').slideUp()
-      return
-
-    $('.text-header-slide').on 'click', (e) ->
-      if e.target != this
-        return
-      $('#slideToggle').slideUp()
-      return
-
-  if $('.loadMoreNext').length > 0
-    $('.loadMoreNext').on 'click', -> loadMoreHotels($(this).attr('data-cache-key'), $(this).attr('data-cache-location'), $(this).attr('data-next-page'))
-
-  if $('#btnClearText').length > 0
-    $('#btnClearText').click ->
-      $('input#autocomplete').val ''
-
-      return
-
-  if $('#links').length > 0
-    blueimp.Gallery document.getElementById('links').getElementsByTagName('a'),
-      container: '#blueimp-gallery-carousel'
-      carousel: true
-
-  if $('#hotelRating').length > 0
-    rating_count = parseFloat($('#hotelRating').data('rating'))
-
-    $('#hotelRating').raty
-      half: true
-      readOnly: true
-      size: 24
-      score: rating_count
-      starOn: window.star_on_mid_image_path
-      starOff: window.star_off_mid_image_path
-      starHalf: window.star_half_mid_image_path
-
-  # if $('#update_credit_amount').lenth > 0
-  #   $(selector).autoNumeric('init', {options});
+    if $('#links').length > 0
+      blueimp.Gallery document.getElementById('links').getElementsByTagName('a'),
+        container: '#blueimp-gallery-carousel'
+        carousel: true

@@ -26,3 +26,33 @@ $(document).ajaxSend ->
 
 $(document).ajaxComplete ->
   $('#loading').fadeOut("slow");
+
+$(document).ready ->
+  setTimeout(->
+    $('#notice').fadeOut()
+    $('#alert').fadeOut()
+  , 3000)
+
+root = exports ? this
+root.initAutoNumeric = (selector) ->
+  $(selector).autoNumeric 'init'
+
+  typingTimer = undefined
+  doneTypingInterval = 1000
+  $input = $(selector)
+
+  doneTyping = ->
+    newValue = $input.autoNumeric('get')
+    $input.autoNumeric 'set', newValue
+    return
+
+  $input.on 'keyup', ->
+    clearTimeout typingTimer
+    typingTimer = setTimeout(doneTyping, doneTypingInterval)
+    return
+  $input.on 'keydown', ->
+    clearTimeout typingTimer
+    return
+
+  $input.on 'blur focusout mouseleave', ->
+    doneTyping()

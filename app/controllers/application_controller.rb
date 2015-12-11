@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   hide_action :current_user
-  # before_action :configure_permitted_parameters, if: :devise_controller?
+  before_action :get_unread_notification_count
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -10,8 +10,8 @@ class ApplicationController < ActionController::Base
     root_path
   end
 
-  # protected
-  #   def configure_permitted_parameters
-  #     devise_parameter_sanitizer.for(:sign_up) << [:first_name, :last_name]
-  #   end
+  def get_unread_notification_count
+    @notification_count = current_user.get_notification(false).count if user_signed_in?
+  end
+
 end

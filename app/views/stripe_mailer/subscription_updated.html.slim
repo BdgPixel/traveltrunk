@@ -4,3 +4,5 @@ SubscriptionMailer#updated
   p
     | You've successfully updated your savings plan to <b>#{@subscription.plan_name}</b><br/>
     | #{currency_in_usd(@subscription.amount)} / #{pluralize(@subscription.interval_count, @subscription.interval)}
+
+   p = render 'partials/footer_mailer'

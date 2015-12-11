@@ -1,6 +1,7 @@
 SubscriptionMailer#charged
-  p = "Hello #{@profile.first_name} #{@profile.last_name}"
+  p = "Hi #{@profile.first_name},"
 
   p
-    | We've successfully charged your credit card with <b>#{@subscription.plan_name}</b><br/>
-    | #{currency_in_usd(@amount)} transfered to your TravelTrunk account. Your total credit is #{currency_in_usd(@user.total_credit)}
+    | We’ve successfully charged your credit card on file for #{currency_in_usd(@amount)}, as per your reoccurring daily request. Bringing your total savings to #{currency_in_usd(@user.total_credit)}
+
+  p = render 'partials/footer_mailer'

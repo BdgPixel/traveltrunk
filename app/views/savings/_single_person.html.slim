@@ -1,11 +1,11 @@
 .col-md-12.col-lg-12
   .wrapper-group-saving
-    h1.text-center = add_apostrophe(current_user.profile.first_name)
+    h1.text-center.name-saving = add_apostrophe(current_user.profile.first_name)
 
 .wrapper-group-saving-img
-  .col-md-6.col-lg-3.col-md-offset-3.col-lg-offset-4
-    = image_tag current_user.profile.image.url, class: 'img-circle'
-
+  .col-md-12
+    = image_tag current_user.profile.image.url, class: 'img-circle img-saving'
+  .col-md-12
     .text-center
       h1.text-total-credits
         | Total : &nbsp;

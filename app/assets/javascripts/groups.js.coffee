@@ -19,6 +19,7 @@ validateInvitationForm = ->
 
 $(document).ready ->
   validateInvitationForm()
+  initAutoNumeric('#update_credit_formatted_amount')
 
   $('#invite_user_id').tokenInput( '/group/users_collection.json', {
     allowCustomEntry: true
@@ -34,23 +35,3 @@ $(document).ready ->
 
   $('#slideToggleLink').click ->
     $('#slideToggle').slideToggle()
-
-
-  # $('#update_credit_amount').autoNumeric 'init',
-  #   aSep: '.'
-  #   aDec: ','
-
-  # $('#update_credit_amount').on 'keypress', ->
-  #   fakeGet = $(this).autoNumeric 'get'
-  #   $('#fake').autoNumeric 'set', fakeGet
-  #   return
-  # $('#update_credit_amount').autoNumeric 'init'
-  # $('#update_credit_amount').autoNumeric 'init',
-  #   aSep: '.'
-  #   aDec: ','
-  #   aSign: '€ '
-  # $('#update_credit_amount').bind 'blur focusout keypress keyup', ->
-  #   demoGet = $('#update_credit_amount').autoNumeric('get')
-
-  #   $('#faxe').autoNumeric 'set', demoGet
-  #   return

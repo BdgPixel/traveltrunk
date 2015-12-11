@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
   get  'helps' => 'helps#index'
+  post 'helps/send_question' => 'helps#send_question'
+
   post '/rate' => 'rater#create', :as => 'rate'
   get 'destinations/clear'
 

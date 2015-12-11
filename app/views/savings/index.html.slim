@@ -1,10 +1,8 @@
-- content_for :css do
-  = stylesheet_link_tag 'profiles'
+- content_for :css
+  = stylesheet_link_tag 'profiles', 'savings'
 
-- content_for :javascripts do
+- content_for :javascripts
   = javascript_include_tag 'groups'
-
-= render 'partials/notice'
 
 .row
   - if current_user.group
@@ -31,5 +29,4 @@
 
   = render 'savings/form_add_saving'
   = render 'savings/transfer_success'
-
 

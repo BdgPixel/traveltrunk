@@ -29,12 +29,13 @@ class StripeMailer < ApplicationMailer
     mail to: @user.email, subject: 'TravelTrunk - Subscription Charged'
   end
 
-  def payment_succeed(user_id, amount)
+  def payment_succeed(user_id, amount, card_last4)
     @user = User.select(:id, :email, :total_credit).find user_id
 
     @profile = @user.profile
     @subscription = @user.subscription
     @amount = amount
+    @card_last4 = card_last4
 
     mail to: @user.email, subject: 'TravelTrunk - Payment Succeed'
   end

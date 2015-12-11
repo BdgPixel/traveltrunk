@@ -12,4 +12,12 @@ module SavingsHelper
       name = "#{name}'s savings".titleize
     end
   end
+
+  def savings_interval(interval, interval_count)
+    if (interval.eql?("week") || interval.eql?("month")) && interval_count.eql?(1)
+      interval
+    else
+      pluralize(interval_count, interval)
+    end
+  end
 end

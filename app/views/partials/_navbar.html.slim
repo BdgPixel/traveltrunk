@@ -23,6 +23,9 @@
 
             li.dropdown
               a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                - unless @notification_count.zero?
+                  span.notification-bubble = @notification_count
+
                 - if current_user.no_profile?
                   = image_tag "thumb_default_user.png", class: "img-circle"
                   | &nbsp;
@@ -36,7 +39,7 @@
                 li
                   = link_to 'My Profile', profile_path
                 li
-                  = link_to "Notification (#{current_user.get_notification(false).count})", notifications_path
+                  = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
                 li
                   = link_to 'Help', helps_path
                 li.divider role="separator"
