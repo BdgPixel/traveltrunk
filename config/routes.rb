@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  get  'helps' => 'helps#index'
   post '/rate' => 'rater#create', :as => 'rate'
   get 'destinations/clear'
 
@@ -35,7 +36,7 @@ Rails.application.routes.draw do
   # patch 'deals/update_credit' => 'deals/update_credit'
   post   'deals/update_credit' => 'deals/update_credit'
 
-  devise_for :users
+  devise_for :users, :controllers => {:registrations => "registrations"}
 
   root 'deals#index'
 

@@ -37,6 +37,8 @@
                   = link_to 'My Profile', profile_path
                 li
                   = link_to "Notification (#{current_user.get_notification(false).count})", notifications_path
+                li
+                  = link_to 'Help', helps_path
                 li.divider role="separator"
                 li = link_to 'Sign Out', destroy_user_session_path, method: :delete
           - else

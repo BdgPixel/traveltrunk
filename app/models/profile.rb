@@ -3,15 +3,22 @@ class Profile < ActiveRecord::Base
 
   mount_uploader :image, ImageUploader
 
-  validates :first_name, :last_name, :birth_date, :address,
+  validates :first_name, :last_name, presence: true
+  validates :birth_date, :address,
     :city, :state, :postal_code, :favorite_place, :vacation_moment,
-    :travel_destination, presence: true
+    :travel_destination, presence: true, if: :validate_personal_information?
 
-  validates :gender, presence: { message: 'please select one' }
-  validates :country_code, presence: { message: 'please select one' }
+  validates :gender, presence: { message: 'please select one' }, if: :validate_personal_information?
+  validates :country_code, presence: { message: 'please select one' }, if: :validate_personal_information?
+
+  attr_accessor :validate_personal_information
 
   def country_name
     country = ISO3166::Country[self.country_code]
     country.translations[I18n.locale.to_s] || country.name
+  end
+
+  def validate_personal_information?
+    validate_personal_information
   end
 end

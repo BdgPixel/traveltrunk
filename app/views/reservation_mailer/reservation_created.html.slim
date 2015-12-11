@@ -32,3 +32,5 @@ ReservationMailer#created
 
   p
     | Total rate #{number_to_currency(@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])}
+  p
+    = render 'partials/footer_mailer'
