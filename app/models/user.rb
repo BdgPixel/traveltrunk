@@ -17,7 +17,7 @@ class User < ActiveRecord::Base
   accepts_nested_attributes_for :profile
   accepts_nested_attributes_for :bank_account
 
-  before_save :set_stripe_customer, :set_stripe_subscription
+  # before_save :set_stripe_customer, :set_stripe_subscription
 
   attr_accessor :stripe_token, :execute_stripe_callbacks
 

@@ -6,62 +6,44 @@ class ProfilesController < ApplicationController
 
   def edit
     current_user.build_profile unless current_user.profile
-    current_user.build_bank_account unless current_user.bank_account
-    @bank_account = current_user.bank_account
+    # current_user.build_bank_account unless current_user.bank_account
+    @bank_account = current_user.bank_account || current_user.build_bank_account
   end
 
   def update
-    respond_to do |format|
-      # custom_params = user_params.merge({ stripe_token: params[:stripeToken], execute_stripe_callbacks: true})
-      # binding.pry
-      current_user.validate_personal_information = true
+    current_user.profile.validate_personal_information = true
 
-      if current_user.update_attributes(user_params)
-        # token              = params[:stripeToken]
-        # amount_to_cents    = current_user.bank_account.amount_transfer.to_f * 100
+    if current_user.update_attributes(user_params)
+      redirect_to profile_url, notice: 'Profile was successfully updated.'
+    else
+      render :edit
+    end
+  end
 
-        # interval_frequency, interval_count = current_user.bank_account.transfer_type
-        # customer = current_user.set_stripe_customer(token)
-        # plan     = current_user.set_stripe_plan(api_key, interval_frequency, interval_count)
+  def create_bank_account
+    custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken] })
+    @bank_account = current_user.build_bank_account(custom_params)
 
-        # subscription = customer.subscriptions.create(plan: plan.id, metadata: { user_id: current_user.id })
-
-        # Subscription.create(
-        #   plan_id:        plan.id,
-        #   subscription_id: subscription.id,
-        #   amount:         plan.amount,
-        #   currency:       plan.currency,
-        #   interval:       plan.interval,
-        #   interval_count: plan.interval_count,
-        #   plan_name:      plan.name
-        # )
-        # binding.pry
-
-        format.html { redirect_to edit_profile_url, notice: 'Profile was successfully updated.' }
-        format.json { render :edit }
-      else
-        format.html { render :edit }
-        format.json { render json: current_user.errors, status: :unprocessable_entity }
-      end
+    if @bank_account.save
+      redirect_to profile_url, notice: 'Savings plan was successfully created.'
+    else
+      render :edit
     end
   end
 
   def update_bank_account
-    custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken], execute_stripe_callbacks: true})
-    respond_to do |format|
-      if current_user.bank_account.update_attributes(bank_account_params)
-        format.html { redirect_to profile_url, notice: 'Payment was successfully updated.' }
-        format.json { render :show }
-      else
-        format.html { render :edit }
-        format.json { render json: current_user.errors, status: :unprocessable_entity }
-      end
+    custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken] })
+
+    if current_user.bank_account.update_attributes(custom_params)
+      redirect_to profile_url, notice: 'Savings plan was successfully updated.'
+    else
+      render :edit
     end
   end
 
   private
     def set_profile
-      unless current_user.profile
+      unless current_user.profile.birth_date
         redirect_to edit_profile_path, alert: "You haven't entered your profile. \n
           Please fill information below"
       end
@@ -69,7 +51,7 @@ class ProfilesController < ApplicationController
 
     def user_params
       params.require(:user).permit(profile_attributes: [:id, :first_name, :last_name, :birth_date, :gender, :address,
-        :favorite_place, :vacation_moment, :travel_destination, :address_1, :address_2, :city, :state, :postal_code, :country_code,
+        :home_airport, :place_to_visit, :address_1, :address_2, :city, :state, :postal_code, :country_code,
         :image, :image_cache])
     end
 

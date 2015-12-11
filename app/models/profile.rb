@@ -5,8 +5,7 @@ class Profile < ActiveRecord::Base
 
   validates :first_name, :last_name, presence: true
   validates :birth_date, :address,
-    :city, :state, :postal_code, :favorite_place, :vacation_moment,
-    :travel_destination, presence: true, if: :validate_personal_information?
+    :city, :state, :postal_code, :home_airport, :place_to_visit, presence: true, if: :validate_personal_information?
 
   validates :gender, presence: { message: 'please select one' }, if: :validate_personal_information?
   validates :country_code, presence: { message: 'please select one' }, if: :validate_personal_information?

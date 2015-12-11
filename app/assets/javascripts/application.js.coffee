@@ -34,7 +34,7 @@ $(document).ready ->
   , 3000)
 
 root = exports ? this
-root.initAutoNumeric = (selector) ->
+root.initAutoNumeric = (selector, hiddenSelector) ->
   $(selector).autoNumeric 'init'
 
   typingTimer = undefined
@@ -44,6 +44,7 @@ root.initAutoNumeric = (selector) ->
   doneTyping = ->
     newValue = $input.autoNumeric('get')
     $input.autoNumeric 'set', newValue
+    $(hiddenSelector).val(newValue)
     return
 
   $input.on 'keyup', ->

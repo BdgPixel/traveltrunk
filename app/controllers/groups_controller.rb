@@ -1,4 +1,6 @@
 class GroupsController < ApplicationController
+  before_action :authenticate_user!
+
   def users_collection
     users_list = User.get_autocomplete_data(params[:q], current_user.id)
 

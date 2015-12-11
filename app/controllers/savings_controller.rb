@@ -1,4 +1,6 @@
 class SavingsController < ApplicationController
+  before_action :authenticate_user!
+
   def index
     if current_user.profile && current_user.bank_account
       if current_user.group

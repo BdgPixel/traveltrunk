@@ -96,9 +96,16 @@ root.roomSelected = (selector)->
     $('#confirmation_book_rate_code').val(rateCode)
     $('#confirmation_book_room_type_code').val(roomTypeCode)
 
-    room = $.grep(rooms.HotelRoomResponse, (e, index) ->
-      e.rateCode == rateCode
-    )
+    room = null
+
+    if rooms['@size'] is '1'
+      room = [rooms.HotelRoomResponse]
+    else
+      room = $.grep(rooms.HotelRoomResponse, (e, index) ->
+        e.rateCode == rateCode
+      )
+
+    console.log room
 
     arrivalDate = new Date(rooms.arrivalDate)
     departureDate = new Date(rooms.departureDate)
@@ -157,6 +164,33 @@ appendCreditform = ->
     $('#update_credit_rate_code').val(rateCode)
     $('#update_credit_total').val($(this).data('total'))
 
+root.replaceImage = ->
+  sliderImages = $('a.slider-images')
+
+  i = 0
+  while i < sliderImages.length
+    previousSrc = $(sliderImages[i]).attr('href')
+    image = new Image()
+
+    image.onerror = ()->
+      console.error("Cannot load image")
+      src = $(this).attr('src');
+      targetElement = $("a.slider-images[href='#{src}']")
+
+      newSrc = null
+
+      if src.split('_')[2] is 'z.jpg'
+        newSrc = src.replace('_z.jpg', '_y.jpg')
+      else if src.split('_')[2] is 'y.jpg'
+        newSrc = src.replace('_y.jpg', '_b.jpg')
+
+      $(targetElement).attr('href', newSrc)
+
+    image.src = previousSrc
+
+    i++
+
+
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
     disableEnterFormSubmit()
@@ -205,7 +239,7 @@ $(document).ready ->
         return
 
   else
-    initAutoNumeric('#update_credit_formatted_amount')
+    initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
     params_path_id = window.location.pathname.split('/')[2]
 
     $.get "/deals/#{ params_path_id }/room_availability", ->
@@ -231,6 +265,14 @@ $(document).ready ->
         starHalf: window.star_half_mid_image_path
 
     if $('#links').length > 0
-      blueimp.Gallery document.getElementById('links').getElementsByTagName('a'),
-        container: '#blueimp-gallery-carousel'
-        carousel: true
+      replaceImage() # replace biggest image if not found, with medium image
+
+      setTimeout( ->
+        replaceImage() # replace medium image if not found, with small image
+      , 1000)
+
+      setTimeout( ->
+        blueimp.Gallery $('.slider-images'),
+          container: '#blueimp-gallery-carousel'
+          carousel: true
+      , 1000)

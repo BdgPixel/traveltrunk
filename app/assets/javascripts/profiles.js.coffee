@@ -2,11 +2,14 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #
+# = require autoNumeric-min
 
 Stripe.setPublishableKey(window.stripe_publishable_key);
 
 jQuery ($) ->
   $('#profile-payment-account').submit (event) ->
+    $('#loading').show()
+
     $form = $(this)
     # Disable the submit button to prevent repeated clicks
     $form.find('button').prop 'disabled', true
@@ -30,9 +33,13 @@ stripeResponseHandler = (status, response) ->
     $form.append $('<input type="hidden" name="stripeToken" />').val(token)
     # and submit
     $form.get(0).submit()
+
+  $('#loading').fadeOut("slow");
   return
 
 $(document).ready ->
+  initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer')
+
   $('#profile_image').on 'click',(e) ->
     e.preventDefault()
     $('#choose_profile_image')[0].click()

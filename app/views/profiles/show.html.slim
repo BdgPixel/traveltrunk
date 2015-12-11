@@ -10,32 +10,19 @@
           .row
             .col-md-5.col-lg-4
               .wrapper-img-profile
-                  = image_tag current_user.profile.image.url, class: 'img-circle img-responsive' unless current_user.profile.image.nil?
+                = image_tag current_user.profile.image.url, class: 'img-circle img-responsive' unless current_user.profile.image.nil?
             .wrapper-user-name
               .col-md-7.col-lg-8
-                h1[style="padding-top: 0px !important"]
+                h1[style="padding-top: 80px !important"]
                   = current_user.full_name
-                br
 
-                / # commented but will be used later
-                / #
-                p
-                  b Where's your favorite place to travel to?
-                .panel.panel-default
-                  .panel-body
-                    p = current_user.profile.favorite_place
+                h4 = current_user.profile.place_to_visit.titleize rescue 'Information not specified'
 
                 p
-                  b Fondest vacation memory
-                .panel.panel-default
-                  .panel-body
-                    p = current_user.profile.vacation_moment
+                  span.glyphicon.glyphicon-map-marker
+                  | &nbsp;
+                  b = current_user.profile.home_airport.titleize rescue 'Information not specified'
 
-                p
-                  b Name a place you dream of traveling to.
-                .panel.panel-default
-                  .panel-body
-                    p = current_user.profile.travel_destination
 
               .clearfix
 
@@ -53,14 +40,14 @@
                         td = current_user.profile.gender
                       tr
                         td Address:
-                        td = current_user.profile.address.titleize
+                        td = current_user.profile.address.titleize rescue 'Information not specified'
                       tr
                       tr
                         td Address 1:
-                        td = current_user.profile.address_1.titleize
+                        td = current_user.profile.address_1.titleize rescue 'Information not specified'
                       tr
                         td Address 2:
-                        td = current_user.profile.address_2.titleize
+                        td = current_user.profile.address_2.titleize rescue 'Information not specified'
                       tr
                         td City:
                         td = current_user.profile.city
@@ -72,7 +59,7 @@
                         td = current_user.profile.postal_code
                       tr
                         td County:
-                        td = current_user.profile.country_name
+                        td = current_user.profile.country_name rescue 'Information not specified'
                   br
                   br
                   hr

@@ -1,5 +1,6 @@
 class PaymentsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:stripe_webhook]
+  before_action :authenticate_user!, only: [:create, :thank_you_page]
 
   def create
     if !params[:payment][:amount].empty?

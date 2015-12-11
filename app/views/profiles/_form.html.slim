@@ -51,17 +51,11 @@
             .row
               .col-md-6
                 .form-group
-                  = profile_form.input :favorite_place, label: 'Where\'s your favorite place to travel to?', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+                  = profile_form.input :home_airport, label: 'Your Home airport?', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
               .col-md-6[style="padding-right: 0px"]
                 .form-group
-                  = profile_form.input :vacation_moment, label: 'Fondest vacation memory', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
-
-          .col-md-8
-            .row
-              .col-md-6
-                .form-group
-                  = profile_form.input :travel_destination, label: 'Name a place you dream of traveling to.', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+                  = profile_form.input :place_to_visit, label: 'Name place you’d like to visit someday', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
         .col-md-12
           h4 PERSONAL INFORMATION
@@ -106,22 +100,17 @@
               center
                 .form-group
                   = f.button :submit, 'Update Profile', class: 'btn btn-default'
-              br
-              br
 
         .col-md-12
-          br
-          br
           br
           hr
 
         .col-md-12
-          br
           h4 SAVINGS PLAN
           br
 
   / = f.simple_fields_for :bank_account do |bank_account_form|
-  = simple_form_for :bank_account, method: :put, url: update_bank_account_profile_url, html: { id: "profile-payment-account" } do |bank_account_form|
+  = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account" } do |f|
     .col-md-12
       .row
         .col-md-6
@@ -144,16 +133,17 @@
       .row
         .col-md-6
           .form-group
-            = bank_account_form.label :amount_transfer
+            = f.label :amount_transfer
             .input-group
               .input-group-addon $
-              = bank_account_form.input_field :amount_transfer, class: 'form-control', data: { stripe: 'amount-transfer' }, placeholder: "0.00"
+              = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control'
+              = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
 
-            = bank_account_form.error :amount_transfer, class: 'error-message'
+            = f.error :amount_transfer, class: 'error-message'
 
         .col-md-6
           .form-group
-            = bank_account_form.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            = f.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
 
     .col-md-12
       .row
@@ -161,6 +151,6 @@
           br
           center
             .form-group
-              = bank_account_form.button :submit, 'Update Savings', class: 'btn btn-default'
+              = f.button :submit, 'Update Savings', class: 'btn btn-default'
           br
           br

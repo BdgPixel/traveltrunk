@@ -33,8 +33,4 @@ class RegistrationsController < Devise::RegistrationsController
     def sign_up_params
       params.require(:user).permit(:email, :password, :password_confirmation, profile_attributes: [:first_name, :last_name])
     end
-
-    # def after_sign_up_path_for(resource)
-    #   after_sign_in_path_for(resource)
-    # end
 end

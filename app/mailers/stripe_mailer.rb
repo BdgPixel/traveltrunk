@@ -7,7 +7,7 @@ class StripeMailer < ApplicationMailer
     @profile = user.profile
     @subscription = user.subscription
 
-    mail to: user.email, subject: 'TravelTrunk - Subscription Created'
+    mail to: user.email, subject: 'Your new saving plan'
   end
 
   def subscription_updated(user_id)
@@ -16,7 +16,7 @@ class StripeMailer < ApplicationMailer
     @profile = user.profile
     @subscription = user.subscription
 
-    mail to: user.email, subject: 'TravelTrunk - Subscription Updated'
+    mail to: user.email, subject: 'Your new saving plan'
   end
 
   def subscription_charged(user_id, amount)
@@ -26,7 +26,7 @@ class StripeMailer < ApplicationMailer
     @subscription = @user.subscription
     @amount = amount
 
-    mail to: @user.email, subject: 'TravelTrunk - Subscription Charged'
+    mail to: @user.email, subject: 'Reoccurring Payment'
   end
 
   def payment_succeed(user_id, amount, card_last4)
@@ -37,6 +37,6 @@ class StripeMailer < ApplicationMailer
     @amount = amount
     @card_last4 = card_last4
 
-    mail to: @user.email, subject: 'TravelTrunk - Payment Succeed'
+    mail to: @user.email, subject: 'One time Payment Successful'
   end
 end
