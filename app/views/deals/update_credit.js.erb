@@ -23,6 +23,7 @@
 
   $('.notification-bubble').removeClass('hide');
   $('.notification-bubble').text("<%= @notification_count %>");
+  $('#notificationCountLink').text("Notification (<%= @notification_count %>)");
 
   $('#modalSavingsForm').modal('hide');
   $('#formAddToSavings').get(0).reset()
