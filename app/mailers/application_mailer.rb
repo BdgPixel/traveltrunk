@@ -1,5 +1,5 @@
 class ApplicationMailer < ActionMailer::Base
-  default from: "TravelTrunk"
+  default from: "TravelTrunk <admin@traveltrunk.herokuapp.com>"
   # layout 'mailer'
 end
 
