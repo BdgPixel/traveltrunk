@@ -151,6 +151,7 @@ class DealsController < ApplicationController
           @transaction_amount = transaction.amount / 100.0
           current_user.create_activity key: "payment.manual", owner: current_user,
             recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @user_total_credit }
+          @notification_count = current_user.get_notification(false).count
         end
       end
 
