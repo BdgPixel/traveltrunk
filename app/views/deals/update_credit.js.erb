@@ -21,6 +21,9 @@
     $('.text-total-credits').html("Total : &nbsp;<%= currency_in_usd(current_user.total_credit) %>");
   }
 
+  $('.notification-bubble').removeClass('hide');
+  $('.notification-bubble').text("<%= @notification_count %>");
+
   $('#modalSavingsForm').modal('hide');
   $('#formAddToSavings').get(0).reset()
   $('.payment-errors').html("");

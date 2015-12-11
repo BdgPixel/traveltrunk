@@ -1,3 +1,3 @@
 $(document).ready ->
-  $('.notification-bubble').remove()
+  $('.notification-bubble').addClass('hide')
   $('#notificationCountLink').text("Notification (0)")

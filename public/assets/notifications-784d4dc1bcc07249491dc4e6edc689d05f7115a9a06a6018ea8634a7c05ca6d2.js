@@ -1,0 +1,1 @@
+(function(){$(document).ready(function(){return $(".notification-bubble").addClass("hide"),$("#notificationCountLink").text("Notification (0)")})}).call(this);
