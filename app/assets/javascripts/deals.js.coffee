@@ -283,4 +283,4 @@ $(document).ready ->
         blueimp.Gallery $('.slider-images'),
           container: '#blueimp-gallery-carousel'
           carousel: true
-      , 1000)
+      , 3000)
