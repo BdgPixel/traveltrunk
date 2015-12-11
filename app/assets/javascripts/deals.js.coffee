@@ -84,10 +84,15 @@ root.roomSelected = (selector)->
     $('.modal .modal-header h3').text(rooms.hotelName)
     $('.modal #roomRating').attr('data-rating', rooms.tripAdvisorRating)
     $('.modal .rating-text').text(rooms.tripAdvisorRating + " ratings")
-    $('.modal .hotel-info-addr').text(rooms.hotelAddress)
-    $('.modal .hotel-info-city').html("&nbsp;City&nbsp; #{rooms.hotelCity}")
-    $('.modal .hotel-info-state').html("&nbsp;State&nbsp; #{rooms.hotelStateProvince}")
-    $('.modal .hotel-info-country').html("&nbsp;Country&nbsp; #{rooms.hotelCountry}")
+    $('.modal .hotel-info-addr').html("&nbsp;#{rooms.hotelAddress}")
+    $('.modal .hotel-info-city').html("&nbsp;City:&nbsp; #{rooms.hotelCity}")
+
+    if rooms.hotelStateProvince
+      $('.modal .hotel-info-state').html("&nbsp;State:&nbsp; #{rooms.hotelStateProvince}")
+    else
+      $('.modal .hotel-info-state').html("&nbsp;State:&nbsp; Information not specified")
+
+    $('.modal .hotel-info-country').html("&nbsp;Country:&nbsp; #{rooms.hotelCountry}")
     $('.modal .checkin-intructions').html(rooms.checkInInstructions)
 
     $('#confirmation_book_hotel_id').val($(this).data('id'))
@@ -105,8 +110,6 @@ root.roomSelected = (selector)->
         e.rateCode == rateCode
       )
 
-    console.log room
-
     arrivalDate = new Date(rooms.arrivalDate)
     departureDate = new Date(rooms.departureDate)
     dates = []
@@ -119,6 +122,8 @@ root.roomSelected = (selector)->
     dates.pop()
     table = $("table.table:last tbody")
     table.html('')
+
+    $('.modal #roomName').html(room[0]["rateDescription"])
 
     $.each dates, (key, date) ->
       month = listOfMonts(date.getMonth())
@@ -135,8 +140,11 @@ root.roomSelected = (selector)->
         $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage']['url'])
       else
         $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage'][0]['url'])
+      $('#imageDisclaimer').hide()
     else
-      $('#roomImage').attr('src', window.default_no_image_thumb_path)
+      $('#roomImage').attr('src', 'http://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg')
+      $('#imageDisclaimer').show()
+
 
     if room[0]['BedTypes']['@size'] == '1'
       $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
