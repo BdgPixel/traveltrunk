@@ -30,7 +30,7 @@ $(document).ready ->
   setTimeout(->
     $('#notice').fadeOut()
     $('#alert').fadeOut()
-  , 3000)
+  , 4000)
 
 root = exports ? this
 root.initAutoNumeric = (selector, hiddenSelector) ->

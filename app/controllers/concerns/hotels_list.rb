@@ -1,4 +1,5 @@
 module HotelsList
+  include DealsHelper
   def api_params_hash(options = nil)
     params_hash = {
       apiExperience: "PARTNER_WEBSITE",
@@ -97,50 +98,55 @@ module HotelsList
   end
 
   def get_hotels_list(destination)
+    if current_user.sign_in_count < 2
+      @error_response = welcome_user_first_sign_in.html_safe
+    else
+      if destination
+        custom_params = destination.get_search_params
+        destinationable = destination.destinationable
+        total_credit = destinationable.total_credit / 100.0
 
-    if destination
-      custom_params = destination.get_search_params
-      destinationable = destination.destinationable
-      total_credit = destinationable.total_credit / 100.0
+        binding.pry
 
-      if total_credit > 0
-        url_custom_params = "http://api.ean.com/ean-services/rs/hotel/v3/list?#{custom_params.merge!(api_params_hash).to_query}"
+        if total_credit > 0
+          url_custom_params = "http://api.ean.com/ean-services/rs/hotel/v3/list?#{custom_params.merge!(api_params_hash).to_query}"
 
-        begin
-          response = HTTParty.get(url_custom_params)
+          begin
+            response = HTTParty.get(url_custom_params)
 
-          if response["HotelListResponse"]["EanWsError"]
-            @hotels_list    = []
-            @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
-          else
-            hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
-              hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
-            end
-
-            if hotels_list.empty?
-              @error_response = "There is no hotels that match your criteria and saving credits"
+            if response["HotelListResponse"]["EanWsError"]
+              @hotels_list    = []
+              @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
             else
-              hotels_list =
-                hotels_list.sort do |hotel_x, hotel_y|
-                  hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
-                end
+              hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
+                hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
+              end
 
-              @num_of_hotels = hotels_list.size
-              @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
-              @num_of_pages = @hotels_list.size
+              if hotels_list.empty?
+                @error_response = "There is no hotels that match your criteria and saving credits"
+              else
+                hotels_list =
+                  hotels_list.sort do |hotel_x, hotel_y|
+                    hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
+                  end
+
+                @num_of_hotels = hotels_list.size
+                @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
+                @num_of_pages = @hotels_list.size
+              end
             end
+          rescue Exception => e
+            @hotels_list    = []
+            @error_response = e.message
           end
-        rescue Exception => e
+        else
           @hotels_list    = []
-          @error_response = e.message
+          @error_response = "You don't have any credits"
         end
       else
         @hotels_list    = []
-        @error_response = "You don't have any credits"
+        @error_response = "You haven't selected any destinations"
       end
-    else
-      @hotels_list    = []
-      @error_response = "You haven't selected any destinations"
     end
   end
 end
