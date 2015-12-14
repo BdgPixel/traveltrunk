@@ -8,9 +8,12 @@ class ProfilesController < ApplicationController
     current_user.build_profile unless current_user.profile
     # current_user.build_bank_account unless current_user.bank_account
     @bank_account = current_user.bank_account || current_user.build_bank_account
+    # yuhuu
   end
 
   def update
+    @bank_account = current_user.bank_account || current_user.build_bank_account
+
     current_user.profile.validate_personal_information = true
 
     if current_user.update_attributes(user_params)

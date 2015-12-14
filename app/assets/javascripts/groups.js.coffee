@@ -18,7 +18,7 @@ validateInvitationForm = ->
   return
 
 $(document).ready ->
-  validateInvitationForm()
+  # validateInvitationForm()
   initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
 
   # $('#invite_user_id').tokenInput( '/group/users_collection.json', {

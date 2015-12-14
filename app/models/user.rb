@@ -15,7 +15,7 @@ class User < ActiveRecord::Base
   has_many :reservations, dependent: :destroy
 
   accepts_nested_attributes_for :profile
-  accepts_nested_attributes_for :bank_account
+  # accepts_nested_attributes_for :bank_account
 
   # before_save :set_stripe_customer, :set_stripe_subscription
 

@@ -24,6 +24,7 @@ class BankAccount < ActiveRecord::Base
 
   def set_stripe_customer
     user = self.user
+    # binding.pry
     if user
       begin
         if user.customer
