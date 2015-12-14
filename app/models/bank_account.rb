@@ -24,16 +24,13 @@ class BankAccount < ActiveRecord::Base
 
   def set_stripe_customer
     user = self.user
-    # binding.pry
     if user
       begin
         if user.customer
-          puts "update customer"
           stripe_customer = Stripe::Customer.retrieve(user.customer.customer_id)
           stripe_customer.source = self.stripe_token
           stripe_customer.save
         else
-          puts "create new customer"
           stripe_customer = Stripe::Customer.create(
             email: user.email,
             source: self.stripe_token
@@ -77,8 +74,6 @@ class BankAccount < ActiveRecord::Base
             puts "delet previous plan"
             stripe_customer.subscriptions.retrieve(user_subscription.subscription_id).delete
             previous_plan.delete
-          else
-            puts "not delete previous plan"
           end
 
           stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: user.id } })

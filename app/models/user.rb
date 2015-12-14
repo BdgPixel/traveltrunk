@@ -94,12 +94,10 @@ class User < ActiveRecord::Base
     if self.execute_stripe_callbacks
       begin
         if self.customer
-          puts "update customer"
           stripe_customer = Stripe::Customer.retrieve(self.customer.customer_id)
           stripe_customer.source = self.stripe_token
           stripe_customer.save
         else
-          puts "create new customer"
           stripe_customer = Stripe::Customer.create(
             email: self.email,
             source: self.stripe_token

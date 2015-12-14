@@ -47,7 +47,6 @@ class PaymentsController < ApplicationController
 
     if response['type'].eql?('invoice.payment_succeeded') && response['data']['object']['amount_due'] > 0
       response = response['data']['object']
-      puts response
 
       transaction = Transaction.new(
         user_id: response['lines']['data'].last['metadata']['user_id'],
