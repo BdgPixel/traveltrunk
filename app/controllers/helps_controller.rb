@@ -7,7 +7,7 @@ class HelpsController < ApplicationController
       redirect_to helps_path, alert: "Email, subject, or message can't be blank"
     else
       HelpMailer.send_question(params[:question]).deliver_now
-      redirect_to helps_path, notice: "Your message was successfully sent"
+      redirect_to helps_path, notice: "Thank you! You're message has been sent. You get back to you shortly"
     end
   end
 end
