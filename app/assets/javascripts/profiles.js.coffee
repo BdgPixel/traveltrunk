@@ -46,9 +46,9 @@ stripeResponseHandler = (status, response) ->
     console.log response
     token = response.id
     # Insert the token into the form so it gets submitted to the server
-    $form.append $('<input type="text" name="stripeToken" />').val(token)
+    $form.append $('<input type="hidden" name="stripeToken" />').val(token)
     # and submit
-    # $form.get(0).submit()
+    $form.get(0).submit()
 
   $('#loading').fadeOut("slow");
   return
