@@ -36,7 +36,7 @@ class ProfilesController < ApplicationController
 
   def update_bank_account
     custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken] })
-
+    binding.pry
     if current_user.bank_account.update_attributes(custom_params)
       redirect_to profile_url, notice: 'Savings plan was successfully updated.'
     else
