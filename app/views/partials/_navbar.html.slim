@@ -41,6 +41,8 @@
                 li
                   = link_to 'My Profile', profile_path
                 li
+                  = link_to 'Change password', edit_user_registration_path
+                li
                   = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
                 li
                   = link_to 'Help', helps_path
