@@ -98,15 +98,13 @@ module HotelsList
   end
 
   def get_hotels_list(destination)
-    if current_user.sign_in_count < 2
+    if current_user.sign_in_count < 2 && current_user.total_credit <= 0
       @error_response = welcome_user_first_sign_in.html_safe
     else
       if destination
         custom_params = destination.get_search_params
         destinationable = destination.destinationable
         total_credit = destinationable.total_credit / 100.0
-
-        binding.pry
 
         if total_credit > 0
           url_custom_params = "http://api.ean.com/ean-services/rs/hotel/v3/list?#{custom_params.merge!(api_params_hash).to_query}"
