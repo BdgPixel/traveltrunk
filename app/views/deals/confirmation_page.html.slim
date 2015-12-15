@@ -34,4 +34,7 @@ ThankYouPage#created
     | Total rate #{number_to_currency(@reservation.total)}
 
   P
+    i
+      b You have charged your credit card for the full payment of this reservation
+  p
     = link_to "Back to hotel list", deals_path, class: "btn btn-orange"

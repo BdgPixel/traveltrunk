@@ -121,7 +121,7 @@ class DealsController < ApplicationController
       reservation = current_user.reservations.new(reservation_params)
 
       reservation.save
-      redirect_to deals_thank_you_page_path, notice: "Booking success"
+      redirect_to deals_confirmation_page_path, notice: "Booking success"
 
     end
   end
@@ -163,8 +163,8 @@ class DealsController < ApplicationController
     end
   end
 
-  def thank_you_page
-    @reservation = current_user.reservations.first
+  def confirmation_page
+    @reservation = current_user.reservations.last
   end
 
   def room_availability
