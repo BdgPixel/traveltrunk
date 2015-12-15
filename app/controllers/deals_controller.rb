@@ -46,47 +46,50 @@ class DealsController < ApplicationController
   def create_book
     current_destination = current_user.destination.get_search_params
 
-    xml_string =
-      "<HotelRoomReservationRequest>
-        <hotelId>#{params[:confirmation_book][:hotel_id]}</hotelId>
-        <arrivalDate>#{current_destination[:arrivalDate]}</arrivalDate>
-        <departureDate>#{current_destination[:departureDate]}</departureDate>
-        <supplierType>E</supplierType>
-        <rateKey>#{params[:confirmation_book][:rate_key]}</rateKey>
-        <roomTypeCode>#{params[:confirmation_book][:room_type_code]}</roomTypeCode>
-        <rateCode>#{params[:confirmation_book][:rate_code]}</rateCode>
-        <chargeableRate>#{params[:confirmation_book][:total]}</chargeableRate>
-        <RoomGroup>
-            <Room>
-                <numberOfAdults>1</numberOfAdults>
-                <firstName>test</firstName>
-                <lastName>tester</lastName>
-                <bedTypeId>#{params[:confirmation_book][:bed_type].split(' ').join(',')}</bedTypeId>
-                <smokingPreference>#{params[:confirmation_book][:smoking_preferences]}</smokingPreference>
-            </Room>
-        </RoomGroup>
-        <ReservationInfo>
-            <email>#{current_user.email}</email>
-            <firstName>#{current_user.profile.first_name}</firstName>
-            <lastName>#{current_user.profile.last_name}</lastName>
-            <homePhone>2145370159</homePhone>
-            <workPhone>2145370159</workPhone>
-            <creditCardType>CA</creditCardType>
-            <creditCardNumber>5401999999999999</creditCardNumber>
-            <creditCardIdentifier>123</creditCardIdentifier>
-            <creditCardExpirationMonth>11</creditCardExpirationMonth>
-            <creditCardExpirationYear>2017</creditCardExpirationYear>
-        </ReservationInfo>
-        <AddressInfo>
-            <address1>travelnow</address1>
-            <city>#{current_user.profile.city}</city>
-            <stateProvinceCode>#{current_user.profile.state}</stateProvinceCode>
-            <countryCode>#{current_user.profile.country_code}</countryCode>
-            <postalCode>#{current_user.profile.postal_code}</postalCode>
-        </AddressInfo>
-    </HotelRoomReservationRequest>"
+    bed_type = params[:confirmation_book][:bed_type].nil? ? "" : params[:confirmation_book][:bed_type].split(' ').join(',')
 
-    xml_params =  { xml: xml_string.gsub(" ", "").gsub("\n", "") }
+    smoking_preferences = params[:confirmation_book][:smoking_preferences].nil? ? "" : params[:confirmation_book][:smoking_preferences]
+
+    reservation_hash = {
+        hotelId: params[:confirmation_book][:hotel_id],
+        arrivalDate: current_destination[:arrivalDate],
+        departureDate: current_destination[:departureDate],
+        supplierType: "E",
+        rateKey: params[:confirmation_book][:rate_key],
+        roomTypeCode: params[:confirmation_book][:room_type_code],
+        rateCode: params[:confirmation_book][:rate_code],
+        chargeableRate: params[:confirmation_book][:total],
+        RoomGroup: {
+          Room: {
+            numberOfAdults: "1",
+            firstName: "test",
+            lastName: "tester",
+            bedTypeId: bed_type,
+            smokingPreference: smoking_preferences
+          }
+        },
+        ReservationInfo: {
+          email: current_user.email,
+          firstName: current_user.profile.first_name,
+          lastName: current_user.profile.last_name,
+          homePhone: "2145370159",
+          workPhone: "2145370159",
+          creditCardType: "CA",
+          creditCardNumber: "5401999999999999",
+          creditCardIdentifier: "123",
+          creditCardExpirationMonth: "11",
+          creditCardExpirationYear: "2017"
+        },
+        AddressInfo: {
+          address1: "travelnow",
+          city: current_user.profile.city,
+          stateProvinceCode: current_user.profile.state,
+          countryCode: current_user.profile.country_code,
+          postalCode: current_user.profile.postal_code
+        },
+      }
+
+    xml_params =  { xml: reservation_hash.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
 
     book_reservation(xml_params)
 
