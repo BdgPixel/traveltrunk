@@ -1,35 +1,39 @@
-- unless @error_response
-  .deals-page data-page="1"
-    - @hotels_list.each_with_index do |page, index|
-      div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
-        - page.compact.each do |group|
-          .row
-            - group.compact.each do |hotel|
-              .wrapper-price-deals
-                .col-xs-6.col-md-4.col-deals
-                  .price-deals
-                    h4
-                      strong
-                        = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+- if @welcome_state
+  br
+  .welcome-message.col-md-8.col-md-offset-2.text-justify = welcome_user_first_sign_in
+- else
+  - unless @error_response
+    .deals-page data-page="1"
+      - @hotels_list.each_with_index do |page, index|
+        div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
+          - page.compact.each do |group|
+            .row
+              - group.compact.each do |hotel|
+                .wrapper-price-deals
+                  .col-xs-6.col-md-4.col-deals
+                    .price-deals
+                      h4
+                        strong
+                          = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-                  = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                    = list_of_deals_div(hotel["thumbNailUrl"])
+                    = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+                      = list_of_deals_div(hotel["thumbNailUrl"])
 
-                  .col-md-10
-                    p.text-center.content-deals
-                      = link_to deals_show_path(id: hotel["hotelId"])
-                        = unescape_expedia_html(hotel["name"])
+                    .col-md-10
+                      p.text-center.content-deals
+                        = link_to deals_show_path(id: hotel["hotelId"])
+                          = unescape_expedia_html(hotel["name"])
 
-    .col-md-12
-      .row
-        - if @num_of_hotels > 15
-          hr
-          p#pagination-info
-            | 1 - 15 of #{@num_of_hotels} Hotels
+      .col-md-12
+        .row
+          - if @num_of_hotels > 15
+            hr
+            p#pagination-info
+              | 1 - 15 of #{@num_of_hotels} Hotels
 
-        #pagination
+          #pagination
 
-- if @error_response
-  #error_response.alert.alert-info style="margin-top: 20px"
-    strong Notice: &nbsp;
-    = @error_response
+  - if @error_response
+    #error_response.alert.alert-info style="margin-top: 20px"
+      strong Notice: &nbsp;
+      = @error_response

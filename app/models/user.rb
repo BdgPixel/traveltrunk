@@ -56,11 +56,9 @@ class User < ActiveRecord::Base
     room_hash = {}
 
     if destination
-      current_search = destination.get_search_params
-
       room_hash[:hotelId]       = hotel_id
-      room_hash[:arrivalDate]   = current_search[:arrivalDate]
-      room_hash[:departureDate] = current_search[:departureDate]
+      room_hash[:arrivalDate]   = destination.arrival_date.strftime('%m/%d/%Y')
+      room_hash[:departureDate] = destination.departure_date.strftime('%m/%d/%Y')
 
       if rate_code && room_type_code
         room_hash[:rateCode]     = rate_code
@@ -72,7 +70,6 @@ class User < ActiveRecord::Base
       room_hash[:options]           = "ROOM_TYPES"
       room_hash[:includeDetails]    = true
     end
-
     room_hash
   end
 

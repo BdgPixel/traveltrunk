@@ -51,9 +51,9 @@ module HotelsList
 
   def get_room_availability(room_params)
     url                 = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
-
     complete_params     = room_params.merge!(api_params_hash)
     url_room_params     = url + complete_params.to_query
+
     begin
       response = HTTParty.get(url_room_params)
 
@@ -99,7 +99,8 @@ module HotelsList
 
   def get_hotels_list(destination)
     if current_user.sign_in_count < 2 && current_user.total_credit <= 0
-      @error_response = welcome_user_first_sign_in.html_safe
+      @welcome_state = true
+      @error_response = ''
     else
       if destination
         custom_params = destination.get_search_params
