@@ -3,6 +3,11 @@ $('#formAddToSavings').on('submit', function(e) {
   returnValue = void 0;
   returnValue = null;
 
+  if ($('#update_credit_cvv').val().length < 3) {
+    $('.payment-errors').html('Cvv should not be smaller than three character');
+    returnValue = false;
+  }
+
   if (!$('#update_credit_amount').val()) {
     $('.payment-errors').html('Amount cannot be blank or zero or negative');
     returnValue = false;

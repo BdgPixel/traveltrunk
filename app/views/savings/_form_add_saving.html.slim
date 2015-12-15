@@ -23,7 +23,7 @@
                 = image_tag asset_path('cards/discover.png')
 
               .col-md-6
-                = f.input :cvv, as: :integer, input_html: { class: "form-control" }
+                = f.input :cvv, as: :password, input_html: { class: "form-control", maxlength: 4 }
 
             .payment-errors
 
