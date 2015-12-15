@@ -4,7 +4,7 @@ $('#formAddToSavings').on('submit', function(e) {
   returnValue = null;
 
   if ($('#update_credit_cvv').val().length < 3) {
-    $('.payment-errors').html('Cvv should not be smaller than three character');
+    $('.payment-errors').html('Cvv is too short (minimum is 3 characters)');
     returnValue = false;
   }
 

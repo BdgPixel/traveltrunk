@@ -210,9 +210,12 @@ $(document).ready ->
     $('input#search_deals_arrival_date').datepicker(
       startDate: today
       autoclose: true).on 'changeDate', (e) ->
+        departureDate = e.date
+        departureDate.setDate(departureDate.getDate() + 1)
+
         $('input#search_deals_departure_date').datepicker('remove')
         $('input#search_deals_departure_date').datepicker
-          startDate:  getFormattedDate(e.date)
+          startDate:  getFormattedDate(departureDate)
           autoclose: true
         setTimeout(->
           $('input#search_deals_departure_date').datepicker('show')
