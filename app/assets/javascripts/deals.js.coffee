@@ -95,7 +95,12 @@ root.roomSelected = (selector)->
     $('.bs-example-modal-lg').modal({ backdrop: 'static' })
     $('.modal .modal-header h3').text(rooms.hotelName)
     $('.modal #roomRating').attr('data-rating', rooms.tripAdvisorRating)
-    $('.modal .rating-text').text(rooms.tripAdvisorRating + " ratings")
+
+    if rooms.tripAdvisorRating
+      $('.modal .rating-text').text(rooms.tripAdvisorRating + " ratings")
+    else
+      $('.modal .rating-text').text("0 rating")
+
     $('.modal .hotel-info-addr').html("&nbsp;#{rooms.hotelAddress}")
     $('.modal .hotel-info-city').html("&nbsp;City:&nbsp; #{rooms.hotelCity}")
 
