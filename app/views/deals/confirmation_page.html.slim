@@ -2,10 +2,10 @@ ThankYouPage#created
   p = "Hello #{current_user.profile.first_name} #{current_user.profile.last_name}"
 
   p
-    | Your  itinerary #{@reservation.itinerary}
+    b Itinerary Number #{@reservation.itinerary}
 
   p
-    | Confirmation number: #{@reservation.confirmation_number}
+    b Confirmation number: #{@reservation.confirmation_number}
 
   p
     | Arrival date #{@reservation.arrival_date} and departure date #{@reservation.departure_date}

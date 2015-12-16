@@ -17,6 +17,8 @@
 # = require nprogress-turbolinks
 # = require twitter/bootstrap/dropdown
 # = require twitter/bootstrap/modal
+# = require twitter/bootstrap/tooltip
+# = require twitter/bootstrap/popover
 # = require jquery.validate
 # = require bootstrap.file-input
 

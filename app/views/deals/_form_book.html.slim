@@ -1,4 +1,4 @@
-= simple_form_for :confirmation_book, url: deals_create_book_path do |f|
+= simple_form_for :confirmation_book, url: deals_create_book_path, html: { id: "formBook" } do |f|
   .row
     .col-md-12
       .form-group
@@ -25,9 +25,16 @@
       .form-group
         = f.hidden_field :bed_type
 
+      .form-group
+        = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>By selecting to complete this booking I acknowledge that I have read and accept the cancellation policy for the selected room</small>".html_safe
+        .payment-errors
+
       .row
         .col-md-8
           .form-group
+            | Would you still like to book this hotel ?
+            br
+            br
             = f.button :submit, "Yes", class: 'btn btn-orange btn-md'
             | &nbsp;
             button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"

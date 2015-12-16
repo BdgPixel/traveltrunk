@@ -1,4 +1,7 @@
 - unless @error_response
+  i
+    small The room rates listed are for double occupancy per room unless otherwise stated and exclude tax recovery charges and service fees.
+
   table.table.table-striped.table-hover
     thead
       tr
@@ -13,7 +16,7 @@
         - else
           - @room_availability["HotelRoomResponse"].uniq.each do |room|
 
-            = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"]
+            = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"]
 
 - if @error_response
   #error_response.alert.alert-info

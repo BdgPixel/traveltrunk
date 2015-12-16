@@ -46,6 +46,18 @@ validateSearchForm = ->
 
   return
 
+validateFormBook = ->
+  if $('#formBook').length > 0
+    $('#formBook').on 'submit', (e) ->
+      returnValue = undefined
+      returnValue = undefined
+      returnValue = null
+
+      if $('#confirmation_book_policy').is(':checked') == false
+        $('.payment-errors').html 'Cancellation policy must be approved'
+        returnValue = false
+      returnValue
+
 root.initDealsPage = (numOfpages, numOfHotels)->
   if numOfpages && numOfHotels && numOfHotels > 15
     $('#pagination')
@@ -198,6 +210,10 @@ root.replaceImage = ->
 
     i++
 
+root.popOver = (selector)->
+  $(selector).on 'click', ->
+    $(this).popover 'show'
+    return
 
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
@@ -252,6 +268,7 @@ $(document).ready ->
   else
     initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
     params_path_id = window.location.pathname.split('/')[2]
+    validateFormBook()
 
     $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected('.room-selected')
@@ -260,6 +277,9 @@ $(document).ready ->
       $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
         $('#formAddToSavings').get(0).reset()
         $('.payment-errors').html("")
+
+      $('.modal-lg').on 'hidden.bs.modal', (e) ->
+        $('#formBook').get(0).reset()
 
       return
 
@@ -287,3 +307,12 @@ $(document).ready ->
           container: '#blueimp-gallery-carousel'
           carousel: true
       , 3000)
+
+    # $(document).on 'click', '[data-toggle="popover"]', ->
+    #   $(document).find('[data-toggle="popover"]').popover('hide')
+    #   $(this).popover 'show'
+    #   return
+
+
+
+

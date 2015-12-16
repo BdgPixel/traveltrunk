@@ -1,3 +1,4 @@
+
 $('#formAddToSavings').on('submit', function(e) {
   var returnValue;
   returnValue = void 0;
@@ -25,3 +26,4 @@ $('#formAddToSavings').on('submit', function(e) {
 
   return returnValue;
 });
+

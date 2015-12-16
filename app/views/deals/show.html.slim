@@ -23,6 +23,10 @@
           - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
             = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
               = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
+        p
+          i
+            small &ldquo; It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. {Affiliate site/brand name} is not responsible for any inaccuracies in the photos.&rdquo;
+
   .row
     .col-md-12
       .col-md-7
@@ -30,6 +34,7 @@
         .text-left
           #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
           .rating-text = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
+          br
 
       / # commented but will be used later
       / #
