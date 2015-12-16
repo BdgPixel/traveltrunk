@@ -142,7 +142,7 @@ root.roomSelected = (selector)->
       table.append("<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@averageRate']}</td></tr>")
 
     table.append("<tr><td><b>Total taxes and fees</b></td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
-    table.append("<tr><td><b>Total</b></td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
+    table.append("<tr><td><b>Total Charges</b></td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
 
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])

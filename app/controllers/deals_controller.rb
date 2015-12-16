@@ -31,6 +31,7 @@ class DealsController < ApplicationController
 
   def show
     expedia_params_hash = { hotelId: params[:id] }
+    @terms_and_conditions_url = "http://travel.ian.com/index.jsp?pageName=userAgreement&locale=en_US&cid=5505"
     get_hotel_information(expedia_params_hash)
   end
 
@@ -114,14 +115,16 @@ class DealsController < ApplicationController
         number_of_room: @reservation["numberOfRoomsBooked"],
         room_description: @reservation["roomDescription"],
         number_of_adult: @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
-        total: @reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0,
+        total: (@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
         arrival_date: arrival_date,
         departure_date: departure_date
       }
       reservation = current_user.reservations.new(reservation_params)
 
-      reservation.save
-      redirect_to deals_confirmation_page_path, notice: "Booking success"
+      if reservation.save
+        flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
+        redirect_to deals_confirmation_page_path
+      end
 
     end
   end

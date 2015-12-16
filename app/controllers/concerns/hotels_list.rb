@@ -123,7 +123,7 @@ module HotelsList
               end
 
               if hotels_list.empty?
-                @error_response = "There is no hotels that match your criteria and saving credits"
+                @error_response = "There are no hotels that match your criteria and saving credits"
               else
                 hotels_list =
                   hotels_list.sort do |hotel_x, hotel_y|
@@ -145,7 +145,7 @@ module HotelsList
         end
       else
         @hotels_list    = []
-        @error_response = "You haven't selected any destinations"
+        @error_response = "You haven't selected any destination"
       end
     end
   end

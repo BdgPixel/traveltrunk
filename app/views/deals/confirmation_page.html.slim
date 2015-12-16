@@ -1,11 +1,13 @@
 ThankYouPage#created
+  - if flash[:reservation_message]
+    .alert.alert-success = flash[:reservation_message]
   p = "Hello #{current_user.profile.first_name} #{current_user.profile.last_name}"
 
   p
     b Itinerary Number #{@reservation.itinerary}
 
   p
-    b Confirmation number: #{@reservation.confirmation_number}
+    b Room Confirmation number: #{@reservation.confirmation_number}
 
   p
     | Arrival date #{@reservation.arrival_date} and departure date #{@reservation.departure_date}
@@ -31,7 +33,7 @@ ThankYouPage#created
     | Number of adults #{@reservation.number_of_adult}
 
   p
-    | Total rate #{number_to_currency(@reservation.total)}
+    | Total charges #{number_to_currency(@reservation.total / 100.0)}
 
   P
     i
