@@ -19,6 +19,7 @@
 # = require twitter/bootstrap/modal
 # = require twitter/bootstrap/tooltip
 # = require twitter/bootstrap/popover
+# = require twitter/bootstrap/collapse
 # = require jquery.validate
 # = require bootstrap.file-input
 

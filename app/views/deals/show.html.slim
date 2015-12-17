@@ -80,6 +80,41 @@
         = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
         = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
 
+      .col-md-12
+        hr
+        .col-md-6
+          a#policy data-toggle="collapse" data-target="#collapseAboutHotel" href="javascript:void(0)" role="button"
+            | Description
+
+          #collapseAboutHotel.collapse
+            p.text-justify = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
+
+        .col-md-6
+          a#policy data-toggle="collapse" data-target="#collapsePolicy" href="javascript:void(0)" role="button"
+            | Hotel Policies
+
+          #collapsePolicy.collapse
+            p.text-justify = @hotel_information["HotelDetails"]["hotelPolicy"]
+
+        .col-md-6
+            a#roomInfo data-toggle="collapse" data-target="#collapseRoomInfo" href="javascript:void(0)" role="button"
+              | Room Informations
+
+            #collapseRoomInfo.collapse
+              p.text-justify = unescape_expedia_html(@hotel_information["HotelDetails"]["roomInformation"])
+              br
+              p.text-justify
+                b Room Detail Description
+                br
+                = unescape_expedia_html(@hotel_information["HotelDetails"]["roomDetailDescription"])
+
+        .col-md-6
+          a#amenity data-toggle="collapse" data-target="#collapseAmenity" href="javascript:void(0)" role="button"
+            | Amenities Description
+
+          #collapseAmenity.collapse
+            p.text-justify = @hotel_information["HotelDetails"]["amenitiesDescription"]
+
 = render partial: 'book'
 = render partial: 'savings/form_add_saving'
 = render partial: 'savings/transfer_success'

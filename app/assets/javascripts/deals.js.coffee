@@ -220,6 +220,7 @@ root.popOver = (selector)->
     $(this).popover 'show'
     return
 
+
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
     disableEnterFormSubmit()
