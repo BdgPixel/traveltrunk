@@ -51,6 +51,8 @@ class DealsController < ApplicationController
 
     smoking_preferences = params[:confirmation_book][:smoking_preferences].nil? ? "" : params[:confirmation_book][:smoking_preferences]
 
+    affiliateConfirmationId = SecureRandom.uuid
+
     reservation_hash = {
         hotelId: params[:confirmation_book][:hotel_id],
         arrivalDate: current_destination[:arrivalDate],
@@ -60,6 +62,7 @@ class DealsController < ApplicationController
         roomTypeCode: params[:confirmation_book][:room_type_code],
         rateCode: params[:confirmation_book][:rate_code],
         chargeableRate: params[:confirmation_book][:total],
+        affiliateConfirmationId: affiliateConfirmationId,
         RoomGroup: {
           Room: {
             numberOfAdults: "1",

@@ -79,9 +79,6 @@ ThankYouPage#created
               b Total taxes and fees
             td
               = number_to_currency @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@nightlyRateTotal"]
-
-            / = tax_values @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]
-
           tr
             td
               b Total Charges
@@ -90,6 +87,8 @@ ThankYouPage#created
                   i
                     | (includes tax recovery charges and service fees)
             td = number_to_currency @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+
+          = tax_values @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]
         p
           i
             b You have charged your credit card for the full payment of this reservation
