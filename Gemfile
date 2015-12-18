@@ -49,8 +49,6 @@ gem "fog"
 
 gem "fog-aws"
 
-gem 'dotenv-rails'
-
 gem 'htmlentities', '~> 4.3.4'
 
 # gem 'jquery-rails-cdn'
@@ -84,6 +82,8 @@ group :development, :test do
   gem 'letter_opener'
 
   gem 'quiet_assets'
+
+  gem 'dotenv-rails'
 end
 
 gem 'rails_12factor', group: :production
