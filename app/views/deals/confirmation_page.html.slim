@@ -1,42 +1,97 @@
 ThankYouPage#created
-  - if flash[:reservation_message]
-    .alert.alert-success = flash[:reservation_message]
-  p = "Hello #{current_user.profile.first_name} #{current_user.profile.last_name}"
+  .row
+    .col-md-12
+      - if flash[:reservation_message]
+        .alert.alert-success = flash[:reservation_message]
 
-  p
-    b Itinerary Number #{@reservation.itinerary}
+      .col-md-6
+        p Your reservation is confirmed and your card has been charged
 
-  p
-    b Room Confirmation number: #{@reservation.confirmation_number}
+        p
+          b Customer name:&nbsp;
+          = "#{current_user.profile.first_name} #{current_user.profile.last_name}"
 
-  p
-    | Arrival date #{@reservation.arrival_date} and departure date #{@reservation.departure_date}
+        p
+          b Customer email:&nbsp;
+          = current_user.email
 
-  p
-    | Hotel name #{@reservation.hotel_name}
+        p
+          b
+            | Itinerary Number:&nbsp;
+          = "#{@reservation.itinerary}"
 
-  p
-    | Hotel address #{@reservation.hotel_address}
+        p
+          b Room Confirmation number:&nbsp;
+          = @reservation.confirmation_number
+        br
 
-  p
-    | City #{@reservation.city}
+        p
+          h4 Hotel and Room Reservation
+          | Hotel name:&nbsp;
+          = @itinerary_responses["Itinerary"]["HotelConfirmation"]["Hotel"]["name"]
 
-  p
-    | Country code #{@reservation.country_code}
+        p
+          | Address:&nbsp;
+          = @itinerary_responses["Itinerary"]["HotelConfirmation"]["Hotel"]["address1"]
 
-  p
-    | Postal code #{@reservation.postal_code}
+        p
+          | City #{@reservation.city}
 
-  p | Room booked #{@reservation.number_of_room} and room description #{@reservation.room_description}
+        p
+          | Country code #{@reservation.country_code}
 
-  p
-    | Number of adults #{@reservation.number_of_adult}
+        p
+          | Postal code #{@reservation.postal_code}
 
-  p
-    | Total charges #{number_to_currency(@reservation.total / 100.0)}
+        p
+          | Phone:&nbsp;
+          = @itinerary_responses["Itinerary"]["HotelConfirmation"]["Hotel"]["phone"]
 
-  P
-    i
-      b You have charged your credit card for the full payment of this reservation
-  p
-    = link_to "Back to hotel list", deals_path, class: "btn btn-orange"
+        p
+          | Fax:&nbsp;
+          = @itinerary_responses["Itinerary"]["HotelConfirmation"]["Hotel"]["fax"]
+
+        br
+        p
+          | Room type:&nbsp;
+          = @reservation.room_description
+
+        p
+          | Check-in:&nbsp;
+          = @reservation.arrival_date.strftime("%B %d, %Y")
+        p
+          | Check-out:&nbsp;
+          = @reservation.departure_date.strftime("%B %d, %Y")
+
+        p
+          | Number of adults #{@reservation.number_of_adult}
+
+      .col-md-6
+        table.table
+          - @list_of_dates.each_with_index do |date, key|
+            tr
+              td = date.strftime("%B %d, %Y")
+              - @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["NightlyRatesPerRoom"]["NightlyRate"].each_with_index do |rate, key_rate|
+                - if key.eql? key_rate
+                  td = number_to_currency rate["@rate"]
+          tr
+            td
+              b Total taxes and fees
+            td
+              = number_to_currency @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@nightlyRateTotal"]
+          tr
+            td
+              b Total Charges
+              br
+                small
+                  i
+                    | (includes tax recovery charges and service fees)
+            td = number_to_currency @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+        p
+          i
+            b You have charged your credit card for the full payment of this reservation
+        br
+        br
+
+    .text-center
+      = link_to "Back to hotel list", deals_path, class: "btn btn-orange"

@@ -168,6 +168,10 @@ class DealsController < ApplicationController
 
   def confirmation_page
     @reservation = current_user.reservations.last
+    itinerary_params = { itineraryId: @reservation.itinerary, email: current_user.email}
+    view_itinerary(itinerary_params)
+    @list_of_dates = (@reservation.arrival_date..@reservation.departure_date).to_a
+    @list_of_dates.pop
   end
 
   def room_availability

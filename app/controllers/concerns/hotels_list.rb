@@ -13,6 +13,26 @@ module HotelsList
     }
   end
 
+  def view_itinerary(custom_params)
+    url = "http://api.ean.com/ean-services/rs/hotel/v3/itin?"
+    expedia_api = api_params_hash
+    expedia_api.delete(:numberOfResults)
+
+    url_custom_params = url + custom_params.merge(expedia_api).to_query
+    begin
+      response = HTTParty.get(url_custom_params)
+
+      if response["HotelItineraryResponse"]["EanWsError"]
+        redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:confirmation_book][:room_type_code])
+        @error_response    = response["HotelItineraryResponse"]["EanWsError"]["presentationMessage"]
+      else
+        @itinerary_responses = response["HotelItineraryResponse"]
+      end
+    rescue Exception => e
+      @error_response = e.message
+    end
+  end
+
   def book_reservation(custom_params)
     url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?"
     expedia_api = api_params_hash
