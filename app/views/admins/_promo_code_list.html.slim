@@ -1,0 +1,16 @@
+table.table.table-striped.table-hover
+    thead
+      tr
+        th Name
+        th Email
+        th
+    tbody
+      - @users.each do |user|
+        - if user.profile
+          tr
+            td = full_name(user.profile)
+            td = user.email
+            td
+              button.btn.btn-orange.btn-xs data-target="#modalPromoCode" data-toggle="modal" data-id="#{user.id}" data-token="#{genrate_token}" type="button"
+                span.glyphicon.glyphicon-plus
+                | &nbsp;Add Promo Code

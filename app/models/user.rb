@@ -3,6 +3,7 @@ class User < ActiveRecord::Base
 
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
+  has_one  :promo_code, dependent: :destroy
   has_many :likes
 
   has_one  :destination, dependent: :destroy, as: :destinationable
@@ -37,6 +38,10 @@ class User < ActiveRecord::Base
 
   def total_credit_in_usd
     (self.total_credit / 100).round
+  end
+
+   def total_credit_in_cents(total_credit)
+    self.total_credit = (total_credit * 100)
   end
 
   def get_notification(is_read = true)

@@ -1,4 +1,11 @@
 Rails.application.routes.draw do
+  resource :admins, only: [] do
+    get  '/' => 'admins#index'
+    get  'new' => 'admins#new', as: 'new'
+    post '/' => 'admins#create', as: 'create'
+
+  end
+
   get  'helps' => 'helps#index'
   post 'helps/send_question' => 'helps#send_question'
 
@@ -38,7 +45,7 @@ Rails.application.routes.draw do
   # patch 'deals/update_credit' => 'deals/update_credit'
   post   'deals/update_credit' => 'deals/update_credit'
 
-  devise_for :users, :controllers => {:registrations => "registrations"}
+  devise_for :users, :controllers => { :registrations => "registrations" }
 
   root 'deals#index'
 

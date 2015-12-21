@@ -1,0 +1,12 @@
+<% if @promo_code.errors.any? %>
+  $('#error_explanation').removeClass('hide');
+  tags = $('#error_explanation')
+  tags.html("<%= pluralize(@promo_code.errors.count,  'error') %> prohibited this profile from being saved");
+  <% @promo_code.errors.full_messages.each do |message| %>
+    tags.append("<li><%= message %>");
+  <% end %>
+  tags
+<% else %>
+  console.log("<%= admins_path %>")
+  window.location = "<%= admins_path %>"
+<% end %>
