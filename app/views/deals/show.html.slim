@@ -23,14 +23,15 @@
           - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
             = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
               = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
-        p
-          i
-            small &ldquo; It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. {Affiliate site/brand name} is not responsible for any inaccuracies in the photos.&rdquo;
 
   .row
     .col-md-12
-      .col-md-7
+      .col-md-12
         h3 = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
+        br
+        i
+          small The room rates listed are for double occupancy per room unless otherwise stated and exclude tax recovery charges and service fees.
+
         .text-left
           #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
           .rating-text = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
@@ -114,6 +115,13 @@
 
           #collapseAmenity.collapse
             p.text-justify = @hotel_information["HotelDetails"]["amenitiesDescription"]
+          br
+          br
+          br
+
+        p
+          i
+            small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
 = render partial: 'book'
 = render partial: 'savings/form_add_saving'
