@@ -8,14 +8,15 @@
           span.icon-bar
           span.icon-bar
         .wrapper-navbar-brand
-          - if current_user.admin?
-            = link_to admin_promo_codes_path, class: 'navbar-brand' do
-              = image_tag("logo1.png")
-              span TravelTrunk
-          - else
-            = link_to root_path, class: 'navbar-brand' do
-              = image_tag("logo1.png")
-              span TravelTrunk
+          - if user_signed_in?
+            - if current_user.admin?
+              = link_to admin_promo_codes_path, class: 'navbar-brand' do
+                = image_tag("logo1.png")
+                span TravelTrunk
+            - else
+              = link_to root_path, class: 'navbar-brand' do
+                = image_tag("logo1.png")
+                span TravelTrunk
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right
