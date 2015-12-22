@@ -1,0 +1,8 @@
+SubscriptionMailer#paymentSucceed
+  p = "Hi #{@promo_code.user.profile.first_name},"
+
+  p
+    | Copy and paste this link code or click this link&nbsp;
+    = link_to @promo_code.token, promo_codes_activation_url
+
+  p = render 'partials/footer_mailer'

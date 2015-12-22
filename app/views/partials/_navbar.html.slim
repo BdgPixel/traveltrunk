@@ -8,6 +8,11 @@
           span.icon-bar
           span.icon-bar
         .wrapper-navbar-brand
+          - if current_user.admin?
+            = link_to admin_promo_codes_path, class: 'navbar-brand' do
+              = image_tag("logo1.png")
+              span TravelTrunk
+          - else
             = link_to root_path, class: 'navbar-brand' do
               = image_tag("logo1.png")
               span TravelTrunk
@@ -15,39 +20,42 @@
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right
           - if user_signed_in?
-            li
-              = link_to 'DEALS', deals_path
+            - if current_user.admin?
+              li = link_to 'Promo Codes', admin_promo_codes_path
+              li.dropdown
+                a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                  = current_user.email
+                  span.caret
+                ul.dropdown-menu
+                  li = link_to 'Sign Out', destroy_user_session_path, method: :delete
+            - else
+              li = link_to 'DEALS', deals_path
+              li = link_to 'SAVINGS', savings_path
+              li.dropdown
+                a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                  - if @notification_count.zero?
+                    span.notification-bubble.hide = @notification_count
+                  - else
+                    span.notification-bubble = @notification_count
 
-            li
-              = link_to 'SAVINGS', savings_path
-
-            li.dropdown
-              a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                - if @notification_count.zero?
-                  span.notification-bubble.hide = @notification_count
-                - else
-                  span.notification-bubble = @notification_count
-
-                - if current_user.no_profile?
-                  = image_tag "thumb_default_user.png", class: "img-circle"
-                  | &nbsp;
-                  | PROFILE
-                - else
-                  = image_tag current_user.profile.image.thumb.url, class: "img-circle"
-                  | &nbsp;
-                  = current_user.profile.first_name.upcase
-                span.caret
-              ul.dropdown-menu
-                li
-                  = link_to 'My Profile', profile_path
-                / li
-                /   = link_to 'Change password', edit_user_registration_path
-                li
-                  = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
-                li
-                  = link_to 'Help', helps_path
-                li.divider role="separator"
-                li = link_to 'Sign Out', destroy_user_session_path, method: :delete
+                  - if current_user.no_profile?
+                    = image_tag "thumb_default_user.png", class: "img-circle"
+                    | &nbsp;
+                    | PROFILE
+                  - else
+                    = image_tag current_user.profile.image.thumb.url, class: "img-circle"
+                    | &nbsp;
+                    = current_user.profile.first_name.upcase
+                  span.caret
+                ul.dropdown-menu
+                  li = link_to 'My Profile', profile_path
+                  / li
+                  /   = link_to 'Change password', edit_user_registration_path
+                  li
+                    = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
+                  li = link_to 'Help', helps_path
+                  li.divider role="separator"
+                  li = link_to 'Sign Out', destroy_user_session_path, method: :delete
           - else
               li
                 = link_to new_registration_path(resource_name)

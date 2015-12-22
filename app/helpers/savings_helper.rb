@@ -7,9 +7,9 @@ module SavingsHelper
   def add_apostrophe(name)
     char = name[-1,1].downcase
     if char.eql?("s")
-      name = "#{titleize_texts name}' savings".titleize
+      name = "#{titleize_text name}' savings".titleize
     else
-      name = "#{titleize_texts name}'s savings".titleize
+      name = "#{titleize_text name}'s savings".titleize
     end
   end
 

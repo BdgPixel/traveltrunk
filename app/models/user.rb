@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
-  has_one  :promo_code, dependent: :destroy
+  has_many :promo_codes, dependent: :destroy
   has_many :likes
 
   has_one  :destination, dependent: :destroy, as: :destinationable
@@ -40,8 +40,8 @@ class User < ActiveRecord::Base
     (self.total_credit / 100).round
   end
 
-   def total_credit_in_cents(total_credit)
-    self.total_credit = (total_credit * 100)
+  def total_credit_in_cents(total_credit)
+    self.total_credit = self.total_credit + (total_credit * 100)
   end
 
   def get_notification(is_read = true)
@@ -192,5 +192,13 @@ class User < ActiveRecord::Base
       .where("users_groups.user_id IS NULL OR users.id IS NULL")
       .where("groups.user_id IS NULL OR users.id IS NULL")
       .map {|u| { id: u.id, name: "#{u.profile.try(:first_name) || 'No Name'}", email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png' } }
+  end
+
+  def self.list_of_user_collections
+    user_collections = []
+    self.includes(:profile).select(:id).where(admin: false).map do |user|
+      user_collections << ["#{user.profile.first_name} #{user.profile.last_name}", user.id].to_a if user.profile
+    end
+    user_collections
   end
 end

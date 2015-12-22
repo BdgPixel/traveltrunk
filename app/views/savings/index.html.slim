@@ -20,8 +20,8 @@
       .text-center
         p
           = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
-          / |&emsp;&emsp;&emsp;
-          / = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
+          |&emsp;&emsp;&emsp;
+          = link_to "Promo Code", "#", data: { toggle: "modal", target: "#modalActivationPromoCode" }
 
   / .col-md-12
   /   .col-md-4.col-offset-4
@@ -29,4 +29,5 @@
 
   = render 'savings/form_add_saving'
   = render 'savings/transfer_success'
+  = render 'promo_codes/form_modal_activation_promo_code'
 

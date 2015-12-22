@@ -20,4 +20,8 @@ class Profile < ActiveRecord::Base
   def validate_personal_information?
     validate_personal_information
   end
+
+  def full_name
+    "#{self.first_name} #{self.last_name}"
+  end
 end

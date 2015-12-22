@@ -17,6 +17,18 @@ validateInvitationForm = ->
 
   return
 
+clearForm = (selectorModal, selectorForm) ->
+  $(selectorModal).on 'hidden.bs.modal', (e) ->
+    $(selectorForm).get(0).reset()
+    $('.error').text ''
+
+  $(selectorModal).on 'shown.bs.modal', (e) ->
+    $(selectorForm).get(0).reset()
+    $('.error').text ''
+
+
 $(document).ready ->
   validateInvitationForm()
   initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
+  clearForm('.modal', '.promo_code')
+

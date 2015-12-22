@@ -1,9 +1,9 @@
 Rails.application.routes.draw do
-  resource :admins, only: [] do
-    get  '/' => 'admins#index'
-    get  'new' => 'admins#new', as: 'new'
-    post '/' => 'admins#create', as: 'create'
+  get  'promo_codes/activation'
+  post 'promo_codes/update'
 
+  namespace :admin, path: 'admin' do
+    resources :promo_codes
   end
 
   get  'helps' => 'helps#index'

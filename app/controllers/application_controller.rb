@@ -9,14 +9,13 @@ class ApplicationController < ActionController::Base
 
   def after_sign_in_path_for(resource)
     if resource.admin?
-     admins_path
+     admin_promo_codes_url
     else
-      root_path
+      root_url
     end
   end
 
   def get_unread_notification_count
     @notification_count = current_user.get_notification(false).count if user_signed_in?
   end
-
 end

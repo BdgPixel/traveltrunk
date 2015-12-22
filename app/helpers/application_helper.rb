@@ -1,5 +1,5 @@
 module ApplicationHelper
-  def titleize_texts(texts)
+  def titleize_text(texts)
     texts.titleize
   end
 

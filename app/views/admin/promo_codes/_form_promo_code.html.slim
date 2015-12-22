@@ -1,0 +1,26 @@
+= simple_form_for [:admin, @promo_code] do |f|
+  .col-md-6
+    .form-group.form-group-md
+      = f.input :token, input_html: { class: "form-control", readonly: true }
+
+  .col-md-6
+    .form-group
+      = f.label :amount
+      .input-group
+        .input-group-addon $
+        = f.input_field :amount, class: "form-control", autofocus: true, error_html: { class: "error-message" }, label: "Total Amount"
+      = f.error :amount
+
+  .col-md-6
+    .form-group
+      = f.input :exp_date, wrapper: :horizontal_select_date, start_year: Date.today.year, order: [:month, :day, :year], input_html: { class: "form-control" }
+
+  .col-md-6
+    .form-group
+      = f.input :user_id, collection: @user_collections, prompt: "- Select a User -", input_html: { class: "form-control" }
+
+  .col-md-12
+    .form-group
+      = f.submit "Save changes", class: "btn btn-orange"
+      | &nbsp;
+      = link_to 'Back', admin_promo_codes_path, class: "btn btn-default"
