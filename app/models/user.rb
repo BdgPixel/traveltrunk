@@ -41,7 +41,7 @@ class User < ActiveRecord::Base
   end
 
   def total_credit_in_cents(total_credit)
-    self.total_credit = self.total_credit + (total_credit * 100)
+    self.total_credit += total_credit * 100
   end
 
   def get_notification(is_read = true)

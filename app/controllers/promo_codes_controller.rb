@@ -17,7 +17,7 @@ class PromoCodesController < ApplicationController
 
     else
       @promo_code = PromoCode.find_by(user_id: current_user.id, token: params[:promo_code][:token])
-
+      binding.pry
       respond_to do |format|
         if @promo_code.is_expired?
           flash[:error] = "Your token is expired"
@@ -31,10 +31,10 @@ class PromoCodesController < ApplicationController
             current_user.save
 
             flash[:notice] = 'Your token promo code has been activated'
-            format.js { render js: "window.location.href='#{savings_url}'", notice: flash[:notice]  }
+            format.js { render js: "window.location.href='#{savings_url}'", notice: flash[:notice]   }
             format.html { redirect_to promo_codes_activation_url, notice: flash[:notice] }
           else
-            flash[:error] = 'Your token promo code has been used'
+            flash[:error] = 'Promo code already used'
             format.js {}
             format.html { redirect_to promo_codes_activation_url }
           end
