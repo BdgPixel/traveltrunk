@@ -121,8 +121,7 @@ class BankAccount < ActiveRecord::Base
 
         self.user.subscription.destroy
         StripeMailer.cancel_subscription(self.user.id).deliver_now
-        # self.create_activity key: "payment.unsubscript", owner: current_user,
-        # recipient: User.find(self.user_id), parameters: { token: self.invitation_token }
+        user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
       rescue Stripe::CardError => e
         logger.error e.message
       end
