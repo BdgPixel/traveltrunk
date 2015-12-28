@@ -43,6 +43,11 @@ class ProfilesController < ApplicationController
     end
   end
 
+  def unsubscript
+    current_user.bank_account.destroy
+    redirect_to profile_url, notice: 'Bank account was successfully destroyed.'
+  end
+
   private
     def set_profile
       unless current_user.profile.birth_date

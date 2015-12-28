@@ -51,7 +51,8 @@ Rails.application.routes.draw do
 
   resource :profile, except: [:destroy, :new, :create]
 
-  post 'create_bank_account' => 'profiles#create_bank_account'
-  put 'update_bank_account' => 'profiles#update_bank_account'
+  post   'create_bank_account' => 'profiles#create_bank_account'
+  put    'update_bank_account' => 'profiles#update_bank_account'
+  delete 'unsubscript' => 'profiles#unsubscript', as: 'unsubscript'
 
 end

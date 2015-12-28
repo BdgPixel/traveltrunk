@@ -2,6 +2,7 @@ class BankAccount < ActiveRecord::Base
   belongs_to :user
 
   before_save :set_stripe_customer, :set_stripe_subscription
+  before_destroy :unsubscriptions
 
   attr_accessor :exp_month, :exp_year, :card_number, :stripe_token
 
@@ -104,6 +105,26 @@ class BankAccount < ActiveRecord::Base
 
           StripeMailer.subscription_created(user.id).deliver_now
         end
+      end
+    end
+  end
+
+  def unsubscriptions
+    if self.user
+      begin
+        customer = Stripe::Customer.retrieve(self.user.customer.customer_id)
+        previous_plan = Stripe::Plan.retrieve(self.user.subscription.plan_id) rescue nil
+        if previous_plan
+          customer.subscriptions.retrieve(self.user.subscription.subscription_id).delete
+          previous_plan.delete
+        end
+
+        self.user.subscription.destroy
+        StripeMailer.cancel_subscription(self.user.id).deliver_now
+        # self.create_activity key: "payment.unsubscript", owner: current_user,
+        # recipient: User.find(self.user_id), parameters: { token: self.invitation_token }
+      rescue Stripe::CardError => e
+        logger.error e.message
       end
     end
   end
