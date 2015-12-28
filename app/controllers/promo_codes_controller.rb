@@ -1,9 +1,7 @@
 class PromoCodesController < ApplicationController
   before_action :authenticate_user!
 
-  def activation
-
-  end
+  def activation; end
 
   def update
     today = Date.today
@@ -17,7 +15,7 @@ class PromoCodesController < ApplicationController
 
     else
       @promo_code = PromoCode.find_by(user_id: current_user.id, token: params[:promo_code][:token])
-      binding.pry
+
       respond_to do |format|
         if @promo_code.is_expired?
           flash[:error] = "Your token is expired"

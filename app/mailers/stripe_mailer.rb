@@ -42,7 +42,7 @@ class StripeMailer < ApplicationMailer
 
   def cancel_subscription(user_id)
     user = User.select(:id, :email, :total_credit).find user_id
-    # binding.pry
+
     @profile = user.profile
     mail to: user.email, subject: 'Payment Canceled'
 

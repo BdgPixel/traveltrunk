@@ -17,9 +17,7 @@ class Admin::PromoCodesController < Admin::ApplicationController
   def create
     @promo_code = PromoCode.new(set_promo_code)
     begin
-
       amount_to_cents    = @promo_code.amount.to_f * 100
-      # binding.pry
       charge = Stripe::Charge.create(
         amount: amount_to_cents.to_i, # amount in cents, again
         currency: "usd",
