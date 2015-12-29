@@ -2,7 +2,6 @@ class ApplicationController < ActionController::Base
   hide_action :current_user
   before_action :get_unread_notification_count
   before_action :authenticate
-  # http_basic_authenticate_with name: "traveltrunk", password: "A8BzR2YKnguxWZz"
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
