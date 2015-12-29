@@ -303,6 +303,7 @@ $(document).ready ->
 
       $('.modal-lg').on 'hidden.bs.modal', (e) ->
         $('#formBook').get(0).reset()
+        $('.payment-errors').html("")
 
       return
 
