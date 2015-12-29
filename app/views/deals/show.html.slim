@@ -27,10 +27,11 @@
   .row
     .col-md-12
       .col-md-12
-        h3 = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
-        br
+        h3.hotel-name = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
         i
           small The room rates listed are for double occupancy per room unless otherwise stated and exclude tax recovery charges and service fees.
+        br
+        br
 
         .text-left
           #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"

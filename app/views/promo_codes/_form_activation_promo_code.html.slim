@@ -3,7 +3,7 @@
 
   .col-md-12
     .form-group.
-      = f.input :token, input_html: { class: "form-control", placeholder: "Puts your token code", value: params[:promo_token] }
+      = f.input :token, input_html: { class: "form-control", placeholder: "Enter promo code", value: params[:promo_token] }
       = f.error :token
       span.error = flash[:error]
 
