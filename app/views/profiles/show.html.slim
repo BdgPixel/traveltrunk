@@ -75,7 +75,7 @@
                           td = currency_in_usd(current_user.subscription.amount)
                         tr
                           td Frequency:
-                          td = current_user.bank_account.transfer_frequency
+                          td = current_user.bank_account.transfer_frequency if current_user.bank_account
                         tr
                           td colspan="2"
                             button.btn.btn-primary.btn-sm data-target=".unsubscript" data-toggle="modal" type="button"
