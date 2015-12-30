@@ -20,11 +20,11 @@ class User < ActiveRecord::Base
 
   # before_save :set_stripe_customer, :set_stripe_subscription
 
-  attr_accessor :stripe_token, :execute_stripe_callbacks
+  attr_accessor :stripe_token, :execute_stripe_callbacks, :group_id
 
   # Include default devise modules. Others available are:
   # :confirmable, :lockable, :timeoutable and :omniauthable
-  devise :database_authenticatable, :registerable,
+  devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable
 
 
@@ -186,9 +186,10 @@ class User < ActiveRecord::Base
     User.joins("FULL OUTER JOIN profiles ON profiles.user_id = users.id")
       .joins("FULL OUTER JOIN users_groups ON users_groups.user_id = users.id")
       .joins("FULL OUTER JOIN groups ON groups.user_id = users.id")
-      .select("users.id, users.email, profiles.first_name, profiles.image")
+      .select("users.id, users.email, users.admin, profiles.first_name, profiles.image")
       .where("(LOWER(profiles.first_name) LIKE LOWER(:keyword) OR users.email LIKE :keyword)
         AND users.id NOT IN (:ids)", { keyword: "%#{email}%", ids: [current_user]} )
+      .where("users.admin = ?", false)
       .where("users_groups.user_id IS NULL OR users.id IS NULL")
       .where("groups.user_id IS NULL OR users.id IS NULL")
       .map {|u| { id: u.id, name: "#{u.profile.try(:first_name) || 'No Name'}", email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png' } }

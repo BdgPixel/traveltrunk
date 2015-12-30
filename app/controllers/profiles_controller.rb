@@ -50,7 +50,7 @@ class ProfilesController < ApplicationController
 
   private
     def set_profile
-      unless current_user.profile.birth_date
+      unless current_user.profile
         redirect_to edit_profile_path, alert: "You haven't entered your profile. \n
           Please fill information below"
       end

@@ -2,7 +2,7 @@
   = stylesheet_link_tag 'profiles', 'savings'
 
 - content_for :javascripts
-  = javascript_include_tag 'groups'
+  = javascript_include_tag 'groups', 'variables'
 
 .row
   - if current_user.group
@@ -22,10 +22,12 @@
           = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
           |&emsp;&emsp;&emsp;
           = link_to "Promo Code", "#", data: { toggle: "modal", target: "#modalActivationPromoCode" }
+          |&emsp;&emsp;&emsp;
+          = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
 
-  / .col-md-12
-  /   .col-md-4.col-offset-4
-  /     = render partial: 'savings/form_invite_friend'
+  .col-md-12
+    .col-md-4.col-offset-4
+      = render partial: 'savings/form_invite_friend'
 
   = render 'savings/form_add_saving'
   = render 'savings/transfer_success'

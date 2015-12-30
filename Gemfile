@@ -33,6 +33,8 @@ gem 'slim-rails'
 
 gem 'devise'
 
+gem 'devise_invitable'
+
 gem 'carrierwave'
 
 gem 'mini_magick'

@@ -1,9 +1,12 @@
 - if activity.trackable
-  | invite you to&nbsp;
-  = link_to "His Group's Savings", '#'
+  | would like you to join his/her trip.
+  / | invite you to&nbsp;
+  / = link_to "His Group's Savings", '#'
   | &nbsp;
-  = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+  small
+    i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+  | &nbsp;
   - if activity.trackable.accepted_at.nil?
-    = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token]), class: 'btn btn-default btn-sm'
-- else
-  h1 which has since been removed
+    = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token], group_id: activity.parameters[:group_id]), class: 'btn btn-default btn-sm'
+/ - else
+/   h1 which has since been removed

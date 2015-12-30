@@ -87,6 +87,9 @@ GEM
       responders
       thread_safe (~> 0.1)
       warden (~> 1.2.3)
+    devise_invitable (1.5.2)
+      actionmailer (>= 3.2.6, < 5)
+      devise (>= 3.2.0)
     domain_name (0.5.25)
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.0.2)
@@ -394,6 +397,7 @@ DEPENDENCIES
   coffee-rails (~> 4.1.0)
   country_select
   devise
+  devise_invitable
   dotenv-rails
   fog
   fog-aws

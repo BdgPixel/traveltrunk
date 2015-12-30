@@ -16,14 +16,28 @@ class GroupsController < ApplicationController
       group = Group.create(name: "Your Group's Savings", user_id: current_user.id)
     end
 
-    group_hashs = params[:invite][:user_id].split(',').uniq
-      .map { |u| { user_id: u, group_id: group.id } }
+    invitation_params = params[:invite][:user_id].split(',')
 
-    users_groups = UsersGroup.create(group_hashs)
+    if invitation_params.empty?
+      redirect_to savings_path, alert: 'You should provide user email or choose from existing users from suggestion to invite'
+    else
+      # check if array element is string id or string email
+      invitation_params = invitation_params.group_by { |param| !/\A\d+\z/.match(param) ? 'emails' : 'ids' }
 
-    respond_to do |format|
-      format.html { redirect_to savings_path, notice: 'User was successfully invited.' }
-      format.json { render :show, status: :created }
+      if emails = invitation_params['emails']
+        emails.each do |email|
+          puts email
+          # binding.pry
+          User.invite!({ email: email }, current_user)
+        end
+      end
+
+      if ids = invitation_params['ids']
+        group_hashs = ids.map { |id| { user_id: id, group_id: group.id } }
+        users_groups = UsersGroup.create(group_hashs)
+      end
+
+      redirect_to savings_path, notice: 'User was successfully invited.'
     end
   end
 

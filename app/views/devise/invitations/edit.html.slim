@@ -1,0 +1,32 @@
+.row
+  .col-md-6
+    .wrapper-registration
+      h2 = t 'devise.invitations.edit.header'
+
+      = simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f|
+        / = devise_error_messages!
+
+        = f.input_field :invitation_token, value: params[:invitation_token]
+        = f.text_field :email
+        = f.hidden_field :id
+        = f.hidden_field :group_id, value: params[:group_id]
+
+        = f.simple_fields_for :profile do |profile_form|
+          .row
+            .col-md-6
+              .form-group
+                = profile_form.input :first_name, autofocus: true, input_html: { class: 'form-control' }
+            .col-md-6
+              form-group
+                = profile_form.input :last_name, input_html: { class: 'form-control' }
+
+        .form-gorup
+          = f.input :password, input_html: { class: 'form-control' }
+
+        .form-gorup
+          = f.input :password_confirmation, input_html: { class: 'form-control' }
+
+        .actions.form-group
+          br
+          = f.button :submit, t("devise.invitations.edit.submit_button"), class: 'btn btn-default'
+

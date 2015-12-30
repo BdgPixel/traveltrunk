@@ -45,7 +45,10 @@ Rails.application.routes.draw do
   # patch 'deals/update_credit' => 'deals/update_credit'
   post   'deals/update_credit' => 'deals/update_credit'
 
-  devise_for :users, :controllers => { :registrations => "registrations" }
+  devise_for :users, :controllers => {
+    :registrations => "registrations",
+    :invitations => 'users/invitations'
+  }
 
   root 'deals#index'
 

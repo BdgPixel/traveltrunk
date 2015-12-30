@@ -17,6 +17,18 @@ validateInvitationForm = ->
 
   return
 
+disableEnterFormSubmit = ->
+  $('#invitationForm').on 'keyup keypress', (e) ->
+    code = e.keyCode or e.which
+    if code == 13
+      e.preventDefault()
+
+      return false
+
+    return
+
+  return
+
 clearForm = (selectorModal, selectorForm) ->
   $(selectorModal).on 'hidden.bs.modal', (e) ->
     $(selectorForm).get(0).reset()
@@ -26,9 +38,48 @@ clearForm = (selectorModal, selectorForm) ->
     $(selectorForm).get(0).reset()
     $('.error').text ''
 
+inviteFriends = (selector) ->
+  $(selector).tokenInput( '/group/users_collection.json', {
+      # allowCustomEntry: true
+      allowFreeTagging: true
+      preventDuplicates: true
+      zindex: 9999
+      onAdd: (item)->
+        if item.email
+          item
+        else
+          re = /\S+@\S+\.\S+/;
+          if re.test(item.name)
+            item
+          else
+            $(selector).tokenInput("remove", {name: item.name});
+            console.log 'You only can enter email address for unregistered users'
+      onDelete: (item) ->
+        $(selector).tokenInput("remove", { name: item.name });
+        $('.noticeEmail').hide()
+
+      prePopulate: $('#invite_user_id').data('load')
+      resultsFormatter: (item) ->
+        "<li><img src='#{item.image_url}' title='#{item.name}' height='50px' width='50px' /><div style='display: inline-block; padding-left: 10px;'><div class='full_name'>#{item.name}</div><div class='email'>#{item.email}</div></div></li>"
+      tokenFormatter: (item)->
+        console.log item
+        if isNaN(item.id)
+          tags = "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
+          $('.noticeEmail').html "<b>Notice: </b>#{item.name} does not have an account with us yet. Send them an email to join treavel trunk to start planning for your next trip together."
+          $('.noticeEmail').show()
+          tags
+          # "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
+        else
+        # "<li><img src='#{item.image_url}' title='#{item.name}' height='25px' width='25px' /><div style='display: inline-block; padding-left: 10px;'><div class='full_name'>#{item.name}</div><div class='email'>#{item.email}</div></div></li>"
+          "<li><p><img src='#{item.image_url}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}&nbsp;<b style='color: red'>#{item.email}</b></p></li>"
+    })
+
 
 $(document).ready ->
   validateInvitationForm()
+  disableEnterFormSubmit()
   initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
   clearForm('.modal', '.promo_code')
+  inviteFriends('#invite_user_id')
+
 

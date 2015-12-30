@@ -13,6 +13,8 @@
               = f.input_field :user_id
               p User who have joined or created saving groups will not appear here
               / = f.input_field :user_id, data: { load: @members  }
+            p
+              .noticeEmail.alert.alert-info style="display: none"
 
             .actions.form-group
 

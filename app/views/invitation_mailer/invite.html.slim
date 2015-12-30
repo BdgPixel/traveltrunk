@@ -3,6 +3,6 @@ InvitationMailer#invite
 
   p =  "#{@current_user.profile.first_name} #{@current_user.profile.last_name} invite you to join his group"
 
-  p = link_to 'Join the group', accept_invitation_group_url(token: @invite.invitation_token)
+  p = link_to 'Join the group', accept_invitation_group_url(token: @invite.invitation_token, group_id: @current_user.id)
   p = render 'partials/footer_mailer'
 / = @greeting + ", find me in app/views/invitation_mailer/invite.text.slim"
