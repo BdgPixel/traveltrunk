@@ -169,6 +169,12 @@ root.roomSelected = (selector)->
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
 
+    if $(this).data('group')
+      $('.form-book').hide()
+      $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
+      $('.form-vote ').show()
+
+
     if room[0]['RoomImages']
       if room[0]["RoomImages"]["@size"] == ("1")
         $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage']['url'])
@@ -178,7 +184,6 @@ root.roomSelected = (selector)->
     else
       $('#roomImage').attr('src', 'http://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg')
       $('#imageDisclaimer').show()
-
 
     if room[0]['BedTypes']['@size'] == '1'
       $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
@@ -198,6 +203,7 @@ root.roomSelected = (selector)->
         starOn: window.star_on_mid_image_path
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
+
 
 appendCreditform = ->
   $('.append-credit').on 'click', ->
@@ -303,6 +309,8 @@ $(document).ready ->
 
       $('.modal-lg').on 'hidden.bs.modal', (e) ->
         $('#formBook').get(0).reset()
+        $('.form-book').show()
+        # $('#linkVote').attr('href')
         $('.payment-errors').html("")
 
       return
@@ -337,6 +345,12 @@ $(document).ready ->
     #   $(this).popover 'show'
     #   return
 
+    $('#linkPopover').popover
+      html: true
+      content: ->
+        $('#contentPopover').html()
+      title: ->
+        $('#titlePopover').html()
 
 
 

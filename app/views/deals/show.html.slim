@@ -33,6 +33,19 @@
         br
         br
 
+        = link_to "javascript:void(0)", id: 'linkPopover', class: 'btn btn-xs btn-info'
+          | Total Vote #{@votes.count}
+
+        #titlePopover style="display:none"
+          h4 Members voted
+        #contentPopover style="display:none"
+          - @votes.each do |vote|
+            .col-md-12.popover-list-users
+              = image_tag vote.user.profile.image.url, width: '70px'
+              = full_name vote.user.profile
+          / .col-md-4
+          /   img src="/assets/default_user-725c4a0d2bc7ba07b7c8ae73a903ccd37ea5689b2055f69617b81f6826ae1073.png" alt="Default user 725c4a0d2bc7ba07b7c8ae73a903ccd37ea5689b2055f69617b81f6826ae1073" width="20px"
+
         .text-left
           #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
           .rating-text = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")

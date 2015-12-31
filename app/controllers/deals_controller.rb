@@ -32,6 +32,8 @@ class DealsController < ApplicationController
   def show
     expedia_params_hash = { hotelId: params[:id] }
     @terms_and_conditions_url = "http://travel.ian.com/index.jsp?pageName=userAgreement&locale=en_US&cid=5505"
+
+    @votes = Like.where(hotel_id: params[:id])
     get_hotel_information(expedia_params_hash)
   end
 
@@ -178,9 +180,21 @@ class DealsController < ApplicationController
   end
 
   def room_availability
-    if request.xhr?
+    if current_user.group.present?
+      @group = current_user.group
+      @total_credit = current_user.group.total_credit
+    elsif current_user.joined_groups.present?
+      @group = current_user.joined_groups.first
+      @total_credit = current_user.joined_groups.first.total_credit
+    else
+      @group
+      # binding.pry
+      @total_credit = current_user.total_credit
+    end
 
-      @total_credit    = current_user.group ? current_user.group.total_credit : current_user.total_credit
+      # @total_credit    = current_user.group ? current_user.group.total_credit : current_user.total_credit
+
+    if request.xhr?
       room_params_hash = current_user.expedia_room_params(params[:id])
       get_room_availability(room_params_hash)
 
@@ -203,15 +217,26 @@ class DealsController < ApplicationController
 
   # commented but will be used later
   #
-  # def like
-  #   @hotel_id = params[:id]
-  #   if @like.present?
-  #     @like.destroy
-  #   else
-  #     like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
-  #     like.save
-  #   end
-  # end
+  def like
+    @hotel_id = params[:id]
+    if @like.present?
+      @like.destroy
+    else
+      like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
+      if like.save
+        joined_groups = current_user.joined_groups.first
+        joined_groups.members.each do |user|
+          unless user.id.eql?(current_user.id)
+            like.create_activity key: "group.like", owner: current_user,
+              recipient: User.find(user.id), parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
+          end
+          like.create_activity key: "group.like", owner: current_user,
+            recipient: User.find(joined_groups.user_id), parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
+        end
+        redirect_to deals_show_url(params[:id])
+      end
+    end
+  end
 
   def next
     if request.xhr?

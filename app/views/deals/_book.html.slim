@@ -50,4 +50,13 @@
                   br
                   = render "form_book"
 
+                .form-vote
+                  | Are you sure you want to choose this hotel ?
+                  br
+                  br
+                  = link_to "Yes", deals_like_path(params[:id], hotel_name: 'asdfasdf'), id: 'linkVote', class: "btn btn-orange btn-md"
+                  | &nbsp;
+                  button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+                    | No
+
 
