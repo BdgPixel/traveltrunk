@@ -6,8 +6,8 @@
       = simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :put } do |f|
         / = devise_error_messages!
 
-        = f.input_field :invitation_token, value: params[:invitation_token]
-        = f.text_field :email
+        = f.hidden_field :invitation_token, value: params[:invitation_token]
+        = f.hidden_field :email
         = f.hidden_field :id
         = f.hidden_field :group_id, value: params[:group_id]
 
