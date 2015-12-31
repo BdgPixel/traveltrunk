@@ -13,7 +13,8 @@ class Users::InvitationsController < Devise::InvitationsController
 
     def accept_resource
       resource = resource_class.accept_invitation!(update_resource_params)
-      UsersGroup.create(user_id: params[:user][:id], group_id: params[:user][:group_id])
+      #   UsersGroup.create(user_id: params[:user][:id], group_id: params[:user][:group_id])
+      # end
       ## Report accepting invitation to analytics
       # Analytics.report('invite.accept', resource.id)
       resource

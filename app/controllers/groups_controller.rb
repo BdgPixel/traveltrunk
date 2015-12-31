@@ -28,7 +28,8 @@ class GroupsController < ApplicationController
         emails.each do |email|
           puts email
           # binding.pry
-          User.invite!({ email: email }, current_user)
+          user_invite = User.invite!({ email: email }, current_user)
+          UsersGroup.create(user_id: user_invite.id, group_id: current_user.id)
         end
       end
 

@@ -1,5 +1,6 @@
 InvitationMailer#invite
-  p = "Hello #{@invite.member.profile.first_name} #{@invite.member.profile.last_name}"
+  - if @invite.member.profile
+    p = "Hi #{@invite.member.profile.first_name} #{@invite.member.profile.last_name}"
 
   p =  "#{@current_user.profile.first_name} #{@current_user.profile.last_name} invite you to join his group"
 
