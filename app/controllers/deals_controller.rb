@@ -180,6 +180,7 @@ class DealsController < ApplicationController
   def room_availability
     if request.xhr?
 
+      @total_credit    = current_user.group ? current_user.group.total_credit : current_user.total_credit
       room_params_hash = current_user.expedia_room_params(params[:id])
       get_room_availability(room_params_hash)
 

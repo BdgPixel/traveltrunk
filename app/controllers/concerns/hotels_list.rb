@@ -1,6 +1,9 @@
 module HotelsList
   include DealsHelper
-  def api_params_hash(options = nil)
+  def api_params_hash
+    count_group = current_user.group.members.count if current_user.group
+    number_of_adults = number_of_adults.nil? ? 1 : number_of_adults
+
     params_hash = {
       apiExperience: "PARTNER_WEBSITE",
       cid:          55505,
@@ -9,6 +12,7 @@ module HotelsList
       locale:       "en_US",
       currencyCode: "USD",
       supplierType: "E",
+      numberOfAdults: number_of_adults,
       numberOfResults: 200
     }
   end
@@ -101,7 +105,7 @@ module HotelsList
 
     @like              = Like.find_by(hotel_id: custom_params[:hotelId], user_id: current_user)
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
-    url_custom_params  = url + custom_params.merge!(api_params_hash(0)).to_query
+    url_custom_params  = url + custom_params.merge!(api_params_hash).to_query
 
     begin
       response = HTTParty.get(url_custom_params)
@@ -130,7 +134,6 @@ module HotelsList
 
         if total_credit > 0
           url_custom_params = "http://api.ean.com/ean-services/rs/hotel/v3/list?#{custom_params.merge!(api_params_hash).to_query}"
-
           begin
             response = HTTParty.get(url_custom_params)
 

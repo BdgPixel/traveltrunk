@@ -3,15 +3,15 @@ class User < ActiveRecord::Base
 
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
-  has_many :promo_codes, dependent: :destroy
-  has_many :likes
-
-  has_one  :destination, dependent: :destroy, as: :destinationable
-  has_many :joined_groups, -> { where("users_groups.accepted_at IS NOT NULL") } , through: :users_groups
-  has_many :users_groups
   has_one  :group, dependent: :destroy
   has_one  :customer, dependent: :destroy
   has_one  :subscription, dependent: :destroy
+  has_one  :destination, dependent: :destroy, as: :destinationable
+
+  has_many :promo_codes, dependent: :destroy
+  has_many :likes
+  has_many :joined_groups, -> { where("users_groups.accepted_at IS NOT NULL") } , through: :users_groups
+  has_many :users_groups
   has_many :transactions, dependent: :destroy
   has_many :reservations, dependent: :destroy
 
