@@ -103,14 +103,16 @@
           hr
 
         .col-md-12
-          h4 SAVINGS PLAN
+          h4
+            | SAVINGS PLAN
           p
             i
               small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
-          button.btn.btn-primary.btn-sm data-target=".unsubscript" data-toggle="modal" type="button"
-            | Delete Bank Account
-          - if current_user.bank_account
-          br
+
+          - unless current_user.bank_account
+            button.btn.btn-primary.btn-sm data-target=".unsubscript" data-toggle="modal" type="button"
+              | Delete Bank Account
+            br
           br
 
   / = f.simple_fields_for :bank_account do |bank_account_form|
@@ -160,3 +162,16 @@
               = f.button :submit, 'Update Savings', class: 'btn btn-default'
           br
           br
+
+          .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  button.close aria-label="Close" data-dismiss="modal" type="button"
+                    span aria-hidden="true"  &times;
+                  h4.modal-title Reoccurring transaction
+                .modal-body
+                  p Are you sure you want to stop reoccurring transaction on this account?
+                .modal-footer
+                  button.btn.btn-grey data-dismiss="modal" type="button" No, keep my savings plan.
+                  = link_to 'Yes, please discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-default"

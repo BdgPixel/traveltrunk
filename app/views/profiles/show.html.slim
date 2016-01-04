@@ -90,16 +90,4 @@
             br
             br
 
-            .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
-              .modal-dialog
-                .modal-content
-                  .modal-header
-                    button.close aria-label="Close" data-dismiss="modal" type="button"
-                      span aria-hidden="true"  &times;
-                    h4.modal-title Reoccurring transaction
-                  .modal-body
-                    p Are you sure you want to stop reoccurring transaction on this account?
-                  .modal-footer
-                    button.btn.btn-grey data-dismiss="modal" type="button" No, keep my savings plan.
-                    = link_to 'Yes, please discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-default"
 
