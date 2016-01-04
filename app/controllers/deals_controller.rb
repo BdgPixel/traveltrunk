@@ -105,9 +105,40 @@ class DealsController < ApplicationController
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
       departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
 
-      user = User.find current_user.id
-      user.total_credit = total_credit
-      user.save(validate: false)
+      hotel_price = (params[:confirmation_book][:total].to_f)
+      if current_user.group
+        members = current_user.group.members
+        members << current_user
+        members_price = hotel_price / members.to_a.count
+
+        less_credit_members = members.to_a.select { |member| (member.total_credit.to_f / 100.0) < members_price }
+        more_credit_members = members.to_a.select { |member| (member.total_credit.to_f / 100.0) > members_price }
+
+        less_credit_members.each do |less_credit_member|
+          less_member = less_credit_member.total_credit / 100.0 * more_credit_members.count
+          each_price_member = less_member + less_credit_member.total_credit / 100.0
+          result_hotel_price = hotel_price - each_price_member
+          result_hotel_price = result_hotel_price / more_credit_members.count
+          @@credit = result_hotel_price + less_credit_member.total_credit / 100.0
+
+          user = User.find less_credit_member.id
+          user.update_attributes(total_credit: less_credit_member.total_credit * 100)
+          user.total_credit =  user.total_credit - (less_credit_member.total_credit * 100)
+          user.save(validate: false)
+        end
+
+        more_credit_members.each do |more_credit_member|
+          user = User.find more_credit_member.id
+          user.total_credit =  user.total_credit - (@@credit * 100)
+          user.save(validate: false)
+        end
+
+      else
+        # member = current_user
+        user = User.find current_user.id
+        user.total_credit = total_credit
+        user.save(validate: false)
+      end
 
       reservation_params = {
         itinerary: @reservation["itineraryId"],
