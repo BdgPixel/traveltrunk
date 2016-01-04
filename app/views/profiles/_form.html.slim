@@ -107,6 +107,10 @@
           p
             i
               small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
+          button.btn.btn-primary.btn-sm data-target=".unsubscript" data-toggle="modal" type="button"
+            | Delete Bank Account
+          - if current_user.bank_account
+          br
           br
 
   / = f.simple_fields_for :bank_account do |bank_account_form|
