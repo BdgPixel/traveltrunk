@@ -109,7 +109,7 @@
             i
               small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
 
-          - unless current_user.bank_account
+          - unless !current_user.bank_account.nil?
             button.btn.btn-primary.btn-sm data-target=".unsubscript" data-toggle="modal" type="button"
               | Delete Bank Account
             br
