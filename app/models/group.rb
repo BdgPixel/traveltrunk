@@ -2,7 +2,7 @@ class Group < ActiveRecord::Base
   extend FriendlyId
 
   has_many :members, -> { where('users_groups.accepted_at IS NOT NULL') }, through: :users_groups
-  has_many :users_groups
+  has_many :users_groups, dependent: :destroy
   has_one :destination, as: :destinationable
   belongs_to :user
 

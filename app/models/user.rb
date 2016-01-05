@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :promo_codes, dependent: :destroy
   has_many :likes
   has_many :joined_groups, -> { where("users_groups.accepted_at IS NOT NULL") } , through: :users_groups
-  has_many :users_groups
+  has_many :users_groups, dependent: :destroy
   has_many :transactions, dependent: :destroy
   has_many :reservations, dependent: :destroy
 

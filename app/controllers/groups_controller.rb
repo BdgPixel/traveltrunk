@@ -26,8 +26,6 @@ class GroupsController < ApplicationController
 
       if emails = invitation_params['emails']
         emails.each do |email|
-          puts email
-          # binding.pry
           user_invite = User.invite!({ email: email }, current_user)
           UsersGroup.create(user_id: user_invite.id, group_id: current_user.id)
         end
@@ -52,6 +50,20 @@ class GroupsController < ApplicationController
         format.json { render :show, status: :ok}
       end
     end
-
   end
+
+  def leave_group
+    if current_user.group
+      group = current_user.group
+    else
+      group = current_user.users_groups.find_by(group_id: params[:id], user_id: current_user)
+    end
+
+    if group.destroy
+      redirect_to savings_url, notice: 'You have been leave the group'
+    else
+      redirect_to savings_url, notice: 'Some errors occurred when leave the group'
+    end
+  end
+
 end

@@ -24,9 +24,10 @@ Rails.application.routes.draw do
 
   resource :group, only: [] do
     collection do
-      get 'users_collection'
-      get 'accept_invitation'
-      get 'invite', as: 'invite'
+      get    'users_collection'
+      get    'accept_invitation'
+      get    'invite', as: 'invite'
+      delete 'leave_group', as: 'leave'
     end
   end
 

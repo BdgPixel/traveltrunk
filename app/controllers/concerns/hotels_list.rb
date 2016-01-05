@@ -46,7 +46,7 @@ module HotelsList
 
     begin
       response = HTTParty.post(url_custom_params)
-      # binding.pry
+
       if response["HotelRoomReservationResponse"]["EanWsError"]
         redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:confirmation_book][:room_type_code])
         @error_response    = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]

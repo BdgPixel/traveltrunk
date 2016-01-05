@@ -100,7 +100,6 @@ class DealsController < ApplicationController
     book_reservation(xml_params)
 
     if !@error_response
-      # yuhuu
       total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100).to_i
 
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
@@ -141,27 +140,27 @@ class DealsController < ApplicationController
         user.save(validate: false)
       end
 
-      # reservation_params = {
-      #   itinerary: @reservation["itineraryId"],
-      #   confirmation_number: @reservation["confirmationNumbers"],
-      #   hotel_name: @reservation["hotelName"],
-      #   hotel_address: @reservation["hotelAddress"],
-      #   city: @reservation["hotelCity"],
-      #   country_code: @reservation["hotelCountryCode"],
-      #   postal_code: @reservation["hotelPostalCode"],
-      #   number_of_room: @reservation["numberOfRoomsBooked"],
-      #   room_description: @reservation["roomDescription"],
-      #   number_of_adult: @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
-      #   total: (@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
-      #   arrival_date: arrival_date,
-      #   departure_date: departure_date
-      # }
-      # reservation = current_user.reservations.new(reservation_params)
+      reservation_params = {
+        itinerary: @reservation["itineraryId"],
+        confirmation_number: @reservation["confirmationNumbers"],
+        hotel_name: @reservation["hotelName"],
+        hotel_address: @reservation["hotelAddress"],
+        city: @reservation["hotelCity"],
+        country_code: @reservation["hotelCountryCode"],
+        postal_code: @reservation["hotelPostalCode"],
+        number_of_room: @reservation["numberOfRoomsBooked"],
+        room_description: @reservation["roomDescription"],
+        number_of_adult: @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
+        total: (@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
+        arrival_date: arrival_date,
+        departure_date: departure_date
+      }
+      reservation = current_user.reservations.new(reservation_params)
 
-      # if reservation.save
-      #   flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-      #   redirect_to deals_confirmation_page_path
-      # end
+      if reservation.save
+        flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
+        redirect_to deals_confirmation_page_path
+      end
 
     end
   end
@@ -220,7 +219,6 @@ class DealsController < ApplicationController
       @total_credit = current_user.joined_groups.first.total_credit
     else
       @group
-      # binding.pry
       @total_credit = current_user.total_credit
     end
 
