@@ -11,7 +11,8 @@
             .form-group
               = f.label :user_id, 'Type email or name to invite'
               = f.input_field :user_id
-              p User who have joined or created saving groups will not appear here
+              p
+                small Names of friends who have not joined or created an account will not appear here. Please type in their email.
               / = f.input_field :user_id, data: { load: @members  }
             p
               .noticeEmail.alert.alert-info style="display: none"
