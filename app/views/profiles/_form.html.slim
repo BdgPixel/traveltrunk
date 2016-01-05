@@ -6,7 +6,7 @@
   = simple_form_for current_user, method: :put, url: profile_url do |f|
     - if current_user.errors.any?
       #error_explanation.alert.alert-danger
-        strong Warning! &nbsp;
+        strong Warning! &nbsp;&nbsp;
         = "#{pluralize(current_user.errors.count, "error")} prohibited this profile from being saved"
 
     = f.simple_fields_for :profile do |profile_form|
@@ -109,11 +109,8 @@
             i
               small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
 
-          - unless current_user.bank_account.new_record?
-            button.btn.btn-primary.btn-sm data-target=".unsubscript" data-toggle="modal" type="button"
-              | Delete Bank Account
             br
-          br
+            br
 
   / = f.simple_fields_for :bank_account do |bank_account_form|
   = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account" } do |f|
@@ -160,6 +157,10 @@
           center
             .form-group
               = f.button :submit, 'Update Savings', class: 'btn btn-default'
+              - unless current_user.bank_account.new_record?
+                | &nbsp;&nbsp;
+                button.btn.btn-primary data-target=".unsubscript" data-toggle="modal" type="button"
+                  | Delete Bank Account
           br
           br
 

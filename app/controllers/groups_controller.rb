@@ -10,7 +10,7 @@ class GroupsController < ApplicationController
   end
 
   def invite
-    group = current_user.group
+    group = current_user.group || current_user.joined_groups.first
 
     unless group
       group = Group.create(name: "Your Group's Savings", user_id: current_user.id)
@@ -24,10 +24,25 @@ class GroupsController < ApplicationController
       # check if array element is string id or string email
       invitation_params = invitation_params.group_by { |param| !/\A\d+\z/.match(param) ? 'emails' : 'ids' }
 
+      # check users invite if users have group or not
+      existing_emails = []
+      existing_emails_error = ''
+      User.select(:id, :email).where(email: invitation_params['emails']) .each do |user|
+        if user.users_groups
+          existing_emails = [user.email]
+          existing_emails_error = "but email #{existing_emails.join(',')} already registered."
+        end
+      end
+
+      email_success = []
       if emails = invitation_params['emails']
+        emails = emails - existing_emails
+
         emails.each do |email|
-          user_invite = User.invite!({ email: email }, current_user)
-          UsersGroup.create(user_id: user_invite.id, group_id: current_user.id)
+          user_invite = User.invite!({ email: email }, current_user) do
+            UsersGroup.create(user_id: user_invite.id, group_id: current_user.id)
+            email_success += [email]
+          end
         end
       end
 
@@ -36,7 +51,7 @@ class GroupsController < ApplicationController
         users_groups = UsersGroup.create(group_hashs)
       end
 
-      redirect_to savings_path, notice: 'User was successfully invited.'
+      redirect_to savings_path, notice: "#{email_success.count + ids.count} User was successfully invited #{existing_emails_error}"
     end
   end
 

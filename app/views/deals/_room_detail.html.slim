@@ -27,8 +27,13 @@ tr
         - room["BedTypes"]["BedType"].each do |bed_type|
           li #{bed_type["description"]}
 
-    = link_to "javascript:void(0)", class: "popover-links", data: { container: "body", content: checkin_instructions.html_safe, placement: "right", toggle: "popover", html: true }
+    = link_to "javascript:void(0)", id: 'linkPopover', class: 'popover-links', data: { toggle: 'popover' }
       | Show more room information
+
+    .content-popover style="display:none"
+      = checkin_instructions.html_safe
+    / = link_to "javascript:void(0)", class: "popover-links", data: { container: "body", content: checkin_instructions.html_safe, placement: "right", toggle: "popover", html: true }
+    /   | Show more room information
 
   td
     - if @category_room_message

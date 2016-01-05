@@ -238,10 +238,17 @@ root.replaceImage = ->
 
     i++
 
-root.popOver = (selector)->
-  $(selector).on 'click', ->
-    $(this).popover 'show'
-    return
+root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger)->
+  $(selectorLink).popover
+    html: true
+    trigger: trigger
+    content: ->
+      $(selectorContent).html()
+    title: ->
+      if selectorTitle
+        $(selectorTitle).html()
+      else
+        false
 
 
 $(document).ready ->
@@ -345,12 +352,5 @@ $(document).ready ->
     #   $(this).popover 'show'
     #   return
 
-    $('#linkPopover').popover
-      html: true
-      content: ->
-        $('#contentPopover').html()
-      title: ->
-        $('#titlePopover').html()
-
-
+    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click')
 

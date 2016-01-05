@@ -2,7 +2,14 @@ class ProfilesController < ApplicationController
   before_action :authenticate_user!
   before_action :set_profile, only: [:show]
 
-  def show; end
+  def show
+    @hide_informations = false
+    if params[:id]
+      @hide_informations = true
+    else
+      @hide_informations = false
+    end
+  end
 
   def edit
     current_user.build_profile unless current_user.profile
@@ -50,7 +57,13 @@ class ProfilesController < ApplicationController
 
   private
     def set_profile
-      unless current_user.profile
+      if params[:id]
+        @user = User.find params[:id]
+      else
+        @user = current_user
+      end
+
+      unless @user.profile
         redirect_to edit_profile_path, alert: "You haven't entered your profile. \n
           Please fill information below"
       end

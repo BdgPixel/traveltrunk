@@ -12,78 +12,78 @@
           .row
             .col-md-5.col-lg-4
               .wrapper-img-profile
-                = image_tag current_user.profile.image.url, class: 'img-circle img-responsive' unless current_user.profile.image.nil?
+                = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
             .wrapper-user-name
               .col-md-7.col-lg-8
                 h1[style="padding-top: 80px !important"]
-                  = current_user.full_name
+                  = @user.full_name
 
-                h4 = current_user.profile.place_to_visit.titleize rescue 'Information not specified'
+                h4 = @user.profile.place_to_visit.titleize rescue 'Information not specified'
 
                 p
                   span.glyphicon.glyphicon-map-marker
                   | &nbsp;
-                  b = current_user.profile.home_airport.titleize rescue 'Information not specified'
+                  b = @user.profile.home_airport.titleize rescue 'Information not specified'
 
 
               .clearfix
 
-              .col-md-12.col-lg-12
+              .col-md-12.col-lg-12 class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
                 .wrapper-personal-information
                   h5 PERSONAL INFORMATION
                   table.table.table-user-information
                     tbody
                       tr
                         td width='250px' Date of Birth:
-                        td = current_user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
+                        td = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
 
                       tr
                         td Gender:
-                        td = current_user.profile.gender
+                        td = @user.profile.gender
                       tr
                         td Address:
-                        td = current_user.profile.address.titleize rescue 'Information not specified'
+                        td = @user.profile.address.titleize rescue 'Information not specified'
                       tr
                       tr
                         td Address 1:
-                        td = current_user.profile.address_1.titleize rescue 'Information not specified'
+                        td = @user.profile.address_1.titleize rescue 'Information not specified'
                       tr
                         td Address 2:
-                        td = current_user.profile.address_2.titleize rescue 'Information not specified'
+                        td = @user.profile.address_2.titleize rescue 'Information not specified'
                       tr
                         td City:
-                        td = current_user.profile.city
+                        td = @user.profile.city
                       tr
                         td State/Province:
-                        td = current_user.profile.state
+                        td = @user.profile.state
                       tr
                         td Zip/Postal Code:
-                        td = current_user.profile.postal_code
+                        td = @user.profile.postal_code
                       tr
                         td County:
-                        td = current_user.profile.country_name rescue 'Information not specified'
+                        td = @user.profile.country_name rescue 'Information not specified'
                   br
                   br
                   hr
                   h5 SAVINGS PLAN
-                  - if current_user.subscription
+                  - if @user.subscription
                     table.table.table-user-information
                       tbody
                         tr
                           td width='250px' Plan Name:
-                          td = current_user.subscription.plan_name
+                          td = @user.subscription.plan_name
                         tr
                           td Amount:
-                          td = currency_in_usd(current_user.subscription.amount)
+                          td = currency_in_usd(@user.subscription.amount)
                         tr
                           td Frequency:
-                          td = current_user.bank_account.transfer_frequency if current_user.bank_account
+                          td = @user.bank_account.transfer_frequency if @user.bank_account
 
                   - else
                     .alert.alert-info
                       | You dont have saving plan
 
-          .panel-footer
+          .panel-footer class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
             | &nbsp;
             span.pull-right
               = link_to 'Edit Profile', edit_profile_path, class: 'btn btn-default'

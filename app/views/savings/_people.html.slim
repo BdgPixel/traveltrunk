@@ -7,19 +7,25 @@
         li
           .col-md-12.text-center
             - if group.user_id.eql?(current_user.id)
-              = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
-              h3 = current_user.profile.first_name
+              = link_to profile_path(id: current_user), title: current_user.profile.first_name
+                = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+              = link_to profile_path(id: current_user), title: current_user.profile.first_name
+                h3 = current_user.profile.first_name
               h3 = currency_in_usd(current_user.total_credit)
             - else
-              = image_tag group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
-              h3 = group.user.profile.first_name
+              = link_to profile_path(id: group.user), title: group.user.profile.first_name
+                = image_tag group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
+              = link_to profile_path(id: group.user), title: group.user.profile.first_name
+                h3 = group.user.profile.first_name
               h3 = currency_in_usd(group.user.total_credit)
 
           - group.members.each do |member|
             li
               .col-md-12.text-center
-                = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
-                h3 = member.profile.first_name
+                = link_to profile_path(id: member), title: member.profile.first_name
+                  = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
+                = link_to profile_path(id: member), title: member.profile.first_name
+                  h3 = member.profile.first_name
                 h3 = currency_in_usd(member.total_credit)
 
       .col-md-12.text-center
