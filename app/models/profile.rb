@@ -24,4 +24,8 @@ class Profile < ActiveRecord::Base
   def full_name
     "#{self.first_name} #{self.last_name}"
   end
+
+  def address_valid?
+    city && state && country_code && postal_code
+  end
 end

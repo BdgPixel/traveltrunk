@@ -33,54 +33,28 @@
         br
         br
 
-        = link_to "javascript:void(0)", id: 'linkPopover', class: 'btn btn-xs btn-info', data: { toggle: 'popover' }
-          | Total Vote #{@votes.count}
-
-        #titlePopover style="display:none"
-          h4 Members voted
-        #contentPopover style="display:none"
-          - @votes.each do |vote|
-            .col-md-12.popover-list-users
-              = link_to profile_path(id: vote.user), title: full_name(vote.user.profile)
-                = image_tag vote.user.profile.image.url, width: '70px'
-              = link_to profile_path(id: vote.user), title: full_name(vote.user.profile)
-                = full_name vote.user.profile
-          / .col-md-4
-          /   img src="/assets/default_user-725c4a0d2bc7ba07b7c8ae73a903ccd37ea5689b2055f69617b81f6826ae1073.png" alt="Default user 725c4a0d2bc7ba07b7c8ae73a903ccd37ea5689b2055f69617b81f6826ae1073" width="20px"
-
         .text-left
-          #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}"
-          .rating-text = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
+          #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
+          - if @group
+            = link_to "javascript:void(0)", id: 'linkPopover', class: 'btn btn-md btn-info', data: { toggle: 'popover' }, style: "float:left;margin-left:10px;"
+              = "#{pluralize(@votes.count, 'person')} want to go"
+
+            #titlePopover style="display:none"
+              h4 = "#{pluralize(@votes.count, 'person')} want to go"
+            #contentPopover style="display:none"
+              - if @votes.empty?
+                .alert.alert-info No members vote for this hotel
+              - else
+                - @votes.each do |vote|
+                  .col-md-12.popover-list-users
+                    = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
+                      = image_tag vote.user.profile.image.url, width: '70px'
+                    = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
+                      = vote.user.id.eql?(current_user.id) ? "You" : full_name(vote.user.profile)
+
+          .rating-text style="clear:both"
+            = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
           br
-
-      / # commented but will be used later
-      / #
-          / .row
-          /   .wrapper-like-deals
-          /     .row
-          /       .col-md-1
-          /         p.content-deals
-          /           = link_to deals_like_path(params[:id]), id: "likeDeal", remote: true
-          /             - if @like
-          /               span.icon.love-active id="like-#{params[:id]}"
-          /             - else
-          /               span.icon.love-normal id="like-#{params[:id]}"
-
-          /       .col-md-11 style="line-height: 10px"
-          /         | Like this hotel!
-
-      / .col-md-5
-      /   - if @members_liked
-      /     .col-md-12
-      /       h4 style="margin-top: 20px; margin-bottom: 10px;" Your friends liked this hotel:
-      /     .col-md-10.members-liked
-      /       - if @members_liked.empty?
-      /         p.alert.alert-info No one liked the hotel
-      /       - else
-      /         - @members_liked.each do |member|
-      /           .col-md-2 style="padding: 0 8px"
-      /             = link_to "javascript:void(0)"
-      /               = image_tag member.profile.image.url, class: 'img-circle img-responsive', data: { toggle: "tooltip", placement: "top", title: "#{member.profile.first_name}" }
 
       .clearfix
 

@@ -5,13 +5,11 @@
   = javascript_include_tag 'groups', 'variables'
 
 .row
-  - if current_user.group
-    - if current_user.group.members.any?
-      = render 'people', group: current_user.group
+  - if @group
+    - if @group.members.any?
+      = render 'people', group: @group
     - else
       = render 'single_person'
-  - elsif current_user.joined_groups.any?
-    = render 'people', group: current_user.joined_groups.first
   - else
     = render 'single_person'
 

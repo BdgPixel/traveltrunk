@@ -1,9 +1,10 @@
 - if activity.trackable
-  | like this hotel&nbsp;
-  = link_to activity.parameters[:hotel_name], deals_show_path(activity.parameters[:hotel_id])
-
-  = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
-
-/ - else
-/   h1 which has since been removed
-
+  tr
+    td.activity
+      = link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
+      | &nbsp;
+      | vote for hotel&nbsp;
+      = link_to activity.parameters[:hotel_name], deals_show_path(activity.parameters[:hotel_id])
+      | &nbsp;
+      small
+        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

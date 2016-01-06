@@ -38,6 +38,21 @@ clearForm = (selectorModal, selectorForm) ->
     $(selectorForm).get(0).reset()
     $('.error').text ''
 
+showInviteNotification = ->
+  setTimeout (->
+    unregisteredUsers = $('#invite_user_id').val().split(',').filter((item) ->
+      /\S+@\S+\.\S+/.test item
+    )
+    console.log unregisteredUsers
+    if unregisteredUsers.length > 0
+      $('.noticeEmail').html "<b>Notice: </b>#{unregisteredUsers.join(", ")} does not have an account with us yet. Send them an email to join Travel Trunk for your next trip together."
+      $('.noticeEmail').show()
+    else
+      $('.noticeEmail').hide()
+
+    return
+  ), 500
+
 inviteFriends = (selector) ->
   $(selector).tokenInput( '/group/users_collection.json', {
       # allowCustomEntry: true
@@ -54,9 +69,11 @@ inviteFriends = (selector) ->
           else
             $(selector).tokenInput("remove", {name: item.name});
             console.log 'You only can enter email address for unregistered users'
+
+        showInviteNotification()
       onDelete: (item) ->
         $(selector).tokenInput("remove", { name: item.name });
-        $('.noticeEmail').hide()
+        showInviteNotification()
 
       prePopulate: $('#invite_user_id').data('load')
       resultsFormatter: (item) ->
@@ -65,8 +82,6 @@ inviteFriends = (selector) ->
         console.log item
         if isNaN(item.id)
           tags = "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
-          $('.noticeEmail').html "<b>Notice: </b>#{item.name} does not have an account with us yet. Send them an email to join treavel trunk to start planning for your next trip together."
-          $('.noticeEmail').show()
           tags
           # "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
         else

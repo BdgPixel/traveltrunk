@@ -1,8 +1,12 @@
 module HotelsList
   include DealsHelper
   def api_params_hash
-    count_group = current_user.group.members.count if current_user.group
-    number_of_adults = number_of_adults.nil? ? 1 : number_of_adults
+    number_of_adults =
+      if @group
+        @group.members.size + 1
+      else
+        1
+      end
 
     params_hash = {
       apiExperience: "PARTNER_WEBSITE",
@@ -48,7 +52,8 @@ module HotelsList
       response = HTTParty.post(url_custom_params)
 
       if response["HotelRoomReservationResponse"]["EanWsError"]
-        redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:confirmation_book][:room_type_code])
+        # binding.pry
+        # redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:confirmation_book][:room_type_code])
         @error_response    = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
       else
         @reservation = response["HotelRoomReservationResponse"]
@@ -103,7 +108,7 @@ module HotelsList
     #   @members_liked = current_user.members_liked( custom_params[:hotelId])
     # end
 
-    @like              = Like.find_by(hotel_id: custom_params[:hotelId], user_id: current_user)
+    # @like              = Like.find_by(hotel_id: custom_params[:hotelId], user_id: current_user)
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
     url_custom_params  = url + custom_params.merge!(api_params_hash).to_query
 
@@ -123,7 +128,7 @@ module HotelsList
   end
 
   def get_hotels_list(destination)
-    if current_user.sign_in_count < 2 && current_user.total_credit <= 0
+    if current_user.sign_in_count < 2
       @welcome_state = true
       @error_response = ''
     else
@@ -134,6 +139,7 @@ module HotelsList
 
         if total_credit > 0
           url_custom_params = "http://api.ean.com/ean-services/rs/hotel/v3/list?#{custom_params.merge!(api_params_hash).to_query}"
+          puts url_custom_params
           begin
             response = HTTParty.get(url_custom_params)
 

@@ -204,7 +204,6 @@ root.roomSelected = (selector)->
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
 
-
 appendCreditform = ->
   $('.append-credit').on 'click', ->
     rateCode = $(this).data('rate-code')
@@ -250,11 +249,12 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger)->
       else
         false
 
-
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
     disableEnterFormSubmit()
+
     validateSearchForm()
+
     $.get '/deals'
 
     today = getFormattedDate(new Date)
@@ -303,8 +303,12 @@ $(document).ready ->
 
   else
     initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
+
     params_path_id = window.location.pathname.split('/')[2]
+
     validateFormBook()
+
+    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click')
 
     $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected('.room-selected')
@@ -346,11 +350,4 @@ $(document).ready ->
           container: '#blueimp-gallery-carousel'
           carousel: true
       , 3000)
-
-    # $(document).on 'click', '[data-toggle="popover"]', ->
-    #   $(document).find('[data-toggle="popover"]').popover('hide')
-    #   $(this).popover 'show'
-    #   return
-
-    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click')
 

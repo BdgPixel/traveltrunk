@@ -2,16 +2,16 @@ class DealsController < ApplicationController
   require "htmlentities"
   include HotelsList
 
-  before_action :create_destination, only: [:search]
-  before_action :check_like,         only: [:like]
+  before_action :check_like, only: [:like]
   before_action :authenticate_user!
+  before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book]
+  before_action :get_destination, only: [:index, :search, :create_book]
+  before_action :create_destination, only: [:search]
+  before_action :check_address, only: [:create_book]
 
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
   def index
-    destinationable = current_user.group || current_user.joined_groups.first || current_user
-    @destination = destinationable.destination
-
     if @destination
       new_arrival_date = Date.today
 
@@ -35,6 +35,7 @@ class DealsController < ApplicationController
 
     @votes = Like.where(hotel_id: params[:id])
     get_hotel_information(expedia_params_hash)
+    redirect_to deals_url, notice: 'A problem occured when request hotel details information to expedia. Please try again later' unless @hotel_information.present?
   end
 
   def book
@@ -47,7 +48,14 @@ class DealsController < ApplicationController
   end
 
   def create_book
-    current_destination = current_user.destination.get_search_params
+    current_destination = @destination.get_search_params
+
+    number_of_adults =
+      if @group
+        @group.members.size + 1
+      else
+        1
+      end
 
     bed_type = params[:confirmation_book][:bed_type].nil? ? "" : params[:confirmation_book][:bed_type].split(' ').join(',')
 
@@ -67,7 +75,7 @@ class DealsController < ApplicationController
         affiliateConfirmationId: affiliateConfirmationId,
         RoomGroup: {
           Room: {
-            numberOfAdults: "1",
+            numberOfAdults: number_of_adults.to_s,
             firstName: "test",
             lastName: "tester",
             bedTypeId: bed_type,
@@ -88,10 +96,10 @@ class DealsController < ApplicationController
         },
         AddressInfo: {
           address1: "travelnow",
-          city: current_user.profile.city,
-          stateProvinceCode: current_user.profile.state,
-          countryCode: current_user.profile.country_code,
-          postalCode: current_user.profile.postal_code
+          city: (current_user.profile.city || ""),
+          stateProvinceCode: (current_user.profile.state || ""),
+          countryCode: (current_user.profile.country_code || ""),
+          postalCode: (current_user.profile.postal_code || "")
         },
       }
 
@@ -100,68 +108,82 @@ class DealsController < ApplicationController
     book_reservation(xml_params)
 
     if !@error_response
-      total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100).to_i
-
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
       departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
 
-      hotel_price = (params[:confirmation_book][:total].to_f)
-      if current_user.group
-        members = current_user.group.members
+      if @group
+        hotel_price = (params[:confirmation_book][:total].to_f)
+        members = @group.members.to_a
         members << current_user
-        members_price = hotel_price / members.to_a.count
+        price_per_member = hotel_price.to_f / members.size
 
-        less_credit_members = members.to_a.select { |member| (member.total_credit.to_f / 100.0) < members_price }
-        more_credit_members = members.to_a.select { |member| (member.total_credit.to_f / 100.0) > members_price }
+        price_per_member_hash = calculate_price_per_member({}, members, price_per_member, hotel_price)
 
-        less_credit_members.each do |less_credit_member|
-          less_member = less_credit_member.total_credit / 100.0 * more_credit_members.count
-          each_price_member = less_member + less_credit_member.total_credit / 100.0
-          result_hotel_price = hotel_price - each_price_member
-          result_hotel_price = result_hotel_price / more_credit_members.count
-          @@credit = result_hotel_price + less_credit_member.total_credit / 100.0
-
-          user = User.find less_credit_member.id
-          user.update_attributes(total_credit: less_credit_member.total_credit * 100)
-          user.total_credit =  user.total_credit - (less_credit_member.total_credit * 100)
-          user.save(validate: false)
+        price_per_member_hash.each do |member, amount_to_charge|
+          total_credit = member.total_credit - (amount_to_charge * 100).to_i
+          member.total_credit = total_credit
+          member.save(validate: false)
         end
-
-        more_credit_members.each do |more_credit_member|
-          user = User.find more_credit_member.id
-          user.total_credit =  user.total_credit - (@@credit * 100)
-          user.save(validate: false)
-        end
-
       else
-        # member = current_user
+        total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100).to_i
         user = User.find current_user.id
         user.total_credit = total_credit
         user.save(validate: false)
       end
 
       reservation_params = {
-        itinerary: @reservation["itineraryId"],
-        confirmation_number: @reservation["confirmationNumbers"],
-        hotel_name: @reservation["hotelName"],
-        hotel_address: @reservation["hotelAddress"],
-        city: @reservation["hotelCity"],
-        country_code: @reservation["hotelCountryCode"],
-        postal_code: @reservation["hotelPostalCode"],
-        number_of_room: @reservation["numberOfRoomsBooked"],
-        room_description: @reservation["roomDescription"],
-        number_of_adult: @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
-        total: (@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
-        arrival_date: arrival_date,
-        departure_date: departure_date
+        itinerary:            @reservation["itineraryId"],
+        confirmation_number:  @reservation["confirmationNumbers"],
+        hotel_name:           @reservation["hotelName"],
+        hotel_address:        @reservation["hotelAddress"],
+        city:                 @reservation["hotelCity"],
+        country_code:         @reservation["hotelCountryCode"],
+        postal_code:          @reservation["hotelPostalCode"],
+        number_of_room:       @reservation["numberOfRoomsBooked"],
+        room_description:     @reservation["roomDescription"],
+        number_of_adult:      @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
+        total:                (@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
+        arrival_date:         arrival_date,
+        departure_date:       departure_date
       }
+
       reservation = current_user.reservations.new(reservation_params)
 
       if reservation.save
+        @group.destroy
+
         flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
         redirect_to deals_confirmation_page_path
       end
+    else
+      redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
+    end
+  end
 
+  def calculate_price_per_member(price_per_member_hash, members, price_per_member, hotel_price)
+    more_credit_members = []
+    less_credit_members = []
+
+    members.each do |member|
+      member_total_credit = member.total_credit / 100.0
+
+      if member_total_credit >= price_per_member
+        more_credit_members << member
+        price_per_member_hash[member] = price_per_member
+      else
+        less_credit_members << member
+        price_per_member_hash[member] = member_total_credit
+      end
+    end
+
+    current_total_credit = price_per_member_hash.values.sum
+
+    if current_total_credit < hotel_price
+      remaining_price_per_member = (hotel_price - current_total_credit)  / more_credit_members.size
+      price_per_member += remaining_price_per_member
+      calculate_price_per_member(price_per_member_hash, more_credit_members, price_per_member, hotel_price)
+    else
+      price_per_member_hash
     end
   end
 
@@ -211,18 +233,13 @@ class DealsController < ApplicationController
   end
 
   def room_availability
-    if current_user.group.present?
-      @group = current_user.group
-      @total_credit = current_user.group.total_credit
-    elsif current_user.joined_groups.present?
-      @group = current_user.joined_groups.first
-      @total_credit = current_user.joined_groups.first.total_credit
-    else
-      @group
-      @total_credit = current_user.total_credit
-    end
-
-      # @total_credit    = current_user.group ? current_user.group.total_credit : current_user.total_credit
+    @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
+    @total_credit =
+      if @group
+        @group.total_credit
+      else
+        current_user.total_credit
+      end
 
     if request.xhr?
       room_params_hash = current_user.expedia_room_params(params[:id])
@@ -249,23 +266,26 @@ class DealsController < ApplicationController
   #
   def like
     @hotel_id = params[:id]
-    if @like.present?
-      @like.destroy
-    else
-      like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
-      if like.save
-        joined_groups = current_user.joined_groups.first
-        joined_groups.members.each do |user|
-          unless user.id.eql?(current_user.id)
-            like.create_activity key: "group.like", owner: current_user,
-              recipient: User.find(user.id), parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
+    notice =
+      if @like.present?
+        @like.destroy
+        'You successfully cancel vote for this hotel'
+      else
+        like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
+        if like.save
+          joined_group = current_user.joined_groups.first
+          joined_group.members.each do |user|
+            unless user.id.eql?(current_user.id)
+              like.create_activity key: "group.like", owner: current_user,
+                recipient: user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
+            end
           end
           like.create_activity key: "group.like", owner: current_user,
-            recipient: User.find(joined_groups.user_id), parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
+            recipient: joined_group.user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
         end
-        redirect_to deals_show_url(params[:id])
+        'You successfully vote for this hotel'
       end
-    end
+    redirect_to deals_show_url(params[:id]), notice: notice
   end
 
   def next
@@ -293,12 +313,10 @@ class DealsController < ApplicationController
       departure_date: departure_date
     })
 
-    destinationable = current_user.group || current_user.joined_groups.first || current_user
-
-    if @destination = destinationable.destination
+    if @destination
       @destination.update(custom_params)
     else
-      @destination = destinationable.build_destination(custom_params)
+      @destination = @destinationable.build_destination(custom_params)
       @destination.save
     end
 
@@ -316,5 +334,16 @@ class DealsController < ApplicationController
 
     def destination_params
       params.require(:search_deals).permit(:destination_string, :city, :state_province_code, :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code)
+    end
+
+    def get_destination
+      @destinationable = @group || current_user
+      @destination = @destinationable.destination
+    end
+
+    def check_address
+      unless current_user.profile.address_valid?
+        redirect_to edit_profile_url, alert: "In order to book, you need to provide city, state, country code, postal code information first"
+      end
     end
 end

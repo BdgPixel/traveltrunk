@@ -7,6 +7,12 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  def get_group
+    if user_signed_in?
+      @group = current_user.group || current_user.joined_groups.first
+    end
+  end
+
   protected
     def after_sign_in_path_for(resource)
       if resource.admin?

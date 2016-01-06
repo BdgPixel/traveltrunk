@@ -54,6 +54,7 @@ Rails.application.routes.draw do
   root 'deals#index'
 
   resource :profile, except: [:destroy, :new, :create]
+  get 'users/:id/profile' => 'profiles#show', as: 'user_profile'
 
   post   'create_bank_account' => 'profiles#create_bank_account'
   put    'update_bank_account' => 'profiles#update_bank_account'

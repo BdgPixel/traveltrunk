@@ -7,17 +7,20 @@
             span aria-hidden="true" &times;
           h3 Invite a Friends
         .modal-body
-          .token-input
-            .form-group
-              = f.label :user_id, 'Type email or name to invite'
-              = f.input_field :user_id
+          - if @group && @group.members.size >= 4
+            .alert.alert-info This group already have 5 members. Maybe some of them haven't accepted the invitation yet.
+          -else
+            .token-input
+              .form-group
+                = f.label :user_id, 'Type email or name to invite'
+                = f.input_field :user_id
+                p
+                  small Names of friends who have not joined or created an account will not appear here. Please type in their email.
+                / = f.input_field :user_id, data: { load: @members  }
               p
-                small Names of friends who have not joined or created an account will not appear here. Please type in their email.
-              / = f.input_field :user_id, data: { load: @members  }
-            p
-              .noticeEmail.alert.alert-info style="display: none"
+                .noticeEmail.alert.alert-info style="display: none"
 
-            .actions.form-group
+              .actions.form-group
 
         .modal-footer
           = f.submit 'Send Invitation', class: 'btn btn-default btn-orange'
