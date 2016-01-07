@@ -20,7 +20,7 @@
     $('.text-total-credits').html("Total : &nbsp;<%= number_to_currency(@total_credit) %>");
   <% end %>
 
-  $(".text-total-credit-users-<% = current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
+  $(".text-total-credit-users-<%= current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
 
   $('.notification-bubble').removeClass('hide');
   $('.notification-bubble').text("<%= @notification_count %>");
