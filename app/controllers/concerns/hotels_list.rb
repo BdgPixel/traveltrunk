@@ -128,8 +128,11 @@ module HotelsList
   end
 
   def get_hotels_list(destination)
-    if current_user.sign_in_count < 2
-      @welcome_state = true
+    if current_user.profile.birth_date.blank? || current_user.bank_account.blank?
+      @welcome_state = 'no_profile'
+      @error_response = ''
+    elsif destination.blank?
+      @welcome_state = 'no_destination'
       @error_response = ''
     else
       if destination
