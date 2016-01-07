@@ -56,4 +56,12 @@ class ImageUploader < CarrierWave::Uploader::Base
   #   "something.jpg" if original_filename
   # end
 
+  def auto_orient
+     manipulate! do |img|
+       img.tap(&:auto_orient)
+     end
+   end
+
+   process :auto_orient
+
 end
