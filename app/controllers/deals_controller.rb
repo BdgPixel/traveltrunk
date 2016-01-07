@@ -5,7 +5,7 @@ class DealsController < ApplicationController
   before_action :check_like, only: [:like]
   before_action :authenticate_user!
   before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book, :update_credit]
-  before_action :get_destination, only: [:index, :search, :create_book]
+  before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
 
@@ -48,115 +48,121 @@ class DealsController < ApplicationController
   end
 
   def create_book
-    current_destination = @destination.get_search_params
+    total_credit = (@group ? @group.total_credit : current_user.total_credit) / 100.0
+    hotel_price = params[:confirmation_book][:total].to_f
+    puts total_credit
+    if total_credit < hotel_price
+      redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), notice: "You don't have enough credits to book that room"
+    else
+      current_destination = @destination.get_search_params(@group)
 
-    number_of_adults =
-      if @group
-        @group.members.size + 1
-      else
-        1
-      end
+      number_of_adults =
+        if @group
+          @group.members.size + 1
+        else
+          1
+        end
 
-    bed_type = params[:confirmation_book][:bed_type].nil? ? "" : params[:confirmation_book][:bed_type].split(' ').join(',')
+      bed_type = params[:confirmation_book][:bed_type].nil? ? "" : params[:confirmation_book][:bed_type].split(' ').join(',')
 
-    smoking_preferences = params[:confirmation_book][:smoking_preferences].nil? ? "" : params[:confirmation_book][:smoking_preferences]
+      smoking_preferences = params[:confirmation_book][:smoking_preferences].nil? ? "" : params[:confirmation_book][:smoking_preferences]
 
-    affiliateConfirmationId = SecureRandom.uuid
+      affiliateConfirmationId = SecureRandom.uuid
 
-    reservation_hash = {
-        hotelId: params[:confirmation_book][:hotel_id],
-        arrivalDate: current_destination[:arrivalDate],
-        departureDate: current_destination[:departureDate],
-        supplierType: "E",
-        rateKey: params[:confirmation_book][:rate_key],
-        roomTypeCode: params[:confirmation_book][:room_type_code],
-        rateCode: params[:confirmation_book][:rate_code],
-        chargeableRate: params[:confirmation_book][:total],
-        affiliateConfirmationId: affiliateConfirmationId,
-        RoomGroup: {
-          Room: {
-            numberOfAdults: number_of_adults.to_s,
-            firstName: "test",
-            lastName: "tester",
-            bedTypeId: bed_type,
-            smokingPreference: smoking_preferences
-          }
-        },
-        ReservationInfo: {
-          email: current_user.email,
-          firstName: current_user.profile.first_name,
-          lastName: current_user.profile.last_name,
-          homePhone: "2145370159",
-          workPhone: "2145370159",
-          creditCardType: "CA",
-          creditCardNumber: "5401999999999999",
-          creditCardIdentifier: "123",
-          creditCardExpirationMonth: "11",
-          creditCardExpirationYear: "2017"
-        },
-        AddressInfo: {
-          address1: "travelnow",
-          city: (current_user.profile.city || ""),
-          stateProvinceCode: (current_user.profile.state || ""),
-          countryCode: (current_user.profile.country_code || ""),
-          postalCode: (current_user.profile.postal_code || "")
-        },
-      }
+      reservation_hash = {
+          hotelId: params[:confirmation_book][:hotel_id],
+          arrivalDate: current_destination[:arrivalDate],
+          departureDate: current_destination[:departureDate],
+          supplierType: "E",
+          rateKey: params[:confirmation_book][:rate_key],
+          roomTypeCode: params[:confirmation_book][:room_type_code],
+          rateCode: params[:confirmation_book][:rate_code],
+          chargeableRate: params[:confirmation_book][:total],
+          affiliateConfirmationId: affiliateConfirmationId,
+          RoomGroup: {
+            Room: {
+              numberOfAdults: number_of_adults.to_s,
+              firstName: "test",
+              lastName: "tester",
+              bedTypeId: bed_type,
+              smokingPreference: smoking_preferences
+            }
+          },
+          ReservationInfo: {
+            email: current_user.email,
+            firstName: current_user.profile.first_name,
+            lastName: current_user.profile.last_name,
+            homePhone: "2145370159",
+            workPhone: "2145370159",
+            creditCardType: "CA",
+            creditCardNumber: "5401999999999999",
+            creditCardIdentifier: "123",
+            creditCardExpirationMonth: "11",
+            creditCardExpirationYear: "2017"
+          },
+          AddressInfo: {
+            address1: "travelnow",
+            city: (current_user.profile.city || ""),
+            stateProvinceCode: (current_user.profile.state || ""),
+            countryCode: (current_user.profile.country_code || ""),
+            postalCode: (current_user.profile.postal_code || "")
+          },
+        }
 
-    xml_params =  { xml: reservation_hash.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
+      xml_params =  { xml: reservation_hash.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
 
-    book_reservation(xml_params)
+      book_reservation(xml_params)
 
-    if !@error_response
-      arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
-      departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
+      if !@error_response
+        arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
+        departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
 
-      if @group
-        hotel_price = (params[:confirmation_book][:total].to_f)
-        members = @group.members.to_a
-        members << current_user
-        price_per_member = hotel_price.to_f / members.size
+        if @group
+          members = @group.members.to_a
+          members << current_user
+          price_per_member = hotel_price.to_f / members.size
 
-        price_per_member_hash = calculate_price_per_member({}, members, price_per_member, hotel_price)
+          price_per_member_hash = calculate_price_per_member({}, members, price_per_member, hotel_price)
 
-        price_per_member_hash.each do |member, amount_to_charge|
-          total_credit = member.total_credit - (amount_to_charge * 100).to_i
-          member.total_credit = total_credit
-          member.save(validate: false)
+          price_per_member_hash.each do |member, amount_to_charge|
+            total_credit = member.total_credit - (amount_to_charge * 100).to_i
+            member.total_credit = total_credit
+            member.save(validate: false)
+          end
+        else
+          total_credit = current_user.total_credit - (hotel_price * 100).to_i
+          user = User.find current_user.id
+          user.total_credit = total_credit
+          user.save(validate: false)
+        end
+
+        reservation_params = {
+          itinerary:            @reservation["itineraryId"],
+          confirmation_number:  @reservation["confirmationNumbers"],
+          hotel_name:           @reservation["hotelName"],
+          hotel_address:        @reservation["hotelAddress"],
+          city:                 @reservation["hotelCity"],
+          country_code:         @reservation["hotelCountryCode"],
+          postal_code:          @reservation["hotelPostalCode"],
+          number_of_room:       @reservation["numberOfRoomsBooked"],
+          room_description:     @reservation["roomDescription"],
+          number_of_adult:      @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
+          total:                (@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
+          arrival_date:         arrival_date,
+          departure_date:       departure_date
+        }
+
+        reservation = current_user.reservations.new(reservation_params)
+
+        if reservation.save
+          @group.destroy if @group
+
+          flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
+          redirect_to deals_confirmation_page_path(reservation_id: reservation.id)
         end
       else
-        total_credit = current_user.total_credit - (params[:confirmation_book][:total].to_f * 100).to_i
-        user = User.find current_user.id
-        user.total_credit = total_credit
-        user.save(validate: false)
+        redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
       end
-
-      reservation_params = {
-        itinerary:            @reservation["itineraryId"],
-        confirmation_number:  @reservation["confirmationNumbers"],
-        hotel_name:           @reservation["hotelName"],
-        hotel_address:        @reservation["hotelAddress"],
-        city:                 @reservation["hotelCity"],
-        country_code:         @reservation["hotelCountryCode"],
-        postal_code:          @reservation["hotelPostalCode"],
-        number_of_room:       @reservation["numberOfRoomsBooked"],
-        room_description:     @reservation["roomDescription"],
-        number_of_adult:      @reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
-        total:                (@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
-        arrival_date:         arrival_date,
-        departure_date:       departure_date
-      }
-
-      reservation = current_user.reservations.new(reservation_params)
-
-      if reservation.save
-        @group.destroy
-
-        flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-        redirect_to deals_confirmation_page_path
-      end
-    else
-      redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
     end
   end
 
@@ -233,11 +239,15 @@ class DealsController < ApplicationController
   end
 
   def confirmation_page
-    @reservation = current_user.reservations.last
-    itinerary_params = { itineraryId: @reservation.itinerary, email: current_user.email}
-    view_itinerary(itinerary_params)
-    @list_of_dates = (@reservation.arrival_date..@reservation.departure_date).to_a
-    @list_of_dates.pop
+    if params[:reservation_id]
+      @reservation = Reservation.find(params[:reservation_id])
+      itinerary_params = { itineraryId: @reservation.itinerary, email: current_user.email}
+      view_itinerary(itinerary_params)
+      @list_of_dates = (@reservation.arrival_date..@reservation.departure_date).to_a
+      @list_of_dates.pop
+    else
+      redirect_to deals_url, notice: 'You need to provide reservation id'
+    end
   end
 
   def room_availability
@@ -250,25 +260,25 @@ class DealsController < ApplicationController
       end
 
     if request.xhr?
-      room_params_hash = current_user.expedia_room_params(params[:id])
+      room_params_hash = current_user.expedia_room_params(params[:id], @destination, @group)
       get_room_availability(room_params_hash)
 
       respond_to :js
     end
   end
 
-  def room_images
-    if request.xhr?
-      searchParams     = current_user.get_current_destination
-      hotel_id_hash = { hotelId: params[:id] }
+  # def room_images
+  #   if request.xhr?
+  #     searchParams     = current_user.get_current_destination
+  #     hotel_id_hash = { hotelId: params[:id] }
 
-      get_room_images(hotel_id_hash)
+  #     get_room_images(hotel_id_hash)
 
-      respond_to do |format|
-        format.js { render :reload_image }
-      end
-    end
-  end
+  #     respond_to do |format|
+  #       format.js { render :reload_image }
+  #     end
+  #   end
+  # end
 
   # commented but will be used later
   #
@@ -333,7 +343,7 @@ class DealsController < ApplicationController
 
   private
     def set_search_data
-      get_hotels_list(@destination)
+      get_hotels_list(@destination, @group)
     end
 
     def check_like

@@ -49,21 +49,19 @@ class User < ActiveRecord::Base
       .where(recipient_id: self.id, recipient_type: "User", is_read: is_read)
   end
 
-  def get_current_destination
-    if destination  = self.destination
-      search_params = destination.get_search_params
-    end
-  end
+  # def get_current_destination()
+  #   if destination  = self.destination
+  #     search_params = destination.get_search_params
+  #   end
+  # end
 
-  def expedia_room_params(hotel_id, rate_code = nil, room_type_code = nil)
-    destinationable = self.group || self.joined_groups.first || self
-    destination = destinationable.destination
+  def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
     room_hash = {}
 
     if destination
-       current_search = destination.get_search_params
+      current_search = destination.get_search_params(group)
 
-      room_hash[:hotelId]       = hotel_id
+      room_hash[:hotelId]       = hotel_id.to_s
       room_hash[:arrivalDate]   = current_search[:arrivalDate]
       room_hash[:departureDate] = current_search[:departureDate]
 
@@ -73,11 +71,17 @@ class User < ActiveRecord::Base
         room_hash[:roomTypeCode] = room_type_code
       end
 
-      room_hash[:RoomGroup]         = { Room: { numberOfAdults: 1 } }
-      room_hash[:includeRoomImages] = true
+      room_hash[:includeRoomImages] = 'true'
       room_hash[:options]           = "ROOM_TYPES"
-      room_hash[:includeDetails]    = true
+      room_hash[:includeDetails]    = 'true'
+
+      room_hash[:RoomGroup] = {
+        'Room' => {
+          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+        }
+      }
     end
+
     room_hash
   end
 

@@ -1,7 +1,7 @@
 class Destination < ActiveRecord::Base
   belongs_to :destinationable, polymorphic: true
 
-  def get_search_params
+  def get_search_params(group)
     today = Date.today
     if arrival_date < today
       new_arrival_date = today
@@ -14,7 +14,7 @@ class Destination < ActiveRecord::Base
     {
       latitude: latitude,
       longitude: longitude,
-      searchRadius: 80,
+      searchRadius: '80',
       destinationString: destination_string.upcase,
       city: city,
       stateProvinceCode: state_province_code,
@@ -22,8 +22,13 @@ class Destination < ActiveRecord::Base
       arrivalDate: new_arrival_date.strftime('%m/%d/%Y'),
       departureDate: new_departure_date.strftime('%m/%d/%Y'),
       options: 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
-      moreResultsAvailable: true,
-      numberOfResults: 15
+      moreResultsAvailable: 'true',
+      'RoomGroup' => {
+        'Room' => {
+          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+        }
+      },
+      numberOfResults: '200'
     }
   end
 

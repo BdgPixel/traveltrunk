@@ -1,23 +1,13 @@
 module HotelsList
   include DealsHelper
-  def api_params_hash
-    number_of_adults =
-      if @group
-        @group.members.size + 1
-      else
-        1
-      end
 
-    params_hash = {
-      apiExperience: "PARTNER_WEBSITE",
-      cid:          55505,
-      minorRev:     30,
-      apiKey:       "5fd6485clmp3oogs8gfb43p2uf",
-      locale:       "en_US",
-      currencyCode: "USD",
-      supplierType: "E",
-      numberOfAdults: number_of_adults,
-      numberOfResults: 200
+  def api_params_hash
+    {
+      'apiKey' => "5fd6485clmp3oogs8gfb43p2uf",
+      'cid' => 55505,
+      'minorRev' => 30,
+      'locale' => "en_US",
+      'currencyCode' => "USD",
     }
   end
 
@@ -47,14 +37,13 @@ module HotelsList
     expedia_api.delete(:numberOfResults)
 
     url_custom_params = url + custom_params.merge(expedia_api).to_query
-
+    puts url_custom_params
     begin
       response = HTTParty.post(url_custom_params)
-
       if response["HotelRoomReservationResponse"]["EanWsError"]
-        # binding.pry
-        # redirect_to deals_book_path(id: params[:confirmation_book][:hotel_id], rate_code: params[:confirmation_book][:rate_code], room_type_code: params[:confirmation_book][:room_type_code])
-        @error_response    = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
+        @error_response = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
+        @error_response << ". "
+        @error_response << response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"]
       else
         @reservation = response["HotelRoomReservationResponse"]
       end
@@ -80,9 +69,9 @@ module HotelsList
   end
 
   def get_room_availability(room_params)
-    url                 = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
-    complete_params     = room_params.merge!(api_params_hash)
-    url_room_params     = url + complete_params.to_query
+    url = "http://api.ean.com/ean-services/rs/hotel/v3/avail?"
+    xml_params = { xml: room_params.to_xml(skip_instruct: true, root: "HotelRoomAvailabilityRequest").gsub(" ", "").gsub("\n", "") }
+    url_room_params = url + api_params_hash.merge(xml_params).to_query
 
     begin
       response = HTTParty.get(url_room_params)
@@ -127,7 +116,7 @@ module HotelsList
     end
   end
 
-  def get_hotels_list(destination)
+  def get_hotels_list(destination, group)
     if current_user.profile.birth_date.blank? || current_user.bank_account.blank?
       @welcome_state = 'no_profile'
       @error_response = ''
@@ -136,13 +125,15 @@ module HotelsList
       @error_response = "You haven’t selected a destination yet."
     else
       if destination
-        custom_params = destination.get_search_params
+        custom_params = destination.get_search_params(group)
         destinationable = destination.destinationable
         total_credit = destinationable.total_credit / 100.0
 
         if total_credit > 0
-          url_custom_params = "http://api.ean.com/ean-services/rs/hotel/v3/list?#{custom_params.merge!(api_params_hash).to_query}"
-          puts url_custom_params
+          url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
+          xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
+          url_custom_params = url + api_params_hash.merge(xml_params).to_query
+
           begin
             response = HTTParty.get(url_custom_params)
 

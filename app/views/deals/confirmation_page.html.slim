@@ -78,7 +78,7 @@ ThankYouPage#created
             td
               b Total taxes and fees
             td
-              = number_to_currency @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@nightlyRateTotal"]
+              = number_to_currency @itinerary_responses["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"]
           tr
             td
               b Total Charges
