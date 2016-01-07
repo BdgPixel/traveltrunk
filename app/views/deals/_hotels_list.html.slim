@@ -1,6 +1,10 @@
-- if @welcome_state
+- if @welcome_state.eql? 'no_profile'
   br
   .welcome-message.col-md-8.col-md-offset-2.text-justify = welcome_user_first_sign_in
+- elsif @welcome_state.eql? 'no_destination'
+  br
+  .welcome-message.col-md-8.col-md-offset-2.text-center
+    | Enter a destination to start your search
 - else
   - unless @error_response
     .deals-page data-page="1"
