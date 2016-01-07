@@ -133,7 +133,7 @@ module HotelsList
       @error_response = ''
     elsif destination.blank?
       @welcome_state = 'no_destination'
-      @error_response = ''
+      @error_response = "You haven’t selected a destination yet."
     else
       if destination
         custom_params = destination.get_search_params
