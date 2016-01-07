@@ -27,7 +27,7 @@ tr
         - room["BedTypes"]["BedType"].each do |bed_type|
           li #{bed_type["description"]}
 
-    = link_to "javascript:void(0)", id: 'linkPopover', class: 'popover-links', data: { toggle: 'popover' }
+    = link_to "javascript:void(0)", class: 'popover-links', data: { toggle: 'popover' }
       | Show more room information
 
     .content-popover style="display:none"

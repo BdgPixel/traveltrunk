@@ -4,7 +4,7 @@ class DealsController < ApplicationController
 
   before_action :check_like, only: [:like]
   before_action :authenticate_user!
-  before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book]
+  before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book, :update_credit]
   before_action :get_destination, only: [:index, :search, :create_book]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
@@ -210,12 +210,20 @@ class DealsController < ApplicationController
           current_user.update_attributes(total_credit: total_credit)
           @user_total_credit = current_user.total_credit / 100.0
 
-          StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
-
           @transaction_amount = transaction.amount / 100.0
           current_user.create_activity key: "payment.manual", owner: current_user,
-            recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @user_total_credit }
+            recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @User_total_credit }
+
+          if @group
+            @total_credit = @group.total_credit / 100.0
+          else
+            @total_credit = @user_total_credit
+          end
+
+          StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
+
           @notification_count = current_user.get_notification(false).count
+
         end
       end
 

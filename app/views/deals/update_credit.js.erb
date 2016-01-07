@@ -1,9 +1,9 @@
 <% if @error_response %>
   $('.payment-errors').html("<%= @error_response %>");
 <% else %>
-  userTotalCredit = <%= raw @user_total_credit %>
+  totalCredit = <%= raw @total_credit %>
   savingButtons = $(".append-credit")
-  savingButtons = savingButtons.filter(function(){ return $(this).data("total") <= userTotalCredit  })
+  savingButtons = savingButtons.filter(function(){ return $(this).data("total") <= totalCredit  })
 
   for(var i=0; i < savingButtons.length; i++){
     currentButton = savingButtons[i];
@@ -16,9 +16,11 @@
     roomSelected(currentButton);
   }
 
-  if ($('.text-total-credits').length > 0) {
-    $('.text-total-credits').html("Total : &nbsp;<%= currency_in_usd(current_user.total_credit) %>");
-  }
+  <% if @group %>
+    $('.text-total-credits').html("Total : &nbsp;<%= number_to_currency(@total_credit) %>");
+  <% end %>
+
+  $(".text-total-credit-users-<% = current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
 
   $('.notification-bubble').removeClass('hide');
   $('.notification-bubble').text("<%= @notification_count %>");
