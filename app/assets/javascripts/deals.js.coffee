@@ -237,9 +237,10 @@ root.replaceImage = ->
 
     i++
 
-root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger)->
-  $(selectorLink).popover
+root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, placement)->
+  $(selectorLink).popover(
     html: true
+    placement: placement
     trigger: trigger
     content: ->
       $(selectorContent).html()
@@ -248,6 +249,9 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger)->
         $(selectorTitle).html()
       else
         false
+  ).on 'show.bs.popover', (e) ->
+
+
 
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
@@ -308,7 +312,10 @@ $(document).ready ->
 
     validateFormBook()
 
-    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click')
+    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'left')
+    $('.popover-title').parent().find('[data-dismiss="popover"]').on 'click', ->
+      $('#linkPopover').popover 'hide'
+      return
 
     $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected('.room-selected')
