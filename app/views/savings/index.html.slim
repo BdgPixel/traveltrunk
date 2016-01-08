@@ -25,10 +25,10 @@
 
           - if current_user.group
             |&emsp;&emsp;&emsp;
-            = link_to "Leave group", leave_group_path, id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'Are you sure want to leave this group ?'}, :method => :delete
+            = link_to "Dismiss group", leave_group_path, id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'Are you sure want to leave this group ?'}, :method => :delete
           - elsif current_user.joined_groups.any?
             |&emsp;&emsp;&emsp;
-            = link_to "Leave group", leave_group_path(id: current_user.joined_groups.first.id), id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'are you sure want to leave this group ?'}, :method => :delete
+            = link_to "Leave group", leave_group_path(id: current_user.joined_groups.first.id), id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'Are you sure want to leave this group ?'}, :method => :delete
 
   .col-md-12
     .col-md-4.col-offset-4
