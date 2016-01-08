@@ -134,7 +134,7 @@ module HotelsList
           url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
           xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
           url_custom_params = url + api_params_hash.merge(xml_params).to_query
-          puts url_custom_params
+
           begin
             response = HTTParty.get(url_custom_params)
 
