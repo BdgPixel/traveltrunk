@@ -1,6 +1,5 @@
 SubscriptionMailer#paymentSucceed
   p = "Hi #{@promo_code.user.profile.first_name},"
-
   p
     | Copy and paste this link code or click this link&nbsp;
     = link_to @promo_code.token, promo_codes_activation_url(promo_token: @promo_code.token)

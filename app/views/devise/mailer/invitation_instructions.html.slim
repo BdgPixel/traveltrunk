@@ -3,7 +3,7 @@ p
   | wants to go on a vacation and has invited you to join he. She's using &ldquo;
   = link_to "TravelTrunkUSA.com", accept_invitation_url(@resource, :invitation_token => @token)
   | &rdquo; to plan her next vacation and wants you in the loop. Sign up today to join #{@current_user.group.name}. It's safe, fast, and easy. Just click the link below and you're all set to got. &ldquo;
-  = link_to "TravelTrunkUSA.com", accept_invitation_url(@resource, id: @resource.id, :invitation_token => @token, group_id: @current_user.id)
+  = link_to "TravelTrunkUSA.com", accept_invitation_url(@resource, :invitation_token => @token)
   | &rdquo;
 
 p = render 'partials/footer_mailer'

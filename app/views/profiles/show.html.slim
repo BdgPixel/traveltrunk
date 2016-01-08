@@ -1,5 +1,6 @@
 - content_for :css
   = stylesheet_link_tag 'profiles'
+
 .row
   br
   br
@@ -25,7 +26,6 @@
                   | &nbsp;
                   b = @user.profile.home_airport.titleize rescue 'Information not specified'
 
-
               .clearfix
 
               .col-md-12.col-lg-12 class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
@@ -36,7 +36,6 @@
                       tr
                         td width='250px' Date of Birth:
                         td = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
-
                       tr
                         td Gender:
                         td = @user.profile.gender

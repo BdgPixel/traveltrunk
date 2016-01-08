@@ -47,7 +47,7 @@ Rails.application.routes.draw do
   post   'deals/update_credit' => 'deals/update_credit'
 
   devise_for :users, :controllers => {
-    :registrations => "registrations",
+    :registrations => 'registrations',
     :invitations => 'users/invitations'
   }
 
