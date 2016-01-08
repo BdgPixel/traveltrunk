@@ -1,10 +1,19 @@
 module HotelsList
   include DealsHelper
 
+
   def api_params_hash
+    api_key = '5fd6485clmp3oogs8gfb43p2uf'
+    shared_secret = 'cjkao1pfqt0tk'
+    timestamp = Time.now.utc.to_i
+    md5 = Digest::MD5.new
+    md5.update [api_key, shared_secret, timestamp].join
+    sig = md5.hexdigest
+
     {
-      'apiKey' => "5fd6485clmp3oogs8gfb43p2uf",
-      'cid' => 55505,
+      'apiKey' => api_key,
+      'cid' => 496147,
+      'sig' => sig,
       'minorRev' => 30,
       'locale' => "en_US",
       'currencyCode' => "USD",
@@ -125,7 +134,7 @@ module HotelsList
           url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
           xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
           url_custom_params = url + api_params_hash.merge(xml_params).to_query
-
+          puts url_custom_params
           begin
             response = HTTParty.get(url_custom_params)
 
