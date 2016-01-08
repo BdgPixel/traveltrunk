@@ -1,4 +1,6 @@
 class SavingsController < ApplicationController
+  require 'expedia'
+
   before_action :authenticate_user!
   before_action :get_group, only: :index
 
