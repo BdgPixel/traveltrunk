@@ -37,7 +37,6 @@ module HotelsList
     expedia_api.delete(:numberOfResults)
 
     url_custom_params = url + custom_params.merge(expedia_api).to_query
-    puts url_custom_params
     begin
       response = HTTParty.post(url_custom_params)
       if response["HotelRoomReservationResponse"]["EanWsError"]
@@ -90,14 +89,6 @@ module HotelsList
   end
 
   def get_hotel_information(custom_params)
-    # commented but will be used later
-    #
-    # group = current_user.current_group
-    # if group
-    #   @members_liked = current_user.members_liked( custom_params[:hotelId])
-    # end
-
-    # @like              = Like.find_by(hotel_id: custom_params[:hotelId], user_id: current_user)
     url                = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
     url_custom_params  = url + custom_params.merge!(api_params_hash).to_query
 
@@ -124,6 +115,7 @@ module HotelsList
       @welcome_state = 'no_destination'
       @error_response = "You haven’t selected a destination yet."
     else
+
       if destination
         custom_params = destination.get_search_params(group)
         destinationable = destination.destinationable
@@ -158,6 +150,7 @@ module HotelsList
                 @num_of_pages = @hotels_list.size
               end
             end
+
           rescue Exception => e
             @hotels_list    = []
             @error_response = e.message
@@ -166,10 +159,12 @@ module HotelsList
           @hotels_list    = []
           @error_response = "You don't have any credits."
         end
+
       else
         @hotels_list    = []
         @error_response = "You haven’t selected a destination yet."
       end
     end
   end
+
 end

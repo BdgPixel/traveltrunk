@@ -50,7 +50,7 @@ class DealsController < ApplicationController
   def create_book
     total_credit = (@group ? @group.total_credit : current_user.total_credit) / 100.0
     hotel_price = params[:confirmation_book][:total].to_f
-    puts total_credit
+
     if total_credit < hotel_price
       redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), notice: "You don't have enough credits to book that room"
     else

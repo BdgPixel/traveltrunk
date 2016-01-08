@@ -32,8 +32,6 @@ tr
 
     .content-popover style="display:none"
       = checkin_instructions.html_safe
-    / = link_to "javascript:void(0)", class: "popover-links", data: { container: "body", content: checkin_instructions.html_safe, placement: "right", toggle: "popover", html: true }
-    /   | Show more room information
 
   td
     - if @category_room_message
