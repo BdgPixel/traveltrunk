@@ -10,8 +10,8 @@ br
   table.table.table-striped.table-hover
     thead
       tr
-        th Name
         th Email
+        th Name
         th Address
         th Gender
         th
@@ -20,9 +20,9 @@ br
       - @users.each do |user|
         - if user.profile
           tr
-            td = user.profile.full_name
             td = user.email
-            td = user.profile.address
-            td = user.profile.gender
+            td = user.profile.full_name
+            td = user.profile.address.titleize rescue 'Information not specified'
+            td = user.profile.gender ? user.profile.gender : 'Information not specified'
             td
               = link_to 'Detail', admin_list_user_path(user), class: 'btn btn-orange'
