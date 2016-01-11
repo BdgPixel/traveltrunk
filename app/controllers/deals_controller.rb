@@ -343,10 +343,10 @@ class DealsController < ApplicationController
 
   private
     def set_search_data
-      # get_hotels_list(@destination, @group)
-      Expedia::Hotels
-      Expedia::Hotels.current_user = current_user
-      @hotels_list = Expedia::Hotels.list(@destination, @group)
+      get_hotels_list(@destination, @group)
+      # Expedia::Hotels
+      # Expedia::Hotels.current_user = current_user
+      # @hotels_list = Expedia::Hotels.list(@destination, @group)
     end
 
     def check_like

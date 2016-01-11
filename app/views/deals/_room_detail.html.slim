@@ -1,5 +1,5 @@
 tr
-  td width="300px"
+  td
     strong = room["rateDescription"].html_safe
     br
 
@@ -33,7 +33,7 @@ tr
     .content-popover style="display:none"
       = checkin_instructions.html_safe
 
-  td
+  td width="300px"
     - if @category_room_message
       h4 category_room_message
     ul.room-availability
@@ -44,7 +44,7 @@ tr
           - room["ValueAdds"]["ValueAdd"].each do |amenity|
             li #{amenity["description"]}
 
-  td
+  td width="280px"
     b.column-price
       = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
     p
@@ -56,7 +56,7 @@ tr
           small Refundable rate
     = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
-  td width="350px"
+  td width="200px"
     - if @group
       - if @group.user_id.eql? current_user.id
         - if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i

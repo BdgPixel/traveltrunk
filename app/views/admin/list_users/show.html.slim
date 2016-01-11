@@ -1,0 +1,91 @@
+- content_for :css
+  = stylesheet_link_tag 'profiles'
+
+.row
+  br
+  br
+  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-xs-offset-0.col-sm-offset-0.col-md-offset-1.col-lg-offset-1.toppad
+    .wrapper-profile
+      .panel.panel-info
+        .panel-heading
+
+        .panel-body
+          .row
+            .col-md-5.col-lg-4
+              .wrapper-img-profile
+                = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
+            .wrapper-user-name
+              .col-md-7.col-lg-8
+                h1[style="padding-top: 80px !important"]
+                  = @user.full_name
+
+                h4 = @user.profile.place_to_visit.titleize rescue 'Information not specified'
+
+                p
+                  span.glyphicon.glyphicon-map-marker
+                  | &nbsp;
+                  b = @user.profile.home_airport.titleize rescue 'Information not specified'
+
+              .clearfix
+
+              .col-md-12.col-lg-12 class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
+                .wrapper-personal-information
+                  h5 PERSONAL INFORMATION
+                  table.table.table-user-information
+                    tbody
+                      tr
+                        td width='250px' Date of Birth:
+                        td = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
+                      tr
+                        td Gender:
+                        td = @user.profile.gender
+                      tr
+                        td Address:
+                        td = @user.profile.address.titleize rescue 'Information not specified'
+                      tr
+                      tr
+                        td Address 1:
+                        td = @user.profile.address_1.titleize rescue 'Information not specified'
+                      tr
+                        td Address 2:
+                        td = @user.profile.address_2.titleize rescue 'Information not specified'
+                      tr
+                        td City:
+                        td = @user.profile.city
+                      tr
+                        td State/Province:
+                        td = @user.profile.state
+                      tr
+                        td Zip/Postal Code:
+                        td = @user.profile.postal_code
+                      tr
+                        td County:
+                        td = @user.profile.country_name rescue 'Information not specified'
+                  br
+                  br
+                  hr
+                  h5 SAVINGS PLAN
+                  - if @user.subscription
+                    table.table.table-user-information
+                      tbody
+                        tr
+                          td width='250px' Plan Name:
+                          td = @user.subscription.plan_name
+                        tr
+                          td Amount:
+                          td = currency_in_usd(@user.subscription.amount)
+                        tr
+                          td Frequency:
+                          td = @user.bank_account.transfer_frequency if @user.bank_account
+
+                  - else
+                    .alert.alert-info
+                      = "#{@user.profile.full_name} dont have saving plan"
+
+          .panel-footer
+            span.pull-right
+              = link_to 'Back', admin_list_users_path, class: 'btn btn-default'
+            br
+            br
+
+

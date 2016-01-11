@@ -37,11 +37,11 @@ module Expedia
       if @current_user.profile.birth_date.blank? || @current_user.bank_account.blank?
         @welcome_state = 'no_profile'
         @error_response = ''
-        response_result(welcome_state: @welcome_state, error: @error)
+        response_result(welcome_state: @welcome_state, error_response: @error_response)
       elsif destination.blank?
         @welcome_state = 'no_destination'
         @error_response = "You haven’t selected a destination yet."
-        response_result(welcome_state: @welcome_state, error: @error)
+        response_result(welcome_state: @welcome_state, error_response: @error_response)
       else
 
         if destination
@@ -84,18 +84,18 @@ module Expedia
             rescue Exception => e
               @hotels_list    = []
               @error_response = e.message
-              response_result(response: @hotels_list, error: @error_response)
+              response_result(response: @hotels_list, error_response: @error_response)
             end
           else
             @hotels_list    = []
             @error_response = "You don't have any credits."
-            response_result(response: @hotels_list, error: @error_response)
+            response_result(response: @hotels_list, error_response: @error_response)
           end
 
         else
           @hotels_list    = []
           @error_response = "You haven’t selected a destination yet."
-          response_result(response: @hotels_list, error: @error_response)
+          response_result(response: @hotels_list, error_response: @error_response)
         end
       end
 
@@ -107,10 +107,10 @@ module Expedia
         {
           welcome_state: arg[:welcome_state],
           response: arg[:response],
-          num_of_hotel: arg[:num_of_hotel],
-          num_of_page: arg[:num_of_page],
+          num_of_hotel: arg[:num_of_hotel] || 0,
+          num_of_page: arg[:num_of_page] || 0,
           error_response: {
-            message:  arg[:error]
+            message:  arg[:error_response]
           }
         }
       end

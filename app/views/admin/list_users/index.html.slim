@@ -1,0 +1,28 @@
+h3 List ofUsers
+br
+
+- if @users.empty?
+  .alert.alert-info
+    strong Notice:&nbsp;
+    | No users has been created
+
+- else
+  table.table.table-striped.table-hover
+    thead
+      tr
+        th Name
+        th Email
+        th Address
+        th Gender
+        th
+
+    tbody
+      - @users.each do |user|
+        - if user.profile
+          tr
+            td = user.profile.full_name
+            td = user.email
+            td = user.profile.address
+            td = user.profile.gender
+            td
+              = link_to 'Detail', admin_list_user_path(user), class: 'btn btn-orange'
