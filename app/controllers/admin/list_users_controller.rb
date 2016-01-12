@@ -1,13 +1,12 @@
-class Admin::ListUsersController < ApplicationController
+class Admin::ListUsersController < Admin::ApplicationController
   before_action :set_user, only: [:show]
+  before_action :authenticate_user!
 
   def index
     @users = User.all.where(admin: false)
   end
 
-  def show
-
-  end
+  def show; end
 
   private
     def set_user

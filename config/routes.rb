@@ -1,14 +1,10 @@
 Rails.application.routes.draw do
-  namespace :admin do
-  get 'list_users/index'
-  end
-
   get  'promo_codes/activation'
   post 'promo_codes/update'
 
   namespace :admin, path: 'admin' do
     resources :promo_codes
-    resources :list_users
+    resources :list_users, only: [:index, :show]
   end
 
   get  'helps' => 'helps#index'

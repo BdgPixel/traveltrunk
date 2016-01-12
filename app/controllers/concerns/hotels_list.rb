@@ -156,6 +156,7 @@ module HotelsList
 
                 @num_of_hotels = hotels_list.size
                 @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
+                binding.pry
                 @num_of_pages = @hotels_list.size
               end
             end

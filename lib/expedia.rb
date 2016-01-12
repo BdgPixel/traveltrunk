@@ -43,7 +43,6 @@ module Expedia
         @error_response = "You haven’t selected a destination yet."
         response_result(welcome_state: @welcome_state, error_response: @error_response)
       else
-
         if destination
           custom_params = destination.get_search_params(group)
           destinationable = destination.destinationable
@@ -73,7 +72,6 @@ module Expedia
                     end
 
                   @num_of_hotel = hotels_list.size
-                  # binding.pry
                   @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                   @num_of_page = @hotels_list.size
 
