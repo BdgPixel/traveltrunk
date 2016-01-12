@@ -8,6 +8,7 @@ class DealsController < ApplicationController
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
+  before_action :set_hotel, only: [:show]
 
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
@@ -34,7 +35,8 @@ class DealsController < ApplicationController
     @terms_and_conditions_url = "http://travel.ian.com/index.jsp?pageName=userAgreement&locale=en_US&cid=5505"
 
     @votes = Like.where(hotel_id: params[:id])
-    get_hotel_information(expedia_params_hash)
+    @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
+
     redirect_to deals_url, notice: 'A problem occured when request hotel details information to expedia. Please try again later' unless @hotel_information.present?
   end
 
@@ -341,12 +343,21 @@ class DealsController < ApplicationController
     set_search_data
   end
 
+  def method_name
+
+  end
+
   private
     def set_search_data
       # get_hotels_list(@destination, @group)
       Expedia::Hotels
       Expedia::Hotels.current_user = current_user
       @hotels_list = Expedia::Hotels.list(@destination, @group)
+    end
+
+    def set_hotel
+      Expedia::Hotels
+      Expedia::Hotels.current_user = current_user
     end
 
     def check_like
