@@ -8,7 +8,7 @@ class DealsController < ApplicationController
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
-  before_action :set_hotel, only: [:show, :room_availability]
+  before_action :set_hotel, only: [:show, :room_availability, :create_book, :confirmation_page]
 
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
@@ -44,7 +44,12 @@ class DealsController < ApplicationController
     room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
 
     if request.xhr?
-      get_room_availability(room_params_hash)
+      # get_room_availability(room_params_hash)
+      room_response = Expedia::Hotels.room_availability(room_params_hash).first
+
+      @room_availability = room_response[:response]
+      @error_category_room_message = room_response[:category_room]
+      @error_response = room_response[:error_response]
       respond_to :js
     end
   end
@@ -111,9 +116,9 @@ class DealsController < ApplicationController
           },
         }
 
-      xml_params =  { xml: reservation_hash.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
-
-      book_reservation(xml_params)
+      reservation_response = Expedia::Hotels.reservation(reservation_hash).first
+      @reservation = reservation_response[:response]
+      @error_response = reservation_response[:error_response]
 
       if !@error_response
         arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
@@ -244,12 +249,18 @@ class DealsController < ApplicationController
     if params[:reservation_id]
       @reservation = Reservation.find(params[:reservation_id])
       itinerary_params = { itineraryId: @reservation.itinerary, email: current_user.email}
-      view_itinerary(itinerary_params)
+
+
+      itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
+
+      @itinerary_response = itinerary_response[:response]
+      @error_response = itinerary_response[:error_response]
       @list_of_dates = (@reservation.arrival_date..@reservation.departure_date).to_a
       @list_of_dates.pop
     else
       redirect_to deals_url, notice: 'You need to provide reservation id'
     end
+
   end
 
   def room_availability
