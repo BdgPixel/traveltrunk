@@ -34,7 +34,7 @@ tr
       = checkin_instructions.html_safe
 
   td width="300px"
-    - if @category_room_message
+    - if @error_category_room_message
       h4 category_room_message
     ul.room-availability
       - unless room["ValueAdds"].nil?

@@ -8,7 +8,7 @@ class DealsController < ApplicationController
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
-  before_action :set_hotel, only: [:show]
+  before_action :set_hotel, only: [:show, :room_availability]
 
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
@@ -263,8 +263,12 @@ class DealsController < ApplicationController
 
     if request.xhr?
       room_params_hash = current_user.expedia_room_params(params[:id], @destination, @group)
-      get_room_availability(room_params_hash)
 
+      room_response = Expedia::Hotels.room_availability(room_params_hash).first
+
+      @room_availability = room_response[:response]
+      @error_category_room_message = room_response[:category_room]
+      @error_response = room_response[:error_response]
       respond_to :js
     end
   end
