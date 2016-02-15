@@ -250,7 +250,6 @@ class DealsController < ApplicationController
       @reservation = Reservation.find(params[:reservation_id])
       itinerary_params = { itineraryId: @reservation.itinerary, email: current_user.email}
 
-
       itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
 
       @itinerary_response = itinerary_response[:response]

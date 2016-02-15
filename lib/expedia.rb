@@ -85,6 +85,7 @@ module Expedia
 
                 if hotels_list.empty?
                   @error_response = "There are no hotels that match your criteria and saving credits"
+                  response_result(error_response: @error_response)
                 else
                   hotels_list =
                     hotels_list.sort do |hotel_x, hotel_y|
