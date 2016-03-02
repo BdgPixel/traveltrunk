@@ -1,0 +1,12 @@
+.col-md-12.col-lg-12
+  .wrapper-group-saving
+    h1.text-center.name-saving = add_apostrophe(current_user.profile.first_name)
+
+.wrapper-group-saving-img
+  .col-md-12
+    = image_tag current_user.profile.image.url, class: 'img-circle img-saving'
+  .col-md-12
+    .text-center
+      h1 class="text-total-credit-users-#{current_user.id}"
+        | Total : &nbsp;
+        = currency_in_usd(current_user.total_credit)

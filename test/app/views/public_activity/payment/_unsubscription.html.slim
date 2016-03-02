@@ -1,0 +1,8 @@
+- if activity.trackable
+  tr
+    td.activity
+      | You've successfully cancels a customer’s subscription&nbsp;
+      small
+        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+/ - else
+/   | which has since been removed

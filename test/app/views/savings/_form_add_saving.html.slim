@@ -1,0 +1,63 @@
+#modalSavingsForm.modal.fade aria-labelledby="myLargeModalLabel" data-backdrop="static" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+        h3 Add to savings
+        i
+          small &ldquo;minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below.)&rdquo;
+
+      .modal-body
+        = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true, html: { id: 'formAddToSavings' } do |f|
+          = f.hidden_field :id, value: params[:id]
+          = f.hidden_field :rate_code
+          = f.hidden_field :total
+          .form-group
+            .row
+              .col-md-6
+                = f.input :card_number, as: :integer, input_html: { class: "form-control" }
+                = image_tag asset_path('cards/mastercard.png')
+                |&nbsp;
+                = image_tag asset_path('cards/visa.png')
+                |&nbsp;
+                = image_tag asset_path('cards/amex.png')
+                |&nbsp;
+                = image_tag asset_path('cards/discover.png')
+
+              .col-md-6
+                = f.input :cvv, as: :password, input_html: { class: "form-control", maxlength: 4 }
+
+            .payment-errors
+
+          .form-group
+            .row
+              .col-md-6
+                = label_tag "Expiration Month (MM)"
+                = select_month nil, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+
+              .col-md-6
+                = label_tag "Expiration Year (YYYY)"
+                = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+
+          .form-group
+            .row
+              .col-md-6
+                  = f.label :amount
+                  .input-group
+                    .input-group-addon $
+                    = f.input_field :formatted_amount, class: "form-control update_credit_amount"
+                    = f.hidden_field :amount, class: "form-control update_credit_amount"
+
+          .modal-footer
+            .text-center
+              | Would you like us to submit this transaction now?
+              br
+              br
+            .row
+              .col-md-4.col-md-offset-4
+                = f.submit "Submit", class: "btn btn-orange"
+                | &nbsp;
+                button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+                  | Cancel
+

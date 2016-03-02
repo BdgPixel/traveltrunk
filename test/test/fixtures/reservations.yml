@@ -1,0 +1,33 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user_id: 
+  itinerary: MyString
+  confirmation_number: MyString
+  arrival_date: 2015-11-30
+  departure_date: 2015-11-30
+  hotel_name: MyString
+  hotel_address: MyText
+  city: MyString
+  country_code: MyString
+  postal_code: MyString
+  number_of_room: MyString
+  room_description: MyText
+  number_of_adult: 1
+  total: 1
+
+two:
+  user_id: 
+  itinerary: MyString
+  confirmation_number: MyString
+  arrival_date: 2015-11-30
+  departure_date: 2015-11-30
+  hotel_name: MyString
+  hotel_address: MyText
+  city: MyString
+  country_code: MyString
+  postal_code: MyString
+  number_of_room: MyString
+  room_description: MyText
+  number_of_adult: 1
+  total: 1

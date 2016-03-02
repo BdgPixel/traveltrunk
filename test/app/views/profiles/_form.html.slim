@@ -1,0 +1,180 @@
+- content_for :css
+  = stylesheet_link_tag 'profiles'
+
+- content_for :javascripts
+  = javascript_include_tag 'https://js.stripe.com/v2/'
+  = javascript_include_tag 'variables', 'profiles'
+
+.row
+  = simple_form_for current_user, method: :put, url: profile_url do |f|
+    - if current_user.errors.any?
+      #error_explanation.alert.alert-danger
+        strong Warning! &nbsp;&nbsp;
+        = "#{pluralize(current_user.errors.count, "error")} prohibited this profile from being saved"
+
+    = f.simple_fields_for :profile do |profile_form|
+      .wrapper-edit-profile
+        .col-md-12
+          .col-md-4
+            .form-group
+              .thumbnail
+                = link_to 'javascript:void(0)'
+                  = image_tag current_user.profile.image.url, id: 'profile_image', class: "img-circle" unless current_user.profile.image.nil?
+                br
+                = profile_form.input_field :image, as: :file, id: 'choose_profile_image',  data: {filename_placement: 'inside' }, class: 'btn btn-block btn-primary btn-file'
+                .hide
+                  = profile_form.input :image_cache, as: :hidden
+                span.text-info
+                  i You can only upload jpg, gif, png
+
+          .col-md-8
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+              .col-md-6[style="padding-right: 0px"]
+                .form-group
+                  = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+          .col-md-8
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
+          .col-md-8
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :home_airport, label: 'Your Home airport?', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
+              .col-md-6[style="padding-right: 0px"]
+                .form-group
+                  = profile_form.input :place_to_visit, label: 'Name place you’d like to visit someday', input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
+        .col-md-12
+          h4 PERSONAL INFORMATION
+          br
+
+        .col-md-12
+          .form-group
+            = profile_form.input :address, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+        .col-md-12
+          .form-group
+            = profile_form.input :address_1, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+        .col-md-12
+          .form-group
+            = profile_form.input :address_2, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+        .col-md-8
+          .form-group
+            = profile_form.input :city, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+        .col-md-12.col-md-4
+          .form-group
+            = profile_form.input :state, input_html: { class: 'form-control text-capitalize' }, error_html: { class: 'error-message' }
+
+        .col-md-4
+          .form-group
+            = profile_form.input :postal_code, input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+
+        .col-md-4
+          .form-group
+            = profile_form.label :country_code
+            = profile_form.country_select(:country_code, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control' })
+
+            - if profile_form.error :country_code
+              span.error.error-message please select one
+
+        .col-md-12
+          .row
+            .col-md-12
+              br
+              center
+                .form-group
+                  = f.button :submit, 'Update Profile', class: 'btn btn-default'
+
+        .col-md-12
+          br
+          hr
+
+        .col-md-12
+          h4
+            | SAVINGS PLAN
+          p
+            i
+              small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
+            br
+            br
+
+  / = f.simple_fields_for :bank_account do |bank_account_form|
+  = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account" } do |f|
+    .col-md-12
+      .row
+        .col-md-6
+          .form-group
+            = label_tag :card_number
+            input[type="text" size="20" data-stripe="number" class="form-control"]
+            .payment-errors
+
+        .col-md-3
+          .form-group
+            = label_tag "Expiration Month (MM)"
+            = select_month nil, { use_two_digit_numbers: true }, { name: nil, id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+
+        .col-md-3
+          .form-group
+            = label_tag "Expiration Year (YYYY)"
+            = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: nil, id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+
+    .col-md-12
+      .row
+        .col-md-6
+          .form-group
+            = f.label :amount_transfer
+            .input-group
+              .input-group-addon $
+              = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control'
+              = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
+
+            = f.error :amount_transfer, class: 'error-message'
+            .amount-error
+
+        .col-md-6
+          .form-group
+            = f.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            .transfer-frequency-error
+
+    .col-md-12
+      .row
+        .col-md-12
+          br
+          center
+            .form-group
+              = f.button :submit, 'Update Savings', class: 'btn btn-default'
+              - unless current_user.bank_account.new_record?
+                | &nbsp;&nbsp;
+                button.btn.btn-primary data-target=".unsubscript" data-toggle="modal" type="button"
+                  | Delete Bank Account
+          br
+          br
+
+          .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  button.close aria-label="Close" data-dismiss="modal" type="button"
+                    span aria-hidden="true"  &times;
+                  h4.modal-title Reoccurring transaction
+                .modal-body
+                  p Are you sure you want to stop reoccurring transaction on this account?
+                .modal-footer
+                  button.btn.btn-grey data-dismiss="modal" type="button" No, keep my savings plan.
+                  = link_to 'Yes, please discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-default"

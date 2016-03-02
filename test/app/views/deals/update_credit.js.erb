@@ -1,0 +1,35 @@
+<% if @error_response %>
+  $('.payment-errors').html("<%= @error_response %>");
+<% else %>
+  totalCredit = <%= raw @total_credit %>
+  savingButtons = $(".append-credit")
+  savingButtons = savingButtons.filter(function(){ return $(this).data("total") <= totalCredit  })
+
+  for(var i=0; i < savingButtons.length; i++){
+    currentButton = savingButtons[i];
+    $(currentButton).text('Book Now')
+      .unbind('click')
+      .removeClass('append-credit')
+      .addClass('btn btn-default room-selected')
+      .attr('data-target', '.modal-lg');
+
+    roomSelected(currentButton);
+  }
+
+  <% if @group %>
+    $('.text-total-credits').html("Total : &nbsp;<%= number_to_currency(@total_credit) %>");
+  <% end %>
+
+  $(".text-total-credit-users-<%= current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
+
+  $('.notification-bubble').removeClass('hide');
+  $('.notification-bubble').text("<%= @notification_count %>");
+  $('#notificationCountLink').text("Notification (<%= @notification_count %>)");
+
+  $('#modalSavingsForm').modal('hide');
+  $('#formAddToSavings').get(0).reset()
+  $('.payment-errors').html("");
+  $('#transferSuccessMessage').text("You successfully transfer money <%= number_to_currency(@transaction_amount) %> to your TravelTrunk account. Your total credit is <%= number_to_currency(@user_total_credit) %>")
+  $('#modalTransferSuccess').modal('show')
+<% end %>
+

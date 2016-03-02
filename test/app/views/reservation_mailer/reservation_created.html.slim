@@ -1,0 +1,36 @@
+ReservationMailer#created
+  p = "Hello #{@profile.first_name} #{@profile.last_name}"
+
+  p
+    | Your  itinerary #{@reservation['itineraryId']}
+
+  p
+    | Confirmation number: #{@reservation['confirmationNumbers']}
+
+  p
+    | Arrival date #{@reservation['arrivalDate']} and departure date #{@reservation['departureDate']}
+
+  p
+    | Hotel name #{@reservation['hotelName']}
+
+  p
+    | Hotel address #{@reservation['hotelAddress']}
+
+  p
+    | City #{@reservation['hotelCity']}
+
+  p
+    | Country code #{@reservation['countryCode']}
+
+  p
+    | Postal code #{@reservation['hotelPostalCode']}
+
+  p | Room booked #{@reservation['numberOfRoomsBooked']} and room description #{@reservation['roomDescription']}
+
+  p
+    | Number of adults #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']}
+
+  p
+    | Total rate #{number_to_currency(@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])}
+  p
+    = render 'partials/footer_mailer'

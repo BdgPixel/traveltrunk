@@ -1,0 +1,62 @@
+#modalBook.modal.fade.bs-example-modal-lg aria-labelledby="myLargeModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+        h3 Title
+
+      .modal-body
+        .row
+          - if @error_response
+            #error_response.alert.alert-info
+              strong Notice: &nbsp;
+              = @error_response
+          - else
+            .col-md-12
+              .col-md-6
+                p
+                  h4#roomName
+                p
+                  img#roomImage.img-responsive
+                small#imageDisclaimer style="display: none"
+                  i
+                    | *This image may not be that exact room titled above
+                i
+                  small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
+                p
+                  #roomRating
+                  .rating-text
+                p.hotel-info-addr
+
+                p.hotel-info-city
+
+                p.hotel-info-state
+
+                p.hotel-info-country
+
+                p.checkin-intructions
+
+                p.hotel-checkin-checkout
+              .col-md-6
+                table.table
+                  tr
+                    td.number-of-rooms
+                    td.list-of-dates
+                .form-book
+                  i
+                    b
+                      small Full payment will be charged to your credit card when you book this hotel.
+                  br
+                  = render "form_book"
+
+                .form-vote
+                  | Are you sure you want to choose this hotel ?
+                  br
+                  br
+                  = link_to "Yes", deals_like_path(params[:id], hotel_name: 'asdfasdf'), id: 'linkVote', class: "btn btn-orange btn-md"
+                  | &nbsp;
+                  button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+                    | No
+
+
