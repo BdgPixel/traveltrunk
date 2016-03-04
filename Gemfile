@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.5'
+ruby '2.2.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -66,6 +66,10 @@ gem 'httparty'
 gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 gem 'ratyrate'
+
+gem 'authorizenet', '~> 1.8', '>= 1.8.8.1'
+
+gem "rubycritic", :require => false
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
