@@ -10,32 +10,32 @@ module AuthorizeNetLib
       @@api_transaction_key = '96R8396EWSkz8etd'
       @@transaction = AuthorizeNet::API::Transaction.new(@@api_login_id, @@api_transaction_key, gateway: :sandbox)
     end
+
+    def self.genrate_random_id(string_uniqe)
+      random_id = "#{string_uniqe}_#{SecureRandom.urlsafe_base64(10)}"
+    end
   end
 
   class Customers < Global
-    # def initialize
-    #   @@api_login_id = '7gMRQp555ys3'
-    #   @@api_transaction_key = '96R8396EWSkz8etd'
-    #   @@transaction = AuthorizeNet::API::Transaction.new(@@api_login_id, @@api_transaction_key, gateway: :sandbox)
-    # end
-
     def create_profile
       request = AuthorizeNet::API::CreateCustomerProfileRequest.new
+      # validation mode = testMode, none, liveMode
+      # request.validationMode = 'testMode'
       request.profile = AuthorizeNet::API::CustomerProfileType.new
 
-      request.profile.merchantCustomerId = "yuhuu#{rand(10000).to_s}"
-      request.profile.description = 'yuhuu'
-      request.profile.email = "yuhuu#{rand(10000).to_s}@mail.com"
+      request.profile.merchantCustomerId = 'customer[:merchant_customer_id]'
+      # request.profile.description = 'yuhuu'
+      request.profile.email = customer[:email]
       request.profile.paymentProfiles = nil
       request.profile.shipToList = nil
 
-      response = transaction.create_customer_profile(request)
+      response = @@transaction.create_customer_profile(request)
 
       if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
         puts "Successfully created a customer profile with id: #{response.customerProfileId}"
       else
         puts response.messages.messages[0].text
-        raise "Failed to create a new customer profile"
+         "Failed to create a new customer profile"
       end
       return response
     end
@@ -96,4 +96,55 @@ module AuthorizeNetLib
     end
   end
 
+  class PaymentTransactions < Global
+    def charge(credit_params)
+      request = AuthorizeNet::API::CreateTransactionRequest.new
+      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
+
+      request.transactionRequest.amount = credit_params[:amount]
+      # request.transactionRequest.amount = ((SecureRandom.random_number + 1 ) * 150 ).round(2)
+      request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
+      # request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new('4242424242424242','0220','123') 
+      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new(credit_params[:card_number], credit_params[:exp_date], credit_params[:cvv])
+
+      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthOnlyTransaction
+
+      response = @@transaction.create_transaction(request)
+      
+      if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
+        puts "Successfully charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
+      else
+        response_message = response.messages.messages[0].text
+
+        response_error_text, response_error_code = [response.transactionResponse.errors.errors[0].errorText, response.transactionResponse.errors.errors[0].errorCode] if response.transactionResponse
+
+        # Check duplicate transaction
+        # errorCode '11' as duplicate transaction
+        response_error_text = 'Please wait several minutes for another transaction' if response_error_code.eql?('11')
+
+        puts response_message
+        puts response_error_text
+        # puts response.transactionResponse.errors.errors[0].errorText
+        
+        error_messages = { 
+          response_message: response_message,
+          response_error_text: response_error_text,
+          response_error_code: response_error_code
+        }
+
+        raise RescueErrorsResponse.new(error_messages), response_error_code.eql?('11') ? '' : 'Failed to charge card.'
+      end
+
+      return response
+    end
+    
+  end
+
+  class RescueErrorsResponse < StandardError
+    attr_accessor :error_message
+
+    def initialize(error_message)
+      @error_message = error_message
+    end
+  end
 end
