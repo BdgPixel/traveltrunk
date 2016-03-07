@@ -200,6 +200,58 @@ class DealsController < ApplicationController
     end
   end
 
+  # Charge using authorizenet
+  def update_credit
+    begin
+      exp_month = params[:update_credit][:exp_month].rjust(2, '0')
+      exp_year = params[:update_credit][:exp_year][-2, 2]
+
+      params_hash = {
+        amount: params[:update_credit][:amount].to_f,
+        card_number: params[:update_credit][:card_number],
+        exp_date: "#{exp_month}#{exp_year}",
+        cvv: params[:update_credit][:cvv] 
+      }
+      # binding.pry
+      payment = AuthorizeNetLib::PaymentTransactions.new
+      # binding.pry
+      request = payment.charge(params_hash)
+
+      if request.messages.resultCode.eql? 'Ok'
+        puts "Successfully charge (auth + capture) (authorization code: #{request.transactionResponse.authCode})"
+        
+        amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
+        transaction = current_user.transactions.new(amount: amount_in_cents, transaction_type: 'deposit')
+
+        if transaction.save
+          total_credit = current_user.total_credit + amount_in_cents
+          current_user.update_attributes(total_credit: total_credit)
+
+          @user_total_credit = current_user.total_credit / 100.0
+          @transaction_amount = transaction.amount / 100.0
+
+          current_user.create_activity key: "payment.manual", owner: current_user,
+            recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @User_total_credit }
+
+          if @group
+            @total_credit = @group.total_credit / 100.0
+          else
+            @total_credit = @user_total_credit
+          end
+
+          # StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
+          @notification_count = current_user.get_notification(false).count
+
+        end
+      end
+
+    rescue Exception => e
+      @error_response = "#{e.message} #{e.error_message[:response_error_text]}"
+    end
+  end
+
+# Charge using stripe
+=begin
   def update_credit
     begin
       amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
@@ -244,6 +296,7 @@ class DealsController < ApplicationController
       @error_response = e.message
     end
   end
+=end
 
   def confirmation_page
     if params[:reservation_id]
