@@ -17,26 +17,40 @@ module AuthorizeNetLib
   end
 
   class Customers < Global
-    def create_profile
+    def create_profile(customer)
       request = AuthorizeNet::API::CreateCustomerProfileRequest.new
       # validation mode = testMode, none, liveMode
       # request.validationMode = 'testMode'
       request.profile = AuthorizeNet::API::CustomerProfileType.new
 
-      request.profile.merchantCustomerId = 'customer[:merchant_customer_id]'
+      request.profile.merchantCustomerId = customer[:merchant_customer_id]
       # request.profile.description = 'yuhuu'
       request.profile.email = customer[:email]
       request.profile.paymentProfiles = nil
       request.profile.shipToList = nil
+
+      # Dummy data
+      # request.profile.merchantCustomerId = 'jdoe123'
+      # request.profile.email = 'John2@mail.com'
+      # request.profile.paymentProfiles = nil
+      # request.profile.shipToList = nil
 
       response = @@transaction.create_customer_profile(request)
 
       if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
         puts "Successfully created a customer profile with id: #{response.customerProfileId}"
       else
-        puts response.messages.messages[0].text
-         "Failed to create a new customer profile"
+        response_message = response.messages.messages[0].text
+        response_error_code = response.messages.messages[0].code
+
+        error_messages = {
+          response_message: response_message,
+          response_error_code: response_error_code
+        }
+
+        raise RescueErrorsResponse.new(error_messages), 'Failed to create a new customer profile.'
       end
+
       return response
     end
 
@@ -97,15 +111,16 @@ module AuthorizeNetLib
   end
 
   class PaymentTransactions < Global
-    def charge(credit_params)
+    def charge(credit_params = nil)
       request = AuthorizeNet::API::CreateTransactionRequest.new
+      request.refId = AuthorizeNetLib::Global.genrate_random_id('ref')
       request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
 
-      request.transactionRequest.amount = credit_params[:amount]
-      # request.transactionRequest.amount = ((SecureRandom.random_number + 1 ) * 150 ).round(2)
+      # request.transactionRequest.amount = credit_params[:amount]
+      request.transactionRequest.amount = ((SecureRandom.random_number + 1 ) * 150 ).round(2)
       request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
-      # request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new('4242424242424242','0220','123') 
-      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new(credit_params[:card_number], credit_params[:exp_date], credit_params[:cvv])
+      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new('4242424242424242','0220','123') 
+      # request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new(credit_params[:card_number], credit_params[:exp_date], credit_params[:cvv])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthOnlyTransaction
 
@@ -113,6 +128,9 @@ module AuthorizeNetLib
       
       if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
         puts "Successfully charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
+        puts "refId #{response.refId}"
+        puts "transId #{response.transactionResponse.transId}"
+        # puts "reftransId #{response.transactionResponse.refTransId}"
       else
         response_message = response.messages.messages[0].text
 
