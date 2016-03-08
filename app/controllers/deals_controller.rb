@@ -212,9 +212,8 @@ class DealsController < ApplicationController
         exp_date: "#{exp_month}#{exp_year}",
         cvv: params[:update_credit][:cvv] 
       }
-      # binding.pry
+      
       payment = AuthorizeNetLib::PaymentTransactions.new
-      # binding.pry
       request = payment.charge(params_hash)
 
       if request.messages.resultCode.eql? 'Ok'
