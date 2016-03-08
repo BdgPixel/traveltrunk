@@ -1,7 +1,8 @@
 class BankAccount < ActiveRecord::Base
   belongs_to :user
 
-  before_save :set_stripe_customer, :set_stripe_subscription
+  # before_save :set_stripe_customer, :set_stripe_subscription
+  before_save :set_customer_profile
   before_destroy :unsubscriptions
 
   attr_accessor :exp_month, :exp_year, :card_number, :stripe_token
@@ -23,6 +24,25 @@ class BankAccount < ActiveRecord::Base
     end
   end
 
+  def set_customer_profile
+    user = self.user
+    if user
+      begin
+        customer_from_authorize_net = AuthorizeNetLib::Customers.new
+        unless user.customer
+          merchant_customer_id = AuthorizeNetLib::Global.genrate_random_id('cus')
+          response = customer_from_authorize_net.create_profile({ merchant_customer_id: merchant_customer_id, email: self.user.email })
+          Customer.create(customer_id: merchant_customer_id, user_id: user.id)
+        end
+      rescue Exception => e
+        logger.error e.message
+        self.errors.add(:authorize_net_error, e.error_message[:response_message])
+        false
+      end
+    end
+  end
+
+=begin
   def set_stripe_customer
     user = self.user
     if user
@@ -108,6 +128,7 @@ class BankAccount < ActiveRecord::Base
       end
     end
   end
+=end
 
   def unsubscriptions
     if self.user
