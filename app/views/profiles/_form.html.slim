@@ -154,7 +154,7 @@
 
         .col-md-6
           .form-group
-            = f.input :transfer_frequency, collection: ['Daily', 'Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+            = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
             .transfer-frequency-error
 
     .col-md-12
