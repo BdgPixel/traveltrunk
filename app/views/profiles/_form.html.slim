@@ -7,6 +7,11 @@
 
 .row
   = simple_form_for current_user, method: :put, url: profile_url do |f|
+    - if @bank_account.errors.any?
+      #error_authorize_net.alert.alert-danger
+        strong Warning! &nbsp;&nbsp;
+        = @bank_account.errors[:authorize_net_error].to_sentence
+
     - if current_user.errors.any?
       #error_explanation.alert.alert-danger
         strong Warning! &nbsp;&nbsp;
