@@ -126,8 +126,14 @@
         .col-md-6
           .form-group
             = label_tag :card_number
-            input[type="text" size="20" data-stripe="number" class="form-control"]
+            input[type="text" size="20" data-stripe="number" class="form-control" autocomplete="off"]
             .payment-errors
+
+        .col-md-3
+          .form-group
+            = label_tag :cvv
+            input[type="password" size="20" data-stripe="cvc" class="form-control" maxlength="4"]
+            / = f.input :cvv, as: :password, input_html: { class: "form-control", maxlength: 4 }
 
         .col-md-3
           .form-group
