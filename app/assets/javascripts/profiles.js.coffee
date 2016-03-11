@@ -48,10 +48,10 @@ stripeResponseHandler = (status, response) ->
     # Insert the token into the form so it gets submitted to the server
     $form.append $('<input type="hidden" name="stripeToken" />').val(token)
     creditCard = $('input[data-stripe="number"]').val()
-    $form.append $('<input type="hidden" name="creditCard spellcheck="false" />').val(creditCard)
+    $form.append $('<input type="hidden" name="creditCard" autocomplete="false" />').val(creditCard)
     $form.append $('<input type="hidden" name="expMonth" />').val(response.card.exp_month)
     $form.append $('<input type="hidden" name="expYear" />').val(response.card.exp_year)
-    $form.append $('<input type="hidden" name="cvc" />').val($('input[data-stripe="cvc"]').val())
+    $form.append $('<input type="hidden" name="cvc" autocomplete="false" />').val($('input[data-stripe="cvc"]').val())
 
     # and submit
     $form.get(0).submit()
