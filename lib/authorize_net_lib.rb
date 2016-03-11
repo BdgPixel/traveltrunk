@@ -54,6 +54,47 @@ module AuthorizeNetLib
       return response
     end
 
+    def get_customer_profile(customer_profile_id)
+      request = AuthorizeNet::API::GetCustomerProfileRequest.new
+      request.customerProfileId = customer_profile_id
+
+      response = @@transaction.get_customer_profile(request)
+
+      if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum.Ok
+        puts "Successfully retrieved a customer with profile id is #{response.customerProfileId} and whose customer id is #{response.profile.merchantCustomerId}"
+
+        response.profile.paymentProfiles.each do |paymentProfile|
+          puts "Payment Profile ID #{paymentProfile.customerPaymentProfileId}"
+          puts "Payment Details:"
+          if paymentProfile.billTo != nil
+            puts "Last Name #{paymentProfile.billTo.lastName}"
+            puts "Address #{paymentProfile.billTo.address}"
+          end
+        end
+
+        response.profile.shipToList.each do |ship|
+          puts "Shipping Details"
+          puts "First Name #{ship.firstName}"
+          puts "Last Name #{ship.lastName}"
+          puts "Adress #{ship.adress}"
+          puts "Customer Address IDAdress #{ship.customerAddressId}"
+        end
+
+      else
+        response_message = response.messages.messages[0].text
+        response_error_code = response.messages.messages[0].code
+
+        error_messages = {
+          response_message: response_message,
+          response_error_code: response_error_code
+        }
+
+        raise RescueErrorsResponse.new(error_messages), "Failed to get customer profile information with id #{request.customerProfileId}"
+      end
+
+      return response
+    end
+
     def create_payment_profile(customerProfileId = '39737024')
       request = AuthorizeNet::API::CreateCustomerPaymentProfileRequest.new
       payment = AuthorizeNet::API::PaymentType.new(AuthorizeNet::API::CreditCardType.new('370000000000002', '0320'))
@@ -74,26 +115,62 @@ module AuthorizeNetLib
   end
 
   class RecurringBilling < Global
-    def create_subscription
+    def create_subscription(recurring_params)
       request = AuthorizeNet::API::ARBCreateSubscriptionRequest.new
-      request.refId = DateTime.now.to_s[-8]
+      request.refId = recurring_params[:ref_id]
+
       request.subscription = AuthorizeNet::API::ARBSubscriptionType.new
-      request.subscription.name = 'Jhono yuhuu'
+      request.subscription.name = "#{recurring_params[:customer][:first_name]}#{recurring_params[:customer][:last_name]}"
+      request.subscription.amount = recurring_params[:plan][:amount]
+
       request.subscription.paymentSchedule = AuthorizeNet::API::PaymentScheduleType.new
-      request.subscription.paymentSchedule.interval = AuthorizeNet::API::PaymentScheduleType::Interval.new('7', 'days')
-      request.subscription.paymentSchedule.startDate = (DateTime.now).to_s[0...10]
-      request.subscription.paymentSchedule.totalOccurrences = '1'
-      # request.subscription.paymentSchedule.trialOccurrences = '1'
+      request.subscription.paymentSchedule.interval = AuthorizeNet::API::PaymentScheduleType::Interval.new
+      request.subscription.paymentSchedule.interval.length = recurring_params[:plan][:interval_length]
+      request.subscription.paymentSchedule.interval.unit = recurring_params[:plan][:interval_unit]
+      request.subscription.paymentSchedule.startDate = recurring_params[:plan][:star_date]
+      request.subscription.paymentSchedule.totalOccurrences = recurring_params[:plan][:total_occurrences]
+      
 
-      random_amount = ((SecureRandom.random_number + 1) * 150).round(2)
-      request.subscription.amount = random_amount
-      # request.subscription.trialAmount = 0.00
       request.subscription.payment = AuthorizeNet::API::PaymentType.new
-      request.subscription.payment.creditCard = AuthorizeNet::API::CreditCardType.new('370000000000002', '0320', '123')
+      
+      request.subscription.payment.creditCard = AuthorizeNet::API::CreditCardType.new
+      request.subscription.payment.creditCard.cardNumber = recurring_params[:card][:credit_card]
+      request.subscription.payment.creditCard.expirationDate = recurring_params[:card][:exp_card]
+      request.subscription.payment.creditCard.cardCode = recurring_params[:card][:cvc]
 
-      request.subscription.order = AuthorizeNet::API::OrderType.new('invoiceNumber123', 'description123')
-      request.subscription.customer = AuthorizeNet::API::CustomerDataType.new(AuthorizeNet::API::CustomerTypeEnum::Individual, 'yuhuu2529', 'yuhuu6541@mail.com')
-      request.subscription.billTo = AuthorizeNet::API::NameAndAddressType.new('Yuhuu', 'Jhono', nil, nil, nil, nil, nil, nil)
+      request.subscription.order = AuthorizeNet::API::OrderType.new
+      request.subscription.order.invoiceNumber = recurring_params[:order][:invoice_number]
+      request.subscription.order.description = recurring_params[:order][:description]
+
+      request.subscription.customer = AuthorizeNet::API::CustomerDataType.new
+      request.subscription.customer.type = AuthorizeNet::API::CustomerTypeEnum::Individual
+      request.subscription.customer.id = recurring_params[:customer][:customer_id]
+      request.subscription.customer.email = recurring_params[:customer][:email]
+
+      request.subscription.billTo = AuthorizeNet::API::NameAndAddressType.new
+      request.subscription.billTo.firstName = recurring_params[:customer][:first_name]
+      request.subscription.billTo.lastName = recurring_params[:customer][:last_name]
+      request.subscription.billTo.company = recurring_params[:customer][:company]
+      request.subscription.billTo.address = recurring_params[:customer][:address]
+      request.subscription.billTo.city = recurring_params[:customer][:city]
+      request.subscription.billTo.state = recurring_params[:customer][:state]
+      request.subscription.billTo.zip = recurring_params[:customer][:zip]
+      request.subscription.billTo.country = recurring_params[:customer][:country]
+
+      # dummy data
+      # request.refId = DateTime.now.to_s[-8]
+      # request.subscription.name = 'Jhono yuhuu'
+      # request.subscription.paymentSchedule.interval = AuthorizeNet::API::PaymentScheduleType::Interval.new('7', 'days')
+      # request.subscription.paymentSchedule.startDate = (DateTime.now).to_s[0...10]
+      # request.subscription.paymentSchedule.totalOccurrences = '1'
+      # request.subscription.paymentSchedule.trialOccurrences = '1'
+      # random_amount = ((SecureRandom.random_number + 1) * 150).round(2)
+      # request.subscription.amount = random_amount
+      # request.subscription.trialAmount = 0.00
+      # request.subscription.payment.creditCard = AuthorizeNet::API::CreditCardType.new('370000000000002', '0320', '123')
+      # request.subscription.order = AuthorizeNet::API::OrderType.new('invoiceNumber123', 'description123')
+      # request.subscription.customer = AuthorizeNet::API::CustomerDataType.new(AuthorizeNet::API::CustomerTypeEnum::Individual, 'yuhuu2529', 'yuhuu6541@mail.com')
+      # request.subscription.billTo = AuthorizeNet::API::NameAndAddressType.new('Yuhuu', 'Jhono', nil, nil, nil, nil, nil, nil)
 
       response = @@transaction.create_subscription(request)
       
@@ -103,11 +180,59 @@ module AuthorizeNetLib
         else
           puts response.messages.messages[0].code
           puts response.messages.messages[0].text
-          raise 'Failed to create a subscription'
+
+          response_message = response.messages.messages[0].text
+          response_error_code = response.messages.messages[0].code
+
+          error_messages = {
+            response_message: response_message,
+            response_error_code: response_error_code
+          }
+          
+          raise RescueErrorsResponse.new(error_messages), 'Failed to create a subscription'
         end
       end
       return response
     end
+
+    def update_subscription(recurring_params, subscriptionId)
+      request = AuthorizeNet::API::ARBUpdateSubscriptionRequest.new
+      request.subscriptionId = subscriptionId
+      request.subscription = AuthorizeNet::API::ARBSubscriptionType.new
+      request.subscription.payment = AuthorizeNet::API::PaymentType.new
+
+      request.subscription.payment.creditCard = AuthorizeNet::API::CreditCardType.new
+      request.subscription.payment.creditCard.cardNumber = recurring_params[:card][:credit_card]
+      request.subscription.payment.creditCard.expirationDate = recurring_params[:card][:exp_card]
+      request.subscription.payment.creditCard.cardCode = recurring_params[:card][:cvc]
+
+      response = @@transaction.update_subscription(request)
+
+      if response != nil
+        if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
+          puts "Successfulluyy updated a subscription"
+          puts response.messages.messages[0].code
+          puts response.messages.messages[0].text
+        else
+          puts response.messages.messages[0].code
+          puts response.messages.messages[0].text
+
+          response_message = response.messages.messages[0].code
+          response_error_code = response.messages.messages[0].text
+
+          error_messages = {
+            response_message: response_message,
+            response_error_code: response_error_code
+          }
+
+          raise RescueErrorsResponse.new(error_messages), 'Failed to get a subscriptions status'
+        end
+
+      end
+
+      return response
+    end
+
   end
 
   class PaymentTransactions < Global
