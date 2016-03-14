@@ -195,9 +195,9 @@ module AuthorizeNetLib
       return response
     end
 
-    def update_subscription(recurring_params, subscriptionId)
+    def update_subscription(recurring_params)
       request = AuthorizeNet::API::ARBUpdateSubscriptionRequest.new
-      request.subscriptionId = subscriptionId
+      request.subscriptionId = recurring_params[:subscription_id]
       request.subscription = AuthorizeNet::API::ARBSubscriptionType.new
       request.subscription.payment = AuthorizeNet::API::PaymentType.new
 
@@ -210,7 +210,7 @@ module AuthorizeNetLib
 
       if response != nil
         if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
-          puts "Successfulluyy updated a subscription"
+          puts "Successfully updated a subscription"
           puts response.messages.messages[0].code
           puts response.messages.messages[0].text
         else
@@ -228,6 +228,64 @@ module AuthorizeNetLib
           raise RescueErrorsResponse.new(error_messages), 'Failed to get a subscriptions status'
         end
 
+      end
+
+      return response
+    end
+
+    # def cancel_subscription(subscription_id, ref_id = nil)
+    #   request = AuthorizeNet::API::ARBCancelSubscriptionRequest.new
+    #   request.refId = ref_id
+    #   request.subscriptionId = subscription_id
+
+    #   response = @@transaction.cancel_subscription(request)
+
+    #   if response != nil
+    #     if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
+    #       puts 'Successfully cancelled a subscription'
+    #     end
+    #   else
+    #     response_message = response.messages.messages[0].text
+    #     response_error_code = response_message.messages[0].code
+
+    #     puts response_message
+    #     puts response_error_code
+
+    #     error_messages = {
+    #       response_message: response_message,
+    #       response_error_code: response_error_code
+    #     }
+
+    #     raise RescueErrorsResponse.new(error_messages), 'Failed to cancel a subscription.'
+    #   end
+
+    #   return response  
+    # end
+
+    def get_subscription_status(subscription_id, ref_id = '')
+      request = AuthorizeNet::API::ARBGetSubscriptionStatusRequest.new
+      request.refId = ref_id
+      request.subscriptionId = subscription_id
+
+      response = @@transaction.get_subscription_status(request)
+
+      if response != nil
+        if response.messages.resultCode == AuthorizeNet::API::MessageTypeEnum::Ok
+          puts "Successfully got subscription status #{response.status}"
+        else
+          response_message = response.messages.messages[0].text
+          response_error_code = response.messages.messages[0].code
+
+          puts response_message
+          puts response_error_code
+
+          error_messages = {
+            response_message: response_message,
+            response_error_code: response_error_code
+          }
+
+          raise RescueErrorsResponse.new(error_messages), 'Failed to get a subscriptions status'
+        end
       end
 
       return response
