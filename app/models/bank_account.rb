@@ -2,10 +2,10 @@ class BankAccount < ActiveRecord::Base
   belongs_to :user
 
   # before_save :set_stripe_customer, :set_stripe_subscription
-  before_save :set_customer_profile
+  before_save :set_customer_profile, :set_recurring_subscription
   before_destroy :unsubscriptions
 
-  attr_accessor :exp_month, :exp_year, :card_number, :stripe_token
+  attr_accessor :exp_month, :exp_year, :card_number, :stripe_token, :credit_card, :cvc
 
   validates :amount_transfer, presence: true
   validates :transfer_frequency, presence: { message: 'please select one' }
@@ -13,14 +13,12 @@ class BankAccount < ActiveRecord::Base
 
   def transfer_type
     case  transfer_frequency
-    when "Daily"
-      ["day", 1, 1]
     when "Weekly"
-      ["week", 1, 7]
+      ["days", 7]
     when "Bi Weekly"
-      ["week", 2, 14]
+      ["days", 14]
     else
-      ["month", 1, 31]
+      ["months", 1]
     end
   end
 
@@ -31,8 +29,14 @@ class BankAccount < ActiveRecord::Base
         customer_from_authorize_net = AuthorizeNetLib::Customers.new
         unless user.customer
           merchant_customer_id = AuthorizeNetLib::Global.genrate_random_id('cus')
-          response = customer_from_authorize_net.create_profile({ merchant_customer_id: merchant_customer_id, email: self.user.email })
-          Customer.create(customer_id: merchant_customer_id, user_id: user.id)
+          response = customer_from_authorize_net.create_profile({ 
+            merchant_customer_id: merchant_customer_id, 
+            email: self.user.email 
+          })
+
+          if response.messages.resultCode.eql? 'Ok'
+            Customer.create(customer_id: merchant_customer_id, user_id: user.id)
+          end
         end
       rescue Exception => e
         logger.error e.message
@@ -40,6 +44,103 @@ class BankAccount < ActiveRecord::Base
         false
       end
     end
+  end
+
+  def set_recurring_subscription
+    user = self.user
+    
+    if user
+      customer = Customer.where(user_id: user.id).first
+      user_subscription = user.subscription
+      amount = self.amount_transfer.to_f
+      interval_frequency, interval_count = self.transfer_type if self.changed.include?('transfer_frequency')
+
+      recurring = AuthorizeNetLib::RecurringBilling.new
+
+      recurring_plan_hash = {
+        ref_id: AuthorizeNetLib::Global.genrate_random_id('ref'),
+        card: {
+          credit_card: self.credit_card,
+          cvc: self.cvc,
+          exp_card: "#{self.exp_month.rjust(2, '0')}#{self.exp_year[-2, 2]}",
+        },
+        plan: {
+          interval_unit: interval_frequency,
+          interval_length: interval_count,
+          star_date: (DateTime.now).to_s[0...10],
+          total_occurrences: '1',
+          amount: amount.to_f,
+        },
+        customer: {
+          # name: "#{self.user.profile.first_name} #{self.user.profile.last_name}",
+          customer_id: customer.customer_id,
+          first_name: user.profile.first_name,
+          last_name: user.profile.last_name,
+          email: user.email,
+          company: nil,
+          address: user.profile.address,
+          city: user.profile.city,
+          state: user.profile.state,
+          zip: user.profile.postal_code,
+          country: user.profile.country_code
+        },
+        order: {
+          invoice_number: AuthorizeNetLib::Global.genrate_random_id('inv'),
+          description: 'descriptionTest'
+        },
+      }
+
+      begin
+        if user.subscription.nil? || self.changed.include?('amount_transfer') || self.changed.include?('transfer_frequency')
+          plan_name = "#{user.profile.first_name.titleize} #{self.transfer_frequency} Savings Plan"
+
+          if user_subscription
+            response_subscription = recurring.update_subscription(recurring_plan_hash, user_subscription.subscription_id)
+
+            if response_subscription.messages.resultCode.eql? 'Ok'
+              user_subscription.update_attributes({
+                plan_id:          nil,
+                amount:           amount * 100,
+                interval:         interval_frequency,
+                interval_count:   interval_count,
+                subscription_id:  user_subscription.subscription_id,
+                plan_name:        plan_name
+              })
+
+              # StripeMailer.subscription_created(user.id).deliver_now
+            end
+          else
+            response_subscription = recurring.create_subscription(recurring_plan_hash)
+
+            if response_subscription.messages.resultCode.eql? 'Ok'
+              # save to Subscription table
+              Subscription.create(
+                plan_id:          nil,
+                subscription_id:  response_subscription.subscriptionId,
+                amount:           amount * 100,
+                currency:         nil,
+                interval:         interval_frequency,
+                interval_count:   interval_count,
+                plan_name:        plan_name,
+                user_id:          user.id
+              )
+
+              # StripeMailer.subscription_created(user.id).deliver_now
+            end
+          end
+        else
+          response_subscription = recurring.update_subscription(recurring_plan_hash, user_subscription.subscription_id)
+        end
+      rescue Exception => e
+        logger.error e.message
+        self.errors.add(:authorize_net_error, e.error_message[:response_message])
+        false
+      end
+    end
+
+  end
+
+  def unsubscriptions
   end
 
 =begin
@@ -128,7 +229,6 @@ class BankAccount < ActiveRecord::Base
       end
     end
   end
-=end
 
   def unsubscriptions
     if self.user
@@ -148,5 +248,6 @@ class BankAccount < ActiveRecord::Base
       end
     end
   end
+=end
 
 end
