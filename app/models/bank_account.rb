@@ -174,19 +174,34 @@ class BankAccount < ActiveRecord::Base
         false
       end
     end
-
   end
 
-  # def unsubscriptions
-  #   if self.user
-  #     begin
-  #       customer = 
-  #     rescue Exception => e
-        
-  #     end
-  #   end
+  def unsubscriptions
+    
+    if self.user
+      begin
+        customer_authorize = AuthorizeNetLib::Customers.new
+        recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
-  # end
+        get_customer = customer_authorize.get_customer_profile(self.user.customer.customer_profile_id)
+        customer_profile_id = get_customer.profile.customerProfileId
+        payment_profile_id = get_customer.profile.paymentProfiles.first.customerPaymentProfileId
+
+        subscription_id = self.user.subscription.subscription_id
+        cancel_subscription = recurring_authorize.cancel_subscription(subscription_id, customer_profile_id, payment_profile_id)
+
+        if cancel_subscription.messages.resultCode.eql? 'Ok'
+          self.user.subscription.destroy
+
+          StripeMailer.cancel_subscription(self.user.id).deliver_now
+          user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
+        end
+      rescue Exception => e
+        logger.error e.message
+      end
+    end
+
+  end
 
 =begin
   def set_stripe_customer
