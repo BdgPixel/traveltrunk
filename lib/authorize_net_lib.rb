@@ -298,11 +298,11 @@ module AuthorizeNetLib
       request.refId = AuthorizeNetLib::Global.genrate_random_id('ref')
       request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
 
-      # request.transactionRequest.amount = credit_params[:amount]
-      request.transactionRequest.amount = ((SecureRandom.random_number + 1 ) * 150 ).round(2)
+      request.transactionRequest.amount = credit_params[:amount]
+      # request.transactionRequest.amount = ((SecureRandom.random_number + 1 ) * 150 ).round(2)
       request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
-      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new('4242424242424242','0220','123') 
-      # request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new(credit_params[:card_number], credit_params[:exp_date], credit_params[:cvv])
+      # request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new('4242424242424242','0220','123') 
+      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new(credit_params[:card_number], credit_params[:exp_date], credit_params[:cvv])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthOnlyTransaction
 
