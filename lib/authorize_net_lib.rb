@@ -6,8 +6,9 @@ module AuthorizeNetLib
 
   class Global
     def initialize
-      @@api_login_id = '7gMRQp555ys3'
-      @@api_transaction_key = '32URh6L3H6zbP4z5'
+      @@api_login_id = ENV['AUTHORIZE_NET_API_LOGIN_ID']
+      @@api_transaction_key = ENV['AUTHORIZE_NET_API_TRANSACTION_KEY']
+      
       @@transaction = AuthorizeNet::API::Transaction.new(@@api_login_id, @@api_transaction_key, gateway: :sandbox)
     end
 
