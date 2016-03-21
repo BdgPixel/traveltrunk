@@ -5,7 +5,6 @@
       small
         i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
       
-      / - binding.pry
       - if activity.key.eql?('payment.manual') && activity.parameters[:is_request_refund].eql?(false)
         | &nbsp;
         = link_to 'Refund', refunds_create_path(id: activity.id, trans_id: activity.parameters[:trans_id]), class: 'btn btn-orange btn-xs'
