@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20160318062827) do
+ActiveRecord::Schema.define(version: 20160318121736) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,28 @@ ActiveRecord::Schema.define(version: 20160318062827) do
 
   add_index "rating_caches", ["cacheable_id", "cacheable_type"], name: "index_rating_caches_on_cacheable_id_and_cacheable_type", using: :btree
 
+  create_table "refunds", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "transaction_ref_id"
+    t.integer  "amount"
+    t.string   "confirmation",       default: "pending"
+    t.datetime "created_at",                             null: false
+    t.datetime "updated_at",                             null: false
+  end
+
+  add_index "refunds", ["user_id"], name: "index_refunds_on_user_id", using: :btree
+
+  create_table "request_refunds", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "transaction_ref_id"
+    t.string   "trans_id"
+    t.boolean  "is_confirmed",       default: false
+    t.datetime "created_at",                         null: false
+    t.datetime "updated_at",                         null: false
+  end
+
+  add_index "request_refunds", ["user_id"], name: "index_request_refunds_on_user_id", using: :btree
+
   create_table "reservations", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "itinerary"
@@ -215,6 +237,7 @@ ActiveRecord::Schema.define(version: 20160318062827) do
     t.string   "invoice_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "ref_id"
     t.string   "trans_id"
   end
 
@@ -274,6 +297,8 @@ ActiveRecord::Schema.define(version: 20160318062827) do
   add_foreign_key "likes", "users"
   add_foreign_key "profiles", "users"
   add_foreign_key "promo_codes", "users"
+  add_foreign_key "refunds", "users"
+  add_foreign_key "request_refunds", "users"
   add_foreign_key "reservations", "users"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "transactions", "users"
