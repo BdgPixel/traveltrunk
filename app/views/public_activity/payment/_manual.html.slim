@@ -4,7 +4,10 @@
       | You successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account. Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
       small
         i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
-      | &nbsp;
-      = link_to 'Refund', 'javascript:void(0)', class: 'btn btn-orange btn-xs'
+      
+      / - binding.pry
+      - if activity.key.eql?('payment.manual') && activity.parameters[:is_request_refund].eql?(false)
+        | &nbsp;
+        = link_to 'Refund', refunds_create_path(id: activity.id, trans_id: activity.parameters[:trans_id]), class: 'btn btn-orange btn-xs'
 / - else
 /   h1 which has since been removed
