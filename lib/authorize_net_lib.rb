@@ -338,6 +338,41 @@ module AuthorizeNetLib
       response
     end
     
+    def refund_transaction(params_refund)
+      request = AuthorizeNet::API::CreateTransactionRequest.new
+      request.refId = params_refund[:ref_id]
+
+      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
+      request.transactionRequest.amount = params_refund[:amount]
+
+      request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
+      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new
+      request.transactionRequest.payment.creditCard.cardNumber = params_refund[:last_card_number]
+      request.transactionRequest.payment.creditCard.expirationDate = params_refund[:exp_card]
+      request.transactionRequest.payment.creditCard.cardCode = nil
+      request.transactionRequest.refTransId = params_refund[:trans_id]
+
+      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::RefundTransaction
+
+      response = @@transaction.create_transaction(request)
+
+      if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
+        puts "Successfully refunded a transaction (Transaction ID #{response.transactionRequest.transId}"
+      else
+        response_message = response.messages.messages.first.text
+        response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
+
+        error_messages = { 
+          response_message: response_message,
+          response_error_text: response_error_text,
+          response_error_code: response_error_code
+        }
+
+        raise RescueErrorsResponse.new(error_messages), 'Failed to refund a transaction.'
+      end
+
+      response
+    end
   end
 
   class RescueErrorsResponse < StandardError
