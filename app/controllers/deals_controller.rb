@@ -214,13 +214,18 @@ class DealsController < ApplicationController
       }
       
       payment = AuthorizeNetLib::PaymentTransactions.new
-      request = payment.charge(params_hash)
+      response_payment = payment.charge(params_hash)
 
-      if request.messages.resultCode.eql? 'Ok'
-        puts "Successfully charge (auth + capture) (authorization code: #{request.transactionResponse.authCode})"
+      if response_payment.messages.resultCode.eql? 'Ok'
+        puts "Successfully charge (auth + capture) (authorization code: #{response_payment.transactionResponse.authCode})"
         
         amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
-        transaction = current_user.transactions.new(amount: amount_in_cents, transaction_type: 'deposit')
+        transaction = current_user.transactions.new(
+          amount: amount_in_cents, 
+          transaction_type: 'deposit', 
+          ref_id: response_payment.refId,
+          trans_id: response_payment.transactionResponse.transId
+        )
 
         if transaction.save
           total_credit = current_user.total_credit + amount_in_cents
@@ -229,8 +234,17 @@ class DealsController < ApplicationController
           @user_total_credit = current_user.total_credit / 100.0
           @transaction_amount = transaction.amount / 100.0
 
-          current_user.create_activity key: "payment.manual", owner: current_user,
-            recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @User_total_credit }
+          current_user.create_activity(
+            key: "payment.manual", 
+            owner: current_user,
+            recipient: current_user, 
+            parameters: { 
+              amount: @transaction_amount, 
+              total_credit: @User_total_credit,
+              trans_id: transaction.trans_id,
+              is_request_refund: false 
+            }
+          )
 
           if @group
             @total_credit = @group.total_credit / 100.0
@@ -238,7 +252,9 @@ class DealsController < ApplicationController
             @total_credit = @user_total_credit
           end
 
-          # StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
+          card_last_number = response_payment.transactionResponse.accountNumber[-4..-1]
+
+          StripeMailer.payment_succeed(current_user.id, transaction.amount, card_last_number).deliver_now
           @notification_count = current_user.get_notification(false).count
 
         end
