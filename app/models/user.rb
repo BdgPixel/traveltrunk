@@ -14,6 +14,7 @@ class User < ActiveRecord::Base
   has_many :users_groups, dependent: :destroy
   has_many :transactions, dependent: :destroy
   has_many :reservations, dependent: :destroy
+  has_many :refunds, dependent: :destroy
 
   accepts_nested_attributes_for :profile
   # accepts_nested_attributes_for :bank_account
