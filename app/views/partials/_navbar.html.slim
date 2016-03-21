@@ -24,6 +24,7 @@
             - if current_user.admin?
               li = link_to 'Promo Codes', admin_promo_codes_path
               li = link_to 'List Users', admin_list_users_path
+              li = link_to 'Request Refunds', admin_refunds_path
               li.dropdown
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                   = current_user.email
