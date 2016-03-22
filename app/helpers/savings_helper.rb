@@ -14,10 +14,15 @@ module SavingsHelper
   end
 
   def savings_interval(interval, interval_count)
-    if ['day', 'week', 'month'].include?(interval) && interval_count.eql?(1)
-      interval
+    interval_unit = ['days', 'months']
+
+    if interval_unit.include?(interval) && interval_count.eql?(7)
+      'week'
+    elsif interval_unit.include?(interval) && interval_count.eql?(14)
+      pluralize(2, 'week')
     else
-      pluralize(interval_count, interval)
+      'month'
     end
+    
   end
 end
