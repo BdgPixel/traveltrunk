@@ -240,7 +240,7 @@ class DealsController < ApplicationController
             recipient: current_user, 
             parameters: { 
               amount: @transaction_amount, 
-              total_credit: @User_total_credit,
+              total_credit: @user_total_credit,
               trans_id: transaction.trans_id,
               is_request_refund: false 
             }
