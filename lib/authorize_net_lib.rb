@@ -377,7 +377,7 @@ module AuthorizeNetLib
       response = @@transaction.create_transaction(request)
 
       if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
-        puts "Successfully refunded a transaction (Transaction ID #{response.transactionRequest.transId}"
+        puts "Successfully refunded a transaction (Transaction ID #{response.transactionResponse.transId}"
       else
         response_message = response.messages.messages.first.text
         response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
