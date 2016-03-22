@@ -1,6 +1,4 @@
 class Admin::RefundsController < ApplicationController
-  # include AuthorizeNetLib
-
   before_action :set_refund, only: :update
   before_action :set_customers_authorize_net, only: :update
 
@@ -14,8 +12,21 @@ class Admin::RefundsController < ApplicationController
     else
       total_credit = @refund.user.total_credit - @refund.amount
 
-      @refund.update_attributes(confirmed: 'yes')
-      @refund.user.update_attributes(total_credit: total_credit)
+      if @refund.update_attributes(confirmed: 'yes')
+        @refund.user.update_attributes(total_credit: total_credit)
+
+        current_user.create_activity(
+          key: "refund.approved", 
+          owner: current_user,
+          recipient: @refund.user, 
+          parameters: { 
+            amount: @refund.amount, 
+            total_credit: @refund.user.total_credit
+          }
+        )
+
+        RefundMailer.approved(@refund).deliver_now
+      end
 
       redirect_to admin_refunds_url, notice: @response_refund_transaction
     end
