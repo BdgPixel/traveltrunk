@@ -1,6 +1,4 @@
 module AuthorizeNetLib
-  # Customer Information Manager (CIM)
-
   require 'authorizenet'
   # include AuthorizeNet::API
 
@@ -17,6 +15,7 @@ module AuthorizeNetLib
     end
   end
 
+  # Customer Information Manager (CIM)
   class Customers < Global
     def create_profile(customer)
       request = AuthorizeNet::API::CreateCustomerProfileRequest.new
@@ -293,16 +292,37 @@ module AuthorizeNetLib
   end
 
   class PaymentTransactions < Global
-    def charge(credit_params = nil)
+    def charge(payment_params, customer_profile_params)
+      customer_profile_email = customer_profile_params.email
+      customer_profile_merchan_id = customer_profile_params.merchantCustomerId
+      customer_payment_profile =  customer_profile_params.paymentProfiles.first.billTo
+
       request = AuthorizeNet::API::CreateTransactionRequest.new
       request.refId = AuthorizeNetLib::Global.genrate_random_id('ref')
-      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
 
-      request.transactionRequest.amount = credit_params[:amount]
-      # request.transactionRequest.amount = ((SecureRandom.random_number + 1 ) * 150 ).round(2)
+      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
+      request.transactionRequest.amount = payment_params[:amount]
+
       request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
-      # request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new('4242424242424242','0220','123') 
-      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new(credit_params[:card_number], credit_params[:exp_date], credit_params[:cvv])
+
+      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new
+      request.transactionRequest.payment.creditCard.cardNumber = payment_params[:card_number]
+      request.transactionRequest.payment.creditCard.expirationDate = payment_params[:exp_date]
+      request.transactionRequest.payment.creditCard.cardCode = payment_params[:cvv]
+
+      request.transactionRequest.customer = AuthorizeNet::API::CustomerType.new(nil, customer_profile_merchan_id, customer_profile_email)
+
+      request.transactionRequest.billTo = AuthorizeNet::API::CustomerAddressType.new
+      request.transactionRequest.billTo.firstName = customer_payment_profile.firstName
+      request.transactionRequest.billTo.lastName = customer_payment_profile.lastName
+      request.transactionRequest.billTo.company = customer_payment_profile.company
+      request.transactionRequest.billTo.address = customer_payment_profile.address
+      request.transactionRequest.billTo.city = customer_payment_profile.city
+      request.transactionRequest.billTo.state = customer_payment_profile.state
+      request.transactionRequest.billTo.zip = customer_payment_profile.zip
+      request.transactionRequest.billTo.country = customer_payment_profile.country
+      request.transactionRequest.billTo.phoneNumber = customer_payment_profile.phoneNumber
+      request.transactionRequest.billTo.faxNumber = customer_payment_profile.faxNumber
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthOnlyTransaction
 
