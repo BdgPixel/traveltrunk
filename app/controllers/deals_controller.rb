@@ -214,7 +214,12 @@ class DealsController < ApplicationController
       }
       
       payment = AuthorizeNetLib::PaymentTransactions.new
-      response_payment = payment.charge(params_hash)
+      customer_authorize = AuthorizeNetLib::Customers.new
+
+      get_customer_profile = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
+      customer_profile =  get_customer_profile.profile
+      
+      response_payment = payment.charge(params_hash, customer_profile)
 
       if response_payment.messages.resultCode.eql? 'Ok'
         puts "Successfully charge (auth + capture) (authorization code: #{response_payment.transactionResponse.authCode})"
@@ -246,11 +251,12 @@ class DealsController < ApplicationController
             }
           )
 
-          if @group
-            @total_credit = @group.total_credit / 100.0
-          else
-            @total_credit = @user_total_credit
-          end
+          @total_credit = 
+            if @group
+              @group.total_credit / 100.0
+            else
+              @user_total_credit
+            end
 
           card_last_number = response_payment.transactionResponse.accountNumber[-4..-1]
 
