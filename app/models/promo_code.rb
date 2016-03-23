@@ -3,6 +3,8 @@ class PromoCode < ActiveRecord::Base
 
   validates :token, :amount, :exp_date, :user_id, presence: true
 
+  attr_accessor :exp_month, :exp_year, :card_number, :stripe_token, :cvc
+
   def displayed_status
     today = Date.today
 
