@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:stripe_webhook]
-  skip_before_action :authenticate, only: :stripe_webhook
+  skip_before_filter :verify_authenticity_token, only: [:authorize_net_webhook]
+  skip_before_action :authenticate, only: :authorize_net_webhook
   before_action :authenticate_user!, only: [:create, :thank_you_page]
 
   def create
@@ -43,6 +43,34 @@ class PaymentsController < ApplicationController
     @charge = Stripe::Charge.retrieve(params[:charge_id])
   end
 
+  def authorize_net_webhook
+    response = request.parameters
+    response['x_invoice_num'] = AuthorizeNetLib::Global.genrate_random_id('inv')
+
+    customer = Customer.find_by(customer_id: response['x_cust_id'])
+
+    transaction = Transaction.new(
+      user_id: customer.user.id,
+      invoice_id: response['x_invoice_num'],
+      amount: response['x_amount'].to_f * 100,
+      customer_id: response['x_cust_id'],
+      transaction_type: 'deposit'
+    )
+
+    if transaction.save
+      user = User.find(transaction.user_id)
+      user.total_credit += transaction.amount
+      user.save
+
+      StripeMailer.subscription_charged(user.id, transaction.amount).deliver_now
+      user.create_activity key: "payment.recurring", owner: user,
+        recipient: user, parameters: { amount: (transaction.amount / 100.0), total_credit: user.total_credit / 100.0 }
+    end
+
+    render nothing: true, status: 200
+  end
+
+=begin
   def stripe_webhook
     response = JSON.parse(request.body.read)
 
@@ -71,4 +99,7 @@ class PaymentsController < ApplicationController
 
     render nothing: true, status: 200
   end
+=end
+
 end
+
