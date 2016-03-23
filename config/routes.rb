@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   get  'refunds/create'
-    
+
   get  'promo_codes/activation'
   post 'promo_codes/update'
 
@@ -17,10 +17,9 @@ Rails.application.routes.draw do
   get 'destinations/clear'
 
   get  'payments' => 'payments#index'
-  get  'payments/clear_stripe' => 'payments#clear_stripe'
   post 'payments/create'
   get  'payments/thank_you_page'
-  post 'payments/stripe_webhook'
+  post 'payments/authorize_net_webhook'
 
   get  'savings' => 'savings#index'
 
