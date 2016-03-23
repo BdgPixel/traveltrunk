@@ -292,11 +292,7 @@ module AuthorizeNetLib
   end
 
   class PaymentTransactions < Global
-    def charge(payment_params, customer_profile_params)
-      customer_profile_email = customer_profile_params.email
-      customer_profile_merchan_id = customer_profile_params.merchantCustomerId
-      customer_payment_profile =  customer_profile_params.paymentProfiles.first.billTo
-
+    def charge(payment_params, customer_profile_params = nil)
       request = AuthorizeNet::API::CreateTransactionRequest.new
       request.refId = AuthorizeNetLib::Global.genrate_random_id('ref')
 
@@ -310,28 +306,31 @@ module AuthorizeNetLib
       request.transactionRequest.payment.creditCard.expirationDate = payment_params[:exp_date]
       request.transactionRequest.payment.creditCard.cardCode = payment_params[:cvv]
 
-      request.transactionRequest.customer = AuthorizeNet::API::CustomerType.new(nil, customer_profile_merchan_id, customer_profile_email)
+      if customer_profile_params
+        customer_profile_email = customer_profile_params.email
+        customer_profile_merchan_id = customer_profile_params.merchantCustomerId
+        customer_payment_profile =  customer_profile_params.paymentProfiles.first.billTo
 
-      request.transactionRequest.billTo = AuthorizeNet::API::CustomerAddressType.new
-      request.transactionRequest.billTo.firstName = customer_payment_profile.firstName
-      request.transactionRequest.billTo.lastName = customer_payment_profile.lastName
-      request.transactionRequest.billTo.company = customer_payment_profile.company
-      request.transactionRequest.billTo.address = customer_payment_profile.address
-      request.transactionRequest.billTo.city = customer_payment_profile.city
-      request.transactionRequest.billTo.state = customer_payment_profile.state
-      request.transactionRequest.billTo.zip = customer_payment_profile.zip
-      request.transactionRequest.billTo.country = customer_payment_profile.country
-      request.transactionRequest.billTo.phoneNumber = customer_payment_profile.phoneNumber
-      request.transactionRequest.billTo.faxNumber = customer_payment_profile.faxNumber
+        request.transactionRequest.customer = AuthorizeNet::API::CustomerType.new(nil, customer_profile_merchan_id, customer_profile_email)
 
-      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthOnlyTransaction
+        request.transactionRequest.billTo = AuthorizeNet::API::CustomerAddressType.new
+        request.transactionRequest.billTo.firstName = customer_payment_profile.firstName
+        request.transactionRequest.billTo.lastName = customer_payment_profile.lastName
+        request.transactionRequest.billTo.company = customer_payment_profile.company
+        request.transactionRequest.billTo.address = customer_payment_profile.address
+        request.transactionRequest.billTo.city = customer_payment_profile.city
+        request.transactionRequest.billTo.state = customer_payment_profile.state
+        request.transactionRequest.billTo.zip = customer_payment_profile.zip
+        request.transactionRequest.billTo.country = customer_payment_profile.country
+        request.transactionRequest.billTo.phoneNumber = customer_payment_profile.phoneNumber
+        request.transactionRequest.billTo.faxNumber = customer_payment_profile.faxNumber
+      end
+
+      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
 
       response = @@transaction.create_transaction(request)
 
-      authTransId = 0
-
       if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
-        authTransId = response.transactionResponse.transId
         puts "Successfully charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
         puts "refId #{response.refId}"
         puts "transId #{response.transactionResponse.transId}"
@@ -356,39 +355,6 @@ module AuthorizeNetLib
         }
 
         raise RescueErrorsResponse.new(error_messages), response_error_code.eql?('11') ? '' : 'Failed to charge card.'
-      end
-
-      response = capture_previously_authorized_amount(authTransId, payment_params[:amount])
-    end
-
-    def capture_previously_authorized_amount(trans_id, amount)
-      request = AuthorizeNet::API::CreateTransactionRequest.new
-        
-      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new()
-      request.transactionRequest.amount = amount
-      request.transactionRequest.refTransId = trans_id
-      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::PriorAuthCaptureTransaction
-      
-      response = @@transaction.create_transaction(request)
-    
-      if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
-        puts "Successfully captured the authorized amount (Transaction ID: #{response.transactionResponse.transId})"
-    
-      else
-        response_message = response.messages.messages.first.text
-        response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
-
-        puts response_message
-        puts response_error_code
-        puts response_error_text
-
-        error_messages = { 
-          response_message: response_message,
-          response_error_text: response_error_text,
-          response_error_code: response_error_code
-        }
-
-        raise RescueErrorsResponse.new(error_messages), 'Failed to capture the funds'
       end
 
       response
