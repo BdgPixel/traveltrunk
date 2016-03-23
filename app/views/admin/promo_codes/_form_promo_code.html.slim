@@ -1,8 +1,8 @@
 = simple_form_for [:admin, @promo_code], html: { id: "formPromoCode" } do |f|
-  .col-md-12
+  .col-md-6
     .form-group
       = f.label :card_number
-      input[type="text" data-stripe="number" id="promo_code_card_number" class="form-control" autofocus="autofocus" placeholder="example: 4242424242424242"]
+      input[type="text" data-stripe="number" id="promo_code_card_number" class="form-control" autofocus="autofocus" placeholder="example: 4242424242424242" autocomplete="false"]
       = image_tag asset_path('cards/mastercard.png')
       |&nbsp;
       = image_tag asset_path('cards/visa.png')
@@ -11,6 +11,10 @@
       |&nbsp;
       = image_tag asset_path('cards/discover.png')
       .payment-errors.number
+
+  .col-md-6
+    = f.input :cvc, as: :password, input_html: { class: "form-control", maxlength: 4 }
+    .payment-errors.cvc
 
   .col-md-12
     .row
