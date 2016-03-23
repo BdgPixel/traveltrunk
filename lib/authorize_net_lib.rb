@@ -327,8 +327,11 @@ module AuthorizeNetLib
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthOnlyTransaction
 
       response = @@transaction.create_transaction(request)
-      
+
+      authTransId = 0
+
       if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
+        authTransId = response.transactionResponse.transId
         puts "Successfully charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
         puts "refId #{response.refId}"
         puts "transId #{response.transactionResponse.transId}"
@@ -353,6 +356,39 @@ module AuthorizeNetLib
         }
 
         raise RescueErrorsResponse.new(error_messages), response_error_code.eql?('11') ? '' : 'Failed to charge card.'
+      end
+
+      response = capture_previously_authorized_amount(authTransId, payment_params[:amount])
+    end
+
+    def capture_previously_authorized_amount(trans_id, amount)
+      request = AuthorizeNet::API::CreateTransactionRequest.new
+        
+      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new()
+      request.transactionRequest.amount = amount
+      request.transactionRequest.refTransId = trans_id
+      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::PriorAuthCaptureTransaction
+      
+      response = @@transaction.create_transaction(request)
+    
+      if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
+        puts "Successfully captured the authorized amount (Transaction ID: #{response.transactionResponse.transId})"
+    
+      else
+        response_message = response.messages.messages.first.text
+        response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
+
+        puts response_message
+        puts response_error_code
+        puts response_error_text
+
+        error_messages = { 
+          response_message: response_message,
+          response_error_text: response_error_text,
+          response_error_code: response_error_code
+        }
+
+        raise RescueErrorsResponse.new(error_messages), 'Failed to capture the funds'
       end
 
       response

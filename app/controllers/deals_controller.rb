@@ -222,8 +222,6 @@ class DealsController < ApplicationController
       response_payment = payment.charge(params_hash, customer_profile)
 
       if response_payment.messages.resultCode.eql? 'Ok'
-        puts "Successfully charge (auth + capture) (authorization code: #{response_payment.transactionResponse.authCode})"
-        
         amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
         transaction = current_user.transactions.new(
           amount: amount_in_cents, 
