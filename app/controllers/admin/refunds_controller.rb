@@ -62,8 +62,4 @@ class Admin::RefundsController < ApplicationController
         @error_response = "#{e.message}  #{e.error_message[:response_error_text]}"
       end
     end
-
-    def refund_params
-      
-    end
 end
