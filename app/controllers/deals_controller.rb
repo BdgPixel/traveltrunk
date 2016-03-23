@@ -1,6 +1,6 @@
 class DealsController < ApplicationController
   require "htmlentities"
-  include HotelsList
+  # include HotelsList
 
   before_action :check_like, only: [:like]
   before_action :authenticate_user!
