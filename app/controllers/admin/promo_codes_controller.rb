@@ -20,12 +20,17 @@ class Admin::PromoCodesController < Admin::ApplicationController
 
       exp_month = set_promo_code[:exp_month].rjust(2, '0')
       exp_year = set_promo_code[:exp_year][-2, 2]
+      invoice_cc = AuthorizeNetLib::Global.genrate_random_id('inv_cc')
 
       params_hash = {
         amount: set_promo_code[:amount].to_f,
         card_number: set_promo_code[:card_number],
         exp_date: "#{exp_month}#{exp_year}",
-        cvv: set_promo_code[:cvc] 
+        cvv: set_promo_code[:cvc],
+        order: { 
+          invoice: invoice_cc[0..19],
+          description: 'Promo Code'
+        }
       }
       
       payment = AuthorizeNetLib::PaymentTransactions.new
@@ -37,7 +42,7 @@ class Admin::PromoCodesController < Admin::ApplicationController
         transaction = @promo_code.user.transactions.new(
           amount: amount_in_cents, 
           transaction_type: 'deposit',
-          invoice_id: AuthorizeNetLib::Global.genrate_random_id('inv_cc'),
+          invoice_id: invoice_cc,
           ref_id: response_payment.refId,
           trans_id: response_payment.transactionResponse.transId
         )

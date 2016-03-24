@@ -205,12 +205,17 @@ class DealsController < ApplicationController
     begin
       exp_month = params[:update_credit][:exp_month].rjust(2, '0')
       exp_year = params[:update_credit][:exp_year][-2, 2]
+      invoice = AuthorizeNetLib::Global.genrate_random_id('inv')
 
       params_hash = {
         amount: params[:update_credit][:amount].to_f,
         card_number: params[:update_credit][:card_number],
         exp_date: "#{exp_month}#{exp_year}",
-        cvv: params[:update_credit][:cvv] 
+        cvv: params[:update_credit][:cvv],
+        order: { 
+          invoice: invoice,
+          description: 'Add to Saving'
+        }
       }
       
       payment = AuthorizeNetLib::PaymentTransactions.new
@@ -224,7 +229,9 @@ class DealsController < ApplicationController
       if response_payment.messages.resultCode.eql? 'Ok'
         amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
         transaction = current_user.transactions.new(
-          amount: amount_in_cents, 
+          amount: amount_in_cents,
+          invoice_id: invoice,
+          customer_id: current_user.customer.customer_id,
           transaction_type: 'deposit', 
           ref_id: response_payment.refId,
           trans_id: response_payment.transactionResponse.transId
