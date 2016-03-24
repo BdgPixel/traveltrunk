@@ -326,6 +326,8 @@ module AuthorizeNetLib
         request.transactionRequest.billTo.faxNumber = customer_payment_profile.faxNumber
       end
 
+      request.transactionRequest.order = AuthorizeNet::API::OrderType.new(payment_params[:order][:invoice], payment_params[:order][:description])
+
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
 
       response = @@transaction.create_transaction(request)
