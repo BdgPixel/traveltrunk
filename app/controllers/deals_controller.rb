@@ -272,6 +272,7 @@ class DealsController < ApplicationController
       end
 
     rescue Exception => e
+      puts e.message
       @error_response = "#{e.message} #{e.error_message[:response_error_text]}"
     end
   end
