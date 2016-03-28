@@ -288,7 +288,6 @@ module AuthorizeNetLib
 
       response
     end
-
   end
 
   class PaymentTransactions < Global
@@ -307,29 +306,27 @@ module AuthorizeNetLib
       request.transactionRequest.payment.creditCard.cardCode = payment_params[:cvv]
 
       if customer_profile_params
-        customer_profile_email = customer_profile_params.email
-        customer_profile_merchan_id = customer_profile_params.merchantCustomerId
-        customer_payment_profile =  customer_profile_params.paymentProfiles.first.billTo
+        email = customer_profile_params['email']
+        merchant_customer_id = customer_profile_params['merchant_customer_id']
 
-        request.transactionRequest.customer = AuthorizeNet::API::CustomerType.new(nil, customer_profile_merchan_id, customer_profile_email)
+        request.transactionRequest.customer = AuthorizeNet::API::CustomerType.new(nil, merchant_customer_id, email)
 
         request.transactionRequest.billTo = AuthorizeNet::API::CustomerAddressType.new
-        request.transactionRequest.billTo.firstName = customer_payment_profile.firstName
-        request.transactionRequest.billTo.lastName = customer_payment_profile.lastName
-        request.transactionRequest.billTo.company = customer_payment_profile.company
-        request.transactionRequest.billTo.address = customer_payment_profile.address
-        request.transactionRequest.billTo.city = customer_payment_profile.city
-        request.transactionRequest.billTo.state = customer_payment_profile.state
-        request.transactionRequest.billTo.zip = customer_payment_profile.zip
-        request.transactionRequest.billTo.country = customer_payment_profile.country
-        request.transactionRequest.billTo.phoneNumber = customer_payment_profile.phoneNumber
-        request.transactionRequest.billTo.faxNumber = customer_payment_profile.faxNumber
+        request.transactionRequest.billTo.firstName = customer_profile_params['first_name']
+        request.transactionRequest.billTo.lastName = customer_profile_params['last_name']
+        request.transactionRequest.billTo.company = customer_profile_params['company']
+        request.transactionRequest.billTo.address = customer_profile_params['address']
+        request.transactionRequest.billTo.city = customer_profile_params['city']
+        request.transactionRequest.billTo.state = customer_profile_params['state']
+        request.transactionRequest.billTo.zip = customer_profile_params['zip']
+        request.transactionRequest.billTo.country = customer_profile_params['country']
+        request.transactionRequest.billTo.phoneNumber = customer_profile_params['phone_number']
+        request.transactionRequest.billTo.faxNumber = customer_profile_params['fax_number']
       end
 
       request.transactionRequest.order = AuthorizeNet::API::OrderType.new(payment_params[:order][:invoice], payment_params[:order][:description])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
-
       response = @@transaction.create_transaction(request)
 
       if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
