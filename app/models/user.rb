@@ -99,7 +99,7 @@ class User < ActiveRecord::Base
   #     .where("hotel_id = ? AND (users_groups.group_id = ? OR users.id IN (?))", hotel_id, group.id, [self.id, group.user_id])
   # end
 
-
+=begin
   def set_stripe_customer
     if self.execute_stripe_callbacks
       begin
@@ -186,6 +186,7 @@ class User < ActiveRecord::Base
       end
     end
   end
+=end
 
   def self.get_autocomplete_data(email, current_user)
     User.joins("FULL OUTER JOIN profiles ON profiles.user_id = users.id")

@@ -96,7 +96,7 @@ class BankAccount < ActiveRecord::Base
           },
           order: {
             invoice_number: AuthorizeNetLib::Global.genrate_random_id('inv'),
-            description: 'descriptionTest'
+            description: 'Recurring Subscription'
           },
         }
 
@@ -133,7 +133,7 @@ class BankAccount < ActiveRecord::Base
               end
             end
 
-            StripeMailer.subscription_created(user.id).deliver_now
+            PaymentProcessorMailer.subscription_created(user.id).deliver_now
           else
             create_subscription = recurring_authorize.create_subscription(params_recurring)
 
@@ -148,7 +148,7 @@ class BankAccount < ActiveRecord::Base
               })
             end
             
-            StripeMailer.subscription_created(user.id).deliver_now
+            PaymentProcessorMailer.subscription_created(user.id).deliver_now
           end
         else
           unless last_card_number
@@ -193,7 +193,7 @@ class BankAccount < ActiveRecord::Base
         if cancel_subscription.messages.resultCode.eql? 'Ok'
           self.user.subscription.destroy
 
-          StripeMailer.cancel_subscription(self.user.id).deliver_now
+          PaymentProcessorMailer.cancel_subscription(self.user.id).deliver_now
           user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
         end
       rescue Exception => e
