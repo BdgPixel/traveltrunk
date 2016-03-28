@@ -221,17 +221,25 @@ class DealsController < ApplicationController
       payment = AuthorizeNetLib::PaymentTransactions.new
       customer_authorize = AuthorizeNetLib::Customers.new
 
-      get_customer_profile = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
-      customer_profile =  get_customer_profile.profile
-      
+      customer_profile = ''
+
+      if current_user.customer
+        get_customer = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
+        customer_profile =  current_user.profile.get_profile_hash(get_customer.profile)
+      else
+        customer_profile = current_user.profile.get_profile_hash
+      end
+
       response_payment = payment.charge(params_hash, customer_profile)
 
       if response_payment.messages.resultCode.eql? 'Ok'
         amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
+        customer_id = current_user.customer.customer_id if current_user.customer
+
         transaction = current_user.transactions.new(
           amount: amount_in_cents,
           invoice_id: invoice,
-          customer_id: current_user.customer.customer_id,
+          customer_id: customer_id,
           transaction_type: 'deposit', 
           ref_id: response_payment.refId,
           trans_id: response_payment.transactionResponse.transId
@@ -265,7 +273,7 @@ class DealsController < ApplicationController
 
           card_last_number = response_payment.transactionResponse.accountNumber[-4..-1]
 
-          StripeMailer.payment_succeed(current_user.id, transaction.amount, card_last_number).deliver_now
+          PaymentProcessorMailer.payment_succeed(current_user.id, transaction.amount, card_last_number).deliver_now
           @notification_count = current_user.get_notification(false).count
 
         end
