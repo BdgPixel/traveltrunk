@@ -11,7 +11,7 @@ class Admin::RefundsController < ApplicationController
       redirect_to admin_refunds_url, notice: @error_response
     else
       total_credit = @refund.user.total_credit - @refund.amount
-
+      
       if @refund.update_attributes(confirmed: 'yes')
         @refund.user.update_attributes(total_credit: total_credit)
 
@@ -25,10 +25,11 @@ class Admin::RefundsController < ApplicationController
           }
         )
 
-        RefundMailer.approved(@refund).deliver_now
+        PaymentProcessorMailer.approved(@refund).deliver_now
       end
 
-      redirect_to admin_refunds_url, notice: @response_refund_transaction
+      notice = "Successfully refunded a transaction (Transaction ID #{@response_refund_transaction.transactionResponse.transId}"
+      redirect_to admin_refunds_url, notice: notice
     end
   end
 
@@ -38,16 +39,16 @@ class Admin::RefundsController < ApplicationController
     end
 
     def set_customers_authorize_net
-      customer_authorize = AuthorizeNetLib::Customers.new
       payment_authorize  = AuthorizeNetLib::PaymentTransactions.new
+      transaction_authorize  = AuthorizeNetLib::TransactionReporting.new
 
       begin
-        @customer_authorize = customer_authorize.get_customer_profile(@refund.user.customer.customer_profile_id)
-        last_card_number = @customer_authorize.profile.paymentProfiles.first.payment.creditCard.cardNumber[-4..-1]
-        exp_card = @customer_authorize.profile.paymentProfiles.first.payment.creditCard.expirationDate
+        transaction_detail = transaction_authorize.get_transaction_details(@refund.trans_id)
+        last_card_number = transaction_detail.transaction.payment.creditCard.cardNumber[-4..-1]
+        exp_card =  transaction_detail.transaction.payment.creditCard.expirationDate
 
         transaction = Transaction.select(:amount, :ref_id, :trans_id).find_by(trans_id: @refund.trans_id)
-
+        
         params_refund = {
           ref_id: transaction.ref_id,
           trans_id: transaction.trans_id,
@@ -55,8 +56,17 @@ class Admin::RefundsController < ApplicationController
           last_card_number: last_card_number,
           exp_card: exp_card
         }
+        
+        transaction_status = transaction_detail.transaction.transactionStatus
 
-        @response_refund_transaction = payment_authorize.refund_transaction(params_refund)
+        @response_refund_transaction = 
+          if transaction_status.eql? 'settledSuccessfully'
+            payment_authorize.refund_transaction(params_refund)
+          elsif transaction_status.eql?('capturedPendingSettlement') || transaction_status.eql?('authorizedPendingCapture')
+            payment_authorize.void_transaction(params_refund.except(:amount, :last_card_number, :exp_card))
+          else
+            puts transaction_status
+          end
         
       rescue Exception => e
         @error_response = "#{e.message}  #{e.error_message[:response_error_text]}"
