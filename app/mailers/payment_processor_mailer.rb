@@ -37,6 +37,18 @@ class PaymentProcessorMailer < ApplicationMailer
     @amount = amount
     @card_last4 = card_last4
 
+    # group = @user.group || @user.joined_groups.first
+    # @total_credit = 
+    #   if group
+    #     if group.members.any?
+    #       group.total_credit
+    #     else
+    #       @user.total_credit
+    #     end
+    #   else
+    #     @user.total_credit
+    #   end
+
     mail to: @user.email, subject: 'One time Payment Successful'
   end
 
@@ -51,5 +63,11 @@ class PaymentProcessorMailer < ApplicationMailer
     @response_params = params
     
     mail to: 'teguh@41studio.com', subject: 'Params webhook'
+  end
+
+  def approved(refund)
+    @refund = refund
+    
+    mail to: @refund.user.email, subject: 'Refund Successfully Approved'
   end
 end
