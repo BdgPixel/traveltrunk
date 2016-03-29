@@ -72,40 +72,7 @@ class Profile < ActiveRecord::Base
       
       to_hash = change_to_hash(self)
     end
+    
     to_hash
-    # if profile_params.paymentProfiles
-    #   profile_hash = profile_params.paymentProfiles.first.billTo
-
-    #   {
-    #     email: profile_params.email,
-    #     merchant_id: profile_params.merchantCustomerId,
-    #     first_name: profile_hash.firstName,
-    #     last_name: profile_hash.lastName,
-    #     company: profile_hash.company,
-    #     address: profile_hash.address,
-    #     city: profile_hash.city,
-    #     state: profile_hash.state,
-    #     zip: profile_hash.zip,
-    #     country: profile_hash.country,
-    #     phone_number: profile_hash.phoneNumber,
-    #     fax_number: profile_hash.faxNumber,
-    #   }
-
-    # else
-    #   {
-    #     email: ,
-    #     merchant_id: nil,
-    #     first_name: ,
-    #     last_name: ,
-    #     company: ,
-    #     address: ,
-    #     city: ,
-    #     state: ,
-    #     zip: ,
-    #     country: ,
-    #     phone_number: ,
-    #     fax_number: ,
-    #   }
-    # end
   end
 end
