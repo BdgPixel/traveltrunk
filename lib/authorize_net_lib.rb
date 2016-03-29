@@ -86,24 +86,24 @@ module AuthorizeNetLib
       response
     end
 
-    def update_payment_profile(customer_profile_id, customer_payment_profile_id, customer_params)
-      request = AuthorizeNet::API::UpdateCustomerPaymentProfileRequest.new
-      payment = AuthorizeNet::API::PaymentType.new(AuthorizeNet::API::CreditCardType.new(customer_params[:credit_card], customer_params[:exp_card]))
-      profile = AuthorizeNet::API::CustomerPaymentProfileExType.new(nil, nil, payment, nil, nil)
+    # def update_payment_profile(customer_profile_id, customer_payment_profile_id, customer_params)
+    #   request = AuthorizeNet::API::UpdateCustomerPaymentProfileRequest.new
+    #   payment = AuthorizeNet::API::PaymentType.new(AuthorizeNet::API::CreditCardType.new(customer_params[:credit_card], customer_params[:exp_card]))
+    #   profile = AuthorizeNet::API::CustomerPaymentProfileExType.new(nil, nil, payment, nil, nil)
 
-      request.paymentProfile = profile
-      request.customerProfileId = customer_profile_id
-      profile.customerPaymentProfileId = customer_payment_profile_id
-      response = @@transaction.update_customer_payment_profile(request)
+    #   request.paymentProfile = profile
+    #   request.customerProfileId = customer_profile_id
+    #   profile.customerPaymentProfileId = customer_payment_profile_id
+    #   response = @@transaction.update_customer_payment_profile(request)
 
-      if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
-        puts "Successfully updated customer payment profile with  id #{request.paymentProfile.customerPaymentProfileId}"
-      else
-        puts "Failed to create a new customer payment profile: #{response.messages.messages.first.text}"
-      end
+    #   if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
+    #     puts "Successfully updated customer payment profile with  id #{request.paymentProfile.customerPaymentProfileId}"
+    #   else
+    #     puts "Failed to create a new customer payment profile: #{response.messages.messages.first.text}"
+    #   end
 
-      response
-    end
+    #   response
+    # end
 
     def delete_payment_profile(customer_profile_id, customer_payment_profile_id)
       request = AuthorizeNet::API::DeleteCustomerPaymentProfileRequest.new
@@ -260,34 +260,34 @@ module AuthorizeNetLib
       response  
     end
 
-    def get_subscription_status(subscription_id, ref_id = '')
-      request = AuthorizeNet::API::ARBGetSubscriptionStatusRequest.new
-      request.refId = ref_id
-      request.subscriptionId = subscription_id
+    # def get_subscription_status(subscription_id, ref_id = '')
+    #   request = AuthorizeNet::API::ARBGetSubscriptionStatusRequest.new
+    #   request.refId = ref_id
+    #   request.subscriptionId = subscription_id
 
-      response = @@transaction.get_subscription_status(request)
+    #   response = @@transaction.get_subscription_status(request)
 
-      if response != nil
-        if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
-          puts "Successfully got subscription status #{response.status}"
-        else
-          response_message = response.messages.messages.first.text
-          response_error_code = response.messages.messages.first.code
+    #   if response != nil
+    #     if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
+    #       puts "Successfully got subscription status #{response.status}"
+    #     else
+    #       response_message = response.messages.messages.first.text
+    #       response_error_code = response.messages.messages.first.code
 
-          puts response_message
-          puts response_error_code
+    #       puts response_message
+    #       puts response_error_code
 
-          error_messages = {
-            response_message: response_message,
-            response_error_code: response_error_code
-          }
+    #       error_messages = {
+    #         response_message: response_message,
+    #         response_error_code: response_error_code
+    #       }
 
-          raise RescueErrorsResponse.new(error_messages), 'Failed to get a subscriptions status'
-        end
-      end
+    #       raise RescueErrorsResponse.new(error_messages), 'Failed to get a subscriptions status'
+    #     end
+    #   end
 
-      response
-    end
+    #   response
+    # end
   end
 
   class PaymentTransactions < Global
@@ -333,7 +333,6 @@ module AuthorizeNetLib
         puts "Successfully charge (auth + capture) (authorization code: #{response.transactionResponse.authCode})"
         puts "refId #{response.refId}"
         puts "transId #{response.transactionResponse.transId}"
-        # puts "reftransId #{response.transactionResponse.refTransId}"
       else
         response_message = response.messages.messages.first.text
 
@@ -374,11 +373,10 @@ module AuthorizeNetLib
       request.transactionRequest.refTransId = params_refund[:trans_id]
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::RefundTransaction
-
       response = @@transaction.create_transaction(request)
 
       if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
-        puts "Successfully refunded a transaction (Transaction ID #{response.transactionResponse.transId}"
+        puts "Successfully refunded a transaction (Transaction ID #{response.transactionResponse.transId})"
       else
         response_message = response.messages.messages.first.text
         response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
@@ -390,6 +388,72 @@ module AuthorizeNetLib
         }
 
         raise RescueErrorsResponse.new(error_messages), 'Failed to refund a transaction.'
+      end
+
+      response
+    end
+
+    def void_transaction(params_refund)
+      request = AuthorizeNet::API::CreateTransactionRequest.new
+      request.refId = params_refund[:ref_id]
+      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new()
+      request.transactionRequest.refTransId = params_refund[:trans_id]
+      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::VoidTransaction
+      
+      response = @@transaction.create_transaction(request)
+    
+      if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
+        puts "Successfully voided the transaction (Transaction ID: #{response.transactionResponse.transId})"
+    
+      else
+
+        response_message = response.messages.messages.first.text
+        response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
+
+        puts response_message
+        puts response_error_code
+        puts response_error_text
+
+        error_messages = { 
+          response_message: response_message,
+          response_error_text: response_error_text,
+          response_error_code: response_error_code
+        }
+
+        raise RescueErrorsResponse.new(error_messages), 'Failed to void the transaction.'
+      end
+
+      response
+    end
+  end
+
+  class TransactionReporting < Global
+    def get_transaction_details(trans_id)
+      request = AuthorizeNet::API::GetTransactionDetailsRequest.new
+      request.transId = trans_id
+
+      response = @@transaction.get_transaction_details(request)
+
+      if response.messages.resultCode.eql?(AuthorizeNet::API::MessageTypeEnum::Ok)
+        puts 'Get transaction Details Successful'
+        puts "Transaction Id: #{response.transaction.transId}"
+        puts "Transaction Type: #{response.transaction.transactionType}"
+        puts "Transaction Status: #{response.transaction.transactionStatus}"
+        printf("Auth Amount: %.2f\n", response.transaction.authAmount)
+        printf("Settle Amount: %.2f\n", response.transaction.settleAmount)
+      else
+         response_message = response.messages.messages.first.text
+         response_error_code = response.messages.messages.first.code
+
+         puts response_message
+         puts response_error_code
+
+         error_messages = {
+          response_message: response_message,
+          response_error_code: response_error_code
+         }
+
+         raise RescueErrorsResponse.new(error_messages), 'Failed to get transaction Details'
       end
 
       response
