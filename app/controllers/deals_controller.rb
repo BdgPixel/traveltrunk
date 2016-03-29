@@ -275,7 +275,6 @@ class DealsController < ApplicationController
 
           PaymentProcessorMailer.payment_succeed(current_user.id, transaction.amount, card_last_number).deliver_now
           @notification_count = current_user.get_notification(false).count
-
         end
       end
 
