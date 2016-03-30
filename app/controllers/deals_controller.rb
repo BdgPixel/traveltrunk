@@ -444,10 +444,6 @@ class DealsController < ApplicationController
     set_search_data
   end
 
-  def method_name
-
-  end
-
   private
     def set_search_data
       # get_hotels_list(@destination, @group)

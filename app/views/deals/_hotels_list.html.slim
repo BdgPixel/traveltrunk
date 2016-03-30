@@ -42,7 +42,7 @@
 
           #pagination
 
-  - if@hotels_list.first[:error_response]
+  - if @hotels_list.first[:error_response]
     #error_response.alert.alert-info style="margin-top: 20px"
       strong Notice: &nbsp;
       = @hotels_list.first[:error_response]
