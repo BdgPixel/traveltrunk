@@ -62,8 +62,8 @@ class Admin::PromoCodesController < Admin::ApplicationController
         format.html { redirect_to new_admin_promo_code_url, notice: flash[:error] }
       end
     rescue Exception => e
-      # @error_response = "#{e.message} #{e.error_message[:response_error_text]}"
-      redirect_to new_admin_promo_code_url, alert: e.message
+      @error_response = "#{e.message} #{e.error_message[:response_error_text]}"
+      redirect_to new_admin_promo_code_url, alert: @error_response
     end
   end
 
