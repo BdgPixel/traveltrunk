@@ -6,8 +6,9 @@
         i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
       
       - if activity.key.eql?('payment.manual') && activity.parameters[:is_request_refund].eql?(false)
-        | &nbsp;
-        = link_to 'Refund', refunds_create_path(id: activity.id, trans_id: activity.parameters[:trans_id]), class: 'btn btn-orange btn-xs'
+        - if currency_in_usd(current_total_credit, true) >= activity.parameters[:amount]
+          | &nbsp;
+          = link_to 'Refund', refunds_create_path(id: activity.id, trans_id: activity.parameters[:trans_id]), class: 'btn btn-orange btn-xs'
 
 / - else
 /   h1 which has since been removed
