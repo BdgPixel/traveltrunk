@@ -3,7 +3,7 @@ class Admin::RefundsController < ApplicationController
   before_action :set_customers_authorize_net, only: :update
 
   def index
-    @refunds = Refund.all
+    @refunds = Refund.order(created_at: :desc)
   end
 
   def update
@@ -21,7 +21,8 @@ class Admin::RefundsController < ApplicationController
           recipient: @refund.user, 
           parameters: { 
             amount: @refund.amount, 
-            total_credit: @refund.user.total_credit
+            total_credit: @refund.user.total_credit,
+            trans_id: @refund.trans_id
           }
         )
 
