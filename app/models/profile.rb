@@ -69,7 +69,6 @@ class Profile < ActiveRecord::Base
       to_array.push(['email', profile_params.email], ['merchant_customer_id', profile_params.merchantCustomerId])
       to_hash = change_to_hash(to_array)
     else
-      
       to_hash = change_to_hash(self)
     end
     
