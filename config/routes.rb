@@ -1,13 +1,18 @@
 Rails.application.routes.draw do
+  namespace :admin do
+  get 'refunds/index'
+  end
+
   get  'refunds/create'
 
   get  'promo_codes/activation'
   post 'promo_codes/update'
 
   namespace :admin, path: 'admin' do
+    resources :transactions, only: [:index]
     resources :refunds, only: [:index, :update]
     resources :promo_codes
-    resources :list_users, only: [:index, :show]
+    resources :users, only: [:index, :show]
   end
 
   get  'helps' => 'helps#index'
