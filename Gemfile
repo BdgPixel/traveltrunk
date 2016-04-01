@@ -71,6 +71,8 @@ gem 'authorizenet', '~> 1.8', '>= 1.8.8.1'
 
 gem "rubycritic", :require => false
 
+gem 'kaminari'
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
