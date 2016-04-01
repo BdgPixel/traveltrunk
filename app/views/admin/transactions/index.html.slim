@@ -1,0 +1,29 @@
+h3 List of Transactions
+br
+
+- if @transactions.empty?
+  .alert.alert-info
+    strong Notice:&nbsp;
+    | No transactions has been created
+
+- else
+  table.table.table-striped.table-hover
+    thead
+      tr
+        th Transaction ID
+        th User
+        th Transaction Type
+        th Amount
+        th
+
+    tbody
+      - @transactions.each do |transaction|
+        / - if transaction.profile
+        tr
+          td = transaction.trans_id
+          td = link_to transaction.user.full_name, admin_user_path(transaction.user)
+          td = transaction.transaction_type
+          td = transaction.amount
+          td
+            / = link_to 'Detail', admin_transaction_path(transaction), class: 'btn btn-orange btn-sm'
+  = paginate @transactions
