@@ -1,7 +1,8 @@
 module SavingsHelper
-  def currency_in_usd(amount)
-    amount_in_usd = (amount / 100.0)
-    number_to_currency(amount_in_usd)
+  def currency_in_usd(amount, condition = false)
+    amount_in_usd = (amount.to_f / 100.0)
+    condition ? amount_in_usd : number_to_currency(amount_in_usd)
+    # number_to_currency(amount_in_usd)
   end
 
   def add_apostrophe(name)
