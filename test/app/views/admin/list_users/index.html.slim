@@ -25,4 +25,4 @@ br
             td = user.profile.address.titleize rescue 'Information not specified'
             td = user.profile.gender ? user.profile.gender : 'Information not specified'
             td
-              = link_to 'Detail', admin_list_user_path(user), class: 'btn btn-orange'
+              = link_to 'Detail', admin_user_path(user), class: 'btn btn-orange'
