@@ -4,12 +4,13 @@ br
 - if @transactions.empty?
   .alert.alert-info
     strong Notice:&nbsp;
-    | No transactions has been created
+    | No transactions
 
 - else
   table.table.table-striped.table-hover
     thead
       tr
+        th Transaction Date
         th Transaction ID
         th User
         th Transaction Type
@@ -20,10 +21,11 @@ br
       - @transactions.each do |transaction|
         / - if transaction.profile
         tr
+          td = transaction.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
           td = transaction.trans_id
           td = link_to transaction.user.full_name, admin_user_path(transaction.user)
           td = transaction.transaction_type
-          td = transaction.amount
+          td = currency_in_usd transaction.amount
           td
             / = link_to 'Detail', admin_transaction_path(transaction), class: 'btn btn-orange btn-sm'
   = paginate @transactions
