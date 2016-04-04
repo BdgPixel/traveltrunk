@@ -100,9 +100,9 @@ module AuthorizeNetLib
       request.subscription.paymentSchedule.interval = AuthorizeNet::API::PaymentScheduleType::Interval.new
       request.subscription.paymentSchedule.interval.length = recurring_params[:plan][:interval_length]
       request.subscription.paymentSchedule.interval.unit = recurring_params[:plan][:interval_unit]
-      request.subscription.paymentSchedule.startDate = Time.now.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
+      request.subscription.paymentSchedule.startDate = recurring_params[:plan][:start_date]
       request.subscription.paymentSchedule.totalOccurrences = '9999'
-      request.subscription.paymentSchedule.trialOccurrences = recurring_params[:plan][:trial_occurrences]
+      request.subscription.paymentSchedule.trialOccurrences = '0'
       
       request.subscription.payment = AuthorizeNet::API::PaymentType.new
       

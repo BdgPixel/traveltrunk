@@ -1,7 +1,6 @@
 class BankAccount < ActiveRecord::Base
   belongs_to :user
 
-  # before_save :set_stripe_customer, :set_stripe_subscription
   before_save :set_customer_profile, :set_recurring_subscription
   before_destroy :unsubscriptions
 
@@ -91,12 +90,13 @@ class BankAccount < ActiveRecord::Base
             invoice_number: AuthorizeNetLib::Global.generate_random_id('inv') 
           },
         }
-
+        
         customer_authorize = AuthorizeNetLib::Customers.new
         customer_profile = customer_authorize.get_customer_profile(customer.customer_profile_id)
         customer_payment_profile = customer_profile.paymentProfiles.first
 
         recurring_authorize = AuthorizeNetLib::RecurringBilling.new
+        start_date = Time.now.in_time_zone("Pacific Time (US & Canada)")
 
         if user_subscription
           customer_credit_card_last_4 = customer_payment_profile.payment.creditCard.cardNumber.last(4) rescue nil
@@ -110,7 +110,9 @@ class BankAccount < ActiveRecord::Base
 
             selected_params = params_recurring.select { |k, v| [:subscription_id, :plan].include?(k) }
             subscription_hash = user_subscription.get_params_hash(selected_params)
-            params_recurring[:plan][:trial_occurrences] = '1'
+            
+            start_date = (start_date + eval("#{interval_count}.#{interval_frequency}")).strftime("%Y-%m-%d")
+            params_recurring[:plan][:start_date] = start_date
             subscription_response = recurring_authorize.create_subscription(params_recurring)
 
             subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
@@ -118,6 +120,7 @@ class BankAccount < ActiveRecord::Base
           end 
         else
           # create subscription
+          params_recurring[:plan][:start_date] = start_date.strftime("%Y-%m-%d")
           response = recurring_authorize.create_subscription(params_recurring)
 
           if response.messages.resultCode.eql? 'Ok'
