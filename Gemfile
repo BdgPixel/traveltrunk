@@ -63,7 +63,7 @@ gem 'public_activity'
 
 gem 'httparty'
 
-gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+# gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 gem 'ratyrate'
 
