@@ -157,15 +157,14 @@ class BankAccount < ActiveRecord::Base
   end
 
   def unsubscriptions
-    
     if self.user
       begin
         customer_authorize = AuthorizeNetLib::Customers.new
         recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
         get_customer = customer_authorize.get_customer_profile(self.user.customer.customer_profile_id)
-        customer_profile_id = get_customer.profile.customerProfileId
-        payment_profile_id = get_customer.profile.paymentProfiles.first.customerPaymentProfileId
+        customer_profile_id = get_customer.customerProfileId
+        payment_profile_id = get_customer.paymentProfiles.first.customerPaymentProfileId
 
         subscription_id = self.user.subscription.subscription_id
         cancel_subscription = recurring_authorize.cancel_subscription(subscription_id, customer_profile_id, payment_profile_id)
