@@ -1,30 +1,25 @@
-h3 Refund Requests
+h3 Void / Refund Requests
 br
 
 - if @refunds.empty?
   .alert.alert-info
     strong Notice:&nbsp;
-    | No refunds has been created
-
-- if @error_response
-  #error_response.alert.alert-info
-    strong Notice: &nbsp;
-    = @error_response
+    | No void / refund has been requested
 
 - else
   table.table.table-striped.table-hover
     thead
       tr
         th Request Date
-        th Transaction ID
+        th Refunded Transaction ID
         th User
         th Amount
-        th Confirmed
+        th Approved
 
     tbody
       - @refunds.each do |refund|
         tr
-          td = refund.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+          td = refund.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
           td = refund.trans_id
           td = link_to refund.user.profile.full_name, admin_user_path(refund.user)
           td = number_to_currency(refund.amount / 100.0)
@@ -33,5 +28,5 @@ br
               = refund.confirmed.titleize
           td
            - if refund.confirmed.eql? 'pending'
-            = link_to 'Approve', admin_refund_path(refund), class: 'btn btn-orange btn-sm', data: {:confirm => 'Are you sure approve this refund ?'}, :method => :put
+            = link_to 'Approve', admin_refund_path(refund), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure approve this refund ?'}, :method => :put
 
