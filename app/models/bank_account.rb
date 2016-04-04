@@ -95,7 +95,7 @@ class BankAccount < ActiveRecord::Base
         customer_authorize = AuthorizeNetLib::Customers.new
         customer_profile = customer_authorize.get_customer_profile(customer.customer_profile_id)
         customer_payment_profile = customer_profile.paymentProfiles.first
-      
+
         recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
         if user_subscription
@@ -103,22 +103,18 @@ class BankAccount < ActiveRecord::Base
           credit_card_changed = customer_credit_card_last_4 != self.credit_card.last(4)
         
           if credit_card_changed || self.changed.include?('amount_transfer') || self.changed.include?('transfer_frequency')
+            if customer_payment_profile
+              response = recurring_authorize.cancel_subscription(user_subscription.subscription_id, customer_profile.customerProfileId, customer_payment_profile.customerPaymentProfileId)
+              response.messages.resultCode
+            end
+
             selected_params = params_recurring.select { |k, v| [:subscription_id, :plan].include?(k) }
             subscription_hash = user_subscription.get_params_hash(selected_params)
-            # binding.pry
             params_recurring[:plan][:trial_occurrences] = '1'
             subscription_response = recurring_authorize.create_subscription(params_recurring)
 
-            if subscription_response.messages.resultCode.eql? 'Ok'
-              if customer_payment_profile
-                response = recurring_authorize.cancel_subscription(user_subscription.subscription_id, customer_profile.customerProfileId, customer_payment_profile.customerPaymentProfileId)
-                response.messages.resultCode
-              end
-
-              subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
-              user_subscription.update(subscription_hash)
-            end
-
+            subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
+            user_subscription.update(subscription_hash)
           end 
         else
           # create subscription
@@ -136,8 +132,6 @@ class BankAccount < ActiveRecord::Base
           end
           
         end
-
-        # PaymentProcessorMailer.subscription_created(user.id).deliver_now
       rescue Exception => e
         logger.error e.message
 
@@ -146,8 +140,6 @@ class BankAccount < ActiveRecord::Base
             if e.error_message[:response_error_text]
               "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
             else
-              puts e.error_message
-              puts e.message
               e.error_message[:response_message].split('-').last.strip
             end
             
@@ -183,116 +175,23 @@ class BankAccount < ActiveRecord::Base
         end
       rescue Exception => e
         logger.error e.message
-      end
-    end
 
-  end
-
-=begin
-  def set_stripe_customer
-    user = self.user
-    if user
-      begin
-        if user.customer
-          stripe_customer = Stripe::Customer.retrieve(user.customer.customer_id)
-          stripe_customer.source = self.stripe_token
-          stripe_customer.save
+        if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
+          @error_response = 
+            if e.error_message[:response_error_text]
+              "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
+            else
+              e.error_message[:response_message].split('-').last.strip
+            end
+            
+          self.errors.add(:authorize_net_error, @error_response)
+          false
         else
-          stripe_customer = Stripe::Customer.create(
-            email: user.email,
-            source: self.stripe_token
-          )
-
-          Customer.create(customer_id: stripe_customer.id, user_id: user.id)
-        end
-      rescue Stripe::CardError => e
-        logger.error e.message
-      end
-    end
-  end
-
-  def set_stripe_subscription
-    user = self.user
-    if user
-      customer          = Customer.where(user_id: user.id).first
-      user_subscription = user.subscription
-
-      if user_subscription.nil? || self.changed.include?('amount_transfer') || self.changed.include?('transfer_frequency')
-        interval_frequency, interval_count, trial_period_days = self.transfer_type
-        amount_to_cents = (self.amount_transfer.to_f * 100).to_i
-        plan_name       = "#{user.profile.first_name.titleize} #{self.transfer_frequency} Savings Plan"
-
-        stripe_plan = Stripe::Plan.create(
-          id:             SecureRandom.hex,
-          currency:       'usd',
-          name:           plan_name,
-          amount:         amount_to_cents,
-          interval:       interval_frequency,
-          interval_count: interval_count,
-          trial_period_days: user_subscription ? trial_period_days : nil
-        )
-
-        stripe_customer = Stripe::Customer.retrieve(customer.customer_id)
-
-        if user_subscription
-          previous_plan = Stripe::Plan.retrieve(user_subscription.plan_id) rescue nil
-
-          if previous_plan
-            puts "delet previous plan"
-            stripe_customer.subscriptions.retrieve(user_subscription.subscription_id).delete
-            previous_plan.delete
-          end
-
-          stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: user.id } })
-
-          user_subscription.update_attributes({
-            plan_id:          stripe_plan.id,
-            amount:           stripe_plan.amount,
-            interval:         stripe_plan.interval,
-            interval_count:   stripe_plan.interval_count,
-            subscription_id:  stripe_subscription.id,
-            plan_name:        plan_name
-          })
-
-          StripeMailer.subscription_created(user.id).deliver_now
-        else
-          stripe_subscription = stripe_customer.subscriptions.create({ plan: stripe_plan.id, metadata: { user_id: user.id } })
-
-          Subscription.create(
-            plan_id:        stripe_plan.id,
-            subscription_id: stripe_subscription.id,
-            amount:         stripe_plan.amount,
-            currency:       stripe_plan.currency,
-            interval:       stripe_plan.interval,
-            interval_count: stripe_plan.interval_count,
-            plan_name:      stripe_plan.name,
-            user_id: user.id
-          )
-
-          StripeMailer.subscription_created(user.id).deliver_now
+          logger.error e.message
+          e.backtrace.each { |line| logger.error line }
         end
       end
     end
+
   end
-
-  def unsubscriptions
-    if self.user
-      begin
-        customer = Stripe::Customer.retrieve(self.user.customer.customer_id)
-        previous_plan = Stripe::Plan.retrieve(self.user.subscription.plan_id) rescue nil
-        if previous_plan
-          customer.subscriptions.retrieve(self.user.subscription.subscription_id).delete
-          previous_plan.delete
-        end
-
-        self.user.subscription.destroy
-        StripeMailer.cancel_subscription(self.user.id).deliver_now
-        user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
-      rescue Stripe::CardError => e
-        logger.error e.message
-      end
-    end
-  end
-=end
-
 end
