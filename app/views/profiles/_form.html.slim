@@ -129,7 +129,7 @@
         .row
           .col-md-6
             .form-group
-              = f.input :credit_card, as: :integer, input_html: { class: "form-control card_number" }
+              = f.input :credit_card, input_html: { class: "form-control card_number" }
 
           .col-md-2
             .form-group
@@ -160,7 +160,7 @@
 
           .col-md-6
             .form-group
-              = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control transfer_frequency' }, error_html: { class: 'error-message' }
               .transfer-frequency-error
 
       .col-md-12

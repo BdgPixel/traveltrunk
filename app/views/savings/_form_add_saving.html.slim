@@ -17,7 +17,7 @@
             .payment-errors
             .row
               .col-md-6
-                = f.input :card_number, as: :integer, input_html: { class: "form-control credit_card" }
+                = f.input :card_number, input_html: { class: "form-control card_number" }
                 = image_tag asset_path('cards/mastercard.png')
                 |&nbsp;
                 = image_tag asset_path('cards/visa.png')
