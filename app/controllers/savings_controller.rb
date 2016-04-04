@@ -3,10 +3,14 @@ class SavingsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :get_group, only: :index
+  before_action :check_saving_plan, only: :index
 
-  def index
-    unless current_user.profile && current_user.bank_account
-      @error_message = "Please complete the profile"
+  def index; end
+
+  private
+    def check_saving_plan
+      unless current_user.bank_account
+        redirect_to edit_profile_path, notice: 'Please complete the profile before you can access savings page'
+      end
     end
-  end
 end
