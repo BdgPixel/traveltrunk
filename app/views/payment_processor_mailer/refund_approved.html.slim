@@ -1,0 +1,7 @@
+RefundMailer#approved
+  p = "Hi #{@refund.user.profile.first_name}"
+  p
+    | Your transaction with ID (#{@refund.trans_id}) and amount #{currency_in_usd(@refund.amount)} has been 
+    #{@transaction_type.eql?('refund') ? 'refunded' : 'voided' }. Your total credit is #{currency_in_usd(@refund.user.total_credit)}&nbsp;
+    
+  p = render 'partials/footer_mailer'
