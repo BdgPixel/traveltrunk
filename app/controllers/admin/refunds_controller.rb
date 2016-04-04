@@ -11,22 +11,36 @@ class Admin::RefundsController < ApplicationController
       redirect_to admin_refunds_url, notice: @error_response
     else
       total_credit = @refund.user.total_credit - @refund.amount
-      
-      if @refund.update_attributes(confirmed: 'yes')
+      refund_trans_id = @response_refund_transaction.transactionResponse.transId
+
+      if @refund.update_attributes(confirmed: 'yes', refund_trans_id: refund_trans_id)
         @refund.user.update_attributes(total_credit: total_credit)
 
-        current_user.create_activity(
-          key: "refund.approved", 
-          owner: current_user,
-          recipient: @refund.user, 
-          parameters: { 
-            amount: @refund.amount, 
-            total_credit: @refund.user.total_credit,
-            trans_id: @refund.trans_id
-          }
+        transaction = Transactions.new(
+          amount: @refund.amount,
+          invoice_id: AuthorizeNetLib::Global.generate_random_id('inv'),
+          customer_id: @refund.user.customer.customer_id,
+          transaction_type: @transaction_type, 
+          ref_id: @response_refund_transaction.refId,
+          trans_id: refund_trans_id,
+          user_id: @refund.user_id
         )
 
-        PaymentProcessorMailer.approved(@refund).deliver_now
+        if transaction.save
+          current_user.create_activity(
+            key: "payment.#{@transaction_type}", 
+            owner: current_user,
+            recipient: @refund.user, 
+            parameters: { 
+              amount: @refund.amount, 
+              total_credit: @refund.user.total_credit,
+              trans_id: @refund.trans_id,
+              refund_trans_id: @refund.refund_trans_id
+            }
+          )
+        end
+
+        PaymentProcessorMailer.refund_approved(@refund, @transaction_type).deliver_now
       end
 
       notice = "Successfully refunded a transaction (Transaction ID #{@response_refund_transaction.transactionResponse.transId}"
@@ -62,11 +76,11 @@ class Admin::RefundsController < ApplicationController
 
         @response_refund_transaction = 
           if transaction_status.eql? 'settledSuccessfully'
+            @transaction_type = 'refund'
             payment_authorize.refund_transaction(params_refund)
           elsif transaction_status.eql?('capturedPendingSettlement') || transaction_status.eql?('authorizedPendingCapture')
+            @transaction_type = 'void'
             payment_authorize.void_transaction(params_refund.except(:amount, :last_card_number, :exp_card))
-          else
-            puts transaction_status
           end
         
       rescue Exception => e
