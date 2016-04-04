@@ -82,12 +82,14 @@ Rails.application.configure do
   config.action_mailer.smtp_settings = {
     address:              'smtp.mandrillapp.com',
     port:                 587,
-    domain:               'traveltrunk.herokuapp.com',
+    # domain:               'traveltrunk.herokuapp.com',
+    domain:               'authorize-net-traveltrunk.herokuapp.com',
     user_name:            ENV['MANDRILL_USERNAME'],
     password:             ENV['MANDRILL_API_KEY'],
     authentication:       'plain',
     enable_starttls_auto: true  }
 
-  config.action_mailer.default_url_options = { host: 'traveltrunk.herokuapp.com' }
+  # config.action_mailer.default_url_options = { host: 'traveltrunk.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'authorize-net-traveltrunk.herokuapp.com' }
 
 end
