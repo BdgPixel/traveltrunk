@@ -13,23 +13,25 @@ class Transaction < ActiveRecord::Base
   end
 
   def create_activity
-    activity_key = 
-      if ["recurring_billing", "first_recurring_billing"].include? self.transaction_type
-        'payment.recurring'
-      else
-        'payment.manual'
-      end
+    unless ["refund", "void"].include? self.transaction_type
+      activity_key = 
+        if self.transaction_type.eql? "add_to_saving"
+          'payment.manual'
+        else
+          'payment.recurring'
+        end
 
-    self.user.create_activity(
-      key: activity_key, 
-      owner: self.user,
-      recipient: self.user, 
-      parameters: { 
-        amount: self.amount / 100.0, 
-        total_credit: self.user.total_credit / 100.0,
-        trans_id: self.trans_id,
-        is_request_refund: false 
-      }
-    )
+      self.user.create_activity(
+        key: activity_key, 
+        owner: self.user,
+        recipient: self.user, 
+        parameters: { 
+          amount: self.amount / 100.0, 
+          total_credit: self.user.total_credit / 100.0,
+          trans_id: self.trans_id,
+          is_request_refund: false 
+        }
+      )
+    end
   end
 end
