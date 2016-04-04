@@ -2,6 +2,6 @@ SubscriptionMailer#paymentSucceed
   p = "Hi #{@profile.first_name},"
 
   p
-    | We’ve successfully charged your credit card ending in …XXXX#{@card_last4} to add #{currency_in_usd(@amount)} to your Travel Trunk savings account. Bringing your total savings to #{currency_in_usd(@user.total_credit)}.
+    | We’ve successfully charged your credit card ending in …#{@card_last4} to add #{currency_in_usd(@amount)} to your Travel Trunk savings account. Bringing your total savings to #{currency_in_usd(@user.total_credit)}.
 
   p = render 'partials/footer_mailer'
