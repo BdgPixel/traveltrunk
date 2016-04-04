@@ -65,9 +65,9 @@ class PaymentProcessorMailer < ApplicationMailer
     mail to: 'teguh@41studio.com', subject: 'Params webhook'
   end
 
-  def approved(refund)
+  def refund_approved(refund, transaction_type)
     @refund = refund
-    
+    @transaction_type = transaction_type
     mail to: @refund.user.email, subject: 'Refund Successfully Approved'
   end
 end
