@@ -205,7 +205,7 @@ class DealsController < ApplicationController
     begin
       exp_month = params[:update_credit][:exp_month].rjust(2, '0')
       exp_year = params[:update_credit][:exp_year][-2, 2]
-      invoice = AuthorizeNetLib::Global.genrate_random_id('inv')
+      invoice = AuthorizeNetLib::Global.generate_random_id('inv')
 
       params_hash = {
         amount: params[:update_credit][:amount].to_f,
@@ -220,16 +220,17 @@ class DealsController < ApplicationController
       
       payment = AuthorizeNetLib::PaymentTransactions.new
       customer_authorize = AuthorizeNetLib::Customers.new
+      
+      # response_credit_card = payment.authorize_credit_card(params[:update_credit])
 
-      customer_profile = ''
-
-      if current_user.customer
-        get_customer = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
-        customer_profile =  current_user.profile.get_profile_hash(get_customer.profile)
-      else
-        customer_profile = current_user.profile.get_profile_hash
-      end
-
+      customer_profile = 
+        if current_user.customer
+          get_customer_profile = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
+          current_user.profile.get_profile_hash(get_customer_profile)
+        else
+          current_user.profile.get_profile_hash
+        end
+        
       response_payment = payment.charge(params_hash, customer_profile)
 
       if response_payment.messages.resultCode.eql? 'Ok'
@@ -240,29 +241,14 @@ class DealsController < ApplicationController
           amount: amount_in_cents,
           invoice_id: invoice,
           customer_id: customer_id,
-          transaction_type: 'deposit', 
+          transaction_type: 'add_to_saving', 
           ref_id: response_payment.refId,
           trans_id: response_payment.transactionResponse.transId
         )
 
         if transaction.save
-          total_credit = current_user.total_credit + amount_in_cents
-          current_user.update_attributes(total_credit: total_credit)
-
           @user_total_credit = current_user.total_credit / 100.0
           @transaction_amount = transaction.amount / 100.0
-
-          current_user.create_activity(
-            key: "payment.manual", 
-            owner: current_user,
-            recipient: current_user, 
-            parameters: { 
-              amount: @transaction_amount, 
-              total_credit: @user_total_credit,
-              trans_id: transaction.trans_id,
-              is_request_refund: false 
-            }
-          )
 
           @total_credit = 
             if @group
@@ -271,16 +257,25 @@ class DealsController < ApplicationController
               @user_total_credit
             end
 
-          card_last_number = response_payment.transactionResponse.accountNumber[-4..-1]
-
-          PaymentProcessorMailer.payment_succeed(current_user.id, transaction.amount, card_last_number).deliver_now
           @notification_count = current_user.get_notification(false).count
+
+          card_last_4 = response_payment.transactionResponse.accountNumber
+
+          PaymentProcessorMailer.payment_succeed(current_user.id, transaction.amount, card_last_4).deliver_now
         end
       end
-
     rescue Exception => e
-      puts e.message
-      @error_response = "#{e.message} #{e.error_message[:response_error_text]}"
+      if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
+        @error_response = 
+          if e.error_message[:response_error_text]
+            "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
+          else
+            e.error_message[:response_message].split('-').last.strip
+          end
+      else
+        logger.error e.message
+        e.backtrace.each { |line| logger.error line }
+      end
     end
   end
 
