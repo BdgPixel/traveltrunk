@@ -56,6 +56,7 @@ class ProfilesController < ApplicationController
 
   def unsubscript
     current_user.bank_account.destroy
+    current_user.update(total_credit: 0)
     redirect_to profile_url, notice: 'Bank account was successfully destroyed.'
   end
 
