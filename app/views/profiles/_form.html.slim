@@ -2,7 +2,6 @@
   = stylesheet_link_tag 'profiles'
 
 - content_for :javascripts
-  = javascript_include_tag 'https://js.stripe.com/v2/'
   = javascript_include_tag 'variables', 'profiles'
 
 .row
@@ -110,82 +109,83 @@
           br
           hr
 
-        .col-md-12
-          h4
-            | SAVINGS PLAN
-          p
-            i
-              small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
-            br
-            br
+  .col-md-12
+    h4
+      | SAVINGS PLAN
 
-  / = f.simple_fields_for :bank_account do |bank_account_form|
-  = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account" } do |f|
+  - if current_user.profile.birth_date.blank?
     .col-md-12
-      .row
-        .col-md-6
-          .form-group
-            = label_tag :card_number
-            input[type="text" size="20" data-stripe="number" class="form-control" autocomplete="false"]
-            .payment-errors
-
-        .col-md-3
-          .form-group
-            = label_tag :cvv
-            input[type="password" size="20" data-stripe="cvc" class="form-control" maxlength="4" autocomplete="false"]
-            / = f.input :cvv, as: :password, input_html: { class: "form-control", maxlength: 4 }
-
-        .col-md-3
-          .form-group
-            = label_tag "Expiration Month (MM)"
-            = select_month nil, { use_two_digit_numbers: true }, { name: nil, id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
-
-        .col-md-3
-          .form-group
-            = label_tag "Expiration Year (YYYY)"
-            = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: nil, id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
-
+      .alert.alert-info Please complete your profile before you can create your savings plan.
+  - else
     .col-md-12
-      .row
-        .col-md-6
-          .form-group
-            = f.label :amount_transfer
-            .input-group
-              .input-group-addon $
-              = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control'
-              = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
-
-            = f.error :amount_transfer, class: 'error-message'
-            .amount-error
-
-        .col-md-6
-          .form-group
-            = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
-            .transfer-frequency-error
-
-    .col-md-12
-      .row
-        .col-md-12
-          br
-          center
+      p
+        i
+          small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
+        br
+        br
+    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account", class: "transaction-form" } do |f|
+      .col-md-12
+        .payment-errors
+        .row
+          .col-md-6
             .form-group
-              = f.button :submit, 'Update Savings', class: 'btn btn-default'
-              - unless current_user.bank_account.new_record?
-                | &nbsp;&nbsp;
-                button.btn.btn-primary data-target=".unsubscript" data-toggle="modal" type="button"
-                  | Delete Bank Account
-          br
-          br
+              = f.input :credit_card, as: :integer, input_html: { class: "form-control card_number" }
 
-          .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
-            .modal-dialog
-              .modal-content
-                .modal-header
-                  button.close aria-label="Close" data-dismiss="modal" type="button"
-                    span aria-hidden="true"  &times;
-                  h4.modal-title Reoccurring transaction
-                .modal-body
-                  p Are you sure you want to stop reoccurring transaction on this account?
-                .modal-footer
-                  button.btn.btn-grey data-dismiss="modal" type="button" No, keep my savings plan.
-                  = link_to 'Yes, please discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-default"
+          .col-md-2
+            .form-group
+              = f.input :cvc, as: :password, input_html: { class: "form-control cvc", maxlength: 4 }
+
+          .col-md-2
+            .form-group
+              = label_tag "Expiration Month (MM)"
+              = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+
+          .col-md-2
+            .form-group
+              = label_tag "Expiration Year (YYYY)"
+              = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "bank_account[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+
+      .col-md-12
+        .row
+          .col-md-6
+            .form-group
+              = f.label :amount_transfer
+              .input-group
+                .input-group-addon $
+                = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control amount'
+                = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
+
+              = f.error :amount_transfer, class: 'error-message'
+              .amount-error
+
+          .col-md-6
+            .form-group
+              = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control' }, error_html: { class: 'error-message' }
+              .transfer-frequency-error
+
+      .col-md-12
+        .row
+          .col-md-12
+            br
+            center
+              .form-group
+                = f.button :submit, 'Update Savings', class: 'btn btn-default'
+                - unless current_user.bank_account.new_record?
+                  | &nbsp;&nbsp;
+                  button.btn.btn-primary data-target=".unsubscript" data-toggle="modal" type="button"
+                    | Delete Bank Account
+            br
+            br
+
+            .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
+              .modal-dialog
+                .modal-content
+                  .modal-header
+                    button.close aria-label="Close" data-dismiss="modal" type="button"
+                      span aria-hidden="true"  &times;
+                    h4.modal-title Reoccurring transaction
+                  .modal-body
+                    p Are you sure you want to stop reoccurring transaction on this account?
+                  .modal-footer
+                    button.btn.btn-grey data-dismiss="modal" type="button" No, keep my savings plan.
+                    = link_to 'Yes, please discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-default"
