@@ -31,9 +31,9 @@ class ProfilesController < ApplicationController
 
   def create_bank_account
     # custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken] })
-    custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken], credit_card: params[:creditCard], exp_month: params[:expMonth], exp_year: params[:expYear], cvc: params[:cvc] })
+    # custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken], credit_card: params[:creditCard], exp_month: params[:expMonth], exp_year: params[:expYear], cvc: params[:cvc] })
 
-    @bank_account = current_user.build_bank_account(custom_params)
+    @bank_account = current_user.build_bank_account(bank_account_params)
 
     if @bank_account.save
       redirect_to profile_url, notice: 'Savings plan was successfully created.'
@@ -43,12 +43,10 @@ class ProfilesController < ApplicationController
   end
 
   def update_bank_account
-    custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken], credit_card: params[:creditCard], exp_month: params[:expMonth], exp_year: params[:expYear], cvc: params[:cvc] })
     # custom_params = bank_account_params.merge({ card_number: params[:card_number] })
-
     @bank_account = current_user.bank_account
 
-    if @bank_account.update_attributes(custom_params)
+    if @bank_account.update_attributes(bank_account_params)
       redirect_to profile_url, notice: 'Savings plan was successfully updated.'
     else
       puts @bank_account.errors[:authorize_net_error]
@@ -82,6 +80,6 @@ class ProfilesController < ApplicationController
     end
 
     def bank_account_params
-      params.require(:bank_account).permit(:id, :bank_name, :account_number, :routing_number, :amount_transfer, :transfer_frequency)
+      params.require(:bank_account).permit(:id, :bank_name, :account_number, :routing_number, :amount_transfer, :transfer_frequency, :credit_card, :cvc, :exp_month, :exp_year)
     end
 end
