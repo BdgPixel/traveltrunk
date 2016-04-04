@@ -2,62 +2,8 @@
 # All this logic will automatically be available in application.js.
 # You can use CoffeeScript in this file: http://coffeescript.org/
 #
+# = require savings_form_validation
 # = require autoNumeric-min
-
-Stripe.setPublishableKey(window.stripe_publishable_key);
-
-jQuery ($) ->
-  $('#profile-payment-account').submit (event) ->
-
-    $form = $(this)
-
-    process_submit = true
-
-    if $('#formatted_amount_transfer').val() == ''
-      $('.amount-error').text "can't be blank"
-      process_submit = false
-    else
-      $('.amount-error').text ''
-
-    if $('#bank_account_transfer_frequency').val() == ''
-      $('.transfer-frequency-error').text "can't be blank"
-      process_submit = false
-    else
-      $('.transfer-frequency-error').text ""
-
-    if process_submit
-      $('#loading').show()
-      # Disable the submit button to prevent repeated clicks
-      $form.find('button').prop 'disabled', true
-
-      Stripe.card.createToken $form, stripeResponseHandler
-      # Prevent the form from submitting with the default action
-    false
-  return
-
-stripeResponseHandler = (status, response) ->
-  $form = $('#profile-payment-account')
-  if response.error
-    # Show the errors on the form
-    $form.find('.payment-errors').text response.error.message
-    $form.find('button').prop 'disabled', false
-  else
-    # response contains id and card, which contains additional card details
-    token = response.id
-
-    # Insert the token into the form so it gets submitted to the server
-    $form.append $('<input type="hidden" name="stripeToken" />').val(token)
-    creditCard = $('input[data-stripe="number"]').val()
-    $form.append $('<input type="hidden" name="creditCard" autocomplete="false" />').val(creditCard)
-    $form.append $('<input type="hidden" name="expMonth" />').val(response.card.exp_month)
-    $form.append $('<input type="hidden" name="expYear" />').val(response.card.exp_year)
-    $form.append $('<input type="hidden" name="cvc" autocomplete="false" />').val($('input[data-stripe="cvc"]').val())
-
-    # and submit
-    $form.get(0).submit()
-
-  $('#loading').fadeOut("slow");
-  return
 
 $(document).ready ->
   initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer')
