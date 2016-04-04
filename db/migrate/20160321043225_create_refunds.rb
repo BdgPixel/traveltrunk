@@ -3,6 +3,7 @@ class CreateRefunds < ActiveRecord::Migration
     create_table :refunds do |t|
       t.references :user, index: true, foreign_key: true
       t.string :trans_id
+      t.string :refund_trans_id
       t.string :confirmed, default: 'pending'
       t.integer :amount
 
