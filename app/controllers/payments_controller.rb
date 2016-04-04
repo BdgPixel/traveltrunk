@@ -46,28 +46,31 @@ class PaymentsController < ApplicationController
 
   def authorize_net_webhook
     response = request.parameters
-    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
-    customer = Customer.find_by(customer_id: response['x_cust_id'])
-    user_id = customer.user.id if customer
 
-    if response['x_subscription_id']
+    if response['x_subscription_id'] && response['x_response_code'].eql?('1')
+      PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
+      
+      customer = Customer.find_by(customer_id: response['x_cust_id'])
+      user_id = customer.user_id if customer
+
       transaction = Transaction.new(
         user_id: user_id,
         invoice_id: response['x_invoice_num'],
         amount: response['x_amount'].to_f * 100,
         customer_id: response['x_cust_id'],
-        transaction_type: 'deposit',
+        transaction_type: 'recurring_billing',    
         trans_id: response['x_trans_id']
       )
 
       if transaction.save
-        user = User.find(transaction.user_id)
-        user.total_credit += transaction.amount
-        user.save
+        # user = User.find(transaction.user_id)
+        # user.total_credit += transaction.amount
+        # user.save
 
         PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now
-        user.create_activity key: "payment.recurring", owner: user,
-          recipient: user, parameters: { amount: (transaction.amount / 100.0), total_credit: user.total_credit / 100.0 }
+        
+        # user.create_activity key: "payment.recurring", owner: user,
+        #   recipient: user, parameters: { amount: (transaction.amount / 100.0), total_credit: user.total_credit / 100.0 }
       end
     end
 
