@@ -3,7 +3,7 @@ class Admin::RefundsController < ApplicationController
   before_action :set_customers_authorize_net, only: :update
 
   def index
-    @refunds = Refund.order(created_at: :desc)
+    @refunds = Refund.order(created_at: :desc).page params[:page]
   end
 
   def update

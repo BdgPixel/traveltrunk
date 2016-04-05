@@ -3,7 +3,7 @@ class Admin::PromoCodesController < Admin::ApplicationController
   before_action :authenticate_user!
 
   def index
-    @promo_codes = PromoCode.all
+    @promo_codes = PromoCode.all.page params[:page]
     # @users = User.includes(:profile).select(:id, :email).where(admin: false)
   end
 

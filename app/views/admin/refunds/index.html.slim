@@ -29,4 +29,4 @@ br
           td
            - if refund.confirmed.eql? 'pending'
             = link_to 'Approve', admin_refund_path(refund), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure approve this refund ?'}, :method => :put
-
+  = paginate @refunds

@@ -1,6 +1,8 @@
 class User < ActiveRecord::Base
   include PublicActivity::Model
 
+  paginates_per 10
+
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
   has_one  :group, dependent: :destroy
