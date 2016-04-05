@@ -1,0 +1,45 @@
+.row
+  .col-md-12
+    .col-md-4
+      br
+      br
+      h4 Location
+      ul 
+        li Travel Trunk LLC Oakland, CA 94612 
+        li United States of America
+      p Main Number: (415) 572-2930
+
+    .col-md-8
+      h2 Contact Us
+
+      = simple_form_for @contact, url: contact_us_path do |f|
+        - if @contact.errors.any?
+          #error_explanation.alert.alert-danger
+            = "#{pluralize(@contact.errors.count, "error")} prohibited this profile from being saved"
+
+        .col-md-6
+          .form-group
+            = f.input :first_name, autofocus: true, required: false, input_html: { class: 'form-control' }
+      
+        .col-md-6
+          form-group
+            = f.input :last_name, required: false, input_html: { class: 'form-control' }
+
+        .col-md-12
+          form-group
+            = f.input :email, required: false, input_html: { class: 'form-control' }
+        .col-md-12
+          form-group
+            br
+            = f.input :subject, required: false, input_html: { class: 'form-control' }
+
+        .col-md-12
+          form-group
+            br
+            = f.input :message, as: :text, required: false, input_html: { class: 'form-control', rows: 15}
+
+        .col-md-12
+          .form-group
+            br
+              = f.submit "Sign up", class: 'btn btn-orange'
+

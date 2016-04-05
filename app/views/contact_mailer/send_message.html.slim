@@ -1,0 +1,12 @@
+ContactMailer#sendMessage
+  col-md-6
+    .form-group
+      | Name: #{full_name(@contact)}
+
+  .col-md-12
+    form-group
+      | Email: #{@contact.email} 
+
+  .col-md-12
+    form-group
+      p message: #{@contact.message}

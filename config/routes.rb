@@ -1,8 +1,10 @@
 Rails.application.routes.draw do
-  namespace :admin do
-  get 'refunds/index'
-  end
+  get 'privacy_policy' => 'policies#privacy'
+  get 'refund_policy' => 'policies#refund'
 
+  get  'contact_us' => 'contacts#index'
+  post 'contact_us' => 'contacts#create'
+  
   get  'refunds/create'
 
   get  'promo_codes/activation'
