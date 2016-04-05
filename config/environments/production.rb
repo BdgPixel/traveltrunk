@@ -79,14 +79,34 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :smtp
 
+  # config.action_mailer.smtp_settings = {
+  #   address:              'smtp.mandrillapp.com',
+  #   port:                 587,
+  #   domain:               'traveltrunk.us',
+  #   user_name:            ENV['MANDRILL_USERNAME'],
+  #   password:             ENV['MANDRILL_API_KEY'],
+  #   authentication:       'plain',
+  #   enable_starttls_auto: true  }
+
+  # use mailgun
   config.action_mailer.smtp_settings = {
-    address:              'smtp.mandrillapp.com',
-    port:                 587,
-    domain:               'traveltrunk.us',
-    user_name:            ENV['MANDRILL_USERNAME'],
-    password:             ENV['MANDRILL_API_KEY'],
-    authentication:       'plain',
-    enable_starttls_auto: true  }
+    :authentication => :plain,
+    :address => "smtp.mailgun.org",
+    :port => 587,
+    :domain => "https://api.mailgun.net/v3/sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
+    :user_name => "postmaster@sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
+    :password => "f10b4aa7caf74d1a5e3aa93562bff67e"
+  }
+
+  # config.action_mailer.smtp_settings = {
+  #   :address              => "smtp.gmail.com",
+  #   :port                 => 587,
+  #   :domain               => "gmail.com",
+  #   :user_name            => "teguh@41studio.com",
+  #   :password             => "Zxcvasdfqwer1234",
+  #   :authentication       => 'plain',
+  #   :enable_starttls_auto => true
+  # }
 
   config.action_mailer.default_url_options = { host: 'traveltrunk.us' }
 end
