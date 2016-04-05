@@ -60,7 +60,8 @@
                   li = link_to 'Help', helps_path
                   li.divider role="separator"
                   li = link_to 'Sign Out', destroy_user_session_path, method: :delete
-          - else
-              li
-                = link_to new_registration_path(resource_name)
-                  b Sign Up
+          - else 
+            li
+              = link_to new_user_registration_path
+                b Sign Up
+            
