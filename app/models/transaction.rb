@@ -4,7 +4,7 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :user
 
-  paginates_per 10
+  # paginates_per 6
 
   private
     def update_user_total_credit
