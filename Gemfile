@@ -91,6 +91,8 @@ group :development, :test do
 
   gem 'quiet_assets'
 
+  gem 'thin'
+
 end
 gem 'dotenv-rails'
 
