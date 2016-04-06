@@ -90,12 +90,12 @@ Rails.application.configure do
 
   # use mailgun
   config.action_mailer.smtp_settings = {
-    :authentication => :plain,
-    :address => "smtp.mailgun.org",
-    :port => 587,
-    :domain => "sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
-    :user_name => "postmaster@sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
-    :password => "f10b4aa7caf74d1a5e3aa93562bff67e"
+    address:        "smtp.mailgun.org",
+    port:            587,
+    domain:         "sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
+    user_name:      "postmaster@sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
+    password:       "f10b4aa7caf74d1a5e3aa93562bff67e",
+    authentication: :plain
   }
 
   # config.action_mailer.smtp_settings = {
