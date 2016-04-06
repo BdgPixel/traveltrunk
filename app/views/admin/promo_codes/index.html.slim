@@ -10,7 +10,8 @@ br
   table.table.table-striped.table-hover
     thead
       tr
-        th Promo Code
+        th Token Code
+        th Amount
         th Recipient
         th Expired Date
         th Status
@@ -20,6 +21,7 @@ br
       - @promo_codes.each do |promo_code|
         tr
           td = promo_code.token
+          td = number_to_currency promo_code.amount.to_f
           td
             - if promo_code.user.profile
               = "#{promo_code.user.profile.full_name} <#{promo_code.user.email}>"
