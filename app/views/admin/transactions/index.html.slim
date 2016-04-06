@@ -19,13 +19,13 @@ br
 
     tbody
       - @transactions.each do |transaction|
-        / - if transaction.profile
-        tr
-          td = transaction.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
-          td = transaction.trans_id
-          td = link_to transaction.user.full_name, admin_user_path(transaction.user)
-          td = transaction.transaction_type
-          td = currency_in_usd transaction.amount
-          td
-            / = link_to 'Detail', admin_transaction_path(transaction), class: 'btn btn-orange btn-sm'
+        - unless transaction.transaction_type.eql? 'add_promo_code'
+          tr
+            td = transaction.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
+            td = transaction.trans_id
+            td = link_to transaction.user.full_name, admin_user_path(transaction.user)
+            td = transaction.transaction_type
+            td = currency_in_usd transaction.amount
+            td
+              / = link_to 'Detail', admin_transaction_path(transaction), class: 'btn btn-orange btn-sm'
   = paginate @transactions
