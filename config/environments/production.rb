@@ -90,11 +90,11 @@ Rails.application.configure do
 
   # use mailgun
   config.action_mailer.smtp_settings = {
-    address:        "smtp.mailgun.org",
-    port:            587,
-    domain:         "sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
-    user_name:      "postmaster@sandboxe71a6a63b661425caa07456718557a53.mailgun.org",
-    password:       "f10b4aa7caf74d1a5e3aa93562bff67e",
+    address:        ENV[MAILGUN_SMTP_SERVER],
+    port:           ENV[MAILGUN_SMTP_PORT],
+    domain:         'traveltrunk.herokuapp.com',
+    user_name:      ENV[MAILGUN_SMTP_LOGIN],
+    password:       ENV[MAILGUN_SMTP_PASSWORD],
     authentication: :plain
   }
 
@@ -108,5 +108,5 @@ Rails.application.configure do
   #   :enable_starttls_auto => true
   # }
 
-  config.action_mailer.default_url_options = { host: 'traveltrunk.us' }
+  config.action_mailer.default_url_options = { host: 'traveltrunk.herokuapp.com' }
 end
