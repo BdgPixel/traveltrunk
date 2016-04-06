@@ -8,15 +8,19 @@ class Transaction < ActiveRecord::Base
 
   private
     def update_user_total_credit
-      self.user.total_credit += self.amount
-      self.user.save
+      unless 'add_promo_code'.include? self.transaction_type
+        self.user.total_credit += self.amount
+        self.user.save
+      end
     end
 
     def create_activity
-      unless ["refund", "void"].include? self.transaction_type
+      unless ["refund", "void", "add_promo_code"].include? self.transaction_type
         activity_key = 
           if self.transaction_type.eql? "add_to_saving"
             'payment.manual'
+          elsif self.transaction_type.eql? "used_promo_code"
+            'payment.used_promo_code'
           else
             'payment.recurring'
           end
