@@ -264,7 +264,7 @@ class DealsController < ApplicationController
           PaymentProcessorMailer.payment_succeed(current_user.id, transaction.amount, card_last_4).deliver_now
         end
       end
-    rescue Exception => e
+    rescue => e
       if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
         @error_response = 
           if e.error_message[:response_error_text]
