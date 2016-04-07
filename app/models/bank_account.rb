@@ -1,4 +1,6 @@
 class BankAccount < ActiveRecord::Base
+  include ExceptionErrorResponse
+
   belongs_to :user
 
   before_save :set_customer_profile, :set_recurring_subscription
@@ -38,7 +40,7 @@ class BankAccount < ActiveRecord::Base
           if response.messages.resultCode.eql? 'Ok'
             Customer.create(customer_id: merchant_customer_id, user_id: user.id, customer_profile_id: response.customerProfileId)
           end
-        rescue Exception => e
+        rescue => e
           logger.error e.message
 
           self.errors.add(:authorize_net_error, e.error_message[:response_message])
@@ -133,25 +135,10 @@ class BankAccount < ActiveRecord::Base
               user_id: user.id
             })
           end
-          
         end
-      rescue Exception => e
+      rescue => e
         logger.error e.message
-
-        if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-          @error_response = 
-            if e.error_message[:response_error_text]
-              "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
-            else
-              e.error_message[:response_message].split('-').last.strip
-            end
-            
-          self.errors.add(:authorize_net_error, @error_response)
-          false
-        else
-          logger.error e.message
-          e.backtrace.each { |line| logger.error line }
-        end
+        error_message(e)
       end
     end
   end
@@ -175,23 +162,9 @@ class BankAccount < ActiveRecord::Base
           PaymentProcessorMailer.cancel_subscription(self.user.id).deliver_now
           user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
         end
-      rescue Exception => e
+      rescue => e
         logger.error e.message
-
-        if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-          @error_response = 
-            if e.error_message[:response_error_text]
-              "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
-            else
-              e.error_message[:response_message].split('-').last.strip
-            end
-            
-          self.errors.add(:authorize_net_error, @error_response)
-          false
-        else
-          logger.error e.message
-          e.backtrace.each { |line| logger.error line }
-        end
+        error_message(e)
       end
     end
 
