@@ -84,7 +84,7 @@ class Admin::RefundsController < ApplicationController
           end
         
       rescue Exception => e
-        @error_response = "#{e.message}  #{e.error_message[:response_error_text]}"
+        error_message(e)
       end
     end
 end

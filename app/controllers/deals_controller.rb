@@ -1,6 +1,6 @@
 class DealsController < ApplicationController
   require "htmlentities"
-  # include HotelsList
+  include ExceptionErrorResponse
 
   before_action :check_like, only: [:like]
   before_action :authenticate_user!
@@ -44,7 +44,6 @@ class DealsController < ApplicationController
     room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
 
     if request.xhr?
-      # get_room_availability(room_params_hash)
       room_response = Expedia::Hotels.room_availability(room_params_hash).first
 
       @room_availability = room_response[:response]
@@ -220,8 +219,6 @@ class DealsController < ApplicationController
       
       payment = AuthorizeNetLib::PaymentTransactions.new
       customer_authorize = AuthorizeNetLib::Customers.new
-      
-      # response_credit_card = payment.authorize_credit_card(params[:update_credit])
 
       customer_profile = 
         if current_user.customer
@@ -265,67 +262,9 @@ class DealsController < ApplicationController
         end
       end
     rescue => e
-      if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-        @error_response = 
-          if e.error_message[:response_error_text]
-            "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
-          else
-            e.error_message[:response_message].split('-').last.strip
-          end
-      else
-        logger.error e.message
-        e.backtrace.each { |line| logger.error line }
-      end
+      error_message(e)
     end
   end
-
-# Charge using stripe
-=begin
-  def update_credit
-    begin
-      amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
-      charge= Stripe::Charge.create(
-        :amount => amount_in_cents,
-        :currency => "usd",
-        :source => {
-          number: params[:update_credit][:card_number],
-          exp_month: params[:update_credit][:exp_month],
-          exp_year: params[:update_credit][:exp_year],
-          object: 'card'
-        },
-        :description => "Add to savings"
-      )
-
-      if charge.paid
-        transaction = current_user.transactions.new(amount: charge.amount, transaction_type: 'deposit')
-
-        if transaction.save
-          total_credit = current_user.total_credit + amount_in_cents
-          current_user.update_attributes(total_credit: total_credit)
-          @user_total_credit = current_user.total_credit / 100.0
-
-          @transaction_amount = transaction.amount / 100.0
-          current_user.create_activity key: "payment.manual", owner: current_user,
-            recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @User_total_credit }
-
-          if @group
-            @total_credit = @group.total_credit / 100.0
-          else
-            @total_credit = @user_total_credit
-          end
-
-          StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
-
-          @notification_count = current_user.get_notification(false).count
-
-        end
-      end
-
-    rescue Stripe::CardError => e
-      @error_response = e.message
-    end
-  end
-=end
 
   def confirmation_page
     if params[:reservation_id]
@@ -365,21 +304,6 @@ class DealsController < ApplicationController
     end
   end
 
-  # def room_images
-  #   if request.xhr?
-  #     searchParams     = current_user.get_current_destination
-  #     hotel_id_hash = { hotelId: params[:id] }
-
-  #     get_room_images(hotel_id_hash)
-
-  #     respond_to do |format|
-  #       format.js { render :reload_image }
-  #     end
-  #   end
-  # end
-
-  # commented but will be used later
-  #
   def like
     @hotel_id = params[:id]
     notice =
@@ -441,7 +365,6 @@ class DealsController < ApplicationController
 
   private
     def set_search_data
-      # get_hotels_list(@destination, @group)
       Expedia::Hotels
       Expedia::Hotels.current_user = current_user
       @hotels_list = Expedia::Hotels.list(@destination, @group)

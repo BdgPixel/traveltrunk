@@ -30,9 +30,6 @@ class ProfilesController < ApplicationController
   end
 
   def create_bank_account
-    # custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken] })
-    # custom_params = bank_account_params.merge({ stripe_token: params[:stripeToken], credit_card: params[:creditCard], exp_month: params[:expMonth], exp_year: params[:expYear], cvc: params[:cvc] })
-
     @bank_account = current_user.build_bank_account(bank_account_params)
 
     if @bank_account.save
@@ -43,7 +40,6 @@ class ProfilesController < ApplicationController
   end
 
   def update_bank_account
-    # custom_params = bank_account_params.merge({ card_number: params[:card_number] })
     @bank_account = current_user.bank_account
 
     if @bank_account.update_attributes(bank_account_params)
