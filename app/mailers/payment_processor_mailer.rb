@@ -37,18 +37,6 @@ class PaymentProcessorMailer < ApplicationMailer
     @amount = amount
     @card_last4 = card_last4
 
-    # group = @user.group || @user.joined_groups.first
-    # @total_credit = 
-    #   if group
-    #     if group.members.any?
-    #       group.total_credit
-    #     else
-    #       @user.total_credit
-    #     end
-    #   else
-    #     @user.total_credit
-    #   end
-
     mail to: @user.email, subject: 'One time Payment Successful'
   end
 

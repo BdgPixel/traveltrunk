@@ -1,4 +1,6 @@
 class Admin::RefundsController < ApplicationController
+  include ExceptionErrorResponse
+  
   before_action :set_refund, only: :update
   before_action :set_customers_authorize_net, only: :update
 

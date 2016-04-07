@@ -34,13 +34,4 @@ class Users::InvitationsController < Devise::InvitationsController
     def update_resource_params
       params.require(:user).permit(:email, :password, :password_confirmation, :invitation_token, profile_attributes: [:first_name, :last_name])
     end
-
-    # def accept_resource
-    #   resource = resource_class.accept_invitation!(update_resource_params)
-    #   #   UsersGroup.create(user_id: params[:user][:id], group_id: params[:user][:group_id])
-    #   # end
-    #   ## Report accepting invitation to analytics
-    #   # Analytics.report('invite.accept', resource.id)
-    #   resource
-    # end
 end

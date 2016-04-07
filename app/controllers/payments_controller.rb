@@ -61,16 +61,7 @@ class PaymentsController < ApplicationController
         trans_id: response['x_trans_id']
       )
 
-      if transaction.save
-        # user = User.find(transaction.user_id)
-        # user.total_credit += transaction.amount
-        # user.save
-
-        PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now
-        
-        # user.create_activity key: "payment.recurring", owner: user,
-        #   recipient: user, parameters: { amount: (transaction.amount / 100.0), total_credit: user.total_credit / 100.0 }
-      end
+      PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
     end
 
     render nothing: true, status: 200

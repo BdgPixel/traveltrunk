@@ -325,12 +325,14 @@ class DealsController < ApplicationController
         end
         'You successfully vote for this hotel'
       end
+
     redirect_to deals_show_url(params[:id]), notice: notice
   end
 
   def next
     if request.xhr?
       set_search_data
+
       respond_to do |format|
         format.js { render :action => "index" }
       end
@@ -348,6 +350,7 @@ class DealsController < ApplicationController
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
     custom_params = destination_params
+    
     custom_params.merge!({
       arrival_date:   arrival_date,
       departure_date: departure_date
