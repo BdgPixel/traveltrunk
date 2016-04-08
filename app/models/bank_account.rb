@@ -167,6 +167,5 @@ class BankAccount < ActiveRecord::Base
         error_message(e)
       end
     end
-
   end
 end

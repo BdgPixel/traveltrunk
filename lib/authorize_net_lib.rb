@@ -4,10 +4,11 @@ module AuthorizeNetLib
 
   class Global
     def initialize
-      @@api_login_id = ENV['AUTHORIZE_NET_API_LOGIN_ID']
-      @@api_transaction_key = ENV['AUTHORIZE_NET_API_TRANSACTION_KEY']
-      
-      @@transaction = AuthorizeNet::API::Transaction.new(@@api_login_id, @@api_transaction_key, gateway: :sandbox)
+      api_login_id = ENV['AUTHORIZE_NET_API_LOGIN_ID']
+      api_transaction_key = ENV['AUTHORIZE_NET_API_TRANSACTION_KEY']
+      gateway = Rails.env.eql?('development') ? :sandbox : :production
+
+      @transaction = AuthorizeNet::API::Transaction.new(api_login_id, api_transaction_key, gateway: gateway)
     end
 
     def self.generate_random_id(string_uniqe)
@@ -17,28 +18,16 @@ module AuthorizeNetLib
 
   # Customer Information Manager (CIM)
   class Customers < Global
-    def create_profile(customer)
+    def create_profile(customer_params)
       request = AuthorizeNet::API::CreateCustomerProfileRequest.new
 
-      request.profile = AuthorizeNet::API::CustomerProfileType.new
-      request.profile.merchantCustomerId = customer[:merchant_customer_id]
-      request.profile.email = customer[:email]
-      request.profile.paymentProfiles = nil
-      request.profile.shipToList = nil
-
-      response = @@transaction.create_customer_profile(request)
-
-      unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-        response_message = response.messages.messages.first.text
-        response_error_code = response.messages.messages.first.code
-
-        error_messages = {
-          response_message: response_message,
-          response_error_code: response_error_code
-        }
-
-        raise RescueErrorsResponse.new(error_messages), 'Failed to create a new customer profile.'
-      end
+      request.profile = AuthorizeNet::API::CustomerProfileType.new(
+        customer_params[:merchant_customer_id], nil, customer_params[:email], nil, nil
+      )
+      
+      response = @transaction.create_customer_profile(request)
+      error_params, message_params = [response.messages, 'Failed to create a new customer profile.']
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
 
       response
     end
@@ -47,15 +36,14 @@ module AuthorizeNetLib
       request = AuthorizeNet::API::GetCustomerProfileRequest.new
       request.customerProfileId = customer_profile_id
 
-      response = @@transaction.get_customer_profile(request)
+      response = @transaction.get_customer_profile(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-        response_message = response.messages.messages.first.text
-        response_error_code = response.messages.messages.first.code
+        message = response.messages.messages.first
 
         error_messages = {
-          response_message: response_message,
-          response_error_code: response_error_code
+          response_message: message.text,
+          response_error_code: message.code
         }
 
         raise RescueErrorsResponse.new(error_messages), "Failed to get customer profile information with id #{request.customerProfileId}"
@@ -68,15 +56,14 @@ module AuthorizeNetLib
       request = AuthorizeNet::API::DeleteCustomerPaymentProfileRequest.new
       request.customerProfileId = customer_profile_id 
       request.customerPaymentProfileId = customer_payment_profile_id 
-      response = @@transaction.delete_customer_payment_profile(request)
+      response = @transaction.delete_customer_payment_profile(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-        response_message = response.messages.messages.first.text
-        response_error_code = response_message.messages.first.code
+        message = response.messages.messages.first
 
         error_messages = {
-          response_message: response_message,
-          response_error_code: response_error_code
+          response_message: message.text,
+          response_error_code: message.code
         }
 
         raise RescueErrorsResponse.new(error_messages), "Failed to delete payment profile with profile id #{customer_payment_profile_id} : #{response_message}"
@@ -130,7 +117,7 @@ module AuthorizeNetLib
       request.subscription.billTo.zip = recurring_params[:customer][:zip]
       request.subscription.billTo.country = recurring_params[:customer][:country]
 
-      response = @@transaction.create_subscription(request)
+      response = @transaction.create_subscription(request)
       
       if response != nil
         unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
@@ -156,7 +143,7 @@ module AuthorizeNetLib
       request.subscription = AuthorizeNet::API::ARBSubscriptionType.new
       request.subscription.amount = amount
 
-      response = @@transaction.update_subscription(request)
+      response = @transaction.update_subscription(request)
 
       if response != nil
         unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
@@ -179,7 +166,7 @@ module AuthorizeNetLib
       request = AuthorizeNet::API::ARBCancelSubscriptionRequest.new
       request.subscriptionId = subscription_id
         
-      response = @@transaction.cancel_subscription(request)
+      response = @transaction.cancel_subscription(request)
 
       if response != nil
         if response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
@@ -213,7 +200,7 @@ module AuthorizeNetLib
       request.transactionRequest.profile.customerProfileId = customer_profile_id
       request.transactionRequest.profile.paymentProfile = AuthorizeNet::API::PaymentProfile.new(customer_payment_profile_id)
 
-      response = @@transaction.create_transaction(request)
+      response = @transaction.create_transaction(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
@@ -266,7 +253,7 @@ module AuthorizeNetLib
       request.transactionRequest.order = AuthorizeNet::API::OrderType.new(payment_params[:order][:invoice], payment_params[:order][:description])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
-      response = @@transaction.create_transaction(request)
+      response = @transaction.create_transaction(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
@@ -304,7 +291,7 @@ module AuthorizeNetLib
       request.transactionRequest.refTransId = params_refund[:trans_id]
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::RefundTransaction
-      response = @@transaction.create_transaction(request)
+      response = @transaction.create_transaction(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
@@ -329,7 +316,7 @@ module AuthorizeNetLib
       request.transactionRequest.refTransId = params_refund[:trans_id]
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::VoidTransaction
       
-      response = @@transaction.create_transaction(request)
+      response = @transaction.create_transaction(request)
     
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
@@ -353,7 +340,7 @@ module AuthorizeNetLib
       request = AuthorizeNet::API::GetTransactionDetailsRequest.new
       request.transId = trans_id
 
-      response = @@transaction.get_transaction_details(request)
+      response = @transaction.get_transaction_details(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
@@ -376,6 +363,19 @@ module AuthorizeNetLib
 
     def initialize(error_message)
       @error_message = error_message
+    end
+
+    def self.get_error_messages(error_params, message_params)
+      unless error_params.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
+        message = error_params.messages.first
+
+        error_messages = {
+          response_message: message.text,
+          response_error_code: message.code
+        }
+        
+        raise RescueErrorsResponse.new(error_messages), message_params
+      end
     end
   end
 end
