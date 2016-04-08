@@ -4,53 +4,53 @@
 #
 # = require autoNumeric-min
 
-Stripe.setPublishableKey(window.stripe_publishable_key);
+# Stripe.setPublishableKey(window.stripe_publishable_key);
 
-jQuery ($) ->
-  $('#profile-payment-account').submit (event) ->
+# jQuery ($) ->
+#   $('#profile-payment-account').submit (event) ->
 
-    $form = $(this)
+#     $form = $(this)
 
-    process_submit = true
+#     process_submit = true
 
-    if $('#formatted_amount_transfer').val() == ''
-      $('.amount-error').text "can't be blank"
-      process_submit = false
-    else
-      $('.amount-error').text ''
+#     if $('#formatted_amount_transfer').val() == ''
+#       $('.amount-error').text "can't be blank"
+#       process_submit = false
+#     else
+#       $('.amount-error').text ''
 
-    if $('#bank_account_transfer_frequency').val() == ''
-      $('.transfer-frequency-error').text "can't be blank"
-      process_submit = false
-    else
-      $('.transfer-frequency-error').text ""
+#     if $('#bank_account_transfer_frequency').val() == ''
+#       $('.transfer-frequency-error').text "can't be blank"
+#       process_submit = false
+#     else
+#       $('.transfer-frequency-error').text ""
 
-    if process_submit
-      $('#loading').show()
-      # Disable the submit button to prevent repeated clicks
-      $form.find('button').prop 'disabled', true
+#     if process_submit
+#       $('#loading').show()
+#       # Disable the submit button to prevent repeated clicks
+#       $form.find('button').prop 'disabled', true
 
-      Stripe.card.createToken $form, stripeResponseHandler
-      # Prevent the form from submitting with the default action
-    false
-  return
+#       Stripe.card.createToken $form, stripeResponseHandler
+#       # Prevent the form from submitting with the default action
+#     false
+#   return
 
-stripeResponseHandler = (status, response) ->
-  $form = $('#profile-payment-account')
-  if response.error
-    # Show the errors on the form
-    $form.find('.payment-errors').text response.error.message
-    $form.find('button').prop 'disabled', false
-  else
-    # response contains id and card, which contains additional card details
-    token = response.id
-    # Insert the token into the form so it gets submitted to the server
-    $form.append $('<input type="hidden" name="stripeToken" />').val(token)
-    # and submit
-    $form.get(0).submit()
+# stripeResponseHandler = (status, response) ->
+#   $form = $('#profile-payment-account')
+#   if response.error
+#     # Show the errors on the form
+#     $form.find('.payment-errors').text response.error.message
+#     $form.find('button').prop 'disabled', false
+#   else
+#     # response contains id and card, which contains additional card details
+#     token = response.id
+#     # Insert the token into the form so it gets submitted to the server
+#     $form.append $('<input type="hidden" name="stripeToken" />').val(token)
+#     # and submit
+#     $form.get(0).submit()
 
-  $('#loading').fadeOut("slow");
-  return
+#   $('#loading').fadeOut("slow");
+#   return
 
 $(document).ready ->
   initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer')

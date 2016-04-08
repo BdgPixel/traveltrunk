@@ -83,9 +83,7 @@ inviteFriends = (selector) ->
         if isNaN(item.id)
           tags = "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
           tags
-          # "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
         else
-        # "<li><img src='#{item.image_url}' title='#{item.name}' height='25px' width='25px' /><div style='display: inline-block; padding-left: 10px;'><div class='full_name'>#{item.name}</div><div class='email'>#{item.email}</div></div></li>"
           "<li><p><img src='#{item.image_url}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}&nbsp;<b style='color: red'>#{item.email}</b></p></li>"
     })
 

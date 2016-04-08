@@ -4,5 +4,3 @@
       | Your savings plan successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account. Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
       small
         i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
-/ - else
-/   | which has since been removed

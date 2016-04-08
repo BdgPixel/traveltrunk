@@ -1,4 +1,6 @@
 class Admin::RefundsController < ApplicationController
+  include ExceptionErrorResponse
+  
   before_action :set_refund, only: :update
   before_action :set_customers_authorize_net, only: :update
 
@@ -84,7 +86,7 @@ class Admin::RefundsController < ApplicationController
           end
         
       rescue Exception => e
-        @error_response = "#{e.message}  #{e.error_message[:response_error_text]}"
+        error_message(e)
       end
     end
 end
