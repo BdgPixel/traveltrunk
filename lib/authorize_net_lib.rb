@@ -33,131 +33,104 @@ module AuthorizeNetLib
     end
 
     def get_customer_profile(customer_profile_id)
-      request = AuthorizeNet::API::GetCustomerProfileRequest.new
-      request.customerProfileId = customer_profile_id
+      request = AuthorizeNet::API::GetCustomerProfileRequest.new(nil, nil, customer_profile_id)
+      # request.customerProfileId = customer_profile_id
 
       response = @transaction.get_customer_profile(request)
-
-      unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-        message = response.messages.messages.first
-
-        error_messages = {
-          response_message: message.text,
-          response_error_code: message.code
-        }
-
-        raise RescueErrorsResponse.new(error_messages), "Failed to get customer profile information with id #{request.customerProfileId}"
-      end
+      error_params, message_params = [response.messages, "Failed to get customer profile information with id #{customer_profile_id}"]
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
 
       response.profile
     end
 
+    def delete_customer_profile(customer_profile_id)
+      request = AuthorizeNet::API::DeleteCustomerProfileRequest.new
+      request.customerProfileId = customer_profile_id
+
+      response = @transaction.delete_customer_profile(request)
+      error_params, message_params = [response.messages, "Failed to delete customer with customer profile id #{request.customerProfileId}"]
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
+
+      response
+    end
+
     def delete_payment_profile(customer_profile_id, customer_payment_profile_id)
-      request = AuthorizeNet::API::DeleteCustomerPaymentProfileRequest.new
-      request.customerProfileId = customer_profile_id 
-      request.customerPaymentProfileId = customer_payment_profile_id 
+      request = AuthorizeNet::API::DeleteCustomerPaymentProfileRequest.new(nil, nil, customer_profile_id, customer_payment_profile_id)
+
       response = @transaction.delete_customer_payment_profile(request)
-
-      unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-        message = response.messages.messages.first
-
-        error_messages = {
-          response_message: message.text,
-          response_error_code: message.code
-        }
-
-        raise RescueErrorsResponse.new(error_messages), "Failed to delete payment profile with profile id #{customer_payment_profile_id} : #{response_message}"
-      end
-
+      error_params, message_params = [response.messages, "Failed to delete payment profile with profile id #{customer_payment_profile_id}"]
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
+      
       response
     end
  end
 
+  # The RecurringBilling class is responsible for subscription.
   class RecurringBilling < Global
     def create_subscription(recurring_params)
       request = AuthorizeNet::API::ARBCreateSubscriptionRequest.new
       request.refId = recurring_params[:ref_id]
 
-      request.subscription = AuthorizeNet::API::ARBSubscriptionType.new
-      request.subscription.name = "#{recurring_params[:customer][:first_name]}#{recurring_params[:customer][:last_name]}"
-      request.subscription.amount = recurring_params[:plan][:amount]
-      request.subscription.trialAmount = 0.00
+      customer_params = recurring_params[:customer]
+      full_name = "#{customer_params[:first_name]}#{customer_params[:last_name]}"
+      plan_params = recurring_params[:plan]
 
-      request.subscription.paymentSchedule = AuthorizeNet::API::PaymentScheduleType.new
-      request.subscription.paymentSchedule.interval = AuthorizeNet::API::PaymentScheduleType::Interval.new
-      request.subscription.paymentSchedule.interval.length = recurring_params[:plan][:interval_length]
-      request.subscription.paymentSchedule.interval.unit = recurring_params[:plan][:interval_unit]
-      request.subscription.paymentSchedule.startDate = recurring_params[:plan][:start_date]
-      request.subscription.paymentSchedule.totalOccurrences = '9999'
-      request.subscription.paymentSchedule.trialOccurrences = '0'
+      request.subscription = AuthorizeNet::API::ARBSubscriptionType.new(full_name, nil, plan_params[:amount], 0.00)
+      request.subscription.paymentSchedule = AuthorizeNet::API::PaymentScheduleType.new(
+        AuthorizeNet::API::PaymentScheduleType::Interval.new(
+          plan_params[:interval_length], 
+          plan_params[:interval_unit]
+        ),
+        plan_params[:start_date],
+        '9999',
+        '0'
+      )
+
+      card_params = recurring_params[:card]
+
+      request.subscription.payment = AuthorizeNet::API::PaymentType.new(
+        AuthorizeNet::API::CreditCardType.new(
+          card_params[:credit_card], card_params[:exp_card], card_params[:cvc]
+        )
+      )
+
+      request.subscription.order = AuthorizeNet::API::OrderType.new(
+        recurring_params[:order][:invoice_number], 'Recurring Billing'
+      )
       
-      request.subscription.payment = AuthorizeNet::API::PaymentType.new
+      request.subscription.customer = AuthorizeNet::API::CustomerDataType.new(
+        AuthorizeNet::API::CustomerTypeEnum::Individual,
+        customer_params[:customer_id],
+        customer_params[:email]
+      )
       
-      request.subscription.payment.creditCard = AuthorizeNet::API::CreditCardType.new
-      request.subscription.payment.creditCard.cardNumber = recurring_params[:card][:credit_card]
-      request.subscription.payment.creditCard.expirationDate = recurring_params[:card][:exp_card]
-      request.subscription.payment.creditCard.cardCode = recurring_params[:card][:cvc]
-
-      request.subscription.order = AuthorizeNet::API::OrderType.new
-      request.subscription.order.invoiceNumber = recurring_params[:order][:invoice_number]
-      request.subscription.order.description = 'Recurring Billing'
-
-      request.subscription.customer = AuthorizeNet::API::CustomerDataType.new
-      request.subscription.customer.type = AuthorizeNet::API::CustomerTypeEnum::Individual
-      request.subscription.customer.id = recurring_params[:customer][:customer_id]
-      request.subscription.customer.email = recurring_params[:customer][:email]
-
-      request.subscription.billTo = AuthorizeNet::API::NameAndAddressType.new
-      request.subscription.billTo.firstName = recurring_params[:customer][:first_name]
-      request.subscription.billTo.lastName = recurring_params[:customer][:last_name]
-      request.subscription.billTo.company = recurring_params[:customer][:company]
-      request.subscription.billTo.address = recurring_params[:customer][:address]
-      request.subscription.billTo.city = recurring_params[:customer][:city]
-      request.subscription.billTo.state = recurring_params[:customer][:state]
-      request.subscription.billTo.zip = recurring_params[:customer][:zip]
-      request.subscription.billTo.country = recurring_params[:customer][:country]
+      request.subscription.billTo = AuthorizeNet::API::NameAndAddressType.new(
+        customer_params[:first_name],
+        customer_params[:last_name],
+        customer_params[:company],
+        customer_params[:address],
+        customer_params[:city],
+        customer_params[:state],
+        customer_params[:zip],
+        customer_params[:country]
+      )
 
       response = @transaction.create_subscription(request)
-      
-      if response != nil
-        unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-          response_message = response.messages.messages.first.text
-          response_error_code = response.messages.messages.first.code
+      error_params, message_params = [response.messages, "Failed to create a subscription."]
 
-          error_messages = {
-            response_message: response_message,
-            response_error_code: response_error_code
-          }
-          
-          raise RescueErrorsResponse.new(error_messages), "Failed to create a subscription"
-        end
-      end
+      RescueErrorsResponse::get_error_messages(error_params, message_params) if response
 
       response
     end
 
     def update_subscription(subscription_id, amount)
-      request = AuthorizeNet::API::ARBUpdateSubscriptionRequest.new
-      request.subscriptionId = subscription_id
-
-      request.subscription = AuthorizeNet::API::ARBSubscriptionType.new
-      request.subscription.amount = amount
+      request = AuthorizeNet::API::ARBUpdateSubscriptionRequest.new(
+        nil, nil, subscription_id, AuthorizeNet::API::ARBSubscriptionType.new(nil, nil, amount)
+      )
 
       response = @transaction.update_subscription(request)
-
-      if response != nil
-        unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-          response_message = response.messages.messages.first.code
-          response_error_code = response.messages.messages.first.text
-
-          error_messages = {
-            response_message: response_message,
-            response_error_code: response_error_code
-          }
-
-          raise RescueErrorsResponse.new(error_messages), 'Failed to update a subscription'
-        end
-      end
+      error_params, message_params = [response.messages, "Failed to update a subscription."]
+      RescueErrorsResponse::get_error_messages(error_params, message_params) if response
 
       response
     end
@@ -368,7 +341,7 @@ module AuthorizeNetLib
     def self.get_error_messages(error_params, message_params)
       unless error_params.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         message = error_params.messages.first
-
+        puts error_params.messages.first.code
         error_messages = {
           response_message: message.text,
           response_error_code: message.code

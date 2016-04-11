@@ -67,18 +67,22 @@ gem 'httparty'
 
 gem 'ratyrate'
 
-gem 'authorizenet', '~> 1.8', '>= 1.8.8.1'
-
-gem "rubycritic", :require => false
+gem 'authorizenet'
 
 gem 'kaminari'
 
 group :development, :test do
+  gem 'rspec', '~> 3.4'
+  
+  # gem 'rubycritic', '~> 2.8'
+  gem 'guard-rubycritic', '~> 1.4'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  # gem 'web-console', '~> 1.4'
+  gem 'web-console', '~> 3.1', '>= 3.1.1'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
