@@ -86,7 +86,22 @@ class Admin::RefundsController < ApplicationController
           end
         
       rescue Exception => e
-        error_message(e)
+        logger.error e.message
+        
+        if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
+          @error_response = 
+            if e.error_message[:response_error_text]
+              "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
+            else
+              e.error_message[:response_message].split('-').last.strip
+            end
+            
+          self.errors.add(:authorize_net_error, @error_response)
+          false
+        else
+          logger.error e.message
+          e.backtrace.each { |line| logger.error line }
+        end
       end
     end
 end
