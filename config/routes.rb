@@ -1,9 +1,7 @@
 Rails.application.routes.draw do
-  get 'privacy_policy' => 'policies#privacy'
-  get 'refund_policy' => 'policies#refund'
-
-  get  'contact_us' => 'contacts#index'
-  post 'contact_us' => 'contacts#create'
+  get  'privacy_policy' => 'policies#privacy'
+  get  'refund_policy' => 'policies#refund'
+  post 'refund_policy' => 'policies#create_contact'
   
   get  'refunds/create'
 
