@@ -73,9 +73,8 @@ gem 'kaminari'
 
 group :development, :test do
   gem 'rspec', '~> 3.4'
-  
-  # gem 'rubycritic', '~> 2.8'
-  gem 'guard-rubycritic', '~> 1.4'
+
+  gem 'binding_of_caller'
 
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'

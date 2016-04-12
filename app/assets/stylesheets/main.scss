@@ -2,6 +2,7 @@
 
 body {
   color: #777777;
+  margin-bottom: 60px;
 }
 
 
@@ -11,8 +12,10 @@ body {
 // Full Background
 
 html {
-  width: 100%;
-  height: 100%;
+  // width: 100%;
+  // height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 .is-home {
@@ -92,7 +95,7 @@ html {
 .wrapper-registration {
 
   .btn-default {
-    @extend .btn-signup;
+    // @extend .btn-signup;
   }
 }
 
