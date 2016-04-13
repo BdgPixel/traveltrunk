@@ -12,5 +12,7 @@ module ExceptionErrorResponse
       e.backtrace.each { |line| logger.error line }
       @error_response = 'Some errors occurred, please try again'
     end
+
+    false
   end
 end
