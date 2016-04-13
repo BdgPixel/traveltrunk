@@ -25,6 +25,7 @@ Rails.application.routes.draw do
   post 'payments/create'
   get  'payments/thank_you_page'
   post 'payments/authorize_net_webhook'
+  get '/payments/authorize_net_webhook' => 'payments#get_authorize_net_webhook'
 
   get  'savings' => 'savings#index'
 

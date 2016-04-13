@@ -67,5 +67,12 @@ class PaymentsController < ApplicationController
     render nothing: true, status: 200
   end
 
+  def get_authorize_net_webhook
+    response = request.parameters
+    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
+    
+    render nothing: true, status: 200
+  end
+
 end
 

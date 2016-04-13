@@ -67,7 +67,7 @@ class BankAccount < ActiveRecord::Base
       start_date = Time.now.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
       params_recurring[:customer][:start_date] = start_date
       response = recurring_authorize.create_subscription(params_recurring)
-      binding.pry
+      
       if response.messages.resultCode.eql? 'Ok'
         Customer.create(customer_id: customer_id, user_id: user.id, customer_profile_id: response.profile.customerProfileId)
 
