@@ -8,6 +8,11 @@
         i
           small &ldquo;minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below.)&rdquo;
 
+      - if @error_response
+        #error_authorize_net.alert.alert-danger
+          strong Warning! &nbsp;&nbsp;
+          = @error_response
+
       .modal-body
         = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
           = f.hidden_field :id, value: params[:id]
