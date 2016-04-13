@@ -109,4 +109,11 @@ Rails.application.configure do
   # }
 
   config.action_mailer.default_url_options = { host: 'traveltrunk.herokuapp.com' }
+
+  config.middleware.use ExceptionNotification::Rack,
+    :email => {
+      :email_prefix => "[TravelTrunk Notifier]",
+      :sender_address => %{"notifier" <notifier@traveltrunk.us>},
+      :exception_recipients => %w{teguh@41studio.com dian@41studio.com mada@41studio.com}
+  }
 end

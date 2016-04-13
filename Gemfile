@@ -71,6 +71,8 @@ gem 'authorizenet'
 
 gem 'kaminari'
 
+gem 'exception_notification'
+
 group :development, :test do
   gem 'rspec', '~> 3.4'
 
