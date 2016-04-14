@@ -29,38 +29,6 @@ class BankAccount < ActiveRecord::Base
     params_recurring = get_recurring_params
 
     begin
-      # params_recurring = {
-      #   ref_id: AuthorizeNetLib::Global.generate_random_id('ref'),
-      #   card: {
-      #     credit_card: self.credit_card,
-      #     cvc: self.cvc,
-      #     exp_card: "#{self.exp_month.rjust(2, '0')}#{self.exp_year[-2, 2]}",
-      #   },
-      #   plan: {
-      #     interval_unit: interval_frequency,
-      #     interval_length: interval_count,
-      #     trial_occurrences: '0',
-      #     amount: amount,
-      #     plan_name: plan_name,
-      #     start_date: Time.now.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
-      #   },
-      #   customer: {
-      #     customer_id: customer_id,
-      #     first_name: user.profile.first_name,
-      #     last_name: user.profile.last_name,
-      #     email: user.email,
-      #     company: nil,
-      #     address: user.profile.address,
-      #     city: user.profile.city,
-      #     state: user.profile.state,
-      #     zip: user.profile.postal_code,
-      #     country: user.profile.country_code,
-      #   },
-      #   order: {
-      #     invoice_number: AuthorizeNetLib::Global.generate_random_id('inv') 
-      #   },
-      # }
-
       recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
       params_recurring[:customer][:customer_id] = customer_id
