@@ -47,6 +47,16 @@ class PaymentProcessorMailer < ApplicationMailer
     mail to: user.email, subject: 'Payment Canceled'
   end
 
+  def subscription_failed(user_id, subscription_id, subscription_status)
+    user = User.select(:id, :email, :total_credit).find user_id
+
+    @profile = user.profile
+    @subscription_status = subscription_status
+    @subscription_id = subscription_id
+
+    mail to: user.email, subject: "Payment #{subscription_status.titleize}"
+  end
+
   def send_request_params_webhook(params)
     @response_params = params
     

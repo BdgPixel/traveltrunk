@@ -161,6 +161,18 @@ module AuthorizeNetLib
 
       response  
     end
+
+    def get_subscription_status(subscription_id)
+      request = AuthorizeNet::API::ARBGetSubscriptionStatusRequest.new
+      request.subscriptionId = subscription_id
+      
+      response = @transaction.get_subscription_status(request)
+      error_params, message_params = [response.messages, "Failed to get a subscriptions status."]
+      
+      RescueErrorsResponse::get_error_messages(error_params, message_params) if response
+
+      response.status
+    end
   end
 
   class PaymentTransactions < Global
