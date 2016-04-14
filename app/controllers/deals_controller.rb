@@ -271,7 +271,7 @@ class DealsController < ApplicationController
       #       e.error_message[:response_message].split('-').last.strip
       #     end
           
-      #   binding.pry
+     
       # else
       #   logger.error e.message
       #   e.backtrace.each { |line| logger.error line }

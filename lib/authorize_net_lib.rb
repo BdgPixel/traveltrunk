@@ -130,6 +130,7 @@ module AuthorizeNetLib
 
       response = @transaction.update_subscription(request)
       error_params, message_params = [response.messages, "Failed to update a subscription."]
+      
       RescueErrorsResponse::get_error_messages(error_params, message_params) if response
 
       response
@@ -314,18 +315,9 @@ module AuthorizeNetLib
       request.transId = trans_id
 
       response = @transaction.get_transaction_details(request)
+      error_params, message_params = [response.messages, "Failed to get transaction Details."]
 
-      unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
-        response_message = response.messages.messages.first.text
-        response_error_code = response.messages.messages.first.code
-
-        error_messages = {
-          response_message: response_message,
-          response_error_code: response_error_code
-        }
-
-        raise RescueErrorsResponse.new(error_messages), 'Failed to get transaction Details'
-      end
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
 
       response
     end
