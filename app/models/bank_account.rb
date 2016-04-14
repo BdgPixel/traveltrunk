@@ -386,14 +386,12 @@ class BankAccount < ActiveRecord::Base
         subscription_id = self.user.subscription.subscription_id
         cancel_subscription = recurring_authorize.cancel_subscription(subscription_id, customer_profile_id, payment_profile_id)
 
-        if cancel_subscription.messages.resultCode.eql? 'Ok'
-          customer_authorize.delete_customer_profile(customer_profile_id)
-          Subscription.where(user_id: self.user_id).destroy_all
-          Customer.where(user_id: self.user_id).destroy_all
+        customer_authorize.delete_customer_profile(customer_profile_id)
+        Subscription.where(user_id: self.user_id).destroy_all
+        Customer.where(user_id: self.user_id).destroy_all
 
-          PaymentProcessorMailer.cancel_subscription(self.user.id).deliver_now
-          user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
-        end
+        PaymentProcessorMailer.cancel_subscription(self.user.id).deliver_now
+        user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
       rescue => e
         logger.error e.message
         
