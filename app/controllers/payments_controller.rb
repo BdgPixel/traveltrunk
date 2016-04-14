@@ -76,7 +76,8 @@ class PaymentsController < ApplicationController
               recipient: user,
               parameters: {
                 subscription_id: response['x_subscription_id'],
-                subscription_status: subscription_status
+                subscription_status: subscription_status,
+                subscription_message: response['x_response_reason_text']
               }
             )
 
@@ -84,7 +85,7 @@ class PaymentsController < ApplicationController
             Customer.where(user_id: user.id).destroy_all
             Bank_account.where(user_id: user.id).delete_all
 
-            PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status).deliver_now
+            PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
           rescue => e
             logger.error e.message
           end

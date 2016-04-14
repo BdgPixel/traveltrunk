@@ -1,6 +1,6 @@
 SubscriptionMailer#updated
   p = "Hello #{@profile.first_name} #{@profile.last_name}"
 
-  p Your subscription with ID #{@subscription_id} is #{@subscription_status.titleize}. We deleted your savings plan. Please create new savings plan with correct payment information. 
+  p Your subscription with ID #{@subscription_id} is #{@subscription_status.titleize} #{@subscription_message.downcase}. We deleted your savings plan. Please create new savings plan with correct payment information. 
 
   p = render 'partials/footer_mailer'

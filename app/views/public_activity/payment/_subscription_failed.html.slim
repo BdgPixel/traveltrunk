@@ -1,6 +1,6 @@
 - if activity.trackable
   tr
     td.activity
-      | Your subscription with ID #{activity.parameters[:subscription_id]} is #{activity.parameters[:subscription_status].titleize}. We deleted your savings plan. Please create new savings plan with correct payment information. &nbsp;
+      | Your subscription with ID #{activity.parameters[:subscription_id]} is #{activity.parameters[:subscription_status].titleize} #{activity.parameters[:subscription_message].downcase}. We deleted your savings plan. Please create new savings plan with correct payment information. &nbsp;
       small
         i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
