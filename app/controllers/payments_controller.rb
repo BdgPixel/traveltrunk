@@ -45,23 +45,51 @@ class PaymentsController < ApplicationController
 
   def authorize_net_webhook
     response = request.parameters
+    customer = Customer.find_by(customer_id: response['x_cust_id'])
+    user, customer_profile_id = [customer.user, customer.customer_profile_id] if customer
 
-    if response['x_subscription_id'] && response['x_response_code'].eql?('1')
-      PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
-      
-      customer = Customer.find_by(customer_id: response['x_cust_id'])
-      user_id = customer.user_id if customer
+    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
 
-      transaction = Transaction.new(
-        user_id: user_id,
-        invoice_id: response['x_invoice_num'],
-        amount: response['x_amount'].to_f * 100,
-        customer_id: response['x_cust_id'],
-        transaction_type: 'recurring_billing',    
-        trans_id: response['x_trans_id']
-      )
+    if response['x_subscription_id'] 
+      if response['x_response_code'].eql?('1')
+        transaction = Transaction.new(
+          user_id: user.id,
+          invoice_id: response['x_invoice_num'],
+          amount: response['x_amount'].to_f * 100,
 
-      PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+          trans_id: response['x_trans_id']
+        )
+
+        PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+      else
+        recurring_authorize = AuthorizeNetLib::RecurringBilling.new
+        subscription_status = recurring_authorize.get_subscription_status(response['x_subscription_id'])
+
+        if ['suspended', 'cancelled', 'terminated'].include? subscription_status
+          begin
+            customer_authorize = AuthorizeNetLib::Customers.new
+            customer_authorize.delete_customer_profile(customer_profile_id)
+            
+            user.create_activity(
+              key: 'payment.subscription_failed', 
+              owner: user, 
+              recipient: user,
+              parameters: {
+                subscription_id: response['x_subscription_id'],
+                subscription_status: subscription_status
+              }
+            )
+
+            Subscription.where(user_id: user.id, subscription_id: response['x_subscription_id']).destroy_all
+            Customer.where(user_id: user.id).destroy_all
+            Bank_account.where(user_id: user.id).delete_all
+
+            PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status).deliver_now
+          rescue => e
+            logger.error e.message
+          end
+        end
+      end
     end
 
     render nothing: true, status: 200
