@@ -1,0 +1,91 @@
+tr
+  td
+    strong = room["rateDescription"].html_safe
+    br
+
+    - if room["RoomImages"]
+      br
+      - if room["RoomImages"]["@size"].eql? "1"
+        = image_tag room["RoomImages"]["RoomImage"]["url"]
+      - else
+        = image_tag room["RoomImages"]["RoomImage"].first["url"]
+      br
+      br
+    - else
+      = image_tag "http://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg"
+      br
+      small
+        i
+          | *This image may not be that exact room titled above
+      br
+      br
+
+    ul.room-availability
+      - if room["BedTypes"]["@size"].eql? "1"
+        li #{room["BedTypes"]["BedType"]["description"]}
+      - else
+        - room["BedTypes"]["BedType"].each do |bed_type|
+          li #{bed_type["description"]}
+
+    = link_to "javascript:void(0)", class: 'popover-links', data: { toggle: 'popover' }
+      | Show more room information
+
+    .content-popover style="display:none"
+      = checkin_instructions.html_safe
+
+  td width="300px"
+    - if @error_category_room_message
+      h4 category_room_message
+    ul.room-availability
+      - unless room["ValueAdds"].nil?
+        - if room["ValueAdds"]["@size"].eql? "1"
+          li #{room["ValueAdds"]["ValueAdd"]["description"]}
+        - else
+          - room["ValueAdds"]["ValueAdd"].each do |amenity|
+            li #{amenity["description"]}
+
+  td width="280px"
+    b.column-price
+      = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+    p
+      - if room["RateInfos"]["RateInfo"]["nonRefundable"]
+        i
+          small None-refundable rate
+      - else
+        i
+          small Refundable rate
+    = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+
+  td width="200px"
+    - if @group
+      - if @group.user_id.eql? current_user.id
+        - if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
+          = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+        - else
+          = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+      - else
+        - if @current_user_votes_count.zero?
+          = link_to "Let's Go", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], group: "member" }
+        - else
+          = link_to "Cancel Vote", deals_like_path(params[:id]), class: "btn btn-default"
+    - else
+      - if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
+        = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+      - else
+        = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+
+
+    / - if !@group.nil? && @group.user_id.eql?(current_user.id)
+    /   - if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
+    /     = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+    /   - else
+    /     = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+    / - elsif  !@group.nil? && !@group.user_id.eql?(current_user.id)
+    /    = link_to "Let's Go", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], group: "member" }
+    / - else
+    /   - if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
+    /     = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+    /   - else
+    /     = link_to "Book Now", "#", class: "btn btn-default room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+
+

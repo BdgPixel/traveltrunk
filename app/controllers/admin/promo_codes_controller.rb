@@ -1,63 +1,56 @@
 class Admin::PromoCodesController < Admin::ApplicationController
-  before_action :set_promo_code, only: :create
+  before_action :promo_code_params, only: :create
+  before_action :get_all_users, only: [:new, :create]
+  before_action :set_promo_code, only: :destroy
   before_action :authenticate_user!
 
   def index
-    @promo_codes = PromoCode.all
-    # @users = User.includes(:profile).select(:id, :email).where(admin: false)
+    @promo_codes = PromoCode.all.page params[:page]
   end
 
   def new
-    @user_collections = User.list_of_user_collections
     @token = SecureRandom.uuid
-
     @promo_code = PromoCode.new(token: @token)
   end
 
   def create
-    @promo_code = PromoCode.new(set_promo_code)
-    begin
-      amount_to_cents    = @promo_code.amount.to_f * 100
-      charge = Stripe::Charge.create(
-        amount: amount_to_cents.to_i, # amount in cents, again
-        currency: "usd",
-        source: params[:stripeToken],
-        description: "Promo code payment"
+    @promo_code = PromoCode.new(promo_code_params)
+    amount_in_cents = (@promo_code.amount.to_f * 100).to_i
+
+    # apc = add_promo_code
+    invoice_cc = AuthorizeNetLib::Global.generate_random_id('inv_apc')
+
+    if @promo_code.save
+      Transaction.create(
+        user_id: @promo_code.user.id,
+        amount: amount_in_cents, 
+        transaction_type: 'add_promo_code',
+        invoice_id: invoice_cc,
+        customer_id: @promo_code.user.customer.customer_id
       )
 
-      if charge.paid
-        transaction = @promo_code.user.transactions.new(amount: charge.amount, transaction_type: 'deposit')
-        transaction.save
-
-        if @promo_code.save
-          PromoCodeMailer.promo_code_created(@promo_code).deliver_now
-          redirect_to admin_promo_codes_url, notice: 'Promo code was successfully created'
-        else
-          @user_collections = User.list_of_user_collections
-          render :new
-        end
-
-      else
-        flash[:error] = 'Some errors occured'
-        format.js
-        format.html { redirect_to promo_codes_activation_url, notice: flash[:error] }
-      end
-    rescue Stripe::CardError => e
-      redirect_to promo_codes_activation_url, alert: e.message
+      PromoCodeMailer.promo_code_created(@promo_code).deliver_now
+      redirect_to admin_promo_codes_url, notice: 'Promo code was successfully created'
+    else
+      render :new
     end
   end
 
   def destroy
-    promo_code = PromoCode.find params[:id]
-    if promo_code.destroy
-      redirect_to admin_promo_codes_url, notice: 'Promo code has been deleted'
-    else
-      redirect_to admin_promo_codes_url, notice: 'Some errors occurred when deleting promo code'
-    end
+    notice = @promo_code.destroy ? 'Promo code has been deleted' : 'Some errors occurred when deleting promo code'
+    redirect_to admin_promo_codes_url, notice: notice
   end
 
   private
     def set_promo_code
-      params.require(:promo_code).permit(:token, :amount, :exp_date, :is_status, :user_id)
+      @promo_code = PromoCode.find params[:id]  
+    end
+
+    def get_all_users
+      @user_collections = User.list_of_user_collections
+    end
+
+    def promo_code_params
+      params.require(:promo_code).permit(:token, :amount, :exp_date, :is_status, :user_id, :exp_month, :exp_year, :card_number, :stripe_token, :cvc)
     end
 end

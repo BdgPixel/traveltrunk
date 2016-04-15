@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-ruby '2.1.5'
+ruby '2.2.3'
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.2.1'
 # See https://github.com/sstephenson/execjs#readme for more supported runtimes
@@ -63,16 +63,27 @@ gem 'public_activity'
 
 gem 'httparty'
 
-gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
+# gem 'stripe', :git => 'https://github.com/stripe/stripe-ruby'
 
 gem 'ratyrate'
 
+gem 'authorizenet'
+
+gem 'kaminari'
+
+gem 'exception_notification'
+
 group :development, :test do
+  gem 'rspec', '~> 3.4'
+
+  gem 'binding_of_caller'
+
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'pry-byebug'
 
   # Access an IRB console on exception pages or by using <%= console %> in views
-  gem 'web-console', '~> 2.0'
+  # gem 'web-console', '~> 1.4'
+  gem 'web-console', '~> 3.1', '>= 3.1.1'
 
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
@@ -84,6 +95,8 @@ group :development, :test do
   gem 'letter_opener'
 
   gem 'quiet_assets'
+
+  gem 'thin'
 
 end
 gem 'dotenv-rails'

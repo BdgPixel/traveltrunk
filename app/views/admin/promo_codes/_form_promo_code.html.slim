@@ -1,33 +1,11 @@
+- content_for :javascripts
+  = javascript_include_tag 'promo_codes'
+
 = simple_form_for [:admin, @promo_code], html: { id: "formPromoCode" } do |f|
-  .col-md-12
-    .form-group
-      = f.label :card_number
-      input[type="text" data-stripe="number" id="promo_code_card_number" class="form-control" autofocus="autofocus" placeholder="example: 4242424242424242"]
-      = image_tag asset_path('cards/mastercard.png')
-      |&nbsp;
-      = image_tag asset_path('cards/visa.png')
-      |&nbsp;
-      = image_tag asset_path('cards/amex.png')
-      |&nbsp;
-      = image_tag asset_path('cards/discover.png')
-      .payment-errors.number
-
-  .col-md-12
-    .row
-      .col-md-6
-        .form-group
-          = label_tag "Expiration Month (MM)"
-          = select_month nil, { use_two_digit_numbers: true }, { name: nil, id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
-
-      .col-md-6
-        .form-group
-          = label_tag "Expiration Year (YYYY)"
-          = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: nil, id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
-
-      .col-md-12
-        .form-group
-          .payment-errors.exp-month
-          / .payment-errors.exp-year
+  - if @promo_code.errors.any?
+    #error_explanation.alert.alert-danger
+      strong Warning! &nbsp;&nbsp;
+      = "#{pluralize(@promo_code.errors.count, "error")} prohibited this profile from being saved"
 
   .col-md-6
     .form-group.form-group-md

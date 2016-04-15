@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20151230112033) do
+ActiveRecord::Schema.define(version: 20160405035115) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -56,11 +56,22 @@ ActiveRecord::Schema.define(version: 20151230112033) do
 
   add_index "bank_accounts", ["user_id"], name: "index_bank_accounts_on_user_id", using: :btree
 
+  create_table "contacts", force: :cascade do |t|
+    t.string   "first_name"
+    t.string   "last_name"
+    t.string   "email"
+    t.string   "subject"
+    t.text     "message"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
   create_table "customers", force: :cascade do |t|
     t.string   "customer_id"
     t.integer  "user_id"
-    t.datetime "created_at",  null: false
-    t.datetime "updated_at",  null: false
+    t.datetime "created_at",          null: false
+    t.datetime "updated_at",          null: false
+    t.string   "customer_profile_id"
   end
 
   add_index "customers", ["user_id"], name: "index_customers_on_user_id", using: :btree
@@ -170,6 +181,18 @@ ActiveRecord::Schema.define(version: 20151230112033) do
 
   add_index "rating_caches", ["cacheable_id", "cacheable_type"], name: "index_rating_caches_on_cacheable_id_and_cacheable_type", using: :btree
 
+  create_table "refunds", force: :cascade do |t|
+    t.integer  "user_id"
+    t.string   "trans_id"
+    t.string   "refund_trans_id"
+    t.string   "confirmed",       default: "pending"
+    t.integer  "amount"
+    t.datetime "created_at",                          null: false
+    t.datetime "updated_at",                          null: false
+  end
+
+  add_index "refunds", ["user_id"], name: "index_refunds_on_user_id", using: :btree
+
   create_table "reservations", force: :cascade do |t|
     t.integer  "user_id"
     t.string   "itinerary"
@@ -214,6 +237,8 @@ ActiveRecord::Schema.define(version: 20151230112033) do
     t.string   "invoice_id"
     t.datetime "created_at",       null: false
     t.datetime "updated_at",       null: false
+    t.string   "ref_id"
+    t.string   "trans_id"
   end
 
   add_index "transactions", ["user_id"], name: "index_transactions_on_user_id", using: :btree
@@ -272,6 +297,7 @@ ActiveRecord::Schema.define(version: 20151230112033) do
   add_foreign_key "likes", "users"
   add_foreign_key "profiles", "users"
   add_foreign_key "promo_codes", "users"
+  add_foreign_key "refunds", "users"
   add_foreign_key "reservations", "users"
   add_foreign_key "subscriptions", "users"
   add_foreign_key "transactions", "users"

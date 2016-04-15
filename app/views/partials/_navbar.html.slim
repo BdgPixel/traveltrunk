@@ -8,22 +8,16 @@
           span.icon-bar
           span.icon-bar
         .wrapper-navbar-brand
-          - if user_signed_in?
-            - if current_user.admin?
-              = link_to admin_promo_codes_path, class: 'navbar-brand' do
-                = image_tag("logo1.png")
-                span TravelTrunk
-            - else
-              = link_to root_path, class: 'navbar-brand' do
-                = image_tag("logo1.png")
-                span TravelTrunk
+          = display_icon_traveltrunk
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right
           - if user_signed_in?
             - if current_user.admin?
+              li = link_to 'Users', admin_users_path
+              li = link_to 'Transactions', admin_transactions_path
+              li = link_to 'Void / Refund Requests', admin_refunds_path
               li = link_to 'Promo Codes', admin_promo_codes_path
-              li = link_to 'List Users', admin_list_users_path
               li.dropdown
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                   = current_user.email
@@ -51,14 +45,13 @@
                   span.caret
                 ul.dropdown-menu
                   li = link_to 'My Profile', profile_path
-                  / li
-                  /   = link_to 'Change password', edit_user_registration_path
                   li
                     = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
                   li = link_to 'Help', helps_path
                   li.divider role="separator"
                   li = link_to 'Sign Out', destroy_user_session_path, method: :delete
-          - else
-              li
-                = link_to new_registration_path(resource_name)
-                  b Sign Up
+          - else 
+            li
+              = link_to new_user_registration_path
+                b Sign Up
+            

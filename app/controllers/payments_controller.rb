@@ -1,6 +1,6 @@
 class PaymentsController < ApplicationController
-  skip_before_filter :verify_authenticity_token, only: [:stripe_webhook]
-  skip_before_action :authenticate, only: :stripe_webhook
+  skip_before_filter :verify_authenticity_token, only: [:authorize_net_webhook]
+  skip_before_action :authenticate, only: :authorize_net_webhook
   before_action :authenticate_user!, only: [:create, :thank_you_page]
 
   def create
@@ -43,32 +43,65 @@ class PaymentsController < ApplicationController
     @charge = Stripe::Charge.retrieve(params[:charge_id])
   end
 
-  def stripe_webhook
-    response = JSON.parse(request.body.read)
+  def authorize_net_webhook
+    response = request.parameters
+    customer = Customer.find_by(customer_id: response['x_cust_id'])
+    user, customer_profile_id = [customer.user, customer.customer_profile_id] if customer
 
-    if response['type'].eql?('invoice.payment_succeeded') && response['data']['object']['amount_due'] > 0
-      response = response['data']['object']
+    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
 
-      transaction = Transaction.new(
-        user_id: response['lines']['data'].last['metadata']['user_id'],
-        invoice_id: response['id'],
-        amount: response['amount_due'],
-        customer_id: response['customer'],
-        transaction_type: 'deposit'
-      )
+    if response['x_subscription_id'] 
+      if response['x_response_code'].eql?('1')
+        transaction = Transaction.new(
+          user_id: user.id,
+          invoice_id: response['x_invoice_num'],
+          amount: response['x_amount'].to_f * 100,
 
-      if transaction.save
-        user = User.find(transaction.user_id)
-        user.total_credit += transaction.amount
-        user.save
+          trans_id: response['x_trans_id']
+        )
 
-        StripeMailer.subscription_charged(user.id, transaction.amount).deliver_now
-        user.create_activity key: "payment.recurring", owner: user,
-          recipient: user, parameters: { amount: (transaction.amount / 100.0), total_credit: user.total_credit / 100.0 }
+        PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+      else
+        recurring_authorize = AuthorizeNetLib::RecurringBilling.new
+        subscription_status = recurring_authorize.get_subscription_status(response['x_subscription_id'])
+
+        if ['suspended', 'cancelled', 'terminated'].include? subscription_status
+          begin
+            customer_authorize = AuthorizeNetLib::Customers.new
+            customer_authorize.delete_customer_profile(customer_profile_id)
+            
+            user.create_activity(
+              key: 'payment.subscription_failed', 
+              owner: user, 
+              recipient: user,
+              parameters: {
+                subscription_id: response['x_subscription_id'],
+                subscription_status: subscription_status,
+                subscription_message: response['x_response_reason_text']
+              }
+            )
+
+            Subscription.where(user_id: user.id, subscription_id: response['x_subscription_id']).destroy_all
+            Customer.where(user_id: user.id).destroy_all
+            Bank_account.where(user_id: user.id).delete_all
+
+            PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
+          rescue => e
+            logger.error e.message
+          end
+        end
       end
-
     end
 
     render nothing: true, status: 200
   end
+
+  def get_authorize_net_webhook
+    response = request.parameters
+    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
+    
+    render nothing: true, status: 200
+  end
+
 end
+

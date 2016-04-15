@@ -25,9 +25,18 @@ class PromoCodesController < ApplicationController
           else
             if @promo_code.status.eql?('available')
               @promo_code.update_attributes(status: 'used')
+             
+              amount_in_cents = (@promo_code.amount.to_f * 100).to_i
+              # upc = used_promo_code
+              invoice_cc = AuthorizeNetLib::Global.generate_random_id('inv_upc')
 
-              current_user.total_credit_in_cents(@promo_code.amount)
-              current_user.save
+              Transaction.create(
+                transaction_type: 'used_promo_code',
+                amount: amount_in_cents, 
+                customer_id: @promo_code.user.customer.customer_id,
+                invoice_id: invoice_cc,
+                user_id: @promo_code.user.id
+              )
 
               flash[:notice] = 'Your token promo code has been activated'
               format.js { render js: "window.location.href='#{savings_url}'", notice: flash[:notice]   }

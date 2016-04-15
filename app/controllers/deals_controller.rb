@@ -1,6 +1,6 @@
 class DealsController < ApplicationController
   require "htmlentities"
-  include HotelsList
+  include ExceptionErrorResponse
 
   before_action :check_like, only: [:like]
   before_action :authenticate_user!
@@ -8,6 +8,7 @@ class DealsController < ApplicationController
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
+  before_action :set_hotel, only: [:show, :room_availability, :create_book, :confirmation_page]
 
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
@@ -34,7 +35,8 @@ class DealsController < ApplicationController
     @terms_and_conditions_url = "http://travel.ian.com/index.jsp?pageName=userAgreement&locale=en_US&cid=5505"
 
     @votes = Like.where(hotel_id: params[:id])
-    get_hotel_information(expedia_params_hash)
+    @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
+
     redirect_to deals_url, notice: 'A problem occured when request hotel details information to expedia. Please try again later' unless @hotel_information.present?
   end
 
@@ -42,7 +44,11 @@ class DealsController < ApplicationController
     room_params_hash = current_user.expedia_room_params(params[:id], params[:rate_code], params[:room_type_code])
 
     if request.xhr?
-      get_room_availability(room_params_hash)
+      room_response = Expedia::Hotels.room_availability(room_params_hash).first
+
+      @room_availability = room_response[:response]
+      @error_category_room_message = room_response[:category_room]
+      @error_response = room_response[:error_response]
       respond_to :js
     end
   end
@@ -109,9 +115,9 @@ class DealsController < ApplicationController
           },
         }
 
-      xml_params =  { xml: reservation_hash.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
-
-      book_reservation(xml_params)
+      reservation_response = Expedia::Hotels.reservation(reservation_hash).first
+      @reservation = reservation_response[:response]
+      @error_response = reservation_response[:error_response]
 
       if !@error_response
         arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
@@ -193,48 +199,85 @@ class DealsController < ApplicationController
     end
   end
 
+  # Charge using authorizenet
   def update_credit
     begin
-      amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
-      charge= Stripe::Charge.create(
-        :amount => amount_in_cents,
-        :currency => "usd",
-        :source => {
-          number: params[:update_credit][:card_number],
-          exp_month: params[:update_credit][:exp_month],
-          exp_year: params[:update_credit][:exp_year],
-          object: 'card'
-        },
-        :description => "Add to savings"
-      )
+      exp_month = params[:update_credit][:exp_month].rjust(2, '0')
+      exp_year = params[:update_credit][:exp_year][-2, 2]
+      invoice = AuthorizeNetLib::Global.generate_random_id('inv')
 
-      if charge.paid
-        transaction = current_user.transactions.new(amount: charge.amount, transaction_type: 'deposit')
+      params_hash = {
+        amount: params[:update_credit][:amount].to_f,
+        card_number: params[:update_credit][:card_number],
+        exp_date: "#{exp_month}#{exp_year}",
+        cvv: params[:update_credit][:cvv],
+        order: { 
+          invoice: invoice,
+          description: 'Add to Saving'
+        }
+      }
+      
+      payment = AuthorizeNetLib::PaymentTransactions.new
+      customer_authorize = AuthorizeNetLib::Customers.new
+
+      customer_profile = 
+        if current_user.customer
+          get_customer_profile = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
+          current_user.profile.get_profile_hash(get_customer_profile)
+        else
+          current_user.profile.get_profile_hash
+        end
+        
+      response_payment = payment.charge(params_hash, customer_profile)
+
+      if response_payment.messages.resultCode.eql? 'Ok'
+        amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
+        customer_id = current_user.customer.customer_id if current_user.customer
+
+        transaction = current_user.transactions.new(
+          amount: amount_in_cents,
+          invoice_id: invoice,
+          customer_id: customer_id,
+          transaction_type: 'add_to_saving', 
+          ref_id: response_payment.refId,
+          trans_id: response_payment.transactionResponse.transId
+        )
 
         if transaction.save
-          total_credit = current_user.total_credit + amount_in_cents
-          current_user.update_attributes(total_credit: total_credit)
           @user_total_credit = current_user.total_credit / 100.0
-
           @transaction_amount = transaction.amount / 100.0
-          current_user.create_activity key: "payment.manual", owner: current_user,
-            recipient: current_user, parameters: { amount: @transaction_amount, total_credit: @User_total_credit }
 
-          if @group
-            @total_credit = @group.total_credit / 100.0
-          else
-            @total_credit = @user_total_credit
-          end
-
-          StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
+          @total_credit = 
+            if @group
+              @group.total_credit / 100.0
+            else
+              @user_total_credit
+            end
 
           @notification_count = current_user.get_notification(false).count
 
+          card_last_4 = response_payment.transactionResponse.accountNumber
+
+          PaymentProcessorMailer.payment_succeed(current_user.id, transaction.amount, card_last_4).deliver_now
         end
       end
+    rescue => e
+      error_message(e)
+      # if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
+      #   @error_response = 
+      #     if e.error_message[:response_error_text]
+      #       "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
+      #     else
+      #       e.error_message[:response_message].split('-').last.strip
+      #     end
+          
+     
+      # else
+      #   logger.error e.message
+      #   e.backtrace.each { |line| logger.error line }
+      # end
 
-    rescue Stripe::CardError => e
-      @error_response = e.message
+      # false
     end
   end
 
@@ -242,12 +285,17 @@ class DealsController < ApplicationController
     if params[:reservation_id]
       @reservation = Reservation.find(params[:reservation_id])
       itinerary_params = { itineraryId: @reservation.itinerary, email: current_user.email}
-      view_itinerary(itinerary_params)
+
+      itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
+
+      @itinerary_response = itinerary_response[:response]
+      @error_response = itinerary_response[:error_response]
       @list_of_dates = (@reservation.arrival_date..@reservation.departure_date).to_a
       @list_of_dates.pop
     else
       redirect_to deals_url, notice: 'You need to provide reservation id'
     end
+
   end
 
   def room_availability
@@ -261,27 +309,16 @@ class DealsController < ApplicationController
 
     if request.xhr?
       room_params_hash = current_user.expedia_room_params(params[:id], @destination, @group)
-      get_room_availability(room_params_hash)
 
+      room_response = Expedia::Hotels.room_availability(room_params_hash).first
+
+      @room_availability = room_response[:response]
+      @error_category_room_message = room_response[:category_room]
+      @error_response = room_response[:error_response]
       respond_to :js
     end
   end
 
-  # def room_images
-  #   if request.xhr?
-  #     searchParams     = current_user.get_current_destination
-  #     hotel_id_hash = { hotelId: params[:id] }
-
-  #     get_room_images(hotel_id_hash)
-
-  #     respond_to do |format|
-  #       format.js { render :reload_image }
-  #     end
-  #   end
-  # end
-
-  # commented but will be used later
-  #
   def like
     @hotel_id = params[:id]
     notice =
@@ -303,12 +340,14 @@ class DealsController < ApplicationController
         end
         'You successfully vote for this hotel'
       end
+
     redirect_to deals_show_url(params[:id]), notice: notice
   end
 
   def next
     if request.xhr?
       set_search_data
+
       respond_to do |format|
         format.js { render :action => "index" }
       end
@@ -326,6 +365,7 @@ class DealsController < ApplicationController
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
     custom_params = destination_params
+    
     custom_params.merge!({
       arrival_date:   arrival_date,
       departure_date: departure_date
@@ -343,10 +383,14 @@ class DealsController < ApplicationController
 
   private
     def set_search_data
-      get_hotels_list(@destination, @group)
-      # Expedia::Hotels
-      # Expedia::Hotels.current_user = current_user
-      # @hotels_list = Expedia::Hotels.list(@destination, @group)
+      Expedia::Hotels
+      Expedia::Hotels.current_user = current_user
+      @hotels_list = Expedia::Hotels.list(@destination, @group)
+    end
+
+    def set_hotel
+      Expedia::Hotels
+      Expedia::Hotels.current_user = current_user
     end
 
     def check_like

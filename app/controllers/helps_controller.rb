@@ -1,6 +1,5 @@
 class HelpsController < ApplicationController
-  def index
-  end
+  def index; end
 
   def send_question
     if params[:question][:email].blank? || params[:question][:subject].blank? || params[:question][:message].blank?

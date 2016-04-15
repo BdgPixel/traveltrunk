@@ -1,0 +1,7 @@
+SubscriptionMailer#charged
+  p = "Hi #{@profile.first_name},"
+
+  p
+    | We’ve successfully charged your credit card on file for #{currency_in_usd(@amount)}, as per your reoccurring daily request. Bringing your total savings to #{currency_in_usd(@user.total_credit)}
+
+  p = render 'partials/footer_mailer'

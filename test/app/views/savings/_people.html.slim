@@ -1,0 +1,37 @@
+.col-md-12.text-center
+  .col-md-12.text-center
+    .wrapper-group-saving
+      h1 My Group's Savings
+      br
+      ul
+        li
+          .col-md-12.text-center
+            - if group.user_id.eql?(current_user.id)
+              = link_to user_profile_path(current_user), title: current_user.profile.first_name
+                = image_tag current_user.profile.image.url, class: 'img-circle', width: 140, height: 140
+              = link_to user_profile_path(current_user), title: current_user.profile.first_name
+                h3 = current_user.profile.first_name
+              h3 class="text-total-credit-users-#{current_user.id}"
+                = currency_in_usd(current_user.total_credit)
+            - else
+              = link_to user_profile_path(group.user), title: group.user.profile.first_name
+                = image_tag group.user.profile.image.url, class: 'img-circle', width: 140, height: 140
+              = link_to user_profile_path(group.user), title: group.user.profile.first_name
+                h3 = group.user.profile.first_name
+              h3 class="text-total-credit-users-#{group.user.id}"
+                = currency_in_usd(group.user.total_credit)
+
+          - group.members.each do |member|
+            li
+              .col-md-12.text-center
+                = link_to user_profile_path(member), title: member.profile.first_name
+                  = image_tag member.profile.image.url, class: 'img-circle', width: 140, height: 140
+                = link_to user_profile_path(member), title: member.profile.first_name
+                  h3 = member.profile.first_name
+                h3 class="text-total-credit-users-#{member.id}"
+                  = currency_in_usd(member.total_credit)
+
+      .col-md-12.text-center
+        h1.text-total-credits
+          | Total : &nbsp;
+          = currency_in_usd(group.total_credit)

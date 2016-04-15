@@ -20,6 +20,7 @@
 # = require twitter/bootstrap/tooltip
 # = require twitter/bootstrap/popover
 # = require twitter/bootstrap/collapse
+# = require twitter/bootstrap/alert
 # = require jquery.validate
 # = require bootstrap.file-input
 
@@ -29,11 +30,15 @@ $(document).ajaxSend ->
 $(document).ajaxComplete ->
   $('#loading').fadeOut("slow");
 
-$(document).ready ->
+ready = ->
   setTimeout(->
     $('#notice').fadeOut()
     $('#alert').fadeOut()
   , 5000)
+  
+
+$(document).ready -> ready()
+$(document).on 'page:load', -> ready()
 
 root = exports ? this
 root.initAutoNumeric = (selector, hiddenSelector) ->

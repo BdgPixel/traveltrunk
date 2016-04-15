@@ -1,7 +1,8 @@
 module SavingsHelper
-  def currency_in_usd(amount)
-    amount_in_usd = (amount / 100.0)
-    number_to_currency(amount_in_usd)
+  def currency_in_usd(amount, condition = false)
+    amount_in_usd = (amount.to_f / 100.0)
+    condition ? amount_in_usd : number_to_currency(amount_in_usd)
+    # number_to_currency(amount_in_usd)
   end
 
   def add_apostrophe(name)
@@ -14,10 +15,15 @@ module SavingsHelper
   end
 
   def savings_interval(interval, interval_count)
-    if ['day', 'week', 'month'].include?(interval) && interval_count.eql?(1)
-      interval
+    interval_unit = ['days', 'months']
+
+    if interval_unit.include?(interval) && interval_count.eql?(7)
+      'week'
+    elsif interval_unit.include?(interval) && interval_count.eql?(14)
+      pluralize(2, 'week')
     else
-      pluralize(interval_count, interval)
+      'month'
     end
+    
   end
 end

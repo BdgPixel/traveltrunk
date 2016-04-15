@@ -1,0 +1,482 @@
+// Reset Style
+
+body {
+  color: #777777;
+}
+
+
+// End Reset Style
+
+
+// Full Background
+
+html {
+  width: 100%;
+  height: 100%;
+}
+
+.is-home {
+  background: image-url("bg_2.jpg") bottom center no-repeat;
+  background-size: 100% 100%;
+}
+
+// End Full Background
+
+// Header Style
+
+.wrapper-intro {
+
+  .btn-default {
+    @extend .btn-signup;
+  }
+}
+
+// End Header Style
+
+// Navigation Style
+
+.wrapper-navbar-traveltrunk {
+  .wrapper-navbar-brand {
+    position: relative;
+    top: -10px;
+
+    span {
+      position: relative;
+      top: 12px;
+    }
+
+    img {
+      width: 40px;
+      height: 41px;
+      margin-right: 11px;
+    }
+
+    img,
+    a {
+      float: left;
+    }
+  }
+}
+
+
+// End Naviagtion Style
+
+// Button Style
+
+.btn-save,
+.btn-signup,
+.btn-login,
+.btn-edit-profile,
+.btn-update-profile,
+.btn-booknow,
+.btn-like,
+.btn-invite-friend,
+.btn-orange {
+  background: rgb(239,62,54); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef3e36', endColorstr='#f7941e',GradientType=0 ); /* IE6-9 */
+  color: #ffffff;
+  border-color: transparent;
+}
+
+// End Button Style
+
+
+// Registration Page
+
+.wrapper-registration {
+
+  .btn-default {
+    @extend .btn-signup;
+  }
+}
+
+// End Registration
+
+// Login Page
+
+.wrapper-login {
+
+  .btn-default {
+    @extend .btn-login;
+  }
+}
+
+.wrapper-logo-signup {
+
+  h1 {
+    font-size: 60px;
+  }
+
+  img {
+    width: 50%;
+  }
+}
+
+// End Login Page
+
+
+// Profile Page Stlye
+
+.wrapper-profile {
+
+  .panel.panel-info,
+  .panel-heading {
+    border-color: transparent;
+  }
+
+  .panel-heading {
+    background-color: #ffffff;
+  }
+
+  .btn-default {
+    @extend .btn-edit-profile;
+  }
+}
+
+.wrapper-user-name {
+
+  h1 {
+    font-size: 40px;
+    margin-top: 15px;
+    margin-bottom: 0px;
+  }
+
+  @media screen and (min-width: 320px) {
+
+    h1 {
+      text-align: left;
+      padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 600px) {
+
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 800px) {
+
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
+
+  @media screen and (min-width: 960px) {
+
+    h1 {
+     padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 961px) {
+
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 991px) {
+
+    h1 {
+      padding-top: 0em;
+    }
+  }
+
+  @media screen and (min-width: 992px) {
+
+    h1 {
+      text-align: left;
+      padding-top: 6em;
+    }
+  }
+
+  @media screen and (min-width: 1024px) {
+
+    h1 {
+      text-align: left;
+      padding-top: 6em;
+    }
+  }
+
+  @media screen and (min-width: 1025px) {
+
+    h1 {
+      padding-top: 6em;
+    }
+  }
+}
+
+.wrapper-img-profile {
+  margin-top: 15px;
+
+  @media screen and (min-width: 320px) {
+
+    img {
+      width: 100%;
+    }
+  }
+}
+
+.wrapper-personal-information {
+  margin-top: 25px;
+}
+
+// End Profile Page Style
+
+// Edit Profile Page Style
+
+.wrapper-edit-profile {
+
+  h1 {
+    padding-left: 10px;
+    padding-bottom: 24px;
+  }
+
+  .btn-default {
+    @extend .btn-update-profile;
+  }
+}
+
+// End Edit Profile Page Style
+
+// Deal Page Style
+
+.wrapper-deals {
+
+  h1 {
+    a {
+      color: inherit;
+    }
+  }
+
+  .btn-default {
+    color: #ffffff;
+    padding-left: 10px;
+    padding-right: 20px;
+  }
+
+  .icon {
+    width: 15px;
+    height: 15px;
+    display: inline-block;
+
+    &.next-loadmore {
+      background: image-url("icon_next_loadmore.png") no-repeat;
+      background-size: cover;
+      position: relative;
+      left: 10px;
+      top: 3px;
+    }
+
+    &.previous-loadmore {
+      background: image-url("icon_previous_loadmore.png") no-repeat;
+      background-size: cover;
+      position: relative;
+      top: 3px;
+    }
+  }
+}
+
+.wrapper-price-deals{
+  position: relative;
+
+  .price-deals {
+    background: rgba(255, 255, 255, 0.7);
+    color: #848482;
+    position: absolute;
+    top: 15px;
+    left: 12px;
+    padding: 10px;
+  }
+}
+
+.wrapper-search-deal {
+
+  .icon {
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+
+    &.delete {
+      background: image-url("icon_delete_fill_input.png") no-repeat;
+      background-size: cover;
+    }
+  }
+
+  .form-group {
+
+    &:first-child {
+      position: relative;
+    }
+
+    span {
+      position: absolute;
+      right: 11px;
+      top: 7px;
+    }
+  }
+
+  .btn-default {
+    @extend .btn-save;
+  }
+}
+
+// End Deal Page Style
+
+// Result Deals Page Style
+
+.wrapper-list-hotel {
+  overflow: hidden;
+
+  p.content-deals {
+    a {
+      color: inherit;
+    }
+  }
+
+  .wrapper-caption-content-deals {
+    margin-top: 15px;
+  }
+}
+
+.wrapper-like-deals {
+  margin-top: 15px;
+
+  .icon {
+    width: 30px;
+    height: 30px;
+    display: inline-block;
+
+    &.love-normal {
+      background: image-url("icon_love_normal.png") no-repeat;
+      background-size: cover;
+      &:before {
+        box-sizing: border-box;
+        display: none;
+      }
+    }
+
+    &.love-active {
+      background: image-url("icon_love_active.png") no-repeat;
+      background-size: cover;
+      &:before {
+        box-sizing: border-box;
+        display: none;
+      }
+    }
+  }
+}
+
+// End Result Deals Page Style
+
+// Detail Deals Page Style
+
+.wrapper-detail-deals {
+
+  .icon-deals {
+    display: inline-block;
+    width: 30px;
+    height: 31px;
+
+    &.btn-back-to-deals {
+      background: image-url("icon_back_deals.png") no-repeat;
+      background-size: cover;
+    }
+  }
+
+  span {
+    position: relative;
+    top: -9px;
+    left: 15px;
+    font-weight: bold;
+    color: #777777;
+    font-size: large;
+  }
+
+  .btn-default {
+    @extend .btn-booknow;
+  }
+}
+
+// Detail Deals Page Style
+
+
+// Saving Page
+
+.wrapper-group-saving {
+
+  .btn-default {
+    @extend .btn-invite-friend;
+  }
+  h1.text-center {
+    font-size: 3.0em;
+    padding-left: 25px;
+  }
+}
+
+.wrapper-group-saving-img {
+
+  @media (min-width: 768px) {
+
+    .col-lg-offset-4 {
+      margin-left: 0%;
+    }
+    .col-lg-3 {
+      width: 30%;
+    }
+    h1.text-total-credits {
+      font-size: 3.0em;
+    }
+
+  }
+
+  @media (min-width: 992px) {
+
+    .col-lg-offset-4 {
+      margin-left: 25%;
+    }
+  }
+
+  @media (min-width: 1024px) {
+
+    .col-lg-offset-4 {
+      margin-left: 25%;
+    }
+  }
+
+  @media (min-width: 1200px) {
+
+    .col-lg-offset-4 {
+      margin-left: 36.333333%;
+    }
+  }
+
+
+  @media (min-width: 1820px) {
+
+    .col-lg-offset-4 {
+      margin-left: 36.333333%;
+    }
+  }
+
+  img {
+    margin-top: 25px;
+    width: 100%;
+  }
+}
+
+.modal-backdrop {
+  background-color: #ffffff;
+}
+
+
+// End Saving Page
