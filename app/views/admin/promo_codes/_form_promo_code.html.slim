@@ -1,6 +1,3 @@
-- content_for :javascripts
-  = javascript_include_tag 'promo_codes'
-
 = simple_form_for [:admin, @promo_code], html: { id: "formPromoCode" } do |f|
   - if @promo_code.errors.any?
     #error_explanation.alert.alert-danger
