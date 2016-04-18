@@ -227,7 +227,6 @@ class DealsController < ApplicationController
         else
           current_user.profile.get_profile_hash
         end
-        
       response_payment = payment.charge(params_hash, customer_profile)
 
       if response_payment.messages.resultCode.eql? 'Ok'
