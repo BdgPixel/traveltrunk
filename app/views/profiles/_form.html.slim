@@ -100,6 +100,9 @@
         .col-md-12
           .row
             .col-md-12
+              p
+                i
+                  small &ldquo;Address must match credit card information&rdquo;
               br
               center
                 .form-group
@@ -113,7 +116,7 @@
     h4
       | SAVINGS PLAN
 
-  - if current_user.profile.birth_date.blank?
+  - if current_user.profile.birth_date.blank? || current_user.errors.any?
     .col-md-12
       .alert.alert-info Please complete your profile before you can create your savings plan.
   - else
