@@ -16,34 +16,47 @@ class Transaction < ActiveRecord::Base
         unless Transaction.where(trans_id: transaction_id).exists?
           transaction = Transaction.new(
             user_id: user.id,
-            invoice_id: transaction_detail.order.invoiceNumber,
-            amount: transaction_detail.order.settleAmount.to_f * 100,
+            customer_id: customer.customer_id,
+            invoice_id: transaction_detail.transaction.order.invoiceNumber,
+            amount: transaction_detail.transaction.settleAmount.to_f * 100,
             trans_id: transaction_id,
             transaction_type: 'payment.recurring'
           )
+
           puts transaction.inspect
-          # PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+          PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
         end
       elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
         recurring_authorize = AuthorizeNetLib::RecurringBilling.new
-        subscription_status = recurring_authorize.get_subscription_status(transaction_detail.subscription)
-        puts transaction_detail.subscription
+
+        subscription_status =
+          begin
+            recurring_authorize.get_subscription_status(transaction_detail.transaction.subscription)
+          rescue => e
+            if e.error_message[:response_error_code].eql? 'E00035'
+              recurring_authorize.get_subscription_status(transaction_detail.transaction.subscription.chop)
+            end
+          end
+
+        puts subscription_status
+        puts transaction_detail.transaction.subscription
         puts transaction_detail.transaction.transactionStatus
-        # user.create_activity(
-        #   key: 'payment.subscription_failed', 
-        #   owner: user, 
-        #   recipient: user,
-        #   parameters: {
-        #     subscription_id: trans_authorize.subscription,
-        #     subscription_status: trans_authorize.transactionStatus,
-        #     subscription_message: nil
-        #   }
-        # )
+        
+        user.create_activity(
+          key: 'payment.subscription_failed', 
+          owner: user, 
+          recipient: user,
+          parameters: {
+            subscription_id: trans_authorize.subscription,
+            subscription_status: trans_authorize.transactionStatus,
+            subscription_message: nil
+          }
+        )
 
-        # Subscription.where(user_id: user.id, subscription_id: trans_authorize.subscription).destroy_all
-        # Bank_account.where(user_id: user.id).delete_all
+        Subscription.where(user_id: user.id, subscription_id: trans_authorize.subscription).destroy_all
+        Bank_account.where(user_id: user.id).delete_all
 
-        # PaymentProcessorMailer.subscription_failed(user.id, trans_authorize.subscription, trans_authorize.transactionStatus).deliver_now
+        PaymentProcessorMailer.subscription_failed(user.id, trans_authorize.subscription, trans_authorize.transactionStatus).deliver_now
       end
     else
       puts 'user not found'
