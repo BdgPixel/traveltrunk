@@ -67,8 +67,8 @@ gem 'httparty'
 
 gem 'ratyrate'
 
-# gem 'authorizenet'
-gem 'authorizenet', :git => 'git@github.com:AuthorizeNet/sdk-ruby.git'
+gem 'authorizenet'
+# gem 'authorizenet', :git => 'git@github.com:AuthorizeNet/sdk-ruby.git'
 
 gem 'kaminari'
 
