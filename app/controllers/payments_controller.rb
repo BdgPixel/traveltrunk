@@ -45,6 +45,7 @@ class PaymentsController < ApplicationController
 
   def authorize_net_webhook
     response = request.parameters
+
     customer = Customer.find_by(customer_id: response['x_cust_id'])
     user, customer_profile_id = [customer.user, customer.customer_profile_id] if customer
 
@@ -67,8 +68,7 @@ class PaymentsController < ApplicationController
 
         if ['suspended', 'cancelled', 'terminated'].include? subscription_status
           begin
-            customer_authorize = AuthorizeNetLib::Customers.new
-            customer_authorize.delete_customer_profile(customer_profile_id)
+            recurring_authorize.cancel_subscription(response['x_subscription_id'], customer_profile_id)
             
             user.create_activity(
               key: 'payment.subscription_failed', 
@@ -82,7 +82,7 @@ class PaymentsController < ApplicationController
             )
 
             Subscription.where(user_id: user.id, subscription_id: response['x_subscription_id']).destroy_all
-            Customer.where(user_id: user.id).destroy_all
+            # Customer.where(user_id: user.id).destroy_all
             Bank_account.where(user_id: user.id).delete_all
 
             PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
@@ -103,5 +103,58 @@ class PaymentsController < ApplicationController
     render nothing: true, status: 200
   end
 
+  def self.scheduler
+    begin
+      transaction_reporting_authorize = AuthorizeNetLib::TransactionReporting.new
+      batch_list = transaction_reporting_authorize.get_settled_batch_list
+      
+      if batch_list
+        batch_list.each do |batch|
+          transaction_authorize_list = transaction_reporting_authorize.get_transaction_list(batch.batchId)
+
+          transaction_authorize_list.each do |trans_authoirze|
+            transaction_detail = transaction_reporting_authorize.get_transaction_details(trans_authoirze.transId)
+            customer = Customer.find_by(customer_id: transaction_detail.transaction.customer.id)
+            user = customer.user if customer
+            
+            if ['settledSuccessfully'].include? trans_authoirze.transactionStatus
+              unless Transaction.where(trans_id: trans_authoirze.transId).exists?
+                transaction = Transaction.new(
+                  user_id: user.id,
+                  invoice_id: trans_authoirze.invoiceNumber,
+                  amount: trans_authoirze.settleAmount.to_f * 100,
+                  trans_id: trans_authoirze.transId,
+                  transaction_type: 'payment.recurring'
+                )
+
+                PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+              end
+            elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? trans_authoirze.transactionStatus
+              recurring_authorize = AuthorizeNetLib::RecurringBilling.new
+              subscription_status = recurring_authorize.get_subscription_status(trans_authoirze.subscription)
+
+              user.create_activity(
+                key: 'payment.subscription_failed', 
+                owner: user, 
+                recipient: user,
+                parameters: {
+                  subscription_id: trans_authoirze.subscription,
+                  subscription_status: trans_authoirze.transactionStatus,
+                  subscription_message: nil
+                }
+              )
+
+              Subscription.where(user_id: user.id, subscription_id: trans_authoirze.subscription).destroy_all
+              Bank_account.where(user_id: user.id).delete_all
+
+              PaymentProcessorMailer.subscription_failed(user.id, trans_authoirze.subscription, trans_authoirze.transactionStatus).deliver_now
+            end
+          end
+        end
+      end
+    rescue => e
+      logger.error e.message
+    end
+  end
 end
 
