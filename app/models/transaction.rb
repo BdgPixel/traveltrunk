@@ -41,22 +41,22 @@ class Transaction < ActiveRecord::Base
         puts subscription_status
         puts transaction_detail.transaction.subscription
         puts transaction_detail.transaction.transactionStatus
-        
+
         user.create_activity(
           key: 'payment.subscription_failed', 
           owner: user, 
           recipient: user,
           parameters: {
-            subscription_id: trans_authorize.subscription,
-            subscription_status: trans_authorize.transactionStatus,
+            subscription_id: transaction_detail.transaction.subscription,
+            subscription_status: transaction_detail.transaction.transactionStatus,
             subscription_message: nil
           }
         )
 
-        Subscription.where(user_id: user.id, subscription_id: trans_authorize.subscription).destroy_all
+        Subscription.where(user_id: user.id, subscription_id: transaction_detail.transaction.subscription).destroy_all
         Bank_account.where(user_id: user.id).delete_all
 
-        PaymentProcessorMailer.subscription_failed(user.id, trans_authorize.subscription, trans_authorize.transactionStatus).deliver_now
+        PaymentProcessorMailer.subscription_failed(user.id, transaction_detail.transaction.subscription, transaction_detail.transaction.transactionStatus).deliver_now
       end
     else
       puts 'user not found'
