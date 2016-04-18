@@ -57,7 +57,7 @@ class PaymentsController < ApplicationController
           user_id: user.id,
           invoice_id: response['x_invoice_num'],
           amount: response['x_amount'].to_f * 100,
-
+          transaction_type: 'payment.recurring',
           trans_id: response['x_trans_id']
         )
 
