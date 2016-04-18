@@ -136,16 +136,20 @@ module AuthorizeNetLib
       response
     end
 
-    def cancel_subscription(subscription_id, customer_profile_id, customer_payment_profile_id)
+    def cancel_subscription(subscription_id, customer_profile_id, customer_payment_profile_id = nil)
       request = AuthorizeNet::API::ARBCancelSubscriptionRequest.new
       request.subscriptionId = subscription_id
-        
+
       response = @transaction.cancel_subscription(request)
 
       if response != nil
         if response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
           customer = Customers.new
-          delete_payment_profile = customer.delete_payment_profile(customer_profile_id, customer_payment_profile_id)
+          if customer_payment_profile_id
+            delete_payment_profile = customer.delete_payment_profile(customer_profile_id, customer_payment_profile_id)
+          # else
+            # delete_customer_profile = customer.delete_customer_profile(customer_profile_id)
+          end
         end
       else
         response_message = response.messages.messages.first.text
@@ -322,6 +326,35 @@ module AuthorizeNetLib
   end
 
   class TransactionReporting < Global
+    def get_settled_batch_list(first_date = nil, last_date = nil)
+      request = AuthorizeNet::API::GetSettledBatchListRequest.new
+      # request.firstSettlementDate = (DateTime.now().utc - 1.day).strftime('%Y-%m-%dT00:00:00Z')
+      # request.lastSettlementDate = (DateTime.now().utc).strftime('%Y-%m-%dT00:00:00Z')
+      
+      if first_date && last_date
+        request.firstSettlementDate = first_date
+        request.lastSettlementDate = last_date
+        request.includeStatistics = true
+      end
+
+      response = @transaction.get_settled_batch_list(request)
+
+      error_params, message_params = [response.messages, "Failed to fetch settled batch list."]
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
+      response.batchList.batch if response.batchList
+    end
+
+    def get_transaction_list(batch_id)
+      request = AuthorizeNet::API::GetTransactionListRequest.new
+      request.batchId = batch_id
+
+      response = @transaction.get_transaction_list(request)
+      error_params, message_params = [response.messages, "Failed to get Transaction list."]
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
+
+      response.transactions.transaction
+    end
+
     def get_transaction_details(trans_id)
       request = AuthorizeNet::API::GetTransactionDetailsRequest.new
       request.transId = trans_id
