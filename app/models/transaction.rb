@@ -23,7 +23,6 @@ class Transaction < ActiveRecord::Base
             transaction_type: 'payment.recurring'
           )
 
-          puts transaction.inspect
           PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
         end
       elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
