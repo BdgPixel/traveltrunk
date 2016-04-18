@@ -12,23 +12,23 @@ class Transaction < ActiveRecord::Base
     user = customer.user if customer
 
     if user
-      if ['settledSuccessfully', 'capturedPendingSettlement'].include? trans_authorize.transactionStatus
+      if ['settledSuccessfully', 'capturedPendingSettlement'].include? transaction_detail.transaction.transactionStatus
         unless Transaction.where(trans_id: transaction_id).exists?
           transaction = Transaction.new(
             user_id: user.id,
-            invoice_id: trans_authorize.invoiceNumber,
-            amount: trans_authorize.settleAmount.to_f * 100,
+            invoice_id: transaction_detail.order.invoiceNumber,
+            amount: transaction_detail.order.settleAmount.to_f * 100,
             trans_id: transaction_id,
             transaction_type: 'payment.recurring'
           )
           puts transaction.inspect
           # PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
         end
-      elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? trans_authorize.transactionStatus
+      elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
         recurring_authorize = AuthorizeNetLib::RecurringBilling.new
-        subscription_status = recurring_authorize.get_subscription_status(trans_authorize.subscription)
-        puts trans_authorize.subscription
-        puts trans_authorize.transactionStatus
+        subscription_status = recurring_authorize.get_subscription_status(transaction_detail.subscription)
+        puts transaction_detail.subscription
+        puts transaction_detail.transaction.transactionStatus
         # user.create_activity(
         #   key: 'payment.subscription_failed', 
         #   owner: user, 
