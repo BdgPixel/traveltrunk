@@ -53,13 +53,12 @@ class Transaction < ActiveRecord::Base
         )
 
         subscription = Subscription.where(user_id: user.id, subscription_id: transaction_detail.transaction.subscription).first
+        
         if subscription
           subscription.destroy
           Bank_account.where(user_id: user.id).delete_all
-
           PaymentProcessorMailer.subscription_failed(user.id, transaction_detail.transaction.subscription, subscription_status).deliver_now
         end
-
       end
     else
       puts 'user not found'
