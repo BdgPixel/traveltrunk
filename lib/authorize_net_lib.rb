@@ -330,7 +330,7 @@ module AuthorizeNetLib
       request = AuthorizeNet::API::GetSettledBatchListRequest.new
       # request.firstSettlementDate = (DateTime.now().utc - 1.day).strftime('%Y-%m-%dT00:00:00Z')
       # request.lastSettlementDate = (DateTime.now().utc).strftime('%Y-%m-%dT00:00:00Z')
-      
+
       if first_date && last_date
         request.firstSettlementDate = first_date
         request.lastSettlementDate = last_date
@@ -378,7 +378,7 @@ module AuthorizeNetLib
     def self.get_error_messages(error_params, message_params)
       unless error_params.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         message = error_params.messages.first
-        puts error_params.messages.first.code
+        
         error_messages = {
           response_message: message.text,
           response_error_code: message.code
