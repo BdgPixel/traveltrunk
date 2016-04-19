@@ -26,7 +26,8 @@ class PaymentProcessorMailer < ApplicationMailer
     @subscription = @user.subscription
     @amount = amount
 
-    mail to: @user.email, subject: 'Reoccurring Payment'
+    # mail to: @user.email, subject: 'Reoccurring Payment'
+    mail to: 'teguh@41studio.com', subject: 'Reoccurring Payment'
   end
 
   def payment_succeed(user_id, amount, card_last4)
@@ -55,7 +56,8 @@ class PaymentProcessorMailer < ApplicationMailer
     @subscription_id = subscription_id
     @subscription_message = subscription_message
 
-    mail to: user.email, subject: "Payment #{subscription_status.titleize}"
+    # mail to: user.email, subject: "Payment #{subscription_status.titleize}"
+    mail to: 'teguh@41studio.com', subject: "Payment #{subscription_status.titleize}"
   end
 
   def send_request_params_webhook(params)
