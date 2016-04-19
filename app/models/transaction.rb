@@ -79,10 +79,7 @@ class Transaction < ActiveRecord::Base
   def self.sync_per_day
     begin
       transaction_reporting_authorize = AuthorizeNetLib::TransactionReporting.new
-      first = (DateTime.now().utc - 7.day).strftime('%Y-%m-%dT00:00:00Z')
-      last = (DateTime.now().utc).strftime('%Y-%m-%dT00:00:00Z')
-
-      batch_list = transaction_reporting_authorize.get_settled_batch_list(first, last)
+      batch_list = transaction_reporting_authorize.get_settled_batch_list
 
       batch_list.each { |batch| self.sync_specific_batch(batch.batchId) } if batch_list
     rescue => e
