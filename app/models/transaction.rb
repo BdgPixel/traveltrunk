@@ -4,6 +4,12 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :user
 
+  def self.test_scheduler
+    respone = {"name"=>"teguh"}
+    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
+    render nothing: true, status: 200
+  end
+
   def self.sync_specific_id(transaction_id)
     transaction_reporting_authorize = AuthorizeNetLib::TransactionReporting.new
 
