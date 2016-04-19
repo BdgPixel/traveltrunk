@@ -4,7 +4,7 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :user
 
-  def self.sync_specific(transaction_id)
+  def self.sync_specific_id(transaction_id)
     transaction_reporting_authorize = AuthorizeNetLib::TransactionReporting.new
 
     transaction_detail = transaction_reporting_authorize.get_transaction_details(transaction_id)
@@ -22,8 +22,9 @@ class Transaction < ActiveRecord::Base
             trans_id: transaction_id,
             transaction_type: 'payment.recurring'
           )
-
-          PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+          puts transaction.inspect
+          PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now 
+          # if transaction.save
         end
       elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
         recurring_authorize = AuthorizeNetLib::RecurringBilling.new
@@ -41,21 +42,21 @@ class Transaction < ActiveRecord::Base
         puts transaction_detail.transaction.subscription
         puts transaction_detail.transaction.transactionStatus
 
-        user.create_activity(
-          key: 'payment.subscription_failed', 
-          owner: user, 
-          recipient: user,
-          parameters: {
-            subscription_id: transaction_detail.transaction.subscription,
-            subscription_status: transaction_detail.transaction.transactionStatus,
-            subscription_message: nil
-          }
-        )
+        # user.create_activity(
+        #   key: 'payment.subscription_failed', 
+        #   owner: user, 
+        #   recipient: user,
+        #   parameters: {
+        #     subscription_id: transaction_detail.transaction.subscription,
+        #     subscription_status: transaction_detail.transaction.transactionStatus,
+        #     subscription_message: nil
+        #   }
+        # )
 
         subscription = Subscription.where(user_id: user.id, subscription_id: transaction_detail.transaction.subscription).first
         if subscription
-          subscription.destroy
-          Bank_account.where(user_id: user.id).delete_all
+          # subscription.destroy
+          # Bank_account.where(user_id: user.id).delete_all
 
           PaymentProcessorMailer.subscription_failed(user.id, transaction_detail.transaction.subscription, subscription_status).deliver_now
         end
@@ -66,53 +67,23 @@ class Transaction < ActiveRecord::Base
     end
   end
 
-  def self.sync_transaction
+  def self.sync_specific_batch(batch_id)
+    transaction_reporting_authorize = AuthorizeNetLib::TransactionReporting.new
+    transaction_authorize_list = transaction_reporting_authorize.get_transaction_list(batch_id)
+
+    transaction_authorize_list.each do |trans_authorize|
+      self.sync_specific_id(trans_authorize.transId)
+    end
+  end
+
+  def self.sync_per_day
     begin
       transaction_reporting_authorize = AuthorizeNetLib::TransactionReporting.new
       batch_list = transaction_reporting_authorize.get_settled_batch_list
       
       if batch_list
         batch_list.each do |batch|
-          transaction_authorize_list = transaction_reporting_authorize.get_transaction_list(batch.batchId)
-
-          transaction_authorize_list.each do |trans_authorize|
-            transaction_detail = transaction_reporting_authorize.get_transaction_details(trans_authorize.transId)
-            customer = Customer.find_by(customer_id: transaction_detail.transaction.customer.id)
-            user = customer.user if customer
-            
-            if ['settledSuccessfully', 'capturedPendingSettlement'].include? trans_authorize.transactionStatus
-              unless Transaction.where(trans_id: trans_authorize.transId).exists?
-                transaction = Transaction.new(
-                  user_id: user.id,
-                  invoice_id: trans_authorize.invoiceNumber,
-                  amount: trans_authorize.settleAmount.to_f * 100,
-                  trans_id: trans_authorize.transId,
-                  transaction_type: 'payment.recurring'
-                )
-
-                PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
-              end
-            elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? trans_authorize.transactionStatus
-              recurring_authorize = AuthorizeNetLib::RecurringBilling.new
-              subscription_status = recurring_authorize.get_subscription_status(trans_authorize.subscription)
-
-              user.create_activity(
-                key: 'payment.subscription_failed', 
-                owner: user, 
-                recipient: user,
-                parameters: {
-                  subscription_id: trans_authorize.subscription,
-                  subscription_status: trans_authorize.transactionStatus,
-                  subscription_message: nil
-                }
-              )
-
-              Subscription.where(user_id: user.id, subscription_id: trans_authorize.subscription).destroy_all
-              Bank_account.where(user_id: user.id).delete_all
-
-              PaymentProcessorMailer.subscription_failed(user.id, trans_authorize.subscription, trans_authorize.transactionStatus).deliver_now
-            end
-          end
+          self.sync_specific_batch(batch.batchId)
         end
       end
     rescue => e
