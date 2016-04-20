@@ -9,6 +9,6 @@ namespace :scheduler do
   desc "This task is called for synchronize all transaction"
   task :sync_per_day => :environment do
     transaction = Transaction.sync_per_day
-    puts transaction.inpect
+    puts transaction.inspect
   end 
 end
