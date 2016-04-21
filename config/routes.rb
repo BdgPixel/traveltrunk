@@ -9,6 +9,7 @@ Rails.application.routes.draw do
   post 'promo_codes/update'
 
   namespace :admin, path: 'admin' do
+    resources :reservations, only: [:index, :update]
     resources :transactions, only: [:index]
     resources :refunds, only: [:index, :update]
     resources :promo_codes
