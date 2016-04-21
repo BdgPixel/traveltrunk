@@ -1,8 +1,8 @@
 module AdminHelper
   def status_label(status)
-    if status.eql? 'yes'
+    if ['yes', 'reserved'].include? status
       'label label-success'
-    elsif status.eql? 'pending'
+    elsif ['pending', 'refunded'].include? status
       'label label-warning'
     else
       'label label-default'
