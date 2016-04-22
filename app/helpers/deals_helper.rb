@@ -23,13 +23,42 @@ module DealsHelper
     tags = ""
     if taxs["Surcharges"].present? && taxs["Surcharges"]["@size"].to_i > 1
       taxs["Surcharges"]["Surcharge"].select do |tax|
-        unless tax["@type"].eql? "TaxAndServiceFee"
+        if tax["@type"].eql? "TaxAndServiceFee"
           tags += "<tr><td><b>#{tax['@type']}</b></td>"
           tags += "<td>#{number_to_currency tax["@amount"]}</td></tr>"
         end
       end
+
       tags.html_safe
     end
+  end
+
+  # def tax_values(taxs)
+  #   tags = ""
+  #   if taxs["Surcharges"].present? && taxs["Surcharges"]["@size"].to_i > 1
+  #     taxs["Surcharges"]["Surcharge"].select do |tax|
+  #       unless tax["@type"].eql? "TaxAndServiceFee"
+  #         tags += "<tr><td><b>#{tax['@type']}</b></td>"
+  #         tags += "<td>#{number_to_currency tax["@amount"]}</td></tr>"
+  #       end
+  #     end
+
+  #     tags.html_safe
+  #   end
+  # end
+
+  def nightly_rates_per_room(rates, key_date)
+    tags = ""
+    
+    if rates["@size"].to_i > 1
+       rates["NightlyRate"].each_with_index do |rate, key_rate|
+        tags += "<td>#{number_to_currency rate["@rate"]}</td>" if key_date.eql? key_rate
+      end
+    else
+      tags += "<td>#{number_to_currency(rates["NightlyRate"]["@rate"].to_f)}</td>"
+    end
+
+    tags.html_safe
   end
 end
 
