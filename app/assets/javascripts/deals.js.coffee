@@ -147,8 +147,10 @@ root.roomSelected = (selector)->
 
     $.each dates, (key, date) ->
       month = listOfMonts(date.getMonth())
+
       if room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['@size'] == ('1')
-        table.append("<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td><td>#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['NightlyRate']['@baseRate']}</td></tr>")
+        table.append("<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['NightlyRate']['@rate']}</td></tr>")
+        # change @baseRate to @rate
       else
         listOfDate = "<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td>"
         $.each room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['NightlyRate'], (keyRate, rate) ->
