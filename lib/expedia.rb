@@ -28,11 +28,6 @@ module Expedia
       }
     end
 
-    # def initialize(current_user_params)
-    #   # @current_user = Expedia::current_user(current_user_params)
-    #   # puts 'asdf'
-    # end
-
     def self.response_result(*args)
       args.each do |arg|
         {
@@ -52,14 +47,11 @@ module Expedia
         @welcome_state = 'no_profile'
         @error_response = ''
         response_result(welcome_state: @welcome_state, error_response: @error_response)
-
       elsif destination.blank?
         @welcome_state = 'no_destination'
         @error_response = "You haven’t selected a destination yet."
         response_result(welcome_state: @welcome_state, error_response: @error_response)
-
       else
-
         if destination
           custom_params = destination.get_search_params(group)
           destinationable = destination.destinationable
@@ -98,23 +90,19 @@ module Expedia
 
                   response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page )
                 end
-
               end
-
             rescue Exception => e
               @hotels_list    = []
               @error_response = e.message
 
               response_result(response: @hotels_list, error_response: @error_response)
             end
-
           else
             @hotels_list    = []
             @error_response = "You don't have any credits."
 
             response_result(response: @hotels_list, error_response: @error_response)
           end
-
         else
           @hotels_list    = []
           @error_response = "You haven’t selected a destination yet."
@@ -122,7 +110,6 @@ module Expedia
           response_result(response: @hotels_list, error_response: @error_response)
         end
       end
-
     end
 
     def self.information(custom_params)
@@ -142,7 +129,6 @@ module Expedia
           @hotel_information = response["HotelInformationResponse"]
           response_result(response: @hotel_information)
         end
-
       rescue Exception  => e
         @error_response = e.message
         response_result(error_response: @error_response)
@@ -220,5 +206,4 @@ module Expedia
     end
 
   end
-
 end
