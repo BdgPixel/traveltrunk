@@ -29,11 +29,11 @@ ThankYouPage#created
           p
             h4 Hotel and Room Reservation
             | Hotel name:&nbsp;
-            = @itinerary_response["Itinerary"]["HotelConfirmation"]["Hotel"]["name"]
+            = @itinerary_response["Hotel"]["name"]
 
           p
             | Address:&nbsp;
-            = @itinerary_response["Itinerary"]["HotelConfirmation"]["Hotel"]["address1"]
+            = @itinerary_response["Hotel"]["address1"]
 
           p
             | City #{@reservation.city}
@@ -46,11 +46,11 @@ ThankYouPage#created
 
           p
             | Phone:&nbsp;
-            = @itinerary_response["Itinerary"]["HotelConfirmation"]["Hotel"]["phone"]
+            = @itinerary_response["Hotel"]["phone"]
 
           p
             | Fax:&nbsp;
-            = @itinerary_response["Itinerary"]["HotelConfirmation"]["Hotel"]["fax"]
+            = @itinerary_response["Hotel"]["fax"]
 
           br
           p
@@ -72,14 +72,15 @@ ThankYouPage#created
             - @list_of_dates.each_with_index do |date, key|
               tr
                 td = date.strftime("%B %d, %Y")
-                - @itinerary_response["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["NightlyRatesPerRoom"]["NightlyRate"].each_with_index do |rate, key_rate|
-                  - if key.eql? key_rate
-                    td = number_to_currency rate["@rate"]
+                = nightly_rates_per_room(@charge_able_rate_info["NightlyRatesPerRoom"], key)
+                / - @charge_able_rate_info["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["NightlyRatesPerRoom"]["NightlyRate"].each_with_index do |rate, key_rate|
+                /   - if key.eql? key_rate
+                /     td = number_to_currency rate["@rate"]
             tr
               td
                 b Total taxes and fees
               td
-                = number_to_currency @itinerary_response["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@surchargeTotal"]
+                = number_to_currency @charge_able_rate_info["@surchargeTotal"]
             tr
               td
                 b Total Charges
@@ -87,9 +88,9 @@ ThankYouPage#created
                   small
                     i
                       | (includes tax recovery charges and service fees)
-              td = number_to_currency @itinerary_response["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+              td = number_to_currency @charge_able_rate_info["@total"]
 
-            = tax_values @itinerary_response["Itinerary"]["HotelConfirmation"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]
+            = tax_values @charge_able_rate_info
           p
             i
               b You have charged your credit card for the full payment of this reservation
