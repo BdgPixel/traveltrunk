@@ -2,7 +2,7 @@ class ApplicationController < ActionController::Base
   hide_action :current_user
   before_action :get_unread_notification_count
   # before_action :authenticate
-  before_action :authenticate_page
+  # before_action :authenticate_page
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
