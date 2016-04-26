@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   hide_action :current_user
   before_action :get_unread_notification_count
   # before_action :authenticate
+  before_action :authenticate_page
 
   # Prevent CSRF attacks by raising an exception.
   # For APIs, you may want to use :null_session instead.
@@ -29,6 +30,14 @@ class ApplicationController < ActionController::Base
     def authenticate
       authenticate_or_request_with_http_basic do |username, password|
         username == "traveltrunk" && password == "TrunkTest16"
+      end
+    end
+
+    def authenticate_page
+      if user_signed_in?
+        if current_user.try(:admin?)
+          redirect_to admin_users_url
+        end
       end
     end
 end
