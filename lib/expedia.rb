@@ -43,7 +43,7 @@ module Expedia
     end
 
     def self.list(destination = nil, group = nil)
-      if @current_user.admin.eql? false
+      unless @current_user.try(:admin?)
         if @current_user.profile.birth_date.blank? || @current_user.bank_account.blank?
           @welcome_state = 'no_profile'
           @error_response = ''
