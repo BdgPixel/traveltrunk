@@ -45,18 +45,19 @@ class PaymentsController < ApplicationController
 
   def authorize_net_webhook
     response = request.parameters
+
     customer = Customer.find_by(customer_id: response['x_cust_id'])
     user, customer_profile_id = [customer.user, customer.customer_profile_id] if customer
 
     PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
 
-    if response['x_subscription_id'] 
+    if response['x_type'].eql?('auth_capture') && response['x_subscription_id']
       if response['x_response_code'].eql?('1')
         transaction = Transaction.new(
           user_id: user.id,
           invoice_id: response['x_invoice_num'],
           amount: response['x_amount'].to_f * 100,
-
+          transaction_type: 'payment.recurring',
           trans_id: response['x_trans_id']
         )
 
@@ -67,8 +68,7 @@ class PaymentsController < ApplicationController
 
         if ['suspended', 'cancelled', 'terminated'].include? subscription_status
           begin
-            customer_authorize = AuthorizeNetLib::Customers.new
-            customer_authorize.delete_customer_profile(customer_profile_id)
+            recurring_authorize.cancel_subscription(response['x_subscription_id'], customer_profile_id)
             
             user.create_activity(
               key: 'payment.subscription_failed', 
@@ -82,7 +82,7 @@ class PaymentsController < ApplicationController
             )
 
             Subscription.where(user_id: user.id, subscription_id: response['x_subscription_id']).destroy_all
-            Customer.where(user_id: user.id).destroy_all
+            # Customer.where(user_id: user.id).destroy_all
             Bank_account.where(user_id: user.id).delete_all
 
             PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
@@ -102,6 +102,5 @@ class PaymentsController < ApplicationController
     
     render nothing: true, status: 200
   end
-
 end
 

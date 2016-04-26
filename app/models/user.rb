@@ -3,6 +3,8 @@ class User < ActiveRecord::Base
 
   paginates_per 10
 
+  scope :non_admin, -> { where(admin: false) }
+
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
   has_one  :group, dependent: :destroy

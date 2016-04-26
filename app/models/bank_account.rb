@@ -25,19 +25,27 @@ class BankAccount < ActiveRecord::Base
   end
 
   def create_subscription
-    customer_id = AuthorizeNetLib::Global.generate_random_id('cus')
+    customer = Customer.where(user_id: self.user_id).first
     params_recurring = get_recurring_params
+    
+    params_recurring[:customer][:customer_id] = 
+      if customer
+        customer.customer_id
+      else
+        AuthorizeNetLib::Global.generate_random_id('cus')
+      end
 
     begin
       recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
-      params_recurring[:customer][:customer_id] = customer_id
       start_date = Time.now.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
       params_recurring[:customer][:start_date] = start_date
       response = recurring_authorize.create_subscription(params_recurring)
       
       if response.messages.resultCode.eql? 'Ok'
-        Customer.create(customer_id: customer_id, user_id: user.id, customer_profile_id: response.profile.customerProfileId)
+        unless customer
+          Customer.create(customer_id: params_recurring[:customer][:customer_id], user_id: user.id, customer_profile_id: response.profile.customerProfileId)
+        end
 
         Subscription.create({
           subscription_id: response.subscriptionId,
@@ -108,7 +116,6 @@ class BankAccount < ActiveRecord::Base
       # }
 
       customer_authorize = AuthorizeNetLib::Customers.new
-      puts customer.customer_profile_id
       customer_profile = customer_authorize.get_customer_profile(customer.customer_profile_id)
       customer_payment_profile = customer_profile.paymentProfiles.first
       recurring_authorize = AuthorizeNetLib::RecurringBilling.new
@@ -354,9 +361,9 @@ class BankAccount < ActiveRecord::Base
         subscription_id = self.user.subscription.subscription_id
         cancel_subscription = recurring_authorize.cancel_subscription(subscription_id, customer_profile_id, payment_profile_id)
 
-        customer_authorize.delete_customer_profile(customer_profile_id)
+        # customer_authorize.delete_customer_profile(customer_profile_id)
         Subscription.where(user_id: self.user_id).destroy_all
-        Customer.where(user_id: self.user_id).destroy_all
+        # Customer.where(user_id: self.user_id).destroy_all
 
         PaymentProcessorMailer.cancel_subscription(self.user.id).deliver_now
         user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user

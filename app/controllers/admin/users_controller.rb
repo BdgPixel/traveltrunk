@@ -3,7 +3,7 @@ class Admin::UsersController < Admin::ApplicationController
   before_action :authenticate_user!
 
   def index
-    @users = User.all.where(admin: false).page params[:page]
+    @users = User.non_admin.page params[:page]
   end
 
   def show; end

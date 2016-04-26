@@ -44,15 +44,16 @@ class PaymentProcessorMailer < ApplicationMailer
     user = User.select(:id, :email, :total_credit).find user_id
 
     @profile = user.profile
-    mail to: user.email, subject: 'Payment Canceled'
+    mail to: user.email, subject: 'Subscription Canceled'
   end
 
-  def subscription_failed(user_id, subscription_id, subscription_status)
+  def subscription_failed(user_id, subscription_id, subscription_status, subscription_message = nil)
     user = User.select(:id, :email, :total_credit).find user_id
 
     @profile = user.profile
     @subscription_status = subscription_status
     @subscription_id = subscription_id
+    @subscription_message = subscription_message
 
     mail to: user.email, subject: "Payment #{subscription_status.titleize}"
   end
