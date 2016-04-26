@@ -108,7 +108,7 @@ Rails.application.configure do
   #   :enable_starttls_auto => true
   # }
 
-  config.action_mailer.default_url_options = { host: 'traveltrunk.herokuapp.com' }
+  config.action_mailer.default_url_options = { host: 'www.traveltrunk.us' }
 
   config.middleware.use ExceptionNotification::Rack,
     :email => {
