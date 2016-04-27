@@ -1,4 +1,4 @@
-class Admin::ReservationsController < ApplicationController
+class Admin::ReservationsController < Admin::ApplicationController
   before_action :set_reservation, only: :update
   before_action :authenticate_user!
 

@@ -1,4 +1,4 @@
-class Admin::TransactionsController < ApplicationController
+class Admin::TransactionsController < Admin::ApplicationController
   before_action :authenticate_user!
   
   def index

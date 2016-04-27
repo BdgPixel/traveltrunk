@@ -1,4 +1,4 @@
-class Admin::RefundsController < ApplicationController
+class Admin::RefundsController < Admin::ApplicationController
   include ExceptionErrorResponse
   
   before_action :set_refund, only: :update
