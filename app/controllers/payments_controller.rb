@@ -83,7 +83,7 @@ class PaymentsController < ApplicationController
 
             Subscription.where(user_id: user.id, subscription_id: response['x_subscription_id']).destroy_all
             # Customer.where(user_id: user.id).destroy_all
-            Bank_account.where(user_id: user.id).delete_all
+            BankAccount.where(user_id: user.id).delete_all
 
             PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
           rescue => e
