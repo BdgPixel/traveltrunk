@@ -1,6 +1,7 @@
 footer.footer
   .container
     br
-    ul.pull-left
-      li = link_to 'Privacy Policy', privacy_policy_path
-      li = link_to 'Refund Policy', refund_policy_path
+    ul.pull-left 
+      - unless current_user && current_user.admin
+        li = link_to 'Privacy Policy', privacy_policy_path
+        li = link_to 'Refund Policy', refund_policy_path
