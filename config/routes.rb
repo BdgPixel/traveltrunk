@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  get 'home/index'
+
   get  'privacy_policy' => 'policies#privacy'
   get  'refund_policy' => 'policies#refund'
   post 'refund_policy' => 'policies#create_contact'
@@ -61,7 +63,8 @@ Rails.application.routes.draw do
     :invitations => 'users/invitations'
   }
 
-  root 'deals#index'
+  # root 'deals#index'
+  root 'home#index'
 
   resource :profile, except: [:destroy, :new, :create]
   get 'users/:id/profile' => 'profiles#show', as: 'user_profile'
