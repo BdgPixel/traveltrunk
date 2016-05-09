@@ -22,7 +22,9 @@
 # = require twitter/bootstrap/collapse
 # = require twitter/bootstrap/alert
 # = require jquery.validate
-# = require bootstrap.file-input
+# = require owl.carousel
+# = require custom
+
 
 $(document).ajaxSend ->
   $('#loading').show()

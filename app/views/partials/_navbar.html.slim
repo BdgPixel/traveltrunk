@@ -1,6 +1,6 @@
-.wrapper-navbar-traveltrunk
-  .nav.navbar.navbar-default
-    .container-fluid
+.wrapper-navbar-traveltrunk.navbar-fixed-top
+  .nav.navbar.navbar-default.transparent
+    .container
       .navbar-header
         button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
           span.sr-only Toggle navigation
@@ -8,7 +8,10 @@
           span.icon-bar
           span.icon-bar
         .wrapper-navbar-brand
-          = display_icon_traveltrunk
+          a href="#" 
+            = image_tag 'logo3.png'
+            span
+              | TravelTrunk
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         ul.nav.navbar-nav.navbar-right
@@ -54,5 +57,5 @@
           - else 
             li
               = link_to new_user_registration_path
-                b Sign Up
+               | Sign Up
             

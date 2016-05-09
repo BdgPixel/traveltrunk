@@ -1,6 +1,63 @@
 footer.footer
-  .container
-    br
-    ul.pull-left
-      li = link_to 'Privacy Policy', privacy_policy_path
-      li = link_to 'Refund Policy', refund_policy_path
+  .inner-footer
+    .container
+      .row
+        .col-md-4
+          h4 Company
+          p.line
+          .row
+            .col-md-5
+              ul.product
+                li
+                  a href="#" About Us
+                li
+                  a href="#" Our Mission
+                li
+                  a href="#" Privacy Policy
+
+            .col-md-5
+              ul.product
+                li
+                  a href="#" Our Mission
+                li
+                  a href="#" Trush & Security
+                li
+                  a href="#" Our Team
+
+        .col-md-2
+          h4 Support
+          p.line
+          ul.support
+            li 
+              = link_to 'Privacy Policy', privacy_policy_path
+            li 
+              = link_to 'Refund Policy', refund_policy_path
+
+        .col-md-6
+          .text-right
+            .wrap-brand-footer
+              = image_tag 'logo3.png'
+              span
+                | TravelTrunk
+
+            ul.social-media
+              li 
+                a href="#"
+                  i.icon.twitter
+              li 
+                a href="#"
+                  i.icon.instagram
+              li 
+                a href="#"
+                  i.icon.facebook
+              
+  .wrap-copyright
+    .copyright
+      .container
+        .row
+          .col-sm-12.col-md-12.col-lg-12
+            .text-center
+              p
+                | COPYRIGHT © 2012 - 2016 TRAVELTRUNK, INC. ALL RIGHTS RESERVED. 
+                span 
+                  a href="#" TERMS OF USE AND PRIVACY.

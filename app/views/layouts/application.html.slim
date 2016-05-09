@@ -12,16 +12,14 @@ html lang="en"
     = csrf_meta_tags
 
   body data-controller="#{controller_name}" data-action="#{action_name}"
+    = render 'partials/notice'
+    = yield
+    
     = render partial: 'partials/navbar'
     #loading
 
-    .container
-      = render 'partials/notice'
-      = yield
-      br
-      br
-      br
-    
+    / .container
+
     = render 'partials/footer'
 
     = yield :javascripts
