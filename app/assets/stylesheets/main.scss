@@ -180,7 +180,7 @@ html {
     }
 
     .btn-default {
-      @extend %btn-green;
+      @extend %btn-green-dark;
       margin-top: 14px;
       font-size: 20px;
     }
@@ -199,20 +199,54 @@ html {
 // Login Page
 
 .wrapper-login {
+  @extend .wrapper-registration;
 
-  .btn-default {
-    @extend .btn-login;
+  .login {
+    @extend .registration;
+
+    input.input-login {
+      @extend input.input-registration;
+    }
+
+    .btn-default {
+      @extend %btn-green-dark;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-size: 18px;
+      color: #ffffff;
+      font-weight: lighter;
+      letter-spacing: 1px;
+      position: relative;
+      top: 3px;
+      left: 5px;
+    }
+
+    .forgot-password {
+      a {
+        margin-top: 5px;
+        display: inline-block;
+      }
+    }
   }
 }
 
-.wrapper-logo-signup {
+.wrapper-sign-up-login {
+  @extend .wrapper-login;
+  margin-top: 0px;
 
-  h1 {
-    font-size: 60px;
-  }
+  .sign-up-login {
+    @extend .login;
+    margin-top: 25px;
 
-  img {
-    width: 50%;
+    h1 {
+      margin-top: 0px;
+      color: #ffffff;
+      font-size: 19px;
+      font-weight: normal;
+      letter-spacing: 1px;
+    }
   }
 }
 

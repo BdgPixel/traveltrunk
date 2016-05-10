@@ -35,6 +35,20 @@
 	}
 }
 
+%btn-green-dark {
+	@extend %btn-green;
+	background-color: #3db1ae;
+	border-color: #3db1ae;
+
+	&:hover,
+	&:focus,
+	&:active {
+		box-shadow: none;
+		background-color: #4fc0c0;
+		border-color: #4fc0c0;
+	}
+}
+
 %input-global {
 	height: 54px;
   box-shadow: -1px 3px 10px -4px #000000;

@@ -1,35 +1,51 @@
-.row
-  .col-md-6
-    .wrapper-logo-signup
-      .text-center
-        = image_tag 'logo2.png'
-        h1 Travel Trunk
+.container
+  .row
+    .col-md-6.col-md-offset-3
+      .wrapper-login
+        .text-center
+          = image_tag 'logo3.png'
+        .login
 
-  .col-md-6
-    .wrapper-login
-      h2 Log in
+          = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+            .form-group
+              = f.email_field :email, autofocus: true, class: 'form-control input-login',  placeholder: 'Email Address'
 
-      = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
-        .form-group
-          = f.label :email
-          br
-          = f.email_field :email, autofocus: true, class: 'form-control'
+            .form-group
+              = f.password_field :password, autocomplete: "off", class: 'form-control input-login', placeholder: 'Password'
 
-        .form-group
-          = f.label :password
-          br
-          = f.password_field :password, autocomplete: "off", class: 'form-control'
+            - if devise_mapping.rememberable?
+              .row
+                .col-md-6
+                  .form-group
+                    = f.check_box :remember_me
+                    | &nbsp;
+                    = f.label :remember_me
 
-        - if devise_mapping.rememberable?
-          .form-group
-            = f.check_box :remember_me
-            | &nbsp;
-            = f.label :remember_me
+                .col-md-6
+                  .forgot-password 
+                    = link_to "Forgot your password?", new_password_path(resource_name)
 
-        .actions.form-group
-          = f.submit "Log in", class: 'btn btn-default'
+            .row
+              .col-md-12
+                .actions.form-group
+                  = f.submit "Log in", class: 'btn btn-default btn-block'
 
-      = render "devise/shared/links"
+            .text-center
+              = link_to "Didn't receive confirmation instructions?", new_user_confirmation_path(resource_name)
+
+    .col-md-6.col-md-offset-3
+      .wrapper-sign-up-login
+        .sign-up-login
+          .text-center
+            h1
+             | Need a account?
+
+            = link_to new_user_registration_path 
+              | Sign Up Now
+
+
+          
+          / = render "devise/shared/links"
 
 
 
