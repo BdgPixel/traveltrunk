@@ -8,6 +8,8 @@ class ApplicationController < ActionController::Base
   # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
+  layout :layout_by_resource
+
   def get_group
     if user_signed_in?
       @group = current_user.group || current_user.joined_groups.first
@@ -15,6 +17,18 @@ class ApplicationController < ActionController::Base
   end
 
   protected
+    def layout_by_resource
+      if devise_controller?
+        if (controller_name.eql?('sessions') && action_name.eql?('new')) || (controller_name.eql?('registrations') && action_name.eql?('new'))
+          'bg_gradient_no_navbar'
+        else
+          'application'
+        end
+      else
+        'application'
+      end
+    end
+
     def after_sign_in_path_for(resource)
       if resource.admin?
        admin_promo_codes_url
