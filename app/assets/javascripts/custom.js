@@ -20,3 +20,13 @@ $(document).ready(function(){
       }
   })
 });
+
+$(window).scroll(function() {    
+  var scroll = $(window).scrollTop();
+
+  if (scroll >= 500) {
+      $(".transparent").addClass("scrolling");
+  } else {
+      $(".transparent").removeClass("scrolling");
+  }
+});

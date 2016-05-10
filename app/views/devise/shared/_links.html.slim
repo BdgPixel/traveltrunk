@@ -13,7 +13,7 @@
   br
 
 - if devise_mapping.confirmable? && controller_name != 'confirmations'
-  = link_to "Have already account? Login here", new_confirmation_path(resource_name)
+  = link_to "Have already account? Login here", new_session_path(resource_name)
   br
 
 - if devise_mapping.lockable? && resource_class.unlock_strategy_enabled?(:email) && controller_name != 'unlocks'

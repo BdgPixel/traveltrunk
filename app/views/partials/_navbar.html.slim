@@ -56,6 +56,6 @@
                   li = link_to 'Sign Out', destroy_user_session_path, method: :delete
           - else 
             li
-              = link_to new_user_registration_path
+              = link_to new_user_registration_path, class: "navbar-btn btn-border"
                | Sign Up
             
