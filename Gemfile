@@ -104,4 +104,6 @@ group :development, :test do
   gem 'capistrano-bundler', require: false
   
   gem 'capistrano-passenger'
+
+  gem 'capistrano-sidekiq'
 end
