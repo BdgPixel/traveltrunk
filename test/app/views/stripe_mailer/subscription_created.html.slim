@@ -1,7 +1,0 @@
-SubscriptionMailer#created
-  p = "Hi #{@profile.first_name},"
-
-  p
-    | You’ve successfully updated your savings plan to #{currency_in_usd(@subscription.amount)} per #{savings_interval(@subscription.interval, @subscription.interval_count)}. Nice! Starting next #{savings_interval(@subscription.interval, @subscription.interval_count)}, Travel Trunk will charge your credit card on file #{currency_in_usd(@subscription.amount)} each #{savings_interval(@subscription.interval, @subscription.interval_count)} until you tell us otherwise.
-
-  p = render 'partials/footer_mailer'
