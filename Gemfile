@@ -107,3 +107,5 @@ group :development, :test do
 
   gem 'capistrano-sidekiq'
 end
+
+gem 'rails_12factor', group: :production
