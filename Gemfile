@@ -66,6 +66,12 @@ gem 'authorizenet', '1.8.9.1'
 
 gem 'kaminari'
 
+gem 'whenever', :require => false
+
+gem 'sidekiq', '4.0.0'
+
+gem 'devise-async'
+
 gem 'exception_notification'
 
 group :development, :test do
