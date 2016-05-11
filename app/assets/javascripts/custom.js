@@ -31,6 +31,6 @@ $(window).scroll(function() {
   }
 });
 
-$(window).scroll(function() {   
-  $(window).stellar();
-});
+// $(window).scroll(function() {   
+//   $(window).stellar();
+// });

@@ -23,7 +23,6 @@
 # = require twitter/bootstrap/alert
 # = require jquery.validate
 # = require owl.carousel
-# = require jquery.stellar.min
 # = require custom
 
 
