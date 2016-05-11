@@ -14,7 +14,7 @@
                      br
                      | Your Journey Starts Here.
 
-                    a.btn.btn-default href="#" Click HERE to Get Started!
+                    = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
       
       .item 
         = image_tag 'banner_img_1.jpg'
@@ -29,7 +29,7 @@
                      br
                      | Your Journey Starts Here.
 
-                    a.btn.btn-default href="#" Click HERE to Get Started!
+                    = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
 
 section.slogan
   .container
@@ -135,4 +135,4 @@ section.couple
                     br
                     | and the world is at your fingertips.
                     
-                  a.btn.btn-default href="#" Click HERE to Get Started!
+                  = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
