@@ -27,9 +27,9 @@
 			h1 {
 				font-weight: bold;
 				color: #ffffff;
-				font-size: 60px;
+				font-size: 100px;
 				line-height: 45px;
-		    margin-bottom: 25px;
+        margin-bottom: 106px;
 			}
 
 			h2,
@@ -44,6 +44,8 @@
 
 			.btn-default {
 				@extend %btn-green;
+		    font-size: 20px !important;
+		    padding: 24px 50px;
 			}
 		}
 	}
@@ -59,10 +61,12 @@ section.slogan {
 			h2 {
 				display: inline-block;
 		    margin-right: 5px;
-		    background: -webkit-linear-gradient(#f54b43, #f9a036);
-			  -webkit-background-clip: text;
-			  -webkit-text-fill-color: transparent;
-			  font-weight: 600;
+		   //  background: -webkit-linear-gradient(#f54b43, #f9a036);
+			  // -webkit-background-clip: text;
+			  // -webkit-text-fill-color: transparent;
+	      	font-size: 60px;
+			    margin-bottom: 50px;
+			    margin-right: 30px;
 
 			  &:last-child {
 			  	margin-right: 0px;
@@ -70,7 +74,7 @@ section.slogan {
 			}
 
 			p {
-				font-size: 15px;
+		    font-size: 33px;
 				color: #999999;
 				margin-top: 16px;
 			}
@@ -101,6 +105,16 @@ section.couple {
 	}
 }
 
+section.money {
+
+	.wrap-money {
+
+		p {
+    	font-size: 30px !important;
+		}
+	}
+}
+
 section.information {
 
 	.information {
@@ -109,11 +123,18 @@ section.information {
 
 		h3 {
 			color: #000000;
+			font-size: 50px; 
+			font-weight: bold;
+		}
+
+		img {
+    	width: 130px;
 		}
 	}
 
 	p {
 		color: #999999;
+    font-size: 20px;
 	}
 
 	.how-it-works {
@@ -126,9 +147,27 @@ section.couple {
 	.wrap-couple {
 
 		.couple {
+
+			h1 {
+	    	font-size: 54px;
+	    	margin-bottom: 40px;
+			}
 			
 			p {
 	    	margin-bottom: 30px;
+	    	font-size: 30px;
+			}
+
+			.btn-default {
+				background-color: transparent;
+				border-color: #ffffff;
+
+				&:hover,
+				&:focus,
+				&:active {
+					box-shadow: none;
+					border-color: #ffffff;
+				}
 			}
 		}
 	}

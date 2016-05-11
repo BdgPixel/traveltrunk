@@ -12,18 +12,18 @@
                     h1
                      | Your Journey Starts Here.
                    
-                    h2
-                     | Save. Create. Expoler
+                    / h2
+                    /  | Save. Create. Expoler
                      
-                    p 
-                      | Love to travel, but always a few dollars short? Travel Trunk makes it easy to 
-                      br
-                      | save for your next vacation, create a budget-friendly itinerary, and then,
-                      br 
-                      | set off to explore the world. 
+                    / p 
+                    /   | Love to travel, but always a few dollars short? Travel Trunk makes it easy to 
+                    /   br
+                    /   | save for your next vacation, create a budget-friendly itinerary, and then,
+                    /   br 
+                    /   | set off to explore the world. 
 
               
-                    = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
+                    = link_to "Click HERE to Get Started", new_user_session_path, class: "btn btn-default"
       
       .item 
         = image_tag 'banner_img_1.jpg', data: {stellar_ratio: '1.4', stellar_vertical_offset: '-102'} 
@@ -36,56 +36,52 @@
                     h1
                      | Your Journey Starts Here.
                    
-                    h2
-                     | Save. Create. Expoler
+                    / h2
+                    /  | Save. Create. Expoler
                      
-                    p 
-                      | Love to travel, but always a few dollars short? Travel Trunk makes it easy to 
-                      br
-                      | save for your next vacation, create a budget-friendly itinerary, and then,
-                      br 
-                      | set off to explore the world. 
+                    / p 
+                    /   | Love to travel, but always a few dollars short? Travel Trunk makes it easy to 
+                    /   br
+                    /   | save for your next vacation, create a budget-friendly itinerary, and then,
+                    /   br 
+                    /   | set off to explore the world. 
 
               
                     = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
 
-/ section.slogan
-/   .container
-/     .row
-/       .col-sm-6.col-md-6.col-lg-6.col-sm-offset-3.col-md-offset-3.col-lg-offset-3
-/         .wrap-slogan
-/           .slogan
-/             .text-center
-/               h2 Save.
-/               h2 Create.
-/               h2 Expoler.
+section.slogan
+  .container
+    .row
+      .col-sm-8.col-md-8.col-lg-8.col-sm-offset-2.col-md-offset-2.col-lg-offset-2
+        .wrap-slogan
+          .slogan
+            .text-center
+              h2 Save.
+              h2 Create.
+              h2 Expoler.
 
-/               p 
-/                 | Love to travel, but always a few dollars short? Travel Trunk makes it easy to 
-/                 br
-/                 | save for your next vacation, create a budget-friendly itinerary, and then, 
-/                 br
-/                 | set off to explore the world. 
+              p 
+                | Love to travel, but always a few dollars short? Travel Trunk makes it easy to save for your next vacation, create a budget-friendly itinerary, and then, set off to explore the world.
 
-/ section.money
-/   .wrap-money
-/     .money
-/       = image_tag 'banner_img_2.jpg'
-/       .inner-item
-/         .item-content
-/           .item-center
-/             .container
-/               .row
-/                 .col-sm-12.col-md-12.col-lg-12
-/                     p
-/                       | No more stressful budgeting, no more overwhelming options. Here, we make      travel planning fun and hassle-free. 
-/                       br
-/                       | Now, you can plot your adventure, and savor every moment of anticipation. 
-/                       br
-/                       | Here’s how it works…
+section.money
+  .wrap-money
+    .money
+      = image_tag 'banner_img_2.jpg'
+      .inner-item
+        .item-content
+          .item-center
+            .container-fluid
+              .row
+                .col-sm-6.col-md-6.col-lg-6
+                    p
+                      | No more stressful budgeting, no more overwhelming options. Here, we make      travel planning fun and hassle-free. 
+                      br
+                      | Now, you can plot your adventure, and savor every moment of anticipation. 
+                      br
+                      | Here’s how it works…
 
 section.information
-  .container
+  .container-fluid
     .row
       .col-sm-12.col-md-12.col-lg-12
         .how-it-works
@@ -142,42 +138,42 @@ section.information
                 br
                 | be a globe-trotting success in no time at all.
 
-/ section.couple
-/   .wrap-couple
-/     .couple
-/       = image_tag 'banner_img_3.jpg'
-/       .inner-item
-/         .item-content
-/           .item-center
-/             .container
-/               .row
-/                 .col-sm-12.col-md-12.col-lg-12
-/                   h1
-/                     | Your Dream Vacation Is Just Around the Corner
-/                   p
-/                     | We can’t wait to help you make travel an exciting reality. 
-/                     | Simply sign up   with a safe, secure account, 
-/                     br
-/                     | and the world is at your fingertips.
+section.couple
+  .wrap-couple
+    .couple
+      = image_tag 'banner_img_3.jpg'
+      .inner-item
+        .item-content
+          .item-center
+            .container
+              .row
+                .col-sm-12.col-md-12.col-lg-12
+                  h1
+                    | Your Dream Vacation Is Just Around the Corner
+                  p
+                    | We can’t wait to help you make travel an exciting reality. 
+                    | Simply sign up   with a safe, secure account, 
+                    br
+                    | and the world is at your fingertips.
                     
-/                   = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
+                  = link_to "Click HERE to Get Started", new_user_session_path, class: "btn btn-default"
 
-section.vacation
-  .wrap-vacation-desc
-    .vacation-desc
-      .col-md-4
-        h1.text-center
-          | Your Dream Vacation Is Just Around the Corner
-        p.text-center
-         | We can’t wait to help you make travel an exciting reality. Simply sign up with a safe, secure account, and the world is at your fingertips.
-         
-        .text-center
-          = link_to "Click HERE to Get in on the Fun!", new_user_session_path, class: "btn btn-default"
+/ section.vacation
+/   .wrap-vacation-desc
+/     .vacation-desc
+/       .col-md-4
+/         h1.text-center
+/           | Your Dream Vacation Is Just Around the Corner
+/         p.text-center
+/          | We can’t wait to help you make travel an exciting reality. Simply sign up with a safe, secure account, and the world is at your fingertips.
 
-    .image-vacation
-      .col-md-8.no-pad-right
-        .inner-image
-          = image_tag 'banner_img_3.jpg'
+/         .text-center
+/           = link_to "Click HERE to Get in on the Fun!", new_user_session_path, class: "btn btn-default"
+
+/     .image-vacation
+/       .col-md-8.no-pad-right
+/         .inner-image
+/           = image_tag 'banner_img_3.jpg'
 
   / .wrap-couple
   /   .couple
