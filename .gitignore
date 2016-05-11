@@ -8,12 +8,14 @@
 /.bundle
 
 # Ignore all logfiles and tempfiles.
+/log
 /log/*
 !/log/.keep
 /tmp
 /config/database.yml
 /db/schema.rb
-/public/uploads/
+public/uploads/
+public/assets/
 
 .env
 .env.*
