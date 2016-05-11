@@ -11,9 +11,10 @@
 /log/*
 !/log/.keep
 /tmp
-database.yml
+/config/database.yml
 /db/schema.rb
-public/uploads/
+/public/uploads/
 
-.env.*
 .env
+.env.*
+.ruby-gemset
