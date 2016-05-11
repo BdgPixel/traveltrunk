@@ -12,6 +12,8 @@ html lang="en"
     = csrf_meta_tags
 
   body class="bg-gradient" data-controller="#{controller_name}" data-action="#{action_name}"
+    - if controller_name.eql?('passwords') && action_name.eql?('new')
+      = render 'partials/navbar'
     = yield
 
     / Please change this footer

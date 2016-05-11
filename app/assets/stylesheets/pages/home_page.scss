@@ -27,8 +27,19 @@
 			h1 {
 				font-weight: bold;
 				color: #ffffff;
+				font-size: 60px;
 				line-height: 45px;
 		    margin-bottom: 25px;
+			}
+
+			h2,
+			p {
+				color: #ffffff;
+			}
+
+			p {
+		    margin-top: 30px;
+	    	margin-bottom: 40px;
 			}
 
 			.btn-default {
@@ -96,11 +107,17 @@ section.information {
 		margin-top: 100px;
 		margin-bottom: 100px;
 
-		.save,
-		.create,
-		.explore {
-
+		h3 {
+			color: #000000;
 		}
+	}
+
+	p {
+		color: #999999;
+	}
+
+	.how-it-works {
+  	margin-top: 50px;
 	}
 }
 
@@ -115,4 +132,42 @@ section.couple {
 			}
 		}
 	}
+}
+
+
+section.vacation {
+	overflow: hidden;
+
+	.vacation-desc {
+
+		h1 {
+			font-weight: bold;
+			color: #000000;
+		}
+
+		p {
+	  	margin-top: 20px;
+    	margin-bottom: 40px;
+		}
+		
+		.btn-default {
+			@extend %btn-green;
+		}
+	}
+
+	.image-vacation {
+
+		.inner-image {
+	    margin-bottom: -1px;
+
+			img {
+				max-width: 100%;
+			}
+		}
+	}
+}
+
+
+.no-pad-right {
+	padding-right: 0px;
 }

@@ -1,0 +1,37 @@
+@import 'mixins';
+
+.wrapper-registration {
+  margin-top: 50px;
+
+  img {
+    width: 70px;
+  }
+  
+  .registration {
+    background: rgba(255, 255, 255, 0.2);
+    padding: 45px;
+    margin-top: 55px;
+
+    input.input-registration {
+      @extend %input-global;
+
+      @include placeholder {
+        color: #d9d8d8;
+        font-size: 20px;
+        letter-spacing: 1px;
+        font-weight: normal;
+      }
+    }
+
+    .btn-default {
+      @extend %btn-green-2;
+      margin-top: 14px;
+    }
+  }
+
+  a {
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #ffffff;
+  }
+}
