@@ -30,3 +30,7 @@ $(window).scroll(function() {
       $(".transparent").removeClass("scrolling");
   }
 });
+
+$(window).scroll(function() {   
+  $(window).stellar();
+});
