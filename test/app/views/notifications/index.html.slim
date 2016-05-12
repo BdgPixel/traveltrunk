@@ -1,9 +1,0 @@
-- content_for :javascripts
-  = javascript_include_tag 'notifications'
-
-h3 Notifications:
-br
-table.table.table-striped.table-hover
-  tbody
-    - @activities.each do |activity|
-      == render_activity activity
