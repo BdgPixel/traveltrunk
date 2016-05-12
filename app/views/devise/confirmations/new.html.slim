@@ -1,13 +1,19 @@
-.row
-  .col-md-6
-    h2 Resend confirmation instructions
-    = simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
-      / = devise_error_messages!
+.container
+  .row
+    .col-md-8.col-md-offset-2
+      .wrapper-forgot-password
+        h1.text-center Resend confirmation instructions
+        .forgot-password
 
-      .form-group
-        = f.input :email, autofocus: true, input_html: { value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control' }
+          = simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
+            / = devise_error_messages!
 
-      .actions.form-group
-        = f.submit "Resend", class: 'btn btn-primary'
+            .row
+              .col-md-8
+                .form-group
+                  = f.input :email, label:false, autofocus: true, placeholder: "Email Address", input_html: { value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control input-resend-confirmations' }
 
-  / = render "devise/shared/links"
+              .col-md-4
+                = f.submit "Resend", class: 'btn btn-default btn-block'
+
+      / = render "devise/shared/links"

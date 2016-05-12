@@ -10,7 +10,7 @@
 # Read Sprockets README (https://github.com/rails/sprockets#sprockets-directives) for details
 # about supported directives.
 
-# = require jquery
+# = require jquery-main.min
 # = require jquery_ujs
 # = require turbolinks
 # = require nprogress
@@ -23,6 +23,7 @@
 # = require twitter/bootstrap/alert
 # = require jquery.validate
 # = require owl.carousel
+# = require jquery.parallax-1.1.3
 # = require custom
 
 
