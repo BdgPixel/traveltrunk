@@ -1,4 +1,4 @@
-p = "Hi #{@user.profile.first_name},"
+p = "Hi #{@user.try(:profile).try(:first_name)},"
 p
   |Thank you for signing up and welcome to Travel Trunk! Before you can start saving for your next vacation let’s confirm your account. Please click the link below.
 p = link_to "Confirm my new Travel Trunk account", confirmation_url(@resource, confirmation_token: @token)

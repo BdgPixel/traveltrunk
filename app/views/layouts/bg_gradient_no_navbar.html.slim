@@ -14,6 +14,8 @@ html lang="en"
   body class="bg-gradient" data-controller="#{controller_name}" data-action="#{action_name}"
     - if controller_name.eql?('passwords') && action_name.eql?('new')
       = render 'partials/navbar'
+
+    = render 'partials/notice'
     = yield
 
     / Please change this footer

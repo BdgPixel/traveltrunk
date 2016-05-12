@@ -352,7 +352,7 @@ module AuthorizeNetLib
       error_params, message_params = [response.messages, "Failed to get Transaction list."]
       RescueErrorsResponse::get_error_messages(error_params, message_params)
 
-      response.transactions.transaction
+      response.try(:transactions).try(:transaction)
     end
 
     def get_transaction_details(trans_id)
@@ -362,9 +362,13 @@ module AuthorizeNetLib
       response = @transaction.get_transaction_details(request)
       error_params, message_params = [response.messages, "Failed to get transaction Details."]
 
-      RescueErrorsResponse::get_error_messages(error_params, message_params)
+      response_message = error_params.messages.first
+      
+      if !response_message.code.eql?('E00040') && !response_message.text.eql?("The record cannot be found.")
+        RescueErrorsResponse::get_error_messages(error_params, message_params)
 
-      response
+        response
+      end
     end
   end
 
@@ -384,7 +388,8 @@ module AuthorizeNetLib
           response_error_code: message.code
         }
         
-        raise RescueErrorsResponse.new(error_messages), message_params
+        # raise RescueErrorsResponse.new(error_messages), message_params
+        raise RescueErrorsResponse.new(error_messages), message.text
       end
     end
   end

@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
   get 'home/index'
 
   get  'privacy_policy' => 'policies#privacy'
@@ -72,5 +78,4 @@ Rails.application.routes.draw do
   post   'create_bank_account' => 'profiles#create_bank_account'
   put    'update_bank_account' => 'profiles#update_bank_account'
   delete 'unsubscript' => 'profiles#unsubscript', as: 'unsubscript'
-
 end
