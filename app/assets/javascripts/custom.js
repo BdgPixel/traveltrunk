@@ -20,7 +20,7 @@ $(document).ready(function(){
       }
   });
 
-  $('.parallax-image').parallax("50%", 0.5);
+  // $('.parallax-image').parallax("50%", 0.5);
 
 });
 
