@@ -1,6 +1,7 @@
 $(document).ready(function(){ 
   $('.parallax-image').parallax("50%", 0.1);
   $('.parallax-image2').parallax("50%", 0.1);
+  $('.parallax-image3').parallax("50%", 0.1);
 
    $(".click-me a[href^='#']").on('click', function(e) {
     e.preventDefault();
