@@ -103,7 +103,6 @@ html {
         }
       }
       a.btn-orange2 {
-        border: 2px solid transparent;
         @include border-radius(7px);
         padding: 7px 14px;
         background: rgb(239,62,54); /* Old browsers */
@@ -138,10 +137,7 @@ html {
   }
 
   .transparent.scrolling {
-    background: -moz-linear-gradient(top,  rgba(255,255,255,70.65) 30%, rgba(0,0,0,0) 100%); /* FF3.6-15 */
-    background: -webkit-linear-gradient(top,  rgba(255,255,255,70.65) 30%,rgba(0,0,0,0) 100%); /* Chrome10-25,Safari5.1-6 */
-    background: linear-gradient(to bottom,  rgba(255,255,255,70.65) 30%,rgba(0,0,0,0) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#a6f55144', endColorstr='#00000000',GradientType=0 ); /* IE6-9 */
+    background-color: #ffffff;
     border-bottom: transparent;
     border-top: transparent;
   } 

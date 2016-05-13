@@ -1,3 +1,6 @@
+@import 'mixins';
+@import 'fonts';
+
 .wrap-hero {
   height: 100%;
 
@@ -51,12 +54,13 @@
 			text-align: center;
 
 			h1 {
-				font-weight: bold;
+				font-family: 'Avenirregular';
 				color: #ffffff;
 		    font-size: 90px;
 				line-height: 45px;
         margin-bottom: 106px;
         line-height: 90px;
+        -webkit-font-smoothing: antialiased;
 			}
 
 			h2,
@@ -71,8 +75,8 @@
 
 			.btn-default {
 				@extend %btn-green;
-		    font-size: 20px !important;
-		    padding: 24px 50px;
+		    font-size: 17px !important;
+		    padding: 24px 35px;
 			}
 		}
 	}
@@ -86,17 +90,16 @@ section.slogan {
 		.slogan {
 			
 			h2 {
+				font-family: 'Avenirregular';
 				display: inline-block;
-		    margin-bottom: 20px;
-		    margin-right: 150px;
-		    font-size: 36px;
+		    margin-right: 20px;
+		    font-size: 60px;
 		    line-height: 1.2em;
-		    // text-transform: uppercase;
 		    text-decoration: none;
 		    letter-spacing: .015em;
-		    font-weight: 700;
-		    font-style: normal;
-		    color: #000000;
+		    font-weight: bold;
+        color: #505050;
+        -webkit-font-smoothing: antialiased;
 			}
 
 			.mar-right {
@@ -104,10 +107,11 @@ section.slogan {
 			}
 
 			p {
+				font-family: 'Avenirregular';
 		    font-size: 22px;
-		    color: #999999;
+		    color: #505050;
 		    margin-top: 16px;
-		    letter-spacing: .015em;
+		    // letter-spacing: .015em;
 		    line-height: 1.8em;
 		    font-weight: 300;
 			}
@@ -147,15 +151,16 @@ section.money {
 	.wrap-money {
 
 		h2 {
+			font-family: 'Avenirregular';
 			text-align: left;
 	    font-size: 36px;
-	    font-weight: bold;
 	    // text-transform: uppercase;
-      font-weight: 700;
 		}
 
 		p {
+			font-family: 'Avenirregular';
 			text-align: left;
+	    font-weight: 300;
     	font-size: 22px !important;
 		}
 	}
@@ -168,9 +173,10 @@ section.information {
 		margin-bottom: 100px;
 
 		h3 {
-			color: #000000;
-			font-size: 50px; 
-			font-weight: bold;
+			font-family: 'Avenirbold';
+			color: #505050;
+			font-size: 50px;
+			-webkit-font-smoothing: antialiased;
 		}
 
 		img {
@@ -179,7 +185,8 @@ section.information {
 	}
 
 	p {
-		color: #999999;
+		font-family: 'Avenirregular';
+		color: #505050;
     font-size: 20px;
 	}
 
