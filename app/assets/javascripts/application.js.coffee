@@ -15,6 +15,7 @@
 # = require turbolinks
 # = require nprogress
 # = require nprogress-turbolinks
+# = require bootstrap
 # = require twitter/bootstrap/dropdown
 # = require twitter/bootstrap/modal
 # = require twitter/bootstrap/tooltip
@@ -22,7 +23,6 @@
 # = require twitter/bootstrap/collapse
 # = require twitter/bootstrap/alert
 # = require jquery.validate
-# = require owl.carousel
 # = require jquery.parallax-1.1.3
 # = require custom
 

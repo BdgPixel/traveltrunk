@@ -54,7 +54,7 @@
 			text-align: center;
 
 			h1 {
-				font-family: 'Avenirregular';
+				font-family: 'Avenirbold';
 				color: #ffffff;
 		    font-size: 90px;
 				line-height: 45px;
@@ -75,11 +75,56 @@
 
 			.btn-default {
 				@extend %btn-green;
-		    font-size: 17px !important;
-        padding: 17px 27px
+			  font-size: 14px !important;
+		    padding: 17px 25px;
+
 			}
 		}
 	}
+}
+
+.wrap-arrow-down {
+  position: absolute;
+  width: 100%;
+  bottom: 20px;
+  z-index: 1;
+  text-align: center;
+
+
+  .arrow-down {
+  	background-color: transparent;
+  	@include border-radius(8px);
+	  width: 120px;
+    padding: 22px 0px 8px 0px;
+	  margin: 0 auto;
+  	transition: 0.2s;
+	 
+	  &:hover {
+	  	// background-color: rgba(255,255,255,0.30);
+	  }
+
+	  .icon {
+	  	display: block;
+	  	width: 30px;
+	  	height: 30px;
+
+	  	&.arrow-down {
+	  		background: image-url("down-chevron.png") no-repeat;
+	  	}
+	  }
+  }
+
+
+  a {
+  	font-family: 'Avenirregular';
+  	color: #ffffff;
+
+  	&:hover,
+  	&:focus,
+  	&:active {
+  		text-decoration: none;
+  	}
+  }
 }
 
 section.slogan {
@@ -88,16 +133,16 @@ section.slogan {
 		margin-top: 30px;
 		
 		.slogan {
+    	padding: 70px 0px;
 			
 			h2 {
-				font-family: 'Avenirregular';
+				font-family: 'Avenirbold';
 				display: inline-block;
 		    margin-right: 20px;
 		    font-size: 60px;
 		    line-height: 1.2em;
 		    text-decoration: none;
 		    letter-spacing: .015em;
-		    font-weight: bold;
         color: #505050;
         -webkit-font-smoothing: antialiased;
 			}
@@ -119,9 +164,19 @@ section.slogan {
 	}
 }
 
-// section.couple {
-// 	background: image-url("banner_img_3.png");
-// }
+section.money {
+	background: image-url("banner_img_2.png");
+	background-attachment: fixed;
+	background-size: cover;
+	height:100%;
+}
+
+section.couple {
+	background: image-url("banner_img_3.png");
+	background-attachment: fixed;
+	background-size: cover;
+	height:100%;
+}
 
 section.money,
 section.couple {
@@ -129,11 +184,12 @@ section.couple {
 	.wrap-money,
 	.wrap-couple {
 		margin-top: 40px;
+		height: 100%;
 
 		.money,
 		.couple {
     	position: relative;
-
+    	height: 100%;
     	p {
     		font-size: 16px;
     		color: #ffffff;
@@ -151,9 +207,9 @@ section.money {
 	.wrap-money {
 
 		h2 {
-			font-family: 'Avenirregular';
+			font-family: 'Avenirbold';
 			text-align: left;
-	    font-size: 36px;
+      font-size: 45px;
 	    // text-transform: uppercase;
 		}
 
@@ -216,7 +272,7 @@ section.couple {
 			}
 
 			h2 {
-				font-family: 'Avenirregular';
+				font-family: 'Avenirbold';
 		    font-size: 45px;
 		    // text-transform: uppercase;
 			}
@@ -291,21 +347,29 @@ section.vacation {
   }
 }
 
+.wrap-hero {
+	height: 100%;
+
+	.carousel {
+		height: 100%;
+
+		.carousel-inner {
+			height: 100%;
+
+			.item {
+				height: 100%;			
+			}
+		}
+	}
+}
 
 .no-pad-right {
 	padding-right: 0px;
 }
 
 .hero-image-1 {
-	background: image-url('banner_img_1.png') center; 
-	background-attachment: fixed;
-	background-size: cover;
-}
-
-.hero-image-2 {
 	background: image-url('banner_img_1.jpg') center; 
 	background-attachment: fixed;
 	background-size: cover;
+	height: 100%;
 }
-
-

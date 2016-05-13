@@ -1,8 +1,8 @@
 .wrap-hero 
-  .hero
-    .owl-carousel
-      .item 
-        #parallax-image.parallax-image.hero-image-1
+  #myCarousel.carousel.slide data-ride="carousel" 
+    .carousel-inner role="listbox" 
+      .item.active
+        .hero-image-1.parallax-image
         .inner-item
           .item-content
             .item-center
@@ -10,46 +10,32 @@
                 .row
                   .col-sm-12.col-md-12.col-lg-12
                     h1
-                     | Your Journey Starts Here.
-                   
-                    / h2
-                    /  | Save. Create. Expoler
-                     
-                    / p 
-                    /   | Love to travel, but always a few dollars short? Travel Trunk makes it easy to 
-                    /   br
-                    /   | save for your next vacation, create a budget-friendly itinerary, and then,
-                    /   br 
-                    /   | set off to explore the world. 
+                     | Your Journey Starts Here
+                
 
-              
                     = link_to "Click HERE to Get Started", new_user_session_path, class: "btn btn-default"
+      .item
+        .hero-image-1.parallax-image
+        .inner-item
+          .item-content
+            .item-center
+              .container
+                .row
+                  .col-sm-12.col-md-12.col-lg-12
+                    h1
+                     | Your Journey Starts Here
+                
 
-      / .item 
-      /   #parallax-image.parallax-image.hero-image-2
-      /   .inner-item
-      /     .item-content
-      /       .item-center
-      /         .container
-      /           .row
-      /             .col-sm-12.col-md-12.col-lg-12
-      /               h1
-      /                | Your Journey Starts Here.
-                   
-      /               / h2
-      /               /  | Save. Create. Expoler
-                     
-      /               / p 
-      /               /   | Love to travel, but always a few dollars short? Travel Trunk makes it easy to 
-      /               /   br
-      /               /   | save for your next vacation, create a budget-friendly itinerary, and then,
-      /               /   br 
-      /               /   | set off to explore the world. 
+                    = link_to "Click HERE to Get Started", new_user_session_path, class: "btn btn-default"       
+    .wrap-arrow-down
+      .arrow-down
+        .click-me
+          a href="#slogan" 
+            | Click Me
+            span.icon.arrow-down
 
-              
-      /               = link_to "Click HERE to Get Started", new_user_session_path, class: "btn btn-default"
 
-section.slogan
+section.slogan#slogan
   .container
     .row
       .col-sm-10.col-md-10.col-lg-10.col-sm-offset-1.col-md-offset-1.col-lg-offset-1
@@ -58,15 +44,15 @@ section.slogan
             .text-center
               h2 Save.
               h2 Create.
-              h2.mar-right Expoler.
+              h2.mar-right Explore.
 
               p 
                 | Love to travel, but always a few dollars short? Travel Trunk makes it easy to save for your next vacation, create a budget-friendly itinerary, and then, set off to explore the world.
 
-section.money
+section.money.parallax-image
   .wrap-money
     .money
-      = image_tag 'banner_img_2.png'
+      .images-money
       .inner-item
         .item-content
           .item-center
@@ -124,13 +110,15 @@ section.information
                 | Explore
               p
                 | Pack your bags and you’re off and away. 
+                br
                 | With Travel Trunk’s exciting opportunities, you’ll
+                br
                 | be a globe-trotting success in no time at all.
 
-section.couple
+section.couple.parallax-image2
   .wrap-couple
     .couple
-      = image_tag 'banner_img_3.png'
+      .images-couple
       .inner-item
         .item-content
           .item-center
@@ -184,3 +172,4 @@ section.couple
   /                   | and the world is at your fingertips.
                     
   /                 = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
+
