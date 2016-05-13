@@ -12,7 +12,7 @@ html lang="en"
     = csrf_meta_tags
 
   body class="bg-gradient" data-controller="#{controller_name}" data-action="#{action_name}"
-    - if (['confirmations', 'passwords'].include?(controller_name) && action_name.eql?('new'))
+    - if (['confirmations', 'passwords'].include?(controller_name) && ['new', 'create'].include?(action_name))
       = render 'partials/navbar'
 
     = render 'partials/notice'
