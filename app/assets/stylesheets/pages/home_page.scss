@@ -76,7 +76,7 @@
 			.btn-default {
 				@extend %btn-green;
 		    font-size: 17px !important;
-		    padding: 24px 35px;
+        padding: 17px 27px
 			}
 		}
 	}
@@ -216,13 +216,13 @@ section.couple {
 			}
 
 			h2 {
-		    font-size: 36px;
-		    font-weight: bold;
+				font-family: 'Avenirregular';
+		    font-size: 45px;
 		    // text-transform: uppercase;
-	      font-weight: 700;
 			}
 			
 			p {
+				font-family: 'Avenirregular';
 	    	margin-bottom: 30px;
 	    	font-size: 22px
 			}
@@ -231,6 +231,8 @@ section.couple {
 				background-color: transparent;
 				border-color: #ffffff;
 				border: solid 3px white;
+			  font-size: 17px !important;
+        padding: 15px 17px;
 
 				&:hover,
 				&:focus,
@@ -295,7 +297,7 @@ section.vacation {
 }
 
 .hero-image-1 {
-	background: image-url('banner_img_1.jpg') center; 
+	background: image-url('banner_img_1.png') center; 
 	background-attachment: fixed;
 	background-size: cover;
 }
