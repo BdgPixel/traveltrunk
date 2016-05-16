@@ -62,7 +62,7 @@
       background: image-url("icon_delete_fill_input.png") no-repeat;
       background-size: cover;
       position: relative;
-      top: 10px;
+      top: 13px;
     }
   }
 
@@ -97,6 +97,17 @@
 
 	h1 {
 		color: #ffffff;
+	}
+
+	.wrapper-top-deals {
+		h1,h2,p {
+			color: #ffffff;
+		}
+		p {
+			font-size: 20px;
+			max-width: 900px;
+    	margin: 0 auto;
+		}
 	}
 
 	a {
@@ -177,6 +188,32 @@
 	@include border-radius(5px);
   margin-bottom: 20px;
 	padding: 10px;
+}
+
+.text-header-slide {
+	position: relative;
+	.round-button {
+		position: absolute;
+    bottom: -70px;
+    left: 50%;
+    margin-left: -25px;
+    width: 50px;
+    height: 50px;
+    background: #F65545;
+    border-radius: 100%;
+    .icon {
+	  	display: block;
+	  	width: 30px;
+	  	height: 30px;
+
+	  	&.arrow-down {
+	  		background: image-url("down-chevron.png") no-repeat;
+	  		position: absolute;
+		    left: 10px;
+		    top: 10px;
+	  	}
+	  }
+	}
 }
 
 // .pagination {

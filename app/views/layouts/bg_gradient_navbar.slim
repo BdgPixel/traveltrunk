@@ -11,16 +11,11 @@ html lang="en"
       = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyCAT4MD-BT8TBMYqlhtkaFvth4cRvz-mGE&signed_in=true&libraries=places"
     = csrf_meta_tags
 
-  body data-controller="#{controller_name}" data-action="#{action_name}"
-    = yield :css_body
-    = render 'partials/notice'
+  body class="bg-gradient" data-controller="#{controller_name}" data-action="#{action_name}"
+    = render 'partials/navbar'
     = yield
-    
-    = render partial: 'partials/navbar'
-    #loading
 
-    / .container
-
-    = render 'partials/footer'
+    / Please change this footer
+    = render 'partials/footer_no_navbar'
 
     = yield :javascripts

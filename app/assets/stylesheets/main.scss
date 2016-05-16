@@ -5,6 +5,11 @@
 
 // Reset Style
 
+html {
+  position: relative;
+  height: 100%;
+}
+
 body {
   font-family: 'Lato', sans-serif;
   color: #777777;
@@ -25,11 +30,6 @@ body {
 
 // Full Background
 
-html {
-  position: relative;
-  height: 100%;
-}
-
 .is-home {
   background: image-url("bg_2.jpg") bottom center no-repeat;
   background-size: 100% 100%;
@@ -44,6 +44,10 @@ html {
   .btn-default {
     @extend .btn-signup;
   }
+}
+
+.pad-btm-350 {
+  padding-bottom: 350px;
 }
 
 // End Header Style
@@ -469,7 +473,6 @@ html {
 // Footer Style
 
 .footer {
-  position: relative;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -560,6 +563,10 @@ html {
         }
       }
     }
+  }
+
+  &.footer-custom {
+    position: relative;
   }
 }
 
