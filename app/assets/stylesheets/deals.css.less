@@ -102,18 +102,26 @@ p#pagination-info{
 }
 
 // Override jquery simple pagination button style
-.light-theme{
-  a{
-    color: #f7941e !important;
-    padding: 5px 10px !important;
+.light-theme {
+
+  a {
+
+    background-color: transparent;
+    color: #36b3af !important;
+    padding: 4px 12px !important;
   }
 
-  .current{
-    color: #f7941e !important;
-    background-color: #edefed !important;
-    border: 1px solid #c4c4c4 !important;
+  .current {
+    color: #ffffff !important;
+    background-color: #36b3af !important;
     box-shadow: 0px 0px 0px;
-    padding: 5px 10px !important;
+    padding: 4px 12px !important;
+
+  }
+
+  .prev {
+    color: #36b3af !important;
+    background-color: transparent !important;
   }
 }
 
@@ -140,4 +148,9 @@ p#pagination-info{
 
 .popover {
   max-width: 100%;
+}
+
+.wrapper-pagination {
+  width: 320px;
+  margin: 0 auto;
 }
