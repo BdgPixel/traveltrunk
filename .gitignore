@@ -20,3 +20,5 @@ public/assets/
 .env
 .env.*
 .ruby-gemset
+
+.DS_Store
