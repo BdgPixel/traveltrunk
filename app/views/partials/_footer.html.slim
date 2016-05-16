@@ -2,38 +2,41 @@ footer.footer
   .inner-footer
     .container
       .row
-        .col-md-4
+        .col-md-7
           h4 Company
           p.line
           .row
-            .col-md-5
+            .col-md-4
               ul.product
                 li
                   a href="#" About Us
                 li
                   a href="#" Our Mission
-                li
-                  a href="#" Privacy Policy
 
-            .col-md-5
+
+            .col-md-4
               ul.product
-                li
-                  a href="#" Our Mission
+                li 
+                  = link_to 'Privacy Policy', privacy_policy_path
                 li
                   a href="#" Trush & Security
+            .col-md-4
+              ul.product
                 li
                   a href="#" Our Team
+                li
+                  a href="#" Partner Ship
 
         .col-md-2
           h4 Support
           p.line
           ul.support
             li 
-              = link_to 'Privacy Policy', privacy_policy_path
+              a href="#" Contact Us
             li 
               = link_to 'Refund Policy', refund_policy_path
 
-        .col-md-6
+        .col-md-3
           .text-right
             .wrap-brand-footer
               = image_tag 'logo3.png'

@@ -1,27 +1,14 @@
-$(document).ready(function(){
-  $('.owl-carousel').owlCarousel({
-      loop:true,
-      margin:10,
-      responsiveClass:true,
-      responsive:{
-          0:{
-              items:1,
-              nav:false
-          },
-          600:{
-              items:1,
-              nav:false
-          },
-          1000:{
-              items:1,
-              nav:false,
-              loop:false
-          }
-      }
+$(document).ready(function(){ 
+  $('.parallax-image').parallax("50%", 0.1);
+  $('.parallax-image2').parallax("50%", 0.1);
+  $('.parallax-image3').parallax("50%", 0.1);
+
+   $(".click-me a[href^='#']").on('click', function(e) {
+    e.preventDefault();
+    $('html, body').animate({
+        scrollTop: $(this.hash).offset().top-70
+    }, 1000);
   });
-
-  // $('.parallax-image').parallax("50%", 0.5);
-
 });
 
 $(window).scroll(function() {    
@@ -53,22 +40,3 @@ $(window).scroll(function() {
   }
 });
 
-// $(window).scroll(function(){
-
-//     // Add parallax scrolling to all images in .paralax-image container
-//       $('.parallax-image').each(function(){
-//         // only put top value if the window scroll has gone beyond the top of the image
-//             if ($(this).offset().top < $(window).scrollTop()) {
-//             // Get ammount of pixels the image is above the top of the window
-//             var difference = $(window).scrollTop() - $(this).offset().top;
-//             // Top value of image is set to half the amount scrolled
-//             // (this gives the illusion of the image scrolling slower than the rest of the page)
-//             var half = (difference / 2) + 'px';
-
-//             $(this).find('img').css('top', half);
-//         } else {
-//             // if image is below the top of the window set top to 0
-//             $(this).find('img').css('top', '0');
-//         }
-//       });
-// });
