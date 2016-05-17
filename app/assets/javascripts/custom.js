@@ -14,7 +14,7 @@ $(document).ready(function(){
 $(window).scroll(function() {    
   var scroll = $(window).scrollTop();
 
-  if (scroll >= 500) {
+  if (scroll >= 10) {
       $(".transparent").addClass("scrolling");
       $("#logo-color").removeClass("hide");
 

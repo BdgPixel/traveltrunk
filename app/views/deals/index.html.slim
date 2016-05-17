@@ -32,7 +32,7 @@
     #slideToggle
       .row
         .col-md-8.col-md-offset-2
-          .panel.panel-default
+          .panel.panel-default.box-shadow-none
             .panel-body
               = simple_form_for :search_deals, method: :post, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
                 .wrapper-search-deal

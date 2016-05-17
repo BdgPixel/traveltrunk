@@ -1,3 +1,8 @@
+// Color
+$yellow : #FDA351;
+$green 	: #3DB1AE;
+$orange : #F55144;
+
 @mixin border-radius($radius) {
   -moz-border-radius: $radius;
   -webkit-border-radius: $radius;
@@ -9,6 +14,28 @@
   &::-moz-placeholder { @content }
   &::-webkit-input-placeholder { @content }
   &:-ms-input-placeholder { @content }
+}
+
+.btn-saving {
+	color: white;
+  padding: 15px 30px;
+  font-size: 17px;
+  -webkit-transition: 0.2s; /* Safari */
+  transition: 0.2s;
+  margin-bottom: 10px;
+  &:hover {
+  	color: white;
+  	opacity: 0.5;
+  }
+	&.btn-yellow {
+		background-color: $yellow;
+	}
+	&.btn-green {
+		background-color: $green;
+	}
+	&.btn-orange-soft {
+		background-color: $orange;
+	}
 }
 
 %btn-green {
@@ -42,8 +69,8 @@
 	&:hover,
 	&:focus,
 	&:active {
-		background-color: #2CCC73;
-		border-color: #2CCC73;
+		background-color: #2A8A87;
+		border-color: #2A8A87;
 		box-shadow: none;
 	}
 }

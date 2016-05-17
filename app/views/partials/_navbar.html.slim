@@ -33,9 +33,9 @@
                 ul.dropdown-menu
                   li = link_to 'Sign Out', destroy_user_session_path, method: :delete
             - else
-              li = link_to 'DEALS', deals_path
-              li = link_to 'SAVINGS', savings_path
-              li.dropdown
+              li.link-top-login = link_to 'DEALS', deals_path
+              li.link-top-login = link_to 'SAVINGS', savings_path
+              li.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                   - if @notification_count.zero?
                     span.notification-bubble.hide = @notification_count
@@ -43,15 +43,15 @@
                     span.notification-bubble = @notification_count
 
                   - if current_user.no_profile?
-                    = image_tag "thumb_default_user.png", class: "img-circle"
+                    = image_tag "thumb_default_user.png", class: "img-circle", width:"20px"
                     | &nbsp;
                     | PROFILE
                   - else
-                    = image_tag current_user.profile.image.thumb.url, class: "img-circle"
+                    = image_tag current_user.profile.image.thumb.url, class: "img-circle", width:"20px"
                     | &nbsp;
                     = current_user.profile.first_name.upcase
                   span.caret
-                ul.dropdown-menu
+                ul.dropdown-menu.dropdown-top-login
                   li = link_to 'My Profile', profile_path
                   li
                     = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"

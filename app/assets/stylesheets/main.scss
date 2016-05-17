@@ -303,6 +303,14 @@ body {
 
 .wrapper-personal-information {
   margin-top: 25px;
+  .table-custom {
+    tr {
+      td {
+        padding: 14px;
+        font-size: 15px;
+      }
+    }
+  }
 }
 
 // End Profile Page Style
@@ -413,7 +421,118 @@ body {
   }
 }
 
+.wrap-credit {
+  padding-bottom: 40px;
+}
+
+.link-top-login {
+  a {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+
+.box-shadow-none {
+  box-shadow: none !important;
+}
+
+.dropdown-top-active {
+  &.open a{
+    background-color: $orange !important;
+  }
+}
+
+.dropdown-top-login {
+  background-color: $orange !important;
+  border:transparent;
+  border-radius: 0;
+  li a {
+    &:hover {
+      background-color: $yellow !important;
+    }
+  }
+}
+
+.wrap-nav-color {
+  background: #f54b43;
+  background: -moz-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
+  background: -webkit-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
+  background: linear-gradient(147deg, #f54b43 0%, #ffaf53 100%);
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 );
+  height: 75px;
+}
+
+.wrapper-profile {
+  background-color: $yellow;
+  padding: 25px 0px;
+  color: white;
+  img {
+    border: 7px solid white;
+  }
+  h2 {
+    color: black;
+    margin-top: 0;
+  }
+  .wrapper-user-name {
+    h1 {
+      vertical-align: top;
+      padding-top: 0;
+    }
+  }
+}
+
+// notification page
+  .notif {
+    display: inline-block;
+    width: 100%;
+    margin-top: 40px;
+    h1 {
+      font-size: 36px;
+      letter-spacing: 2px;
+      font-family: 'Lato', sans-serif;
+      font-weight: 600;
+      color: #585656;
+      text-transform: uppercase;
+      margin-bottom: 50px;
+    }
+    .notif-background {
+      background: #f7f7f7;
+      padding: 20px;
+      margin-bottom: 2px;
+      display: table;
+      .description {
+        width: 100%;
+        display: table-cell;
+        float: left;
+        line-height: 24px;
+        letter-spacing: 0.5px;
+        span {
+          font-size: 14px;
+          font-family: 'Lato', sans-serif;
+          color: #9b9999;
+          line-height: 24px;
+          letter-spacing: 0.5px
+        }
+      }
+      .date {
+        width: 50%;
+        display: table-cell;
+        vertical-align: middle;
+        text-align: right;
+        span {
+          font-size: 14px;
+          font-family: 'Lato', sans-serif;
+          color: #9b9999;
+          line-height: 24px;
+          letter-spacing: 0.5px;
+        }
+      }
+    }
+  }
+
 .wrapper-group-saving-img {
+  padding: 40px 0;
 
   @media (min-width: 768px) {
 
