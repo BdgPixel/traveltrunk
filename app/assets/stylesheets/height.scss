@@ -1,9 +1,12 @@
 html {
   position: relative;
-  min-height: 100%;
-  height: auto;
+  height: 100%;
 }
 
 .footer.footer-custom {
-  position: absolute;
+  position: relative;
+}
+
+body {
+  padding-bottom: 0px;
 }

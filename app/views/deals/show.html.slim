@@ -1,44 +1,28 @@
 - content_for :javascripts
   = javascript_include_tag 'https://js.stripe.com/v2/', 'deals', 'variables'
 
+.wrap-nav-color
+  | &nbsp;
+
 .wrapper-detail-deals
-  .row
-    .col-md-12
-      h1 = session[:nightly_price]
-      br
-      = link_to raw("<i class='icon-deals btn-back-to-deals'></i><span>Back</span>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
-    br
-    br
-    .col-md-8.col-lg-8.col-md-offset-2.col-lg-offset-2
-      .wrapper-gallery-deals
-        #blueimp-gallery-carousel.blueimp-gallery.blueimp-gallery-carousel.blueimp-gallery-controls
-          .slides
-          h3.title
-          a.prev ‹
-          a.next ›
-          a.play-pause
-          ol.indicator
-
-        #links
-          - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
-            = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
-              = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
-
-  .row
-    .col-md-12
-      .col-md-12
+  .container
+    .row
+      .col-sm-12
+        h1 = session[:nightly_price]
+        br
+        = link_to raw("<i class='icon-deals btn-back-to-deals'></i><span>Back</span>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
+      .col-sm-12
         h3.hotel-name = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
         i
           small The room rates listed are for double occupancy per room unless otherwise stated and exclude tax recovery charges and service fees.
-        br
-        br
+        hr
 
         .row
           .text-left.col-md-12
             .row
-              .col-md-9
+              .col-md-12
                 #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
-              .col-md-3
+              .col-md-12
                 - if @group
                   = link_to "javascript:void(0)", id: 'linkPopover', class: 'pull-right', data: { toggle: 'popover' }, style: "float:left;margin-top:10px;margin-left:10px;"
                     = "#{pluralize(@votes.count, 'person')} like this hotel"
@@ -61,62 +45,119 @@
               = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
             br
 
-      .clearfix
 
+
+      br
+      br
+      .col-sm-12
+        .wrapper-gallery-deals
+          #blueimp-gallery-carousel.blueimp-gallery.blueimp-gallery-carousel.blueimp-gallery-controls
+            .slides
+            h3.title
+            a.prev.round-slide-prev
+            a.next.round-slide-next
+            a.play-pause
+            ol.indicator.hide
+
+          #links
+            - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
+              = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
+                = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
+
+    .row
       .col-md-12
-        #roomAvailability.form-horizontal
-
-      .col-md-12
-        .container
-          .row
-
-      .col-md-12
-        hr
-        #map style="height: 500px; width: 100%;"
-        = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
-        = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
-
-      .col-md-12
-        hr
-        .col-md-6
-          a#policy data-toggle="collapse" data-target="#collapseAboutHotel" href="javascript:void(0)" role="button"
-            | Description
-
-          #collapseAboutHotel.collapse
-            p.text-justify = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
-
-        .col-md-6
-          a#policy data-toggle="collapse" data-target="#collapsePolicy" href="javascript:void(0)" role="button"
-            | Hotel Policies
-
-          #collapsePolicy.collapse
-            p.text-justify = @hotel_information["HotelDetails"]["hotelPolicy"]
-
-        .col-md-6
-            a#roomInfo data-toggle="collapse" data-target="#collapseRoomInfo" href="javascript:void(0)" role="button"
-              | Room Informations
-
-            #collapseRoomInfo.collapse
-              p.text-justify = unescape_expedia_html(@hotel_information["HotelDetails"]["roomInformation"])
-              br
-              p.text-justify
-                b Room Detail Description
-                br
-                = unescape_expedia_html(@hotel_information["HotelDetails"]["roomDetailDescription"])
-
-        .col-md-6
-          a#amenity data-toggle="collapse" data-target="#collapseAmenity" href="javascript:void(0)" role="button"
-            | Amenities Description
-
-          #collapseAmenity.collapse
-            p.text-justify = @hotel_information["HotelDetails"]["amenitiesDescription"]
-          br
-          br
-          br
-
-        p
+        .col-md-12.hide
+          h3.hotel-name = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
           i
-            small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
+            small The room rates listed are for double occupancy per room unless otherwise stated and exclude tax recovery charges and service fees.
+          br
+          br
+
+          .row.hide
+            .text-left.col-md-12
+              .row
+                .col-md-9
+                  #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
+                .col-md-3
+                  - if @group
+                    = link_to "javascript:void(0)", id: 'linkPopover', class: 'pull-right', data: { toggle: 'popover' }, style: "float:left;margin-top:10px;margin-left:10px;"
+                      = "#{pluralize(@votes.count, 'person')} like this hotel"
+
+                    #titlePopover style="display:none"
+                      button.close role="button" tabindex="0" aria-label="Close" data-dismiss="popover" type="button" aria-hidden="true" &times;
+                      h4 = "#{pluralize(@votes.count, 'person')} want to go"
+                    #contentPopover style="display:none"
+                      - if @votes.empty?
+                        .alert.alert-info No members vote for this hotel
+                      - else
+                        - @votes.each do |vote|
+                          .col-md-12.popover-list-users
+                            = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
+                              = image_tag vote.user.profile.image.url, width: '70px'
+                            = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
+                              = vote.user.id.eql?(current_user.id) ? "You" : full_name(vote.user.profile)
+
+              .rating-text style="clear:both"
+                = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
+              br
+
+        .clearfix
+
+        .col-md-12
+          .room-wrapper
+            #roomAvailability.form-horizontal
+
+        .col-md-12
+          .container
+            .row
+
+        .col-md-12
+          hr
+          #map style="height: 500px; width: 100%;"
+          = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
+          = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
+
+        .col-md-12
+          hr
+          .col-md-6
+            a#policy data-toggle="collapse" data-target="#collapseAboutHotel" href="javascript:void(0)" role="button"
+              | Description
+
+            #collapseAboutHotel.collapse
+              p.text-justify = unescape_expedia_html @hotel_information["HotelDetails"]["propertyDescription"]
+
+          .col-md-6
+            a#policy data-toggle="collapse" data-target="#collapsePolicy" href="javascript:void(0)" role="button"
+              | Hotel Policies
+
+            #collapsePolicy.collapse
+              p.text-justify = @hotel_information["HotelDetails"]["hotelPolicy"]
+
+          .col-md-6
+              a#roomInfo data-toggle="collapse" data-target="#collapseRoomInfo" href="javascript:void(0)" role="button"
+                | Room Informations
+
+              #collapseRoomInfo.collapse
+                p.text-justify = unescape_expedia_html(@hotel_information["HotelDetails"]["roomInformation"])
+                br
+                p.text-justify
+                  b Room Detail Description
+                  br
+                  = unescape_expedia_html(@hotel_information["HotelDetails"]["roomDetailDescription"])
+
+          .col-md-6
+            a#amenity data-toggle="collapse" data-target="#collapseAmenity" href="javascript:void(0)" role="button"
+              | Amenities Description
+
+            #collapseAmenity.collapse
+              p.text-justify = @hotel_information["HotelDetails"]["amenitiesDescription"]
+            br
+            br
+            br
+
+          p.mar-btm-60
+            i
+              small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
 = render partial: 'book'
 = render partial: 'savings/form_add_saving'

@@ -18,11 +18,12 @@ $orange : #F55144;
 
 .btn-saving {
 	color: white;
-  padding: 15px 30px;
+  padding: 15px 30px !Important;
   font-size: 17px;
   -webkit-transition: 0.2s; /* Safari */
   transition: 0.2s;
   margin-bottom: 10px;
+  border-radius: 4px !Important;
   &:hover {
   	color: white;
   	opacity: 0.5;
@@ -31,11 +32,48 @@ $orange : #F55144;
 		background-color: $yellow;
 	}
 	&.btn-green {
+		background: $green !Important;
 		background-color: $green;
 	}
 	&.btn-orange-soft {
 		background-color: $orange;
 	}
+}
+
+.color-orange {
+	color: $orange;
+}
+
+.btn-full-size {
+	width: 100%;
+}
+
+a.round-slide-next {
+	display: block;
+	// background-color: $orange !Important;
+	background: image-url("down-chevron.png") no-repeat center !Important;
+	-ms-transform: rotate(-90deg) !Important; /* IE 9 */
+  -webkit-transform: rotate(-90deg) !Important; /* Chrome, Safari, Opera */
+  transform: rotate(-90deg) !Important;
+  -webkit-transition: 0.2s; /* Safari */
+  transition: 0.2s;
+  &:hover {
+  	background-color: $orange !Important;
+  }
+}
+
+a.round-slide-prev {
+	display: block;
+	// background-color: $orange !Important;
+	background: image-url("down-chevron.png") no-repeat center !Important;
+	-ms-transform: rotate(90deg) !Important; /* IE 9 */
+  -webkit-transform: rotate(90deg) !Important; /* Chrome, Safari, Opera */
+  transform: rotate(90deg) !Important;
+  -webkit-transition: 0.2s; /* Safari */
+  transition: 0.2s;
+  &:hover {
+  	background-color: $orange !Important;
+  }
 }
 
 %btn-green {
@@ -87,6 +125,10 @@ $orange : #F55144;
 		background-color: #4fc0c0;
 		border-color: #4fc0c0;
 	}
+}
+
+.input-custom {
+	height: 54px;
 }
 
 %input-global {

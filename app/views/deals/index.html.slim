@@ -2,9 +2,6 @@
   = javascript_include_tag "deals"
   = javascript_include_tag "variables"
 
-- content_for :css_body
-  = stylesheet_link_tag 'height'
-
 #slide.wrapper-deals
   .container
     .row
@@ -21,7 +18,7 @@
           hr
   .col-xs-12.col-md-12.slide
     .text-header-slide
-      .round-button
+      .round-button 
         .icon.arrow-down
       h1.text-center
         - if @destination
@@ -75,4 +72,4 @@
   #dealsHotelsList
   br
   br
-  .pad-btm-350
+  .pad-btm-350.hide

@@ -9,32 +9,32 @@ footer.footer.footer-custom
             .col-md-4
               ul.product
                 li
-                  a href="#" About Us
+                  = link_to "About Us", static_pages_about_us_path
                 li
-                  a href="#" Our Mission
+                  = link_to "Our Mission", static_pages_our_mission_path
 
 
             .col-md-4
               ul.product
                 li 
-                  = link_to 'Privacy Policy', privacy_policy_path
+                  = link_to 'Privacy Policy', static_pages_privacy_policy_path
                 li
-                  a href="#" Trush & Security
+                  = link_to 'Trust & Security', static_pages_trust_and_security_path
             .col-md-4
               ul.product
                 li
-                  a href="#" Our Team
+                  = link_to 'Our Team', static_pages_our_team_path
                 li
-                  a href="#" Partner Ship
+                  = link_to 'Partner Ship', static_pages_partnerships_path
 
         .col-md-2
           h4 Support
           p.line
           ul.support
             li 
-              a href="#" Contact Us
+              = link_to 'Contact Us', helps_path
             li 
-              = link_to 'Refund Policy', refund_policy_path
+              = link_to 'Refund Policy', static_pages_refund_path
 
         .col-md-3
           .text-right
