@@ -19,8 +19,10 @@ class ApplicationController < ActionController::Base
   protected
     def layout_by_resource
       if devise_controller?
-        if (['sessions', 'confirmations', 'passwords'].include?(controller_name) && ['new', 'create'].include?(action_name)) || (controller_name.eql?('registrations') && ['new', 'create'].include?(action_name))
+        if (['sessions'].include?(controller_name) && action_name.eql?('new')) || (controller_name.eql?('registrations') && ['new', 'create'].include?(action_name))
           'bg_gradient_no_navbar'
+        elsif (['confirmations', 'passwords'].include?(controller_name) && action_name.eql?('new'))
+          'bg_gradient_navbar'         
         else
           'application'
         end

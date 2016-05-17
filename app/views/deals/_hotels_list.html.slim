@@ -15,32 +15,41 @@
               / - binding.pry
               - group.compact.each do |hotel|
                 .wrapper-price-deals
-                  .col-xs-6.col-md-4.col-deals
-                    .price-deals
-                      h4
-                        strong
-                          = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+                  .col-xs-6.col-md-4
+                    .card-item
+                      = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+                        = list_of_deals_div(hotel["thumbNailUrl"])
 
-                    = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                      = list_of_deals_div(hotel["thumbNailUrl"])
+                      .row
+                        .col-md-12
+                          .inner-deals-content
+                            p.content-deals
+                              = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
+                                = unescape_expedia_html(hotel["name"])
 
-                    .col-md-12
-                      p.text-center.content-deals
-                        = link_to deals_show_path(id: hotel["hotelId"])
-                          = unescape_expedia_html(hotel["name"])
+                            .price-deals
+                              h4
+                                strong
+                                  = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+
+                            .view-price-deals 
+                              a.btn.btn-green-2 href ="#" View
 
       .col-md-12
         .row
           br
-          i
-            small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
+
+          div.text-center
+            i
+              small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
           - if @hotels_list.first[:num_of_hotel] > 15
-            hr
-            p#pagination-info
+          .wrapper-pagination
+            #pagination
+
+            p#pagination-info.text-center
               | 1 - 15 of #{@hotels_list.first[:num_of_hotel]} Hotels
 
-          #pagination
 
   - if @hotels_list.first[:error_response]
     #error_response.alert.alert-info style="margin-top: 20px"

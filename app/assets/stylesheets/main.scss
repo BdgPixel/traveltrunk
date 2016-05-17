@@ -5,6 +5,11 @@
 
 // Reset Style
 
+html {
+  position: relative;
+  height: 100%;
+}
+
 body {
   font-family: 'Lato', sans-serif;
   color: #777777;
@@ -25,11 +30,6 @@ body {
 
 // Full Background
 
-html {
-  position: relative;
-  height: 100%;
-}
-
 .is-home {
   background: image-url("bg_2.jpg") bottom center no-repeat;
   background-size: 100% 100%;
@@ -46,11 +46,22 @@ html {
   }
 }
 
+.pad-btm-350 {
+  padding-bottom: 350px;
+}
+
 // End Header Style
 
 // Navigation Style
 
 .wrapper-navbar-traveltrunk { 
+
+  .navbar-header {
+    
+    button {
+      z-index: 2;
+    }
+  }
 
   .wrapper-navbar-brand {
     position: relative;
@@ -141,6 +152,10 @@ html {
     border-bottom: transparent;
     border-top: transparent;
     transition: 0.2s;
+
+    a {
+      color: #000000;
+    }
   } 
 }
 
@@ -346,95 +361,10 @@ html {
   }
 }
 
-.wrapper-price-deals{
-  position: relative;
-
-  .price-deals {
-    background: rgba(255, 255, 255, 0.7);
-    color: #848482;
-    position: absolute;
-    top: 15px;
-    left: 12px;
-    padding: 10px;
-  }
-}
-
-.wrapper-search-deal {
-
-  .icon {
-    width: 10px;
-    height: 10px;
-    display: inline-block;
-
-    &.delete {
-      background: image-url("icon_delete_fill_input.png") no-repeat;
-      background-size: cover;
-    }
-  }
-
-  .form-group {
-
-    &:first-child {
-      position: relative;
-    }
-
-    span {
-      position: absolute;
-      right: 11px;
-      top: 7px;
-    }
-  }
-
-  .btn-default {
-    @extend .btn-save;
-  }
-}
-
 // End Deal Page Style
 
 // Result Deals Page Style
 
-.wrapper-list-hotel {
-  overflow: hidden;
-
-  p.content-deals {
-    a {
-      color: inherit;
-    }
-  }
-
-  .wrapper-caption-content-deals {
-    margin-top: 15px;
-  }
-}
-
-.wrapper-like-deals {
-  margin-top: 15px;
-
-  .icon {
-    width: 30px;
-    height: 30px;
-    display: inline-block;
-
-    &.love-normal {
-      background: image-url("icon_love_normal.png") no-repeat;
-      background-size: cover;
-      &:before {
-        box-sizing: border-box;
-        display: none;
-      }
-    }
-
-    &.love-active {
-      background: image-url("icon_love_active.png") no-repeat;
-      background-size: cover;
-      &:before {
-        box-sizing: border-box;
-        display: none;
-      }
-    }
-  }
-}
 
 // End Result Deals Page Style
 
@@ -543,7 +473,6 @@ html {
 // Footer Style
 
 .footer {
-  position: relative;
   bottom: 0;
   left: 0;
   width: 100%;
@@ -634,6 +563,10 @@ html {
         }
       }
     }
+  }
+
+  &.footer-custom {
+    position: relative;
   }
 }
 

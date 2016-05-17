@@ -8,11 +8,11 @@
           span.icon-bar
           span.icon-bar
         .wrapper-navbar-brand
-          = link_to root_path, id: 'logo-white', data: { no_turbolink: true }
+          a#logo-white href="/"
             = image_tag 'logo3.png'
             span
               | TravelTrunk
-          = link_to root_path, id: 'logo-color', class: 'hide', data: { no_turbolink: true }
+          a#logo-color href="/" class="hide"
             = image_tag 'logo1.png' 
             span style="color:grey;"
               | TravelTrunk

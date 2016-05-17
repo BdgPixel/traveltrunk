@@ -15,7 +15,6 @@
 # = require turbolinks
 # = require nprogress
 # = require nprogress-turbolinks
-# = require bootstrap
 # = require twitter/bootstrap/dropdown
 # = require twitter/bootstrap/modal
 # = require twitter/bootstrap/tooltip
