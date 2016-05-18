@@ -1,92 +1,120 @@
 - content_for :css
   = stylesheet_link_tag 'profiles'
 
+.wrap-nav-color
+  | &nbsp;
 .row
-  br
-  br
-  .col-xs-12.col-sm-12.col-md-10.col-lg-10.col-xs-offset-0.col-sm-offset-0.col-md-offset-1.col-lg-offset-1.toppad
-    .wrapper-profile
-      .panel.panel-info
-        .panel-heading
+  .wrapper-profile
+    .container
+      .row
+        .col-md-4.col-lg-2
+          .wrapper-img-profile
+            = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
+        .col-md-4.col-lg-6
+          .wrapper-user-name
+            .col-md-7.col-lg-8
+              h1
+                = @user.full_name
 
-        .panel-body
-          .row
-            .col-md-5.col-lg-4
-              .wrapper-img-profile
-                = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
-            .wrapper-user-name
-              .col-md-7.col-lg-8
-                h1[style="padding-top: 80px !important"]
-                  = @user.full_name
+              h4 = @user.profile.place_to_visit.titleize rescue 'Information not specified'
 
-                h4 = @user.profile.place_to_visit.titleize rescue 'Information not specified'
+              p
+                span.glyphicon.glyphicon-map-marker
+                | &nbsp;
+                b = @user.profile.home_airport.titleize rescue 'Information not specified'
+        .col-md-4.col-lg-4
+          .div.pull-right class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
+            | &nbsp;
+            span.text-right
+              = link_to 'Edit Profile', edit_profile_path, class: 'btn btn-saving btn-green'
+          .clearfix
 
-                p
-                  span.glyphicon.glyphicon-map-marker
-                  | &nbsp;
-                  b = @user.profile.home_airport.titleize rescue 'Information not specified'
-
-              .clearfix
-
-              .col-md-12.col-lg-12 class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
-                .wrapper-personal-information
-                  h5 PERSONAL INFORMATION
-                  table.table.table-user-information
+  .wrapper-profile-content
+    .container
+      .row  
+        .col-md-12.col-lg-12 class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
+          .wrapper-personal-information
+            .row
+              .col-sm-6
+                h3.color-orange PERSONAL INFORMATION
+                hr
+                table.table.table-user-information.table-custom
+                  tbody
+                    tr
+                      td width='250px' Date of Birth
+                      td 
+                        | : &nbsp;
+                        = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
+                    tr
+                      td Gender:
+                      td
+                        | : &nbsp;
+                        = @user.profile.gender
+                    tr
+                      td Address:
+                      td
+                        | : &nbsp;
+                        = @user.profile.address.titleize rescue 'Information not specified'
+                    tr
+                    tr
+                      td Address 1:
+                      td
+                        | : &nbsp;
+                        = @user.profile.address_1.titleize rescue 'Information not specified'
+                    tr
+                      td Address 2:
+                      td
+                        | : &nbsp;
+                        = @user.profile.address_2.titleize rescue 'Information not specified'
+                    tr
+                      td City:
+                      td
+                        | : &nbsp;
+                        = @user.profile.city
+                    tr
+                      td State/Province:
+                      td
+                        | : &nbsp;
+                        = @user.profile.state
+                    tr
+                      td Zip/Postal Code:
+                      td
+                        | : &nbsp;
+                        = @user.profile.postal_code
+                    tr
+                      td County:
+                      td
+                        | : &nbsp;
+                        = @user.profile.country_name rescue 'Information not specified'
+              .col-sm-6
+                h3.color-orange SAVINGS PLAN
+                hr
+                - if @user.subscription
+                  table.table.table-user-information.table-custom
                     tbody
                       tr
-                        td width='250px' Date of Birth:
-                        td = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
+                        td width='250px' Plan Name
+                        td 
+                          | : &nbsp;
+                          = @user.subscription.plan_name
                       tr
-                        td Gender:
-                        td = @user.profile.gender
+                        td Amount
+                        td 
+                          | : &nbsp;
+                          = currency_in_usd(@user.subscription.amount)
                       tr
-                        td Address:
-                        td = @user.profile.address.titleize rescue 'Information not specified'
-                      tr
-                      tr
-                        td Address 1:
-                        td = @user.profile.address_1.titleize rescue 'Information not specified'
-                      tr
-                        td Address 2:
-                        td = @user.profile.address_2.titleize rescue 'Information not specified'
-                      tr
-                        td City:
-                        td = @user.profile.city
-                      tr
-                        td State/Province:
-                        td = @user.profile.state
-                      tr
-                        td Zip/Postal Code:
-                        td = @user.profile.postal_code
-                      tr
-                        td County:
-                        td = @user.profile.country_name rescue 'Information not specified'
-                  br
-                  br
-                  hr
-                  h5 SAVINGS PLAN
-                  - if @user.subscription
-                    table.table.table-user-information
-                      tbody
-                        tr
-                          td width='250px' Plan Name:
-                          td = @user.subscription.plan_name
-                        tr
-                          td Amount:
-                          td = currency_in_usd(@user.subscription.amount)
-                        tr
-                          td Frequency:
-                          td = @user.bank_account.transfer_frequency if @user.bank_account
+                        td Frequency
+                        td 
+                          | : &nbsp;
+                          = @user.bank_account.transfer_frequency if @user.bank_account
 
                   - else
                     .alert.alert-info
                       | You don't have saving plan
 
-          .panel-footer class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
-            | &nbsp;
-            span.pull-right
-              = link_to 'Edit Profile', edit_profile_path, class: 'btn btn-default'
-            br
-            br
-
-
+          / .panel-footer class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
+          /   | &nbsp;
+          /   span.text-right
+          /     = link_to 'Edit Profile', edit_profile_path, class: 'btn btn-saving btn-green'
+          /   br
+          /   br

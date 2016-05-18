@@ -5,6 +5,22 @@ Rails.application.routes.draw do
     mount Sidekiq::Web => '/sidekiq'
   end
 
+  get 'static_pages/about_us'
+
+  get 'static_pages/our_mission'
+
+  get 'static_pages/privacy_policy'
+
+  get 'static_pages/refund'
+
+  get 'static_pages/contact_us'
+
+  get 'static_pages/trust_and_security'
+
+  get 'static_pages/partnerships'
+
+  get 'static_pages/our_team'
+
   get 'home/index'
 
   get  'privacy_policy' => 'policies#privacy'

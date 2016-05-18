@@ -1,3 +1,8 @@
+// Color
+$yellow : #FDA351;
+$green 	: #3DB1AE;
+$orange : #F55144;
+
 @mixin border-radius($radius) {
   -moz-border-radius: $radius;
   -webkit-border-radius: $radius;
@@ -9,6 +14,66 @@
   &::-moz-placeholder { @content }
   &::-webkit-input-placeholder { @content }
   &:-ms-input-placeholder { @content }
+}
+
+.btn-saving {
+	color: white;
+  padding: 15px 30px !Important;
+  font-size: 17px;
+  -webkit-transition: 0.2s; /* Safari */
+  transition: 0.2s;
+  margin-bottom: 10px;
+  border-radius: 4px !Important;
+  &:hover {
+  	color: white;
+  	opacity: 0.5;
+  }
+	&.btn-yellow {
+		background-color: $yellow;
+	}
+	&.btn-green {
+		background: $green !Important;
+		background-color: $green;
+	}
+	&.btn-orange-soft {
+		background-color: $orange;
+	}
+}
+
+.color-orange {
+	color: $orange;
+}
+
+.btn-full-size {
+	width: 100%;
+}
+
+a.round-slide-next {
+	display: block;
+	// background-color: $orange !Important;
+	background: image-url("down-chevron.png") no-repeat center !Important;
+	-ms-transform: rotate(-90deg) !Important; /* IE 9 */
+  -webkit-transform: rotate(-90deg) !Important; /* Chrome, Safari, Opera */
+  transform: rotate(-90deg) !Important;
+  -webkit-transition: 0.2s; /* Safari */
+  transition: 0.2s;
+  &:hover {
+  	background-color: $orange !Important;
+  }
+}
+
+a.round-slide-prev {
+	display: block;
+	// background-color: $orange !Important;
+	background: image-url("down-chevron.png") no-repeat center !Important;
+	-ms-transform: rotate(90deg) !Important; /* IE 9 */
+  -webkit-transform: rotate(90deg) !Important; /* Chrome, Safari, Opera */
+  transform: rotate(90deg) !Important;
+  -webkit-transition: 0.2s; /* Safari */
+  transition: 0.2s;
+  &:hover {
+  	background-color: $orange !Important;
+  }
 }
 
 %btn-green {
@@ -42,8 +107,8 @@
 	&:hover,
 	&:focus,
 	&:active {
-		background-color: #2CCC73;
-		border-color: #2CCC73;
+		background-color: #2A8A87;
+		border-color: #2A8A87;
 		box-shadow: none;
 	}
 }
@@ -62,7 +127,12 @@
 	}
 }
 
+.input-custom {
+	height: 54px;
+}
+
 %input-global {
+	line-height: 20px;  /* Safari */
 	height: 54px;
   box-shadow: -1px 3px 10px -4px #000000;
 }

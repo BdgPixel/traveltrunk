@@ -1,19 +1,25 @@
-h3 What can we help you with?
-p
-  | We’re here to help you with any questions or concerns you may have. We'd also love to hear about ways to improve your Travel Trunk experience, so please feel free to reach out us. We answer all traveler support emails within one business day.
+.wrap-nav-color
+  | &nbsp;
 
-hr
-.row
-  .col-md-6
-    = simple_form_for :question, url: helps_send_question_path do |f|
-      .form-group
-        = f.input :email, as: :email, input_html: { class: "form-control" }
+.container
+  h1 Get in Touch
+  hr
+  h3 What can we help you with?
+  p
+    | We’re here to help you with any questions or concerns you may have. We'd also love to hear about ways to improve your Travel Trunk experience, so please feel free to reach out us. We answer all traveler support emails within one business day.
 
-      .form-group
-        = f.input :subject,  input_html: { class: "form-control" }
+  hr
+  .row
+    .col-md-6
+      = simple_form_for :question, url: helps_send_question_path do |f|
+        .form-group
+          = f.input :email, as: :email, input_html: { class: "form-control input-custom" }
 
-      .form-group
-        = f.input :message, as: :text, input_html: { class: "form-control", rows: 10 }, label: "How can we help you?"
+        .form-group
+          = f.input :subject,  input_html: { class: "form-control input-custom" }
 
-      .form-group
-        = f.submit "Submit", class: "btn btn-orange"
+        .form-group
+          = f.input :message, as: :text, input_html: { class: "form-control input-custom", rows: 10 }, label: "How can we help you?"
+
+        .form-group
+          = f.submit "Submit", class: "btn btn-saving btn-green"

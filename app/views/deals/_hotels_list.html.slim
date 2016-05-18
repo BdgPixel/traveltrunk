@@ -33,7 +33,7 @@
                                   = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
                             .view-price-deals 
-                              a.btn.btn-green-2 href ="#" View
+                              = link_to "View", deals_show_path(hotel["hotelId"]), class:'btn btn-green-2', data: { no_turbolink: true }
 
       .col-md-12
         .row
