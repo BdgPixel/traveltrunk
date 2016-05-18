@@ -4,6 +4,21 @@ class Transaction < ActiveRecord::Base
 
   belongs_to :user
 
+  paginates_per 10
+
+  def transaction_type_label
+    case self.transaction_type
+    when 'payment.recurring'
+      'Reoccuring Payment'
+    when 'used_promo_code'
+      'Promo Code'
+    when 'add_to_saving'
+      'Manual Payment'
+    else
+      self.transaction_type.try(:titleize)
+    end
+  end
+
   def self.sync_specific_id(transaction_id)
     transaction_reporting_authorize = AuthorizeNetLib::TransactionReporting.new
 

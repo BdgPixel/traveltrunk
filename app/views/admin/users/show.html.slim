@@ -83,7 +83,7 @@
 
                   - else
                     .alert.alert-info
-                      = "#{@user.profile.full_name} dont have saving plan"
+                      = "#{@user.profile.try(:full_name) || No Name} doesn't have saving plan"
 
           .panel-footer
             span.pull-right

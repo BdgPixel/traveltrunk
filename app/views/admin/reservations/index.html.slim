@@ -1,4 +1,4 @@
-h3 Refund Reservations
+h3 Reservations
 br
 
 - if @reservations.empty?
@@ -10,28 +10,29 @@ br
   table.table.table-striped.table-hover
     thead
       tr
-        th Reservation Date
-        th Customer
+        th #ID
+        th User
         th Hotel Name
         th City
         th Total Cost
         th Reservation Type
-        th Status
+        th Reservation Date
+        th Action
 
     tbody
       - @reservations.each do |reservation|
         tr
-          td = reservation.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
-          td = full_name(reservation.user.profile)
-          td = reservation.hotel_name
-          td = reservation.city
+          td = reservation.id
+          td = link_to reservation.user.try(:full_name), admin_user_path(reservation.user)
+          td = reservation.hotel_name.try(:titleize)
+          td = reservation.city.try(:titleize)
           td = currency_in_usd(reservation.total)
           td = reservation.reservation_type.titleize
-          td
-            span class="#{status_label(reservation.status)}" 
-              = reservation.status.titleize
+          td = reservation.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
           td
             - if reservation.status.eql? 'reserved'
               = link_to 'Refund', admin_reservation_path(reservation), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure refund this reservation ?'}, :method => :put
+            - elsif reservation.status.eql? 'refunded'
+              = link_to 'Refunded', 'javascript:void(0);', class: 'btn btn-orange btn-xs', disabled: true
            
   = paginate @reservations

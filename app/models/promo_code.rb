@@ -13,7 +13,7 @@ class PromoCode < ActiveRecord::Base
     if today <= self.exp_date
       self.status
     else
-      "Expired date"
+      "Expired"
     end
   end
 

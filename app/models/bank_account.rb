@@ -121,7 +121,7 @@ class BankAccount < ActiveRecord::Base
       recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
       customer_credit_card_last_4 = customer_payment_profile.payment.creditCard.cardNumber.last(4) rescue nil
-      credit_card_changed = customer_credit_card_last_4 != self.credit_card.last(4)
+      credit_card_changed = customer_credit_card_last_4 != self.credit_card.try(:last, 4)
 
       if user_subscription
         if credit_card_changed || self.changed.include?('amount_transfer') || self.changed.include?('transfer_frequency')
