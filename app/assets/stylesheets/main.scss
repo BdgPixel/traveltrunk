@@ -793,3 +793,22 @@ h3.hotel-name {
 }
 
 // End 
+
+// Alert Style 
+
+.alert-success {
+  background-color: white;
+  border-color: white;
+  position: absolute;
+  z-index: 99999;
+  width: 100%;
+  border-radius: 0px;
+  color: black;
+
+  .close {
+    opacity: 1.2;
+
+  }
+}
+
+// End
