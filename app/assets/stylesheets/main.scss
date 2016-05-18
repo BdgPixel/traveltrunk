@@ -152,7 +152,9 @@ body {
         padding: 16px 25px;
         transition: 0.2s;
 
-        &:hover {
+        &:hover,
+        &:focus,
+        &:active {
           transform: translateY(-5px);
           color: #ffffff;
         }
@@ -173,7 +175,9 @@ body {
     a {
       color: #000000;
 
-      &:hover {
+      &:hover,
+      &:focus,
+      &:active {
         color: #000000 !important;
       }
     }
