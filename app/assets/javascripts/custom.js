@@ -16,10 +16,10 @@ $(window).scroll(function() {
 
   if (scroll >= 10) {
       $(".transparent").addClass("scrolling");
-      $("#logo-color").removeClass("hide");
+      $("#logo-color-orange").removeClass("hide");
 
-      $("#logo-white").addClass("hide");
-      $("#logo-white").removeClass("show");
+      $("#logo-color-white").addClass("hide");
+      $("#logo-color-white").removeClass("show");
 
       $(".btn-border").addClass("hide");
       $(".btn-border").removeClass("show");
@@ -28,10 +28,10 @@ $(window).scroll(function() {
   } else {
       $(".transparent").removeClass("scrolling");
       // $("#logo-color").addClass("hide");
-      $("#logo-white").removeClass("hide");
-      $("#logo-white").addClass("show");
+      $("#logo-color-white").removeClass("hide");
+      $("#logo-color-white").addClass("show");
 
-      $("#logo-color").addClass("hide");
+      $("#logo-color-orange").addClass("hide");
 
       $(".btn-border").removeClass("show");
       $(".btn-border").addClass("show");

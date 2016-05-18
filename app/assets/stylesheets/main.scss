@@ -145,17 +145,16 @@ body {
     }
 
     &.transparent {
-      background-color: transparent;
+      background-color: white;
       border-color: transparent;
+      color: #ffffff;
 
       a.login {
         padding: 16px 25px;
-        transition: 0.2s;
 
         &:hover,
         &:focus,
         &:active {
-          transform: translateY(-5px);
           color: #ffffff;
         }
       }
@@ -173,15 +172,39 @@ body {
     }
 
     a {
-      color: #000000;
+      color: grey;
 
       &:hover,
       &:focus,
       &:active {
-        color: #000000 !important;
+        color: grey !important;
       }
     }
-  } 
+  }
+}
+
+.wrapper-navbar-traveltrunk .navbar-default ul a {
+  color: grey;
+}
+
+#logo-color-white {
+  width: 170px;
+  height: 50px;
+  display: inline-block;
+  
+  &.color {
+    background: image-url("logo_color.png") no-repeat;
+  }
+}
+
+#logo-color-orange {
+  width: 170px;
+  height: 50px;
+  display: inline-block;
+  
+  &.color {
+    background: image-url("logo_color.png") no-repeat;
+  }
 }
 
 
@@ -468,50 +491,67 @@ body {
 }
 
 .dropdown-top-active {
+
   &.open a{
-    background-color: $orange !important;
+    background-color: #fbfbfb !important;
   }
 }
 
 .dropdown-top-login {
-  background-color: $orange !important;
+  background-color: rgb(251, 251, 251) !important;
   border:transparent;
-  border-radius: 0;
+  @include border-radius(0px);
+
   li a {
     &:hover {
-      background-color: $yellow !important;
+      background-color: #EFEFEF !important;
     }
   }
 }
 
 .wrap-nav-color {
-  background: #f54b43;
-  background: -moz-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  background: -webkit-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  background: linear-gradient(147deg, #f54b43 0%, #ffaf53 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 );
+  background: white;
+  // background: #f54b43;
+  // background: -moz-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
+  // background: -webkit-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
+  // background: linear-gradient(147deg, #f54b43 0%, #ffaf53 100%);
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 );
   height: 75px;
 }
 
 .wrapper-profile {
-  background: #f54b43;
-  background: -moz-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  background: -webkit-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  background: linear-gradient(147deg, #f54b43 0%, #ffaf53 100%);
-  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 );
+  // background: #f54b43;
+  // background: -moz-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
+  // background: -webkit-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
+  // background: linear-gradient(147deg, #f54b43 0%, #ffaf53 100%);
+  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 );
   padding: 25px 0px;
-  color: white;
+  color: black;
   img {
     border: 7px solid white;
   }
   h2 {
-    color: black;
+  
     margin-top: 0;
   }
+
   .wrapper-user-name {
+    margin-top: 60px;
+
     h1 {
+      color: #808080;
       vertical-align: top;
       padding-top: 0;
+    }
+  }
+
+  span {
+    
+    a {
+      color: #000000;
+      margin-left: 13px;
+      margin-top: 13px;
+      display: inline-block;
     }
   }
 }
@@ -762,10 +802,13 @@ h3.hotel-name {
 
 .footer-text-content {
   padding: 40px 0;
+
   p {
     font-size: 15px;
   }
+
   &.refund-text {
+
     p {
       font-size: 20px;
       padding: 35px 60px;
@@ -810,5 +853,40 @@ h3.hotel-name {
 
   }
 }
+
+// End
+
+// Company
+
+.content-about-us,
+.content-our-mission,
+.content-privacy-policy,
+.content-trust-security,
+.content-our-team,
+.content-patner-ship,
+.contact-us,
+.content-refund {
+  padding: 40px 0;
+
+  p {
+    font-size: 20px;
+    font-family: 'Avenirregular';
+  }
+
+  h1 {
+    font-family: 'Avenirregular';
+    letter-spacing: .015em;
+    color: #505050;
+  }
+}
+
+.content-patner-ship {
+
+  h2 {
+    font-size: 18px;
+    margin-bottom: 30px;
+  }
+}
+
 
 // End

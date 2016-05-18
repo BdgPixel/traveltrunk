@@ -7,7 +7,7 @@
   .wrapper-profile
     .container
       .row
-        .col-md-4.col-lg-2
+        .col-md-4.col-lg-3.col-sm-offset-3
           .wrapper-img-profile
             = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
         .col-md-4.col-lg-6
@@ -23,10 +23,10 @@
                 | &nbsp;
                 b = @user.profile.home_airport.titleize rescue 'Information not specified'
         .col-md-4.col-lg-4
-          .div.pull-right class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
+          .div class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
             | &nbsp;
             span.text-right
-              = link_to 'Edit Profile', edit_profile_path, class: 'btn btn-saving btn-green'
+              = link_to 'Edit Profile', edit_profile_path, class: ''
           .clearfix
 
   .wrapper-profile-content
@@ -35,9 +35,8 @@
         .col-md-12.col-lg-12 class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
           .wrapper-personal-information
             .row
-              .col-sm-6
+              .col-sm-offset-3.col-sm-6
                 h3.color-orange PERSONAL INFORMATION
-                hr
                 table.table.table-user-information.table-custom
                   tbody
                     tr
@@ -86,9 +85,8 @@
                       td
                         | : &nbsp;
                         = @user.profile.country_name rescue 'Information not specified'
-              .col-sm-6
+              .col-sm-offset-3.col-sm-6
                 h3.color-orange SAVINGS PLAN
-                hr
                 - if @user.subscription
                   table.table.table-user-information.table-custom
                     tbody

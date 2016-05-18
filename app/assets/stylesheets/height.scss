@@ -10,3 +10,17 @@ html {
 body {
   padding-bottom: 0px;
 }
+
+#logo-color-white {
+  &.color {
+    background: image-url("logo_white.png") no-repeat;
+  }
+}
+
+.wrapper-navbar-traveltrunk .navbar-default.transparent {
+	background-color: transparent;
+}
+
+.wrapper-navbar-traveltrunk .navbar-default.transparent.scrolling {
+	background-color: white;
+}

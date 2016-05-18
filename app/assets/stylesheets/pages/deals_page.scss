@@ -22,6 +22,7 @@
 		    overflow: hidden;
 		    width: 302px;
 		    display: inline-block;
+        font-size: 24px;
   		}
   	}
 
@@ -29,7 +30,6 @@
   }
 
   .view-price-deals  {
-  	float: right;
   	margin-top: 15px;
 
   	.btn-green-2 {
@@ -42,11 +42,17 @@
 
 
   .price-deals {
-  	display: inline-block;
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.58);
+    left: 35px;
+    z-index: 1;
+    top: 20px;
+    padding: 6px;
 
   	h4 {
-  		color: #c3c3c3;
-    	font-size: 40px;
+      color: #2F2F2F;
+      font-size: 40px;
+      margin: 0px;
   	}
   }
 }
@@ -89,9 +95,9 @@
 	padding-bottom: 100px;
 	margin-bottom: 70px;
  	background: rgb(245,75,67); /* Old browsers */
-  background: -moz-linear-gradient(left,  rgba(245,75,67,1) 0%, rgba(255,175,83,1) 100%); /* FF3.6-15 */
-  background: -webkit-linear-gradient(left,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* Chrome10-25,Safari5.1-6 */
-  background: linear-gradient(147deg,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+  background: -moz-linear-gradient(left,  rgba(245,75,67,1) 0%, rgba(255, 175, 83, 0.9) 100%); /* FF3.6-15 */
+  background: -webkit-linear-gradient(left,  rgba(245,75,67,1) 0%,rgba(255, 175, 83, 0.9) 100%); /* Chrome10-25,Safari5.1-6 */
+  background: linear-gradient(147deg,  rgba(245,75,67,1) 0%,rgba(255, 175, 83, 0.9) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 ); /* IE6-9 */
   overflow: hidden;
 
@@ -100,7 +106,9 @@
 	}
 
 	.wrapper-top-deals {
+
 		h1,h2,p {
+      font-family: 'Avenirregular';
 			color: #ffffff;
 		}
 		p {
@@ -192,6 +200,7 @@
 
 .text-header-slide {
 	position: relative;
+  
 	.round-button {
 		position: absolute;
     bottom: -70px;
@@ -199,8 +208,7 @@
     margin-left: -25px;
     width: 50px;
     height: 50px;
-    background: #F65545;
-    border-radius: 100%;
+
     .icon {
 	  	display: block;
 	  	width: 30px;
