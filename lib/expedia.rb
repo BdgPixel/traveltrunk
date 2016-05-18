@@ -66,37 +66,37 @@ module Expedia
               begin
                 response = HTTParty.get(url_custom_params)
 
-                if response["HotelListResponse"]["EanWsError"]
-                  @hotels_list    = []
-                  @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
+                if response
+                  if response["HotelListResponse"]["EanWsError"]
+                    @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
 
-                  response_result(response: @hotels_list, error_response: @error_response)
-                else
-                  hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
-                    hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
-                  end
-
-                  if hotels_list.empty?
-                    @error_response = "There are no hotels that match your criteria and saving credits"
-                    response_result(error_response: @error_response)
+                    response_result(response: [], error_response: @error_response)
                   else
-                    hotels_list =
-                      hotels_list.sort do |hotel_x, hotel_y|
-                        hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
-                      end
+                    hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
+                      hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
+                    end
 
-                    @num_of_hotel = hotels_list.size
-                    @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
-                    @num_of_page = @hotels_list.size
+                    if hotels_list.empty?
+                      @error_response = "There are no hotels that match your criteria and saving credits"
+                      response_result(error_response: @error_response)
+                    else
+                      hotels_list =
+                        hotels_list.sort do |hotel_x, hotel_y|
+                          hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
+                        end
 
-                    response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page )
+                      @num_of_hotel = hotels_list.size
+                      @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
+                      @num_of_page = @hotels_list.size
+
+                      response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page )
+                    end
                   end
+                else
+                  response_result(response: [], error_response: "Unable to get hotel list from Expedia. Please try again later")
                 end
               rescue Exception => e
-                @hotels_list    = []
-                @error_response = e.message
-
-                response_result(response: @hotels_list, error_response: @error_response)
+                response_result(response: [], error_response: "Some errors occurred. Please contact administrator or try again later.")
               end
             else
               @hotels_list    = []

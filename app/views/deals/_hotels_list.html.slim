@@ -6,13 +6,12 @@
   .welcome-message.col-md-8.col-md-offset-2.text-center
     | Enter a destination to start your search
 - else
-  - unless @hotels_list.first[:error_response]
+  - if @hotels_list.first[:error_response].blank?
     .deals-page data-page="1"
       .row
         - @hotels_list.first[:response].each_with_index do |page, index|
           div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
             - page.compact.each do |group|
-              / - binding.pry
               - group.compact.each do |hotel|
                 .wrapper-price-deals
                   .col-xs-6.col-md-4
@@ -51,7 +50,7 @@
               | 1 - 15 of #{@hotels_list.first[:num_of_hotel]} Hotels
 
 
-  - if @hotels_list.first[:error_response]
+  - else
     #error_response.alert.alert-info style="margin-top: 20px"
       strong Notice: &nbsp;
       = @hotels_list.first[:error_response]
