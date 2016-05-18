@@ -509,6 +509,21 @@ body {
   }
 }
 
+.wrapper-navbar-traveltrunk .navbar-default ul a.btn-border {
+  border: 2px solid #E4E4E4;
+  &:hover {
+    border: 2px solid $orange;
+    background-color: $orange;
+    color: white !important;
+  }
+}
+
+.wrapper-navbar-traveltrunk .navbar-default ul a {
+  &:hover {
+    color: grey !important;
+  }
+}
+
 .wrap-nav-color {
   background: white;
   // background: #f54b43;
