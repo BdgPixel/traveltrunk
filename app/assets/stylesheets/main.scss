@@ -117,7 +117,7 @@ body {
       }
       a.btn-orange2 {
         @include border-radius(7px);
-        padding: 7px 14px;
+        padding: 10px 14px;
         background: rgb(239,62,54); /* Old browsers */
         background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
         background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
@@ -128,11 +128,12 @@ body {
         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef3e36', endColorstr='#f7941e',GradientType=0 ); /* IE6-9 */
         border-top:transparent;
         border-bottom:transparent;
+        color: #ffffff;
 
         &:hover,
         &:focus,
         &:active {
-          color: white;
+          color: #ffffff !important;
           background-color: rgba(255, 255, 255, 0.44);
           opacity: 0.5;
         }
@@ -144,8 +145,18 @@ body {
     }
 
     &.transparent {
-        background-color: transparent;
-        border-color: transparent;
+      background-color: transparent;
+      border-color: transparent;
+
+      a.login {
+        padding: 16px 25px;
+        transition: 0.2s;
+
+        &:hover {
+          transform: translateY(-5px);
+          color: #ffffff;
+        }
+      }
     }
   }
 
@@ -155,8 +166,16 @@ body {
     border-top: transparent;
     transition: 0.2s;
 
+    a.login {
+      padding: 16px 25px;
+    }
+
     a {
       color: #000000;
+
+      &:hover {
+        color: #000000 !important;
+      }
     }
   } 
 }
@@ -754,7 +773,7 @@ h3.hotel-name {
 /* Effect 4: bottom border enlarge */
 .footer-custom {
   li {
-    padding-bottom: 10px;
+    padding-bottom: 0px;
     border-bottom: 2px solid transparent;
     transition: 0.2s;
     &:hover {

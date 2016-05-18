@@ -2,9 +2,7 @@
   .row
     .col-md-6.col-md-offset-3
       .wrapper-registration
-        .text-center
-          = image_tag 'logo3.png'
-          
+       
         .registration
 
           = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
@@ -37,7 +35,7 @@
 
                   .actions.form-group
                     .row
-                      .col-md-12
+                      .col-md-6.col-md-offset-3
                         = f.submit "Sign up", class: 'btn btn-default btn-block'
                         | &nbsp;
                         / = link_to "Back", new_user_session_path, class: 'btn btn-default'

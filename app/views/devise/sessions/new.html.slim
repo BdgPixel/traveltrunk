@@ -2,8 +2,6 @@
   .row
     .col-md-6.col-md-offset-3
       .wrapper-login
-        .text-center
-          = image_tag 'logo3.png'
         .login
 
           = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
@@ -26,7 +24,7 @@
                     = link_to "Forgot your password?", new_password_path(resource_name)
 
             .row
-              .col-md-12
+              .col-md-6.col-md-offset-3
                 .actions.form-group
                   = f.submit "Log in", class: 'btn btn-default btn-block'
 

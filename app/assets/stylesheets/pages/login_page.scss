@@ -36,7 +36,7 @@
 
 .wrapper-sign-up-login {
   @extend .wrapper-login;
-  margin-top: 0px;
+  margin-top: 0px !important;
 
   .sign-up-login {
     @extend .login;
