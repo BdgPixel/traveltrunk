@@ -15,6 +15,11 @@
               - group.compact.each do |hotel|
                 .wrapper-price-deals
                   .col-xs-6.col-md-4
+                    .price-deals
+                      h4
+                        strong
+                          = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+                    
                     .card-item
                       = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
                         = list_of_deals_div(hotel["thumbNailUrl"])
@@ -26,12 +31,8 @@
                               = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
                                 = unescape_expedia_html(hotel["name"])
 
-                            .price-deals
-                              h4
-                                strong
-                                  = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-                            .view-price-deals 
+                            .view-price-deals.text-center
                               = link_to "View", deals_show_path(hotel["hotelId"]), class:'btn btn-green-2', data: { no_turbolink: true }
 
       .col-md-12

@@ -7,15 +7,16 @@
     .row
       .col-sm-12
         .wrapper-top-deals
-          h1.text-center 
-            | Your Destination
-          h2.text-center
-            i
-              | Is Just a Few Clicks Away!
-          hr
-          p.text-center
-            | From luxury hotels to adventure hostels, cozy getaways to big city living; here, you get to customize your trip to your vision. The deals you’ll view are based on your current savings; this way, you can plan an unforgettable vacation that perfectly fits your budget.
-          hr
+          - if current_user.total_credit.zero?
+            h1.text-center 
+              | Your Destination
+            h2.text-center
+              i
+                | Is Just a Few Clicks Away!
+            hr
+            p.text-center
+              | From luxury hotels to adventure hostels, cozy getaways to big city living; here, you get to customize your trip to your vision. The deals you’ll view are based on your current savings; this way, you can plan an unforgettable vacation that perfectly fits your budget.
+            hr
   .col-xs-12.col-md-12.slide
     .text-header-slide
       .round-button 

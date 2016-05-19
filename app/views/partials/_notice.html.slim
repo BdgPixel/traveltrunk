@@ -4,7 +4,8 @@
       span aria-hidden="true" &times;
 
     strong Notice: &nbsp;
-    = notice
+    span
+      = notice
 
 - if alert.present?
   #alert.alert.alert-danger.alert-dismissible role="alert"
@@ -12,4 +13,5 @@
       span aria-hidden="true" &times;
 
     strong Warning! &nbsp;
-    = alert
+    span
+      = alert

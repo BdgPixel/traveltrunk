@@ -10,3 +10,36 @@ html {
 body {
   padding-bottom: 0px;
 }
+
+#logo-color-white {
+  &.color {
+    background: image-url("logo_white.png") no-repeat;
+  }
+}
+
+.wrapper-navbar-traveltrunk .navbar-default.transparent {
+	background-color: transparent;
+}
+
+.wrapper-navbar-traveltrunk .navbar-default.transparent.scrolling {
+	background-color: white;
+}
+
+.wrapper-navbar-traveltrunk .navbar-default ul a {
+	color: white;
+}
+
+.wrapper-navbar-traveltrunk .navbar-default ul a.btn-border {
+  border: 2px solid white;
+  &:hover {
+    border: 2px solid white;
+    background-color: rgba(255, 255, 255, 0.44);
+  }
+}
+
+.wrapper-navbar-traveltrunk .navbar-default ul a {
+  &:hover {
+    color: white !important;	
+  }
+}
+
