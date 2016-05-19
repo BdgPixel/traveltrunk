@@ -9,45 +9,13 @@ section.notif
 		.row
 			.col-md-12
 				h1 Notification
-			.col-md-12
-				.notif-background
-					.description 
-						span 
-							| You have used promo code, your savings plan successfully transfered $30.00 to your TravelTrunk account. Your total credit is $555.00
-					.date 
-						span 
-							| April 26, 2016 time: 08:05:55 pm
-			.col-md-12
-				.notif-background
-					.description 
-						span 
-							| You have used promo code, your savings plan successfully transfered $30.00 to your TravelTrunk account. Your total credit is $555.00
-					.date 
-						span 
-							| April 26, 2016 time: 08:05:55 pm
-			.col-md-12
-				.notif-background
-					.description 
-						span 
-							| You have used promo code, your savings plan successfully transfered $30.00 to your TravelTrunk account. Your total credit is $555.00
-					.date 
-						span 
-							| April 26, 2016 time: 08:05:55 pm
-			.col-md-12
-				.notif-background
-					.description 
-						span 
-							| You have used promo code, your savings plan successfully transfered $30.00 to your TravelTrunk account. Your total credit is $555.00
-					.date 
-						span 
-							| April 26, 2016 time: 08:05:55 pm
 
-- if @activities.empty?
-  .alert.alert-info
-    strong Notice:&nbsp;
-    | No Activities
-- else
-  table.table.table-striped.table-hover
-    tbody
-      - @activities.each do |activity|
-        == render_activity activity, locals: { current_total_credit: @current_total_credit }
+				- if @activities.empty?
+				  .alert.alert-info
+				    strong Notice:&nbsp;
+				    | No Activities
+				- else
+				  table.table.table-striped.table-hover
+				    tbody
+				      - @activities.each do |activity|
+				        == render_activity activity, locals: { current_total_credit: @current_total_credit }

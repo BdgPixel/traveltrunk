@@ -10,16 +10,16 @@
 
             = f.simple_fields_for :profile do |profile_form|
               .row
-                .col-md-6
+                .col-md-6.pad-right-10
                   .form-group
-                    = profile_form.input :first_name, label:false, autofocus: true, placeholder: 'First Name',input_html: { class: 'form-control input-registration' }
-                .col-md-6
+                    = profile_form.input :first_name, label:false, autofocus: true, placeholder: 'First Name',input_html: { class: 'form-control' }
+                .col-md-6.pad-left-10
                   .form-group
-                    = profile_form.input :last_name, label:false, placeholder: 'Last Name', input_html: { class: 'form-control input-registration' }
+                    = profile_form.input :last_name, label:false, placeholder: 'Last Name', input_html: { class: 'form-control' }
 
                 .col-md-12
                   .form-group
-                    = f.input :email, label:false, placeholder: 'Email Address', input_html: { class: 'form-control input-registration' }
+                    = f.input :email, label:false, placeholder: 'Email Address', input_html: { class: 'form-control' }
 
                 .col-md-12
                   .form-group
@@ -27,16 +27,16 @@
                       em
                         / | (#{@minimum_password_length})
 
-                    = f.input :password, autocomplete: "off", label: false, placeholder: 'Password', input_html: { class: 'form-control input-registration' }
+                    = f.input :password, autocomplete: "off", label: false, placeholder: 'Password', input_html: { class: 'form-control' }
 
                 .col-md-12
                   .form-group
-                    = f.input :password_confirmation, label:false, autocomplete: "off", placeholder: 'Re-enter Password', input_html: { class: 'form-control input-registration' }
+                    = f.input :password_confirmation, label:false, autocomplete: "off", placeholder: 'Re-enter Password', input_html: { class: 'form-control' }
 
                   .actions.form-group
                     .row
                       .col-md-6.col-md-offset-3
-                        = f.submit "Sign up", class: 'btn btn-default btn-block'
+                        = f.submit "Sign up", class: 'btn btn-default btn-block btn-global'
                         | &nbsp;
                         / = link_to "Back", new_user_session_path, class: 'btn btn-default'
           .text-center

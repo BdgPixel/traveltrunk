@@ -1,8 +1,10 @@
 - if activity.trackable
-  tr
-    td.activity
-      | You successfully refunded #{currency_in_usd(activity.parameters[:amount])} to your TravelTrunk account. Your total credit is #{currency_in_usd(activity.parameters[:total_credit])}&nbsp;
+	.notif-background
+		.description
+			span
+				| You successfully refunded #{currency_in_usd(activity.parameters[:amount])} to your TravelTrunk account. Your total credit is #{currency_in_usd(activity.parameters[:total_credit])}&nbsp;
 
-      small
-        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
 

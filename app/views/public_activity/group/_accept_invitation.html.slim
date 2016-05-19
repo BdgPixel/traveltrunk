@@ -1,10 +1,12 @@
 - if activity.trackable
-  tr
-    td.activity
-      = link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
-      | &nbsp;
-      | accepted your invitation to&nbsp;
-      = link_to activity.trackable.joined_group.name, "#"
-      | &nbsp;
-      small
-        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+	.notif-background
+		.description 
+			span 
+				= link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
+				| &nbsp;
+				| accepted your invitation to&nbsp;
+				= link_to activity.trackable.joined_group.name, "#"
+				| &nbsp;
+		.date 
+			span 
+				| activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

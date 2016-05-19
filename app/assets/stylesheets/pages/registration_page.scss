@@ -11,6 +11,11 @@
     background: rgba(255, 255, 255, 0.12);
     padding: 45px;
     margin-top: 55px;
+    border-radius: 5px;
+
+    .form-group {
+      margin-bottom: 20px;
+    }
 
     input.input-registration {
       @extend %input-global;

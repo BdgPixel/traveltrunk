@@ -9,6 +9,11 @@ $(document).ready(function(){
         scrollTop: $(this.hash).offset().top-70
     }, 1000);
   });
+
+  $("#slideToggleLink").on('click', function(){
+    $(".wrapper-deals").toggleClass('card-orange');
+    $(".round-button").toggleClass('hide');
+  });
 });
 
 $(window).scroll(function() {    
@@ -25,6 +30,7 @@ $(window).scroll(function() {
       $(".btn-border").removeClass("show");
 
       $(".btn-orange2").removeClass("hide");
+      $(".link-top-login").addClass('grey-nav-color');
   } else {
       $(".transparent").removeClass("scrolling");
       // $("#logo-color").addClass("hide");
@@ -37,6 +43,7 @@ $(window).scroll(function() {
       $(".btn-border").addClass("show");
 
       $(".btn-orange2").addClass("hide");
+      $(".link-top-login").removeClass('grey-nav-color');
   }
 });
 

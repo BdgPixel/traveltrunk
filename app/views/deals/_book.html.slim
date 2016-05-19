@@ -14,7 +14,7 @@
               = @error_response
           - else
             .col-md-12
-              .col-md-6
+              .col-md-12
                 p
                   h4#roomName
                 p
@@ -38,7 +38,7 @@
                 p.checkin-intructions
 
                 p.hotel-checkin-checkout
-              .col-md-6
+              .col-md-12
                 table.table
                   tr
                     td.number-of-rooms
@@ -54,9 +54,9 @@
                   | Are you sure you want to choose this hotel ?
                   br
                   br
-                  = link_to "Yes", deals_like_path(params[:id], hotel_name: 'asdfasdf'), id: 'linkVote', class: "btn btn-orange btn-md"
+                  = link_to "Yes", deals_like_path(params[:id], hotel_name: 'asdfasdf'), id: 'linkVote', class: "btn btn-saving btn-green"
                   | &nbsp;
-                  button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
+                  button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
                     | No
 
 

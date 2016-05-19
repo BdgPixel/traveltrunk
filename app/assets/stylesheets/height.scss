@@ -37,9 +37,40 @@ body {
   }
 }
 
-.wrapper-navbar-traveltrunk .navbar-default ul a {
-  &:hover {
-    color: white !important;	
+.link-top-login {
+  a {
+    color: white !important;
+    &:hover {
+      color: white !important;
+    }
   }
 }
+
+.dropdown-top-active {
+  a {
+    &:hover {
+      color: white !important;
+    }
+  }
+}
+
+.grey-nav-color {
+  a {
+    color: grey !important;
+  }
+}
+
+a.login.show {
+  &:hover {
+    color: white !important;
+    opacity: 0.5;
+  }
+}
+
+
+// .wrapper-navbar-traveltrunk .navbar-default ul a {
+//   &:hover {
+//     color: white !important;	
+//   }
+// }
 
