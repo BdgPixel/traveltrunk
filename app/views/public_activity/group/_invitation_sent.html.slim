@@ -1,19 +1,19 @@
-.description
-  span
-    = link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
-    | &nbsp;
-    | would like you to join his/her trip.
-    | &nbsp;
+.notif-background
+  .description 
+    span
+      = link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
+      | &nbsp;
+      | would like you to join his/her trip.
+      | &nbsp;
 
-    - if activity.trackable
-      - if activity.trackable.accepted_at.nil?
-        br
-        = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token], group_id: activity.parameters[:group_id]), class: 'btn btn-default btn-sm'
+      - if activity.trackable
+        - if activity.trackable.accepted_at.nil?
+          = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token], group_id: activity.parameters[:group_id]), class: 'btn btn-default btn-sm'
+        - else
+          | (already accepted)
       - else
-        | (already accepted)
-    - else
-      | (deleted)
-    | &nbsp;
-
-.date
-  span = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+        | (deleted)
+      | &nbsp;
+  .date 
+    span
+      = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

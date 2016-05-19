@@ -11,9 +11,9 @@
             .row
               .col-md-8
                 .form-group
-                  = f.input :email, label:false, autofocus: true, placeholder: "Email Address", input_html: { value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control input-resend-confirmations' }
+                  = f.input :email, label:false, autofocus: true, placeholder: "Email Address", input_html: { value: (resource.pending_reconfirmation? ? resource.unconfirmed_email : resource.email), class: 'form-control' }
 
               .col-md-4
-                = f.submit "Resend", class: 'btn btn-default btn-block'
+                = f.submit "Resend", class: 'btn btn-block btn-global'
 
       / = render "devise/shared/links"

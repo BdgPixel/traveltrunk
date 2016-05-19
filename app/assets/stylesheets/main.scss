@@ -116,25 +116,38 @@ body {
         }
       }
       a.btn-orange2 {
-        @include border-radius(7px);
-        padding: 10px 14px;
-        background: rgb(239,62,54); /* Old browsers */
-        background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
-        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
-        background: -webkit-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Chrome10+,Safari5.1+ */
-        background: -o-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Opera 11.10+ */
-        background: -ms-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* IE10+ */
-        background: linear-gradient(to bottom,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* W3C */
-        filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef3e36', endColorstr='#f7941e',GradientType=0 ); /* IE6-9 */
-        border-top:transparent;
-        border-bottom:transparent;
-        color: #ffffff;
+        border: 2px solid $orange;
+        -moz-border-radius: 7px;
+        -webkit-border-radius: 7px;
+        -ms-border-radius: 7px;
+        border-radius: 7px;
+        padding: 7px 14px;
+        background-color: $orange;
+        color: white;
+        -webkit-transition: all 250ms ease-in-out 0s;
+        -moz-transition: all 250ms ease-in-out 0s;
+        -ms-transition: all 250ms ease-in-out 0s;
+        -o-transition: all 250ms ease-in-out 0s;
+        transition: all 250ms ease-in-out 0s;
+
+        // @include border-radius(7px);
+        // padding: 10px 14px;
+        // background: rgb(239,62,54); /* Old browsers */
+        // background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
+        // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
+        // background: -webkit-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Chrome10+,Safari5.1+ */
+        // background: -o-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Opera 11.10+ */
+        // background: -ms-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* IE10+ */
+        // background: linear-gradient(to bottom,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* W3C */
+        // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef3e36', endColorstr='#f7941e',GradientType=0 ); /* IE6-9 */
+        // border-top:transparent;
+        // border-bottom:transparent;
+        // color: #ffffff;
 
         &:hover,
         &:focus,
         &:active {
-          color: #ffffff !important;
-          background-color: rgba(255, 255, 255, 0.44);
+          color: white !important;
           opacity: 0.5;
         }
       }
@@ -465,6 +478,8 @@ body {
 
 .wrapper-group-saving {
 
+  padding: 90px 0px;
+
   .btn-default {
     @extend .btn-invite-friend;
   }
@@ -492,8 +507,10 @@ body {
 
 .dropdown-top-active {
 
-  &.open a{
-    background-color: #fbfbfb !important;
+  &.open a:first-child{
+    &:hover {
+      color: #555555 !important;
+    }
   }
 }
 
@@ -518,10 +535,15 @@ body {
   }
 }
 
-.wrapper-navbar-traveltrunk .navbar-default ul a {
-  &:hover {
-    color: grey !important;
-  }
+// .wrapper-navbar-traveltrunk .navbar-default ul a {
+//   &:hover {
+//     color: grey !important;
+//   }
+// }
+
+.normal-font {
+  font-family: 'times' !important;
+  font-weight: 600 !important;
 }
 
 .wrap-nav-color {
@@ -563,7 +585,6 @@ body {
   span {
     
     a {
-      color: #000000;
       margin-left: 13px;
       margin-top: 13px;
       display: inline-block;
@@ -594,6 +615,7 @@ h3.hotel-name {
       padding: 20px;
       margin-bottom: 2px;
       display: table;
+      width: 100%;
       .description {
         width: 100%;
         display: table-cell;
@@ -625,7 +647,7 @@ h3.hotel-name {
   }
 
 .wrapper-group-saving-img {
-  padding: 40px 0;
+  padding: 90px 0;
 
   @media (min-width: 768px) {
 
@@ -732,7 +754,7 @@ h3.hotel-name {
   }
 
   ul.social-media {
-    margin-top: 30px;
+    margin-top: 15px;
     
     li {
       display: inline-block;
@@ -783,7 +805,7 @@ h3.hotel-name {
 }
 
 .inner-footer {
-  padding: 30px 0px 40px 0px;
+  padding: 30px 0px 30px 0px;
   background: rgb(245,75,67); /* Old browsers */
   background: -moz-linear-gradient(left,  rgba(245,75,67,1) 0%, rgba(255,175,83,1) 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(left,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -855,17 +877,40 @@ h3.hotel-name {
 // Alert Style 
 
 .alert-success {
-  background-color: white;
-  border-color: white;
+  background-color: #ffffff;
+  border-color: #ffffff;
   position: absolute;
   z-index: 99999;
   width: 100%;
-  border-radius: 0px;
-  color: black;
+  height: 75px;
+  padding-top: 20px;
+  font-size: 20px;
+  @include border-radius(0px);
+  color: #000000;
 
   .close {
     opacity: 1.2;
 
+  }
+}
+
+.alert-danger {
+  position: absolute;
+  z-index: 99999;
+  width: 100%;
+  @include border-radius(0px);
+}
+
+.click-me {
+  padding: 10px;
+  border-radius: 5px;
+  -webkit-transition: all 250ms ease-in-out 0s;
+  -moz-transition: all 250ms ease-in-out 0s;
+  -ms-transition: all 250ms ease-in-out 0s;
+  -o-transition: all 250ms ease-in-out 0s;
+  transition: all 250ms ease-in-out 0s;
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.24);
   }
 }
 
@@ -903,5 +948,31 @@ h3.hotel-name {
   }
 }
 
+ul.dropdown-top-login {
+
+  li {
+
+    a {
+      color: grey !important;
+      &:hover {
+        color: grey !important;
+      }
+    }
+  }
+
+}
+
+.grey-nav-color {
+  a {
+    color: grey !important;
+  }
+}
+
+a.login.show {
+  &:hover {
+    color: grey !important;
+    opacity: 0.5;
+  }
+}
 
 // End

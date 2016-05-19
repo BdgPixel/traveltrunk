@@ -4,30 +4,78 @@ $green 	: #3DB1AE;
 $orange : #F55144;
 
 @mixin border-radius($radius) {
-  -moz-border-radius: $radius;
-  -webkit-border-radius: $radius;
-  -ms-border-radius: $radius;
-  border-radius: $radius;
+	-moz-border-radius: $radius;
+	-webkit-border-radius: $radius;
+	-ms-border-radius: $radius;
+	border-radius: $radius;
 }
 
 @mixin placeholder {
-  &::-moz-placeholder { @content }
-  &::-webkit-input-placeholder { @content }
-  &:-ms-input-placeholder { @content }
+	&::-moz-placeholder { @content }
+	&::-webkit-input-placeholder { @content }
+	&:-ms-input-placeholder { @content }
+}
+
+input[type="text"],input[type="password"], input[type="email"] {
+	width: 100%;
+	margin: 0 auto;
+	height: 52px;
+	padding: 0 20px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	font-size: 18px;
+	color: #505050;
+	-webkit-box-shadow: none;
+	-moz-box-shadow: none;
+	-ms-box-shadow: none;
+	-o-box-shadow: none;
+	box-shadow: none;
+	// border: none;
+	border-radius: 5px;
+	border: 1px solid #cccccc;
+}
+
+.btn-global {
+	height: 52px;
+	padding: 0 20px;
+	background-color: #3db1ae;
+  border-color: #3db1ae;
+  font-size: 20px;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  line-height: 30px;
+  -webkit-transition: all 250ms ease-in-out 0s;
+  -moz-transition: all 250ms ease-in-out 0s;
+  -ms-transition: all 250ms ease-in-out 0s;
+  -o-transition: all 250ms ease-in-out 0s;
+  transition: all 250ms ease-in-out 0s;
+  &:hover {
+  	color: white;
+  	background-color: #4fc0c0;
+  }
+}
+
+.pad-right-10 {
+	padding-right: 10px;
+}
+.pad-left-10 {
+	padding-left: 10px;
 }
 
 .btn-saving {
 	color: white;
-  padding: 15px 30px !Important;
-  font-size: 17px;
-  -webkit-transition: 0.2s; /* Safari */
-  transition: 0.2s;
-  margin-bottom: 10px;
-  border-radius: 4px !Important;
-  &:hover {
-  	color: white;
-  	opacity: 0.5;
-  }
+	padding: 15px 30px !Important;
+	font-size: 17px;
+	-webkit-transition: 0.2s; /* Safari */
+	transition: 0.2s;
+	margin-bottom: 10px !Important;
+	border-radius: 4px !Important;
+	&:hover {
+		color: white;
+		opacity: 0.5;
+	}
 	&.btn-yellow {
 		background-color: $yellow;
 	}
@@ -53,13 +101,13 @@ a.round-slide-next {
 	// background-color: $orange !Important;
 	background: image-url("down-chevron.png") no-repeat center !Important;
 	-ms-transform: rotate(-90deg) !Important; /* IE 9 */
-  -webkit-transform: rotate(-90deg) !Important; /* Chrome, Safari, Opera */
-  transform: rotate(-90deg) !Important;
-  -webkit-transition: 0.2s; /* Safari */
-  transition: 0.2s;
-  &:hover {
-  	background-color: $orange !Important;
-  }
+	-webkit-transform: rotate(-90deg) !Important; /* Chrome, Safari, Opera */
+	transform: rotate(-90deg) !Important;
+	-webkit-transition: 0.2s; /* Safari */
+	transition: 0.2s;
+	&:hover {
+		background-color: $orange !Important;
+	}
 }
 
 a.round-slide-prev {
@@ -67,13 +115,13 @@ a.round-slide-prev {
 	// background-color: $orange !Important;
 	background: image-url("down-chevron.png") no-repeat center !Important;
 	-ms-transform: rotate(90deg) !Important; /* IE 9 */
-  -webkit-transform: rotate(90deg) !Important; /* Chrome, Safari, Opera */
-  transform: rotate(90deg) !Important;
-  -webkit-transition: 0.2s; /* Safari */
-  transition: 0.2s;
-  &:hover {
-  	background-color: $orange !Important;
-  }
+	-webkit-transform: rotate(90deg) !Important; /* Chrome, Safari, Opera */
+	transform: rotate(90deg) !Important;
+	-webkit-transition: 0.2s; /* Safari */
+	transition: 0.2s;
+	&:hover {
+		background-color: $orange !Important;
+	}
 }
 
 %btn-green {
@@ -82,13 +130,13 @@ a.round-slide-prev {
 	text-transform: uppercase;
 	letter-spacing: 2px;
 	border-color: #3db1ae;
-  line-height: 30px;
-  font-size: 12px;
-  -webkit-transition: all 250ms ease-in-out 0s;
-  -moz-transition: all 250ms ease-in-out 0s;
-  -ms-transition: all 250ms ease-in-out 0s;
-  -o-transition: all 250ms ease-in-out 0s;
-  transition: all 250ms ease-in-out 0s;
+	line-height: 30px;
+	font-size: 12px;
+	-webkit-transition: all 250ms ease-in-out 0s;
+	-moz-transition: all 250ms ease-in-out 0s;
+	-ms-transition: all 250ms ease-in-out 0s;
+	-o-transition: all 250ms ease-in-out 0s;
+	transition: all 250ms ease-in-out 0s;
 
 	&:hover,
 	&:active,
@@ -102,7 +150,7 @@ a.round-slide-prev {
 
 %btn-green-2 {
 	@extend %btn-green;
-  font-size: 20px;
+	font-size: 20px;
 
 	&:hover,
 	&:focus,
@@ -134,5 +182,5 @@ a.round-slide-prev {
 %input-global {
 	line-height: 20px;  /* Safari */
 	height: 54px;
-  box-shadow: -1px 3px 10px -4px #000000;
+	box-shadow: -1px 3px 10px -4px #000000;
 }

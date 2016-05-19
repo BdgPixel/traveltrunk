@@ -1,7 +1,9 @@
 - if activity.trackable
-  .description
-    span
-      | You've successfully cancels a customer’s subscription&nbsp;
-  
-  .date 
-    span = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+	.notif-background
+		.description
+			span
+				| You've successfully cancels a customer’s subscription&nbsp;
+
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

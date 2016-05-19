@@ -106,18 +106,22 @@
 	  .icon {
 	  	display: block;
 	  	width: 30px;
-	  	height: 30px;
+	  	height: 50px;
 
 	  	&.arrow-down {
 	  		background: image-url("down-chevron.png") no-repeat;
+	  		background-position: 0px 0px;
+	  		-webkit-animation: arrowmove 2s infinite; /* Chrome, Safari, Opera */
+		    animation: arrowmove 2s infinite;
 	  	}
 	  }
   }
 
 
   a {
-  	font-family: 'Avenirbold';
+  	font-family: 'Lato', 'arial', verdana;
   	color: #ffffff;
+  	letter-spacing: 1px;
 
   	&:hover,
   	&:focus,
@@ -125,6 +129,18 @@
   		text-decoration: none;
   	}
   }
+}
+
+/* Chrome, Safari, Opera */
+@-webkit-keyframes arrowmove {
+    from {background-position: 0px 0px;opacity: 1;}
+    to {background-position: 0px 25px;opacity: 0;}
+}
+
+/* Standard syntax */
+@keyframes arrowmove {
+    from {background-position: 0px 0px;opacity: 1;}
+    to {background-position: 0px 25px;opacity: 0;}
 }
 
 section.slogan {

@@ -10,16 +10,12 @@ section.notif
 			.col-md-12
 				h1 Notification
 
-			- if @activities.empty?
-				.col-md-12
-					.notif-background
-						.description 
-							span 
-								| No Activities
-						.date 
-							span
-			- else
-			  - @activities.each do |activity|
-				  .col-md-12
-						.notif-background
-							== render_activity activity, locals: { current_total_credit: @current_total_credit }
+				- if @activities.empty?
+				  .alert.alert-info
+				    strong Notice:&nbsp;
+				    | No Activities
+				- else
+				  table.table.table-striped.table-hover
+				    tbody
+				      - @activities.each do |activity|
+				        == render_activity activity, locals: { current_total_credit: @current_total_credit }

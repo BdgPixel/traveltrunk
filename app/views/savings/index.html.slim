@@ -17,11 +17,11 @@
     .col-md-12
       .wrap-credit.text-center
         p
-          = link_to "Add to savings", "#", class: "display append-credit btn btn-saving btn-yellow", data: { toggle: "modal", target: "#modalSavingsForm" }
+          = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
           |&emsp;&emsp;&emsp;
-          = link_to "Promo Code", "#", class:"btn btn-saving btn-green", data: { toggle: "modal", target: "#modalActivationPromoCode" }
+          = link_to "Promo Code", "#", data: { toggle: "modal", target: "#modalActivationPromoCode" }
           |&emsp;&emsp;&emsp;
-          = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link btn btn-saving btn-orange-soft", data: { toggle: "modal", target: "#modalInviteFriends" }
+          = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
 
           - if current_user.group
             |&emsp;&emsp;&emsp;
