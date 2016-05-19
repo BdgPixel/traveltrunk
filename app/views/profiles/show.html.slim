@@ -108,13 +108,6 @@
                           | : &nbsp;
                           = @user.bank_account.transfer_frequency if @user.bank_account
 
-                  - else
-                    .alert.alert-info
-                      | You don't have saving plan
-
-          / .panel-footer class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
-          /   | &nbsp;
-          /   span.text-right
-          /     = link_to 'Edit Profile', edit_profile_path, class: 'btn btn-saving btn-green'
-          /   br
-          /   br
+                - else
+                  .alert.alert-info
+                    | You don't have saving plan

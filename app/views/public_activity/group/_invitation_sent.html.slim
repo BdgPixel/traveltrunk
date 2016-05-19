@@ -1,5 +1,5 @@
-tr
-  td.activity
+.description
+  span
     = link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
     | &nbsp;
     | would like you to join his/her trip.
@@ -7,6 +7,7 @@ tr
 
     - if activity.trackable
       - if activity.trackable.accepted_at.nil?
+        br
         = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token], group_id: activity.parameters[:group_id]), class: 'btn btn-default btn-sm'
       - else
         | (already accepted)
@@ -14,7 +15,5 @@ tr
       | (deleted)
     | &nbsp;
 
-    small
-      i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
-    | &nbsp;
-
+.date
+  span = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
