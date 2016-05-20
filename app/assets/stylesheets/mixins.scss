@@ -16,6 +16,20 @@ $orange : #F55144;
 	&:-ms-input-placeholder { @content }
 }
 
+// Responsive Point
+
+$xxs-screen : 320px  ;
+$xs-screen  : 480px  ;
+$sm-screen	: 768px  ;
+$md-screen	: 991px  ;
+$lg-screen	: 1200px ;
+
+.mar-top-20-xs {
+	@media screen and (max-width: 768px) {
+     	margin-top: 20px;
+    }
+}
+
 input[type="text"],input[type="password"], input[type="email"] {
 	width: 100%;
 	margin: 0 auto;
@@ -63,7 +77,12 @@ input[type="text"],input[type="password"], input[type="email"] {
 .pad-left-10 {
 	padding-left: 10px;
 }
-
+.pad-right-75 {
+	padding-right: 7.5px;
+}
+.pad-left-75 {
+	padding-left: 7.5px;
+}
 .btn-saving {
 	color: white;
 	padding: 15px 30px !Important;

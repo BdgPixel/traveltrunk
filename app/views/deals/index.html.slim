@@ -19,13 +19,14 @@
             hr
   .col-xs-12.col-md-12.slide
     .text-header-slide
-      .round-button 
-        .icon.arrow-down
+      / .round-button.hide
+      /   .icon.arrow-down
       h1.text-center
         - if @destination
-          = link_to @destination.title_destination, "javascript:void(0)", id: 'slideToggleLink'
+          = link_to @destination.title_destination, "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs"
         - else
           = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink'
+
     
     #slideToggle
       .row

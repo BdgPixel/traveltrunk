@@ -389,3 +389,12 @@ section.vacation {
 	background-size: cover;
 	height: 100%;
 }
+
+.wrapper-navbar-brand {
+	#logo-color-white {
+		@media screen and (max-width: 768px) {
+			margin-left: 15px;
+			margin-bottom: 15px;
+		}
+	}
+}

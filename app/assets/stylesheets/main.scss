@@ -487,10 +487,20 @@ body {
     font-size: 3.0em;
     padding-left: 25px;
   }
+  h1 {
+    font-size: 45px;
+  }
+  h3 {
+    font-size: 32px;
+  }
 }
 
 .wrap-credit {
   padding-bottom: 40px;
+  padding-top: 20px;
+  a {
+    font-size: 18px;
+  }
 }
 
 .link-top-login {
@@ -755,6 +765,10 @@ h3.hotel-name {
 
   ul.social-media {
     margin-top: 15px;
+
+    @media screen and (max-width: 990px) {
+      text-align: center;
+    }
     
     li {
       display: inline-block;
@@ -766,9 +780,17 @@ h3.hotel-name {
     width: 100%;
     height: 2px;
     display: inline-block;
+    @media screen and (max-width: 990px) {
+      border-bottom: solid 2px white;
+    }
+
   }
   
   .wrap-brand-footer {
+    @media screen and (max-width: 990px) {
+      margin-top: 40px;
+      text-align: center;
+    }
 
     img {
       width: 50px;
@@ -811,6 +833,11 @@ h3.hotel-name {
   background: -webkit-linear-gradient(left,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(147deg,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 ); /* IE6-9 */
+
+  @media screen and (max-width: 990px) {
+    text-align: center;
+  }
+
 }
 
 .copyright {
