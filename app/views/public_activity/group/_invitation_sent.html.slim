@@ -1,7 +1,7 @@
 .notif-background
   .description 
     span
-      = link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
+      = link_to activity.owner.profile.first_name.try(:titleize), user_profile_path(activity.owner.profile) if activity.owner
       | &nbsp;
       | would like you to join his/her trip.
       | &nbsp;
