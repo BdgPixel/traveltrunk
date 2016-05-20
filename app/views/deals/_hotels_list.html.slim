@@ -11,11 +11,11 @@
       .row
         - @hotels_list.first[:response].each_with_index do |page, index|
           div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
-            - page.compact.each do |group|
-              / - binding.pry
-              - group.compact.each do |hotel|
-                .wrapper-price-deals
-                  .col-xs-6.col-md-4.pad-left-75.pad-right-75
+            .wrapper-price-deals
+              - page.compact.each do |group|
+                / - binding.pry
+                - group.compact.each do |hotel|
+                  .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
                     .price-deals
                       h4
                         strong
