@@ -221,11 +221,11 @@
 .arrow-downs {
   &:before {
     position: absolute;
-    top: 60px;
+    top: 80px;
     left: 50%;
     margin-left: -15px;
     width: 30px;
-    height: 50px;
+    height: 90px;
     content: '';
     background: image-url("down-chevron-grey.png") no-repeat;
     // left: 10px;
@@ -268,13 +268,13 @@
 /* Chrome, Safari, Opera */
 @-webkit-keyframes arrowmove2 {
     from {background-position: 0px 0px;opacity: 1;}
-    to {background-position: 0px 25px;opacity: 0;}
+    to {background-position: 0px 17px;opacity: 0;}
 }
 
 /* Standard syntax */
 @keyframes arrowmove2 {
     from {background-position: 0px 0px;opacity: 1;}
-    to {background-position: 0px 25px;opacity: 0;}
+    to {background-position: 0px 17px;opacity: 0;}
 }
 
 // .pagination {
