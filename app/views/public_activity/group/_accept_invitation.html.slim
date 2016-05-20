@@ -9,4 +9,4 @@
 				| &nbsp;
 		.date 
 			span 
-				| activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

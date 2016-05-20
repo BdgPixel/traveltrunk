@@ -13,13 +13,13 @@
 
             - if devise_mapping.rememberable?
               .row
-                .col-md-6
+                .col-xs-12.col-md-6
                   .form-group
                     = f.check_box :remember_me
                     | &nbsp;
                     = f.label :remember_me
 
-                .col-md-6
+                .col-xs-12.col-md-6
                   .forgot-password.text-right 
                     = link_to "Forgot your password?", new_password_path(resource_name)
 

@@ -1,6 +1,7 @@
 html {
   position: relative;
   height: 100%;
+  overflow: visible;
 }
 
 .footer.footer-custom {
@@ -9,6 +10,7 @@ html {
 
 body {
   padding-bottom: 0px;
+  overflow: visible;
 }
 
 #logo-color-white {
@@ -19,6 +21,9 @@ body {
 
 .wrapper-navbar-traveltrunk .navbar-default.transparent {
 	background-color: transparent;
+  @media screen and (max-width: 480px) {
+    background: rgba(128, 128, 128, 0.84);
+  }
 }
 
 .wrapper-navbar-traveltrunk .navbar-default.transparent.scrolling {

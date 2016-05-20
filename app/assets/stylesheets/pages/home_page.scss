@@ -56,11 +56,16 @@
 			h1 {
 				font-family: 'Avenirbold';
 				color: #ffffff;
-		    font-size: 90px;
+				font-size: 90px;
 				line-height: 45px;
-        margin-bottom: 106px;
-        line-height: 90px;
-        -webkit-font-smoothing: antialiased;
+				margin-bottom: 106px;
+				line-height: 90px;
+				-webkit-font-smoothing: antialiased;
+				@media screen and (max-width: 480px) {
+					font-size: 45px;
+				  line-height: 60px;
+					margin-bottom: 20px;
+				}
 			}
 
 			h2,
@@ -69,15 +74,17 @@
 			}
 
 			p {
-		    margin-top: 30px;
-	    	margin-bottom: 40px;
+			margin-top: 30px;
+			margin-bottom: 40px;
 			}
 
 			.btn-default {
 				@extend %btn-green;
 			  font-size: 14px !important;
-		    padding: 17px 25px;
-
+				padding: 17px 25px;
+				@media screen and (max-width: 480px) {
+			    padding: 10px 15px;
+				}
 			}
 		}
 	}
@@ -92,55 +99,55 @@
 
 
   .arrow-down {
-  	background-color: transparent;
-  	@include border-radius(8px);
+	background-color: transparent;
+	@include border-radius(8px);
 	  width: 120px;
-    padding: 22px 0px 8px 0px;
+	padding: 22px 0px 8px 0px;
 	  margin: 0 auto;
-  	transition: 0.2s;
+	transition: 0.2s;
 	 
 	  &:hover {
-	  	// background-color: rgba(255,255,255,0.30);
+		// background-color: rgba(255,255,255,0.30);
 	  }
 
 	  .icon {
-	  	display: block;
-	  	width: 30px;
-	  	height: 50px;
+		display: block;
+		width: 30px;
+		height: 50px;
 
-	  	&.arrow-down {
-	  		background: image-url("down-chevron.png") no-repeat;
-	  		background-position: 0px 0px;
-	  		-webkit-animation: arrowmove 2s infinite; /* Chrome, Safari, Opera */
-		    animation: arrowmove 2s infinite;
-	  	}
+		&.arrow-down {
+			background: image-url("down-chevron.png") no-repeat;
+			background-position: 0px 0px;
+			-webkit-animation: arrowmove 2s infinite; /* Chrome, Safari, Opera */
+			animation: arrowmove 2s infinite;
+		}
 	  }
   }
 
 
   a {
-  	font-family: 'Lato', 'arial', verdana;
-  	color: #ffffff;
-  	letter-spacing: 1px;
+	font-family: 'Lato', 'arial', verdana;
+	color: #ffffff;
+	letter-spacing: 1px;
 
-  	&:hover,
-  	&:focus,
-  	&:active {
-  		text-decoration: none;
-  	}
+	&:hover,
+	&:focus,
+	&:active {
+		text-decoration: none;
+	}
   }
 }
 
 /* Chrome, Safari, Opera */
 @-webkit-keyframes arrowmove {
-    from {background-position: 0px 0px;opacity: 1;}
-    to {background-position: 0px 25px;opacity: 0;}
+	from {background-position: 0px 0px;opacity: 1;}
+	to {background-position: 0px 25px;opacity: 0;}
 }
 
 /* Standard syntax */
 @keyframes arrowmove {
-    from {background-position: 0px 0px;opacity: 1;}
-    to {background-position: 0px 25px;opacity: 0;}
+	from {background-position: 0px 0px;opacity: 1;}
+	to {background-position: 0px 25px;opacity: 0;}
 }
 
 section.slogan {
@@ -149,18 +156,26 @@ section.slogan {
 		margin-top: 30px;
 		
 		.slogan {
-    	padding: 70px 0px;
+		padding: 70px 0px;
+		@media screen and (max-width: 480px) {
+			padding: 0px;
+		}
 			
 			h2 {
 				font-family: 'Avenirbold';
 				display: inline-block;
-		    margin-right: 20px;
-		    font-size: 60px;
-		    line-height: 1.2em;
-		    text-decoration: none;
-		    letter-spacing: .015em;
-        color: #505050;
-        -webkit-font-smoothing: antialiased;
+				margin-right: 20px;
+				font-size: 60px;
+				line-height: 1.2em;
+				text-decoration: none;
+				letter-spacing: .015em;
+				color: #505050;
+				-webkit-font-smoothing: antialiased;
+				@media screen and (max-width: 480px) {
+			    font-size: 35px;
+				  line-height: 30px;
+				  margin-right: 10px;
+				}
 			}
 
 			.mar-right {
@@ -169,12 +184,15 @@ section.slogan {
 
 			p {
 				font-family: 'Avenirregular';
-		    font-size: 22px;
-		    color: #505050;
-		    margin-top: 16px;
-		    // letter-spacing: .015em;
-		    line-height: 1.8em;
-		    font-weight: 300;
+				font-size: 22px;
+				color: #505050;
+				margin-top: 16px;
+				// letter-spacing: .015em;
+				line-height: 1.8em;
+				font-weight: 300;
+				@media screen and (max-width: 480px) {
+					font-size: 18px;
+				}
 			}
 		}
 	}
@@ -204,12 +222,12 @@ section.couple {
 
 		.money,
 		.couple {
-    	position: relative;
-    	height: 100%;
-    	p {
-    		font-size: 16px;
-    		color: #ffffff;
-    	}
+		position: relative;
+		height: 100%;
+		p {
+			font-size: 16px;
+			color: #ffffff;
+		}
 
 			img {
 				width: 100%;
@@ -225,15 +243,21 @@ section.money {
 		h2 {
 			font-family: 'Avenirbold';
 			text-align: left;
-      font-size: 45px;
-	    // text-transform: uppercase;
+		  font-size: 45px;
+			// text-transform: uppercase;
+			@media screen and (max-width: 480px) {
+				font-size: 40px;
+			}
 		}
 
 		p {
 			font-family: 'Avenirregular';
 			text-align: left;
-	    font-weight: 300;
-    	font-size: 22px !important;
+			font-weight: 300;
+			font-size: 22px !important;
+			@media screen and (max-width: 480px) {
+				font-size: 18px !important;
+			}
 		}
 	}
 }
@@ -249,30 +273,39 @@ section.information {
 			color: #505050;
 			font-size: 50px;
 			-webkit-font-smoothing: antialiased;
+			@media screen and (max-width: 480px) {
+				font-size: 35px;
+			}
 		}
 
 		img {
-    	width: 130px;
+		width: 130px;
+			@media screen and (max-width: 480px) {
+				width: 90px;		
+			}
 		}
 	}
 
 	p {
 		font-family: 'Avenirregular';
 		color: #505050;
-    font-size: 20px;
+		font-size: 20px;
+		@media screen and (max-width: 480px){
+			font-size: 18px;
+		}
 	}
 
 	p.top-text {
-  	font-size: 22px;
-    color: #999999;
-    margin-top: 16px;
-    letter-spacing: .015em;
-    line-height: 1.8em;
-    font-weight: 300;
+	font-size: 22px;
+	color: #999999;
+	margin-top: 16px;
+	letter-spacing: .015em;
+	line-height: 1.8em;
+	font-weight: 300;
 	}
 
 	.how-it-works {
-  	margin-top: 50px;
+	margin-top: 50px;
 	}
 }
 
@@ -289,23 +322,31 @@ section.couple {
 
 			h2 {
 				font-family: 'Avenirbold';
-		    font-size: 45px;
-		    // text-transform: uppercase;
+				font-size: 45px;
+			// text-transform: uppercase;
+				@media screen and (max-width: 480px) {
+					font-size: 30px;	
+				}
 			}
 			
 			p {
 				font-family: 'Avenirregular';
-	    	margin-bottom: 30px;
-	    	font-size: 22px
+				margin-bottom: 30px;
+				font-size: 22px;
+				@media screen and (max-width: 480px) {
+					font-size: 18px;
+				}
 			}
 
 			.btn-default {
 				background-color: transparent;
 				border-color: #ffffff;
 				border: solid 3px white;
-			  font-size: 17px !important;
-        padding: 15px 17px;
-
+				font-size: 17px !important;
+				padding: 15px 17px;
+				@media screen and (max-width: 480px) {
+					font-size: 14px !important;
+				}
 				&:hover,
 				&:focus,
 				&:active {
@@ -330,8 +371,8 @@ section.vacation {
 		}
 
 		p {
-	  	margin-top: 20px;
-    	margin-bottom: 40px;
+		margin-top: 20px;
+		margin-bottom: 40px;
 		}
 		
 		.btn-default {
@@ -342,7 +383,7 @@ section.vacation {
 	.image-vacation {
 
 		.inner-image {
-	    margin-bottom: -1px;
+		margin-bottom: -1px;
 
 			img {
 				max-width: 100%;
@@ -355,11 +396,11 @@ section.vacation {
   height: 100%;
 
   img{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    height: auto;
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height: auto;
   }
 }
 
@@ -392,6 +433,12 @@ section.vacation {
 
 .wrapper-navbar-brand {
 	#logo-color-white {
+		@media screen and (max-width: 768px) {
+			margin-left: 15px;
+			margin-bottom: 15px;
+		}
+	}
+	#logo-color-orange {
 		@media screen and (max-width: 768px) {
 			margin-left: 15px;
 			margin-bottom: 15px;

@@ -10,10 +10,10 @@ $(document).ready(function(){
     }, 1000);
   });
 
-  $("#slideToggleLink").on('click', function(){
-    $(".wrapper-deals").toggleClass('card-orange');
-    $(".round-button").toggleClass('hide');
-  });
+  // $("#slideToggleLink").on('click', function(){
+  //   $(".wrapper-deals").toggleClass('card-orange');
+  //   $(".round-button").toggleClass('hide');
+  // });
 });
 
 $(window).scroll(function() {    

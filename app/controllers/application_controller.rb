@@ -29,7 +29,7 @@ class ApplicationController < ActionController::Base
       if resource.admin?
        admin_promo_codes_url
       else
-        root_url
+        deals_url
       end
     end
 

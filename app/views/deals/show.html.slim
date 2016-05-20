@@ -21,7 +21,10 @@
             .row
               .col-md-12
                 #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
-              .col-md-12
+              .col-xs-12.col-md-6.mar-top-15
+                .rating-text style="clear:both"
+                  = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
+              .col-xs-12.col-md-6
                 - if @group
                   = link_to "javascript:void(0)", id: 'linkPopover', class: 'pull-right', data: { toggle: 'popover' }, style: "float:left;margin-top:10px;margin-left:10px;"
                     = "#{pluralize(@votes.count, 'person')} like this hotel"
@@ -40,8 +43,6 @@
                           = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
                             = vote.user.id.eql?(current_user.id) ? "You" : full_name(vote.user.profile)
 
-            .rating-text style="clear:both"
-              = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
             br
 
 

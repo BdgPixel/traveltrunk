@@ -9,6 +9,7 @@ html {
   position: relative;
   min-height: 100%;
   height: auto;
+  overflow-x: hidden; 
 }
 
 body {
@@ -17,6 +18,7 @@ body {
   // margin-bottom: 60px;
   height: 100%;
   padding-bottom: 200px;
+  overflow-x: hidden;
 }
 
 .bg-gradient {
@@ -62,6 +64,7 @@ body {
     
     button {
       z-index: 2;
+      background-color: white;
     }
   }
 
@@ -94,7 +97,6 @@ body {
   .navbar-default {
     @include border-radius(0px);
     padding: 10px 0px;
-
     ul {
 
       a {
@@ -130,25 +132,14 @@ body {
         -o-transition: all 250ms ease-in-out 0s;
         transition: all 250ms ease-in-out 0s;
 
-        // @include border-radius(7px);
-        // padding: 10px 14px;
-        // background: rgb(239,62,54); /* Old browsers */
-        // background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
-        // background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
-        // background: -webkit-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Chrome10+,Safari5.1+ */
-        // background: -o-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Opera 11.10+ */
-        // background: -ms-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* IE10+ */
-        // background: linear-gradient(to bottom,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* W3C */
-        // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef3e36', endColorstr='#f7941e',GradientType=0 ); /* IE6-9 */
-        // border-top:transparent;
-        // border-bottom:transparent;
-        // color: #ffffff;
-
         &:hover,
         &:focus,
         &:active {
           color: white !important;
           opacity: 0.5;
+        }
+        @media screen and (max-width: 480px) {
+          margin: 0px 15px;
         }
       }
     }
@@ -161,7 +152,6 @@ body {
       background-color: white;
       border-color: transparent;
       color: #ffffff;
-
       a.login {
         padding: 16px 25px;
 
@@ -353,6 +343,9 @@ body {
 
 .wrapper-img-profile {
   margin-top: 15px;
+  @media screen and (max-width: 480px) {
+    padding: 15px;
+  }
 
   @media screen and (min-width: 320px) {
 
@@ -365,6 +358,11 @@ body {
 .wrapper-personal-information {
   margin-top: 25px;
   margin-bottom: 25px;
+  h3 {
+    @media screen and (max-width: 480px) {
+      padding: 0 15px;
+    }
+  }
   .table-custom {
     tr {
       td {
@@ -478,7 +476,14 @@ body {
 
 .wrapper-group-saving {
 
-  padding: 90px 0px;
+  padding: 150px 0px;
+
+  img {
+    @media screen and (max-width: 768px) {
+      width: 200px;
+      height: 200px;
+    }
+  }
 
   .btn-default {
     @extend .btn-invite-friend;
@@ -498,6 +503,11 @@ body {
 .wrap-credit {
   padding-bottom: 40px;
   padding-top: 20px;
+  p {
+    @media screen and (max-width: 768px) {
+      padding: 0 25px;
+    }
+  }
   a {
     font-size: 18px;
   }
@@ -938,7 +948,7 @@ h3.hotel-name {
 
 .alert-danger {
   position: absolute;
-  z-index: 99999;
+  z-index: 2;
   width: 100%;
   @include border-radius(0px);
 }

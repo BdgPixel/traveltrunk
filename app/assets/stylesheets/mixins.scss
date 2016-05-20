@@ -24,10 +24,28 @@ $sm-screen	: 768px  ;
 $md-screen	: 991px  ;
 $lg-screen	: 1200px ;
 
+input:-webkit-autofill, textarea:-webkit-autofill, select:-webkit-autofill {
+   background-color: white !Important;
+   background-image: none;
+   color: rgb(0, 0, 0);
+}
+
 .mar-top-20-xs {
 	@media screen and (max-width: 768px) {
      	margin-top: 20px;
     }
+}
+
+form {
+	position: relative;
+}
+
+.alert-info {
+	border-radius: 0;
+}
+
+.mar-top-15 {
+	margin-top: 15px;
 }
 
 input[type="text"],input[type="password"], input[type="email"] {
@@ -71,6 +89,19 @@ input[type="text"],input[type="password"], input[type="email"] {
   }
 }
 
+.welcome-message {
+	font-size: 17px;
+}
+
+.small-img-saving {
+	img {
+		&.img-circle {
+			width: 200px !Important;
+			height: 200px !Important;
+		}
+	}
+}
+
 .pad-right-10 {
 	padding-right: 10px;
 }
@@ -91,6 +122,9 @@ input[type="text"],input[type="password"], input[type="email"] {
 	transition: 0.2s;
 	margin-bottom: 10px !Important;
 	border-radius: 4px !Important;
+	@media screen and (max-width: 480px) {
+    	width: 100%;
+    }
 	&:hover {
 		color: white;
 		opacity: 0.5;

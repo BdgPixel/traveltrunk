@@ -5,6 +5,9 @@
 
   .login {
     @extend .registration;
+    @media screen and (max-width: 480px) { 
+      padding: 15px !important; 
+    }
 
     input.input-login {
       @extend input.input-registration;

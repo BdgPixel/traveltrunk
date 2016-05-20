@@ -11,7 +11,10 @@
     background: rgba(255, 255, 255, 0.12);
     padding: 45px;
     margin-top: 55px;
-    border-radius: 5px; 
+    border-radius: 5px;
+    @media screen and (max-width: 480px) {
+      padding: 15px;
+    } 
     .form-group {
       margin-bottom: 20px;
     }

@@ -18,14 +18,14 @@
 
     = f.simple_fields_for :profile do |profile_form|
       .wrapper-edit-profile
-        .col-md-12
+        .row
           .col-md-6.col-md-offset-3
             .form-group
               .thumbnail
                 = link_to 'javascript:void(0)'
                   = image_tag current_user.profile.image.url, id: 'profile_image', class: "img-circle" unless current_user.profile.image.nil?
                 br
-                = profile_form.input_field :image, as: :file, id: 'choose_profile_image',  data: {filename_placement: 'inside' }, class: 'btn btn-block btn-primary btn-file'
+                = profile_form.input_field :image, as: :file, id: 'choose_profile_image',  data: {filename_placement: 'inside' }, class: 'btn btn-block btn-saving btn-green'
                 .hide
                   = profile_form.input :image_cache, as: :hidden
                 span.text-info
@@ -37,7 +37,7 @@
                 .form-group
                   = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
 
-              .col-md-6[style="padding-right: 0px"]
+              .col-md-6
                 .form-group
                   = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
 
@@ -57,140 +57,140 @@
                 .form-group
                   = profile_form.input :home_airport, label: 'Your Home airport?', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
 
-              .col-md-6[style="padding-right: 0px"]
+              .col-md-6
                 .form-group
                   = profile_form.input :place_to_visit, label: 'Name place you’d like to visit someday', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
 
-        .col-md-6.col-md-offset-3
-          h4 PERSONAL INFORMATION
-          br
+          .col-md-6.col-md-offset-3
+            h4 PERSONAL INFORMATION
+            br
 
-        .col-md-6.col-md-offset-3
-          .form-group
-            = profile_form.input :address, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+          .col-md-6.col-md-offset-3
+            .form-group
+              = profile_form.input :address, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
 
-        .col-md-6.col-md-offset-3
-          .form-group
-            = profile_form.input :address_1, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+          .col-md-6.col-md-offset-3
+            .form-group
+              = profile_form.input :address_1, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
 
-        .col-md-6.col-md-offset-3
-          .form-group
-            = profile_form.input :address_2, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+          .col-md-6.col-md-offset-3
+            .form-group
+              = profile_form.input :address_2, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
 
-        .col-md-8.col-md-offset-2
-          .row
-            .col-md-6
-              .form-group
-                = profile_form.input :city, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
-
-            .col-md-6
-              .form-group
-                = profile_form.input :state, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
-
-            .col-md-6
-              .form-group
-                = profile_form.input :postal_code, input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
-
-            .col-md-6
-              .form-group
-                = profile_form.label :country_code
-                = profile_form.country_select(:country_code, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom' })
-
-                - if profile_form.error :country_code
-                span.error.error-message please select one
-
-        .col-md-12
-          .row
-            .col-md-8.col-md-offset-2
-              p
-                i
-                  small &ldquo;Address must match credit card information&rdquo;
-              br
-              center
+          .col-md-8.col-md-offset-2
+            .row
+              .col-md-6
                 .form-group
-                  = f.button :submit, 'Update Profile', class: 'btn btn-saving btn-green'
+                  = profile_form.input :city, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :state, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :postal_code, input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
+
+              .col-md-6
+                .form-group
+                  = profile_form.label :country_code
+                  = profile_form.country_select(:country_code, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom' })
+
+                  - if profile_form.error :country_code
+                  span.error.error-message please select one
+
+        .row
+          .col-md-8.col-md-offset-2
+            p
+              i
+                small &ldquo;Address must match credit card information&rdquo;
+            br
+            center
+              .form-group
+                = f.button :submit, 'Update Profile', class: 'btn btn-saving btn-green'
 
         .col-md-12
           br
           hr
 
-  .col-md-12
-    h4
-      | SAVINGS PLAN
+  .row
+    .col-md-12
+      h4
+        | SAVINGS PLAN
 
   - if current_user.profile.birth_date.blank? || current_user.errors.any?
-    .col-md-12
-      .alert.alert-info Please complete your profile before you can create your savings plan.
+    .row
+      .col-md-12
+        .alert.alert-info Please complete your profile before you can create your savings plan.
   - else
-    .col-md-12
-      p
-        i
-          small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
-        br
-        br
+    .row
+      .col-md-12
+        p
+          i
+            small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
+          br
+          br
     = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account", class: "transaction-form" } do |f|
-      .col-md-12
-        .payment-errors
-        .row
-          .col-md-6
+
+      .payment-errors
+      .row
+        .col-md-6
+          .form-group
+            = f.input :credit_card, input_html: { class: "form-control  input-custom card_number" }
+
+        .col-md-2
+          .form-group
+            = f.input :cvc, as: :password, input_html: { class: "form-control  input-custom input-customcvc", maxlength: 4 }
+
+        .col-md-2
+          .form-group
+            = label_tag "Expiration Month (MM)"
+            = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control input-custom', data: { stripe: 'exp-month' } }
+
+        .col-md-2
+          .form-group
+            = label_tag "Expiration Year (YYYY)"
+            = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "bank_account[exp_year]", id: "card_year", class: 'form-control input-custom', data: { stripe: 'exp-year' } }
+
+      .row
+        .col-md-6
+          .form-group
+            = f.label :amount_transfer
+            .input-group
+              .input-group-addon $
+              = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
+              = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
+
+            = f.error :amount_transfer, class: 'error-message'
+            .amount-error
+
+        .col-md-6
+          .form-group
+            = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control input-custom transfer_frequency' }, error_html: { class: 'error-message' }
+            .transfer-frequency-error
+
+      .row
+        .col-md-12
+          br
+          center
             .form-group
-              = f.input :credit_card, input_html: { class: "form-control  input-custom card_number" }
+              = f.button :submit, 'Update Savings', class: 'btn btn-saving btn-green'
+              - unless current_user.bank_account.new_record?
+                | &nbsp;&nbsp;
+                button.btn.btn-saving.btn-orange-soft data-target=".unsubscript" data-toggle="modal" type="button"
+                  | Delete Bank Account
+          br
+          br
 
-          .col-md-2
-            .form-group
-              = f.input :cvc, as: :password, input_html: { class: "form-control  input-custom input-customcvc", maxlength: 4 }
-
-          .col-md-2
-            .form-group
-              = label_tag "Expiration Month (MM)"
-              = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control input-custom', data: { stripe: 'exp-month' } }
-
-          .col-md-2
-            .form-group
-              = label_tag "Expiration Year (YYYY)"
-              = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "bank_account[exp_year]", id: "card_year", class: 'form-control input-custom', data: { stripe: 'exp-year' } }
-
-      .col-md-12
-        .row
-          .col-md-6
-            .form-group
-              = f.label :amount_transfer
-              .input-group
-                .input-group-addon $
-                = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
-                = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
-
-              = f.error :amount_transfer, class: 'error-message'
-              .amount-error
-
-          .col-md-6
-            .form-group
-              = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control input-custom transfer_frequency' }, error_html: { class: 'error-message' }
-              .transfer-frequency-error
-
-      .col-md-12
-        .row
-          .col-md-12
-            br
-            center
-              .form-group
-                = f.button :submit, 'Update Savings', class: 'btn btn-saving btn-green'
-                - unless current_user.bank_account.new_record?
-                  | &nbsp;&nbsp;
-                  button.btn.btn-saving.btn-orange-soft data-target=".unsubscript" data-toggle="modal" type="button"
-                    | Delete Bank Account
-            br
-            br
-
-            .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
-              .modal-dialog
-                .modal-content
-                  .modal-header
-                    button.close aria-label="Close" data-dismiss="modal" type="button"
-                      span aria-hidden="true"  &times;
-                    h4.modal-title Reoccurring transaction
-                  .modal-body
-                    p Are you sure you want to stop reoccurring transaction on this account?
-                  .modal-footer
-                    button.btn.btn-grey data-dismiss="modal" type="button" No, keep my savings plan.
-                    = link_to 'Yes, please discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-default"
+          .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
+            .modal-dialog
+              .modal-content
+                .modal-header
+                  button.close aria-label="Close" data-dismiss="modal" type="button"
+                    span aria-hidden="true"  &times;
+                  h4.modal-title Reoccurring transaction
+                .modal-body
+                  p Are you sure you want to stop reoccurring transaction on this account?
+                .modal-footer
+                  button.btn.btn-grey data-dismiss="modal" type="button" No, keep my savings plan.
+                  = link_to 'Yes, please discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-default"

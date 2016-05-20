@@ -2,6 +2,9 @@ doctype html
 html lang="en"
   head
     title Traveltrunk
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=device-width, initial-scale=1" name="viewport"
     = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
     = yield :css
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
@@ -13,5 +16,6 @@ html lang="en"
 
   body class="bg-gradient" data-controller="#{controller_name}" data-action="#{action_name}"
     = render 'partials/navbar'
+    = render 'partials/notice'
     = yield
     = yield :javascripts
