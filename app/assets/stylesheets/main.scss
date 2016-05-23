@@ -950,6 +950,10 @@ h3.hotel-name {
 
 // Alert Style 
 
+ .alert-dismissible .close {
+  top: 5px;
+ }
+
 .alert-success {
   background-color: #ffffff;
   border-color: #ffffff;
