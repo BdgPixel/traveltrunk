@@ -94,9 +94,21 @@ body {
     }
   }
 
+  .navbar-collapse {
+    box-shadow: none;
+  }
+
+  .navbar-default {
+
+    .navbar-collapse {
+      border-color: transparent;
+    }
+  }
+
   .navbar-default {
     @include border-radius(0px);
     padding: 10px 0px;
+
     ul {
 
       a {
@@ -116,7 +128,12 @@ body {
           color: #ffffff;
           background-color: rgba(255, 255, 255, 0.44);
         }
+
+        @media screen and (max-width: 480px) {
+          margin: 0px 15px;
+        }
       }
+
       a.btn-orange2 {
         border: 2px solid $orange;
         -moz-border-radius: 7px;
@@ -138,6 +155,7 @@ body {
           color: white !important;
           opacity: 0.5;
         }
+
         @media screen and (max-width: 480px) {
           margin: 0px 15px;
         }
@@ -197,6 +215,8 @@ body {
   
   &.color {
     background: image-url("logo_color.png") no-repeat;
+    position: relative;
+    top: 1px;
   }
 }
 
@@ -207,6 +227,8 @@ body {
   
   &.color {
     background: image-url("logo_color.png") no-repeat;
+    position: relative;
+    top: 1px;
   }
 }
 
