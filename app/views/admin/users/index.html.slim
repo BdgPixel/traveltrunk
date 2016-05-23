@@ -1,29 +1,31 @@
-h3 List of Users
-br
+.pad-top-97
+.container
+  h3 List of Users
+  br
 
-- if @users.empty?
-  .alert.alert-info
-    strong Notice:&nbsp;
-    | No users has been created
+  - if @users.empty?
+    .alert.alert-info
+      strong Notice:&nbsp;
+      | No users has been created
 
-- else
-  table.table.table-striped.table-hover
-    thead
-      tr
-        th Email
-        th Name
-        th Address
-        th Gender
-        th
+  - else
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th Email
+          th Name
+          th Address
+          th Gender
+          th
 
-    tbody
-      - @users.each do |user|
-        - if user.profile
-          tr
-            td = user.email
-            td = user.profile.full_name
-            td = user.profile.address.titleize rescue 'Information not specified'
-            td = user.profile.gender ? user.profile.gender : 'Information not specified'
-            td
-              = link_to 'Detail', admin_user_path(user), class: 'btn btn-orange'
-  = paginate @users
+      tbody
+        - @users.each do |user|
+          - if user.profile
+            tr
+              td = user.email
+              td = user.profile.full_name
+              td = user.profile.address.titleize rescue 'Information not specified'
+              td = user.profile.gender ? user.profile.gender : 'Information not specified'
+              td
+                = link_to 'Detail', admin_user_path(user), class: 'btn btn-saving btn-orange-soft'
+    = paginate @users
