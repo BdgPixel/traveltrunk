@@ -157,7 +157,7 @@ section.slogan {
 		
 		.slogan {
 			padding: 70px 0px;
-			
+
 			@media screen and (max-width: 480px) {
 				padding: 0px;
 			}
@@ -434,15 +434,14 @@ section.vacation {
 
 .wrapper-navbar-brand {
 	#logo-color-white {
-
-		@media screen and (min-width: 320px) {
+		@media screen and (max-width: 768px) {
 			margin-left: 15px;
 			margin-bottom: 0px;
 		}
 	}
 
 	#logo-color-orange {
-		@media screen and (min-width: 320px) {
+		@media screen and (max-width: 768px) {
 			margin-left: 15px;
 			margin-bottom: 0px;
 		}

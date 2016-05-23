@@ -17,9 +17,9 @@
             /   | TravelTrunk
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
-        ul.nav.navbar-nav.navbar-right
-          - if user_signed_in?
-            - if current_user.admin?
+        - if user_signed_in?
+          - if current_user.admin?
+            ul.nav.navbar-nav.navbar-right.navbar-admin
               li = link_to 'Users', admin_users_path
               li = link_to 'Transactions', admin_transactions_path
               li = link_to 'Void / Refund Requests', admin_refunds_path
@@ -31,7 +31,8 @@
                   span.caret
                 ul.dropdown-menu
                   li = link_to 'Sign Out', destroy_user_session_path, method: :delete
-            - else
+          - else
+            ul.nav.navbar-nav.navbar-right
               li.link-top-login = link_to 'DEALS', deals_path
               li.link-top-login = link_to 'SAVINGS', savings_path
               li.dropdown.dropdown-top-active
@@ -57,7 +58,8 @@
                   li = link_to 'Help', helps_path
                   li.divider role="separator"
                   li = link_to 'Sign Out', destroy_user_session_path, method: :delete
-          - else 
+        - else
+          ul.nav.navbar-nav.navbar-right 
             li
               = link_to new_user_session_path, class: "login show"
                | Login

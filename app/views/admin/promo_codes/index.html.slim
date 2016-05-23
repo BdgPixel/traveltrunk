@@ -1,40 +1,40 @@
-h3 Promo Codes
-br
+.pad-top-97
+.container
+  h3 Promo Codes
+  br
 
-- if @promo_codes.empty?
-  .alert.alert-info
-    strong Notice:&nbsp;
-    | No Promo Codes has been created
+  - if @promo_codes.empty?
+    .alert.alert-info
+      strong Notice:&nbsp;
+      | No Promo Codes has been created
 
-- else
-  table.table.table-striped.table-hover
-    thead
-      tr
-        th Token Code
-        th Amount
-        th User Recipient
-        th Created At
-        th Expired At
-        th Status
-        th Action
-
-    tbody
-      - @promo_codes.each do |promo_code|
+  - else
+    table.table.table-striped.table-hover
+      thead
         tr
-          td = promo_code.token
-          td = number_to_currency promo_code.amount.to_f
-          td
-            - if promo_code.user.try(:profile)
-              = link_to "#{promo_code.user.profile.full_name} <#{promo_code.user.email}>", admin_user_path(promo_code.user)
-            - else
-              = promo_code.user.try(:email)
+          th Token Code
+          th Amount
+          th Recipient
+          th Expired Date
+          th Status
+          th
 
-          td = promo_code.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
-          td = promo_code.exp_date.strftime("%Y/%m/%d")
-          td = titleize_text promo_code.displayed_status
-          td
-            = link_to 'Delete', admin_promo_code_path(promo_code), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure want to delete this promo code?'}, :method => :delete
+      tbody
+        - @promo_codes.each do |promo_code|
+          tr
+            td = promo_code.token
+            td = number_to_currency promo_code.amount.to_f
+            td
+              - if promo_code.user.profile
+                = "#{promo_code.user.profile.full_name} <#{promo_code.user.email}>"
+              - else
+                = promo_code.user.email
 
-= link_to new_admin_promo_code_path, class: "btn btn-orange btn-md"
-  span.glyphicon.glyphicon-plus
-  | &nbsp;New Promo Code
+            td = promo_code.exp_date.strftime("%B %d, %Y")
+            td = titleize_text promo_code.displayed_status
+            td
+              = link_to 'Destroy', admin_promo_code_path(promo_code), data: {:confirm => 'Are you sure?'}, :method => :delete
+
+  = link_to new_admin_promo_code_path, class: "btn btn-saving btn-orange-soft btn-md"
+    span.glyphicon.glyphicon-plus
+    | &nbsp;Add to Promo Code

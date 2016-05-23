@@ -3,7 +3,7 @@ class SavingsController < ApplicationController
 
   before_action :authenticate_user!
   before_action :get_group, only: :index
-  before_action :check_saving_plan, only: :index
+  # before_action :check_saving_plan, only: :index
 
   def index; end
 

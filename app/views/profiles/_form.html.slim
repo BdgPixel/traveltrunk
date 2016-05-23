@@ -20,6 +20,9 @@
       .wrapper-edit-profile
         .row
           .col-md-6.col-md-offset-3
+            .wrapper-titile-edit-profile
+              h1.text-center
+                | Let the Adventure Begin!
             .form-group
               .thumbnail
                 = link_to 'javascript:void(0)'
@@ -63,6 +66,9 @@
 
           .col-md-6.col-md-offset-3
             h4 PERSONAL INFORMATION
+            h2 Create Your Traveler Profile... 
+            p
+              | Take a few moments to fill in the easy form below. This information helps us customize Travel  Trunk to your needs and vision.  
             br
 
           .col-md-6.col-md-offset-3
@@ -117,6 +123,9 @@
     .col-md-12
       h4
         | SAVINGS PLAN
+      h2 Create Your Savings Plan...
+      p
+        | You decide how much you want to save, and how often. With regular, automatic deposits into  your Travel Trunk account, you’ll be amazed how quickly your funds build up! 
 
   - if current_user.profile.birth_date.blank? || current_user.errors.any?
     .row
