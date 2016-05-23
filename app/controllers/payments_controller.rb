@@ -55,6 +55,7 @@ class PaymentsController < ApplicationController
       if response['x_response_code'].eql?('1')
         transaction = Transaction.new(
           user_id: user.id,
+          customer_id: response['x_cust_id'],
           invoice_id: response['x_invoice_num'],
           amount: response['x_amount'].to_f * 100,
           transaction_type: 'payment.recurring',
