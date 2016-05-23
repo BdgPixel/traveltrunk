@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   paginates_per 10
 
-  scope :non_admin, -> { where(admin: false) }
+  scope :non_admin, -> { where(admin: false).order(created_at: :desc) }
 
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
