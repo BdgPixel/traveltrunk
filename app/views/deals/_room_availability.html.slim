@@ -1,19 +1,19 @@
 - unless @error_response
+  .table-responsive
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th Room type
+          th Amenities
+          th colspan="2" Total booking price
 
-  table.table.table-striped.table-hover
-    thead
-      tr
-        th Room type
-        th Amenities
-        th colspan="2" Total booking price
+        tbody
+          - if @room_availability["@size"].eql? "1"
+            = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"]
+          - else
+            - @room_availability["HotelRoomResponse"].uniq.each do |room|
 
-      tbody
-        - if @room_availability["@size"].eql? "1"
-          = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"]
-        - else
-          - @room_availability["HotelRoomResponse"].uniq.each do |room|
-
-            = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"]
+              = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"]
 
 - if @error_response
   #error_response.alert.alert-info

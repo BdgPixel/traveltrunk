@@ -2,7 +2,7 @@
   = javascript_include_tag "deals"
   = javascript_include_tag "variables"
 
-#slide.wrapper-deals
+#slide.wrapper-deals class="#{ 'card-orange' if current_user.total_credit.zero? }"
   .container
     .row
       .col-sm-12
@@ -19,13 +19,12 @@
             hr
   .col-xs-12.col-md-12.slide
     .text-header-slide
-      .round-button 
-        .icon.arrow-down
       h1.text-center
         - if @destination
-          = link_to @destination.title_destination, "javascript:void(0)", id: 'slideToggleLink'
+          = link_to @destination.title_destination, "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs"
         - else
-          = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink'
+          = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs-white"
+
     
     #slideToggle
       .row

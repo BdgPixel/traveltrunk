@@ -46,13 +46,19 @@
     background-color: rgb(255, 255, 255);
     left: 25px;
     z-index: 1;
-    top: 10px;
+    top: 17px;
     padding: 10px;
   	h4 {
-      color: #36B3AF;
+      color: #5D5F5F;
       font-size: 40px;
       margin: 0px;
   	}
+  }
+  @media screen and (max-width: 480px) {
+    .col-xs-6 {
+      width: 100%;
+      padding:0px 15px;
+    }
   }
 }
 
@@ -101,6 +107,7 @@
     background: -webkit-linear-gradient(left,  rgba(245,75,67,1) 0%,rgba(255, 175, 83, 0.9) 100%); /* Chrome10-25,Safari5.1-6 */
     background: linear-gradient(147deg,  rgba(245,75,67,1) 0%,rgba(255, 175, 83, 0.9) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 ); /* IE6-9 */
+    padding-bottom: 65px;
     h1 {
       color: white;
     }
@@ -200,14 +207,47 @@
 	// box-shadow: 0px 0px 15px 2px rgba(207,207,207,0.66);
 	@include border-radius(5px);
   margin-bottom: 20px;
-	padding: 10px;
+	padding: 0px;
   -webkit-transition: all 250ms ease-in-out 0s;
   -moz-transition: all 250ms ease-in-out 0s;
   -ms-transition: all 250ms ease-in-out 0s;
   -o-transition: all 250ms ease-in-out 0s;
   transition: all 250ms ease-in-out 0s;
   &:hover {
-    box-shadow: 0px 0px 15px 2px #FEA960;
+    box-shadow: 0px 0px 15px 2px #C7C7C7;
+    // box-shadow: 0px 0px 15px 2px #FEA960;
+  }
+}
+
+.arrow-downs {
+  &:before {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    margin-left: -15px;
+    width: 30px;
+    height: 90px;
+    content: '';
+    background: image-url("down-chevron-grey.png") no-repeat;
+    background-position: 0px 0px;
+    -webkit-animation: arrowmove2 2s infinite; /* Chrome, Safari, Opera */
+    animation: arrowmove2 2s infinite;
+  }
+}
+
+.arrow-downs-white {
+  &:before {
+    position: absolute;
+    top: 80px;
+    left: 50%;
+    margin-left: -15px;
+    width: 30px;
+    height: 90px;
+    content: '';
+    background: image-url("down-chevron.png") no-repeat;
+    background-position: 0px 0px;
+    -webkit-animation: arrowmove2 2s infinite; /* Chrome, Safari, Opera */
+    animation: arrowmove2 2s infinite;
   }
 }
 
@@ -243,13 +283,13 @@
 /* Chrome, Safari, Opera */
 @-webkit-keyframes arrowmove2 {
     from {background-position: 0px 0px;opacity: 1;}
-    to {background-position: 0px 25px;opacity: 0;}
+    to {background-position: 0px 17px;opacity: 0;}
 }
 
 /* Standard syntax */
 @keyframes arrowmove2 {
     from {background-position: 0px 0px;opacity: 1;}
-    to {background-position: 0px 25px;opacity: 0;}
+    to {background-position: 0px 17px;opacity: 0;}
 }
 
 // .pagination {

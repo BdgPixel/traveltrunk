@@ -40,7 +40,7 @@
                 table.table.table-user-information.table-custom
                   tbody
                     tr
-                      td width='250px' Date of Birth
+                      td width='50%' Date of Birth
                       td 
                         | : &nbsp;
                         = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
@@ -48,38 +48,42 @@
                       td Gender:
                       td
                         | : &nbsp;
-                        = @user.profile.gender
+                        = @user.profile.gender || 'Information not specified'
                     tr
                       td Address:
                       td
                         | : &nbsp;
-                        = @user.profile.address.titleize rescue 'Information not specified'
-                    tr
-                    tr
-                      td Address 1:
-                      td
-                        | : &nbsp;
-                        = @user.profile.address_1.titleize rescue 'Information not specified'
-                    tr
-                      td Address 2:
-                      td
-                        | : &nbsp;
-                        = @user.profile.address_2.titleize rescue 'Information not specified'
+                        = @user.profile.address.try(:titleize) || 'Information not specified'
+                    
+                    - unless @user.profile.address_1.blank?
+                      tr
+                        td Address 1:
+                        td
+                          | : &nbsp;
+                          = @user.profile.address_1.try(:titleize) || 'Information not specified'
+
+                    - unless @user.profile.address_2.blank?
+                      tr
+                        td Address 2:
+                        td
+                          | : &nbsp;
+                          = @user.profile.address_2.try(:titleize) || 'Information not specified'
+
                     tr
                       td City:
                       td
                         | : &nbsp;
-                        = @user.profile.city
+                        = @user.profile.city || 'Information not specified'
                     tr
                       td State/Province:
                       td
                         | : &nbsp;
-                        = @user.profile.state
+                        = @user.profile.state || 'Information not specified'
                     tr
                       td Zip/Postal Code:
                       td
                         | : &nbsp;
-                        = @user.profile.postal_code
+                        = @user.profile.postal_code || 'Information not specified'
                     tr
                       td County:
                       td
@@ -91,7 +95,7 @@
                   table.table.table-user-information.table-custom
                     tbody
                       tr
-                        td width='250px' Plan Name
+                        td width='50%' Plan Name
                         td 
                           | : &nbsp;
                           = @user.subscription.plan_name
