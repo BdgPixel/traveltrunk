@@ -22,7 +22,7 @@
             .payment-errors
             .row
               .col-md-6
-                = f.input :card_number, input_html: { class: "form-control card_number" }
+                = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;' }
                 = image_tag asset_path('cards/mastercard.png')
                 |&nbsp;
                 = image_tag asset_path('cards/visa.png')
@@ -61,7 +61,7 @@
             .row
               .col-md-8.col-md-offset-4
                 = f.submit "Submit", class: "btn btn-saving btn-green"
-                | &nbsp;
+                | &nbsp;&nbsp;
                 button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
                   | Cancel
 
