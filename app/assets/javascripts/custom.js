@@ -24,7 +24,7 @@ $(window).scroll(function() {
       $("#logo-color-orange").removeClass("hide");
 
       $("#logo-color-white").addClass("hide");
-      $("#logo-color-white").removeClass("show");
+      $("#logo-color-white").removeClass("");
 
       $(".btn-border").addClass("hide");
       $(".btn-border").removeClass("show");
@@ -35,7 +35,7 @@ $(window).scroll(function() {
       $(".transparent").removeClass("scrolling");
       // $("#logo-color").addClass("hide");
       $("#logo-color-white").removeClass("hide");
-      $("#logo-color-white").addClass("show");
+      $("#logo-color-white").addClass("");
 
       $("#logo-color-orange").addClass("hide");
 
