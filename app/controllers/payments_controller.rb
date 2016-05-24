@@ -45,30 +45,31 @@ class PaymentsController < ApplicationController
 
   def authorize_net_webhook
     response = request.parameters
-
     customer = Customer.find_by(customer_id: response['x_cust_id'])
-    user, customer_profile_id = [customer.user, customer.customer_profile_id] if customer
 
-    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
+    if customer
+      user, customer_profile_id = [customer.user, customer.customer_profile_id]
 
-    if response['x_type'].eql?('auth_capture') && response['x_subscription_id']
-      if response['x_response_code'].eql?('1')
-        transaction = Transaction.new(
-          user_id: user.id,
-          customer_id: response['x_cust_id'],
-          invoice_id: response['x_invoice_num'],
-          amount: response['x_amount'].to_f * 100,
-          transaction_type: 'payment.recurring',
-          trans_id: response['x_trans_id']
-        )
+      PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
 
-        PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
-      else
-        recurring_authorize = AuthorizeNetLib::RecurringBilling.new
-        subscription_status = recurring_authorize.get_subscription_status(response['x_subscription_id'])
+      if response['x_type'].eql?('auth_capture') && response['x_subscription_id']
+        if response['x_response_code'].eql?('1')
+          transaction = Transaction.new(
+            user_id: user.id,
+            customer_id: response['x_cust_id'],
+            invoice_id: response['x_invoice_num'],
+            amount: response['x_amount'].to_f * 100,
+            transaction_type: 'payment.recurring',
+            trans_id: response['x_trans_id']
+          )
 
-        if ['suspended', 'cancelled', 'terminated'].include? subscription_status
-          begin
+          PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+        else
+          recurring_authorize = AuthorizeNetLib::RecurringBilling.new
+          subscription_status = recurring_authorize.get_subscription_status(response['x_subscription_id'])
+
+          if ['suspended', 'cancelled', 'terminated'].include? subscription_status
+            # begin
             recurring_authorize.cancel_subscription(response['x_subscription_id'], customer_profile_id)
             
             user.create_activity(
@@ -83,12 +84,12 @@ class PaymentsController < ApplicationController
             )
 
             Subscription.where(user_id: user.id, subscription_id: response['x_subscription_id']).destroy_all
-            # Customer.where(user_id: user.id).destroy_all
             BankAccount.where(user_id: user.id).delete_all
 
             PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
-          rescue => e
-            logger.error e.message
+            # rescue => e
+            #   logger.error e.message
+            # end
           end
         end
       end
