@@ -27,7 +27,7 @@ class ApplicationController < ActionController::Base
 
     def after_sign_in_path_for(resource)
       if resource.admin?
-       admin_promo_codes_url
+        admin_promo_codes_url
       else
         deals_url
       end

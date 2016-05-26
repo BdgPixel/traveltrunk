@@ -10,6 +10,13 @@ $(document).ready(function(){
     }, 1000);
   });
 
+   $(".bank_account a[href^='#']").on('click', function(e) {
+    e.preventDefault();
+    $('html, body').animate({
+        scrollTop: $(this.hash).offset().top-60
+    }, 1000);
+  });
+
   // $("#slideToggleLink").on('click', function(){
   //   $(".wrapper-deals").toggleClass('card-orange');
   //   $(".round-button").toggleClass('hide');

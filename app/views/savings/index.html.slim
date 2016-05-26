@@ -45,11 +45,11 @@
           .row
             .col-md-12
               h1.text-center 
-               | Up, Up and Away! Count Down to Your Next Adventure...
+               | Save Up, Up and Away! Count Down to Your Next Adventure...
               br
               p.text-center
                 | This page is an overview of your trip savings. Whether you’re planning an expedition to Switzerland or a voyage to Hawaii, you’ll quickly build the funds to make your dreams a reality. Even better, invite your friends and family to save together; now, you can save through a convenient joint account.
               br
 
-              .text-center
-                = link_to 'CLICK HERE TO GET STARTED', edit_profile_path, class: 'btn btn-saving btn-green'
+              .text-center.bank_account
+                = link_to 'CLICK HERE TO GET STARTED', edit_profile_path(anchor: 'bank_account'), class: 'btn btn-saving btn-green'
