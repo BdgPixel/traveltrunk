@@ -6,6 +6,7 @@ class DealsController < ApplicationController
   before_action :authenticate_user!
   before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book, :update_credit]
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
+  before_action :update_arrival_and_departure_date, only: [:index, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
   before_action :set_hotel, only: [:show, :room_availability, :create_book, :confirmation_page]
@@ -13,15 +14,6 @@ class DealsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
   def index
-    if @destination
-      new_arrival_date = Time.zone.now.to_date
-
-      if @destination.arrival_date < new_arrival_date
-        @destination.departure_date = new_arrival_date + (@destination.departure_date - @destination.arrival_date).to_i
-        @destination.arrival_date = new_arrival_date
-      end
-    end
-
     if request.xhr?
       set_search_data
       respond_to :js
@@ -401,6 +393,10 @@ class DealsController < ApplicationController
     def get_destination
       @destinationable = @group || current_user
       @destination = @destinationable.destination
+    end
+
+    def update_arrival_and_departure_date
+      @destination.try(:update_arrival_and_departure_date)
     end
 
     def check_address

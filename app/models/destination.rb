@@ -2,14 +2,11 @@ class Destination < ActiveRecord::Base
   belongs_to :destinationable, polymorphic: true
 
   def get_search_params(group)
-    today = Time.now.utc.to_date
+    today_utc = Time.now.utc.to_date
 
-    if arrival_date < today
-      new_arrival_date = today
-      new_departure_date = new_arrival_date + (departure_date - arrival_date).to_i
-    else
-      new_arrival_date = arrival_date
-      new_departure_date = departure_date
+    if self.arrival_date < today_utc
+      self.departure_date = today_utc + (self.departure_date - self.arrival_date).to_i
+      self.arrival_date = today_utc
     end
 
     {
@@ -20,8 +17,8 @@ class Destination < ActiveRecord::Base
       city: city,
       stateProvinceCode: state_province_code,
       countryCode: country_code,
-      arrivalDate: new_arrival_date.strftime('%m/%d/%Y'),
-      departureDate: new_departure_date.strftime('%m/%d/%Y'),
+      arrivalDate: self.arrival_date.strftime('%m/%d/%Y'),
+      departureDate: self.departure_date.strftime('%m/%d/%Y'),
       options: 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
       moreResultsAvailable: 'true',
       'RoomGroup' => {
@@ -35,5 +32,15 @@ class Destination < ActiveRecord::Base
 
   def title_destination
     destination_string.split(", ").first
+  end
+
+  def update_arrival_and_departure_date
+    new_arrival_date = Time.zone.now.to_date
+
+    if self.arrival_date < new_arrival_date
+      self.departure_date = new_arrival_date + (self.departure_date - self.arrival_date).to_i
+      self.arrival_date = new_arrival_date
+      self.save
+    end
   end
 end
