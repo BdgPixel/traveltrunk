@@ -23,7 +23,11 @@ class ProfilesController < ApplicationController
     current_user.profile.validate_personal_information = true
 
     if current_user.update_attributes(user_params)
-      redirect_to profile_url, notice: 'Profile was successfully updated.'
+      if current_user.bank_account.new_record?
+        redirect_to edit_profile_url(anchor: 'bank_account'), notice: 'Profile was successfully updated.'
+      else
+        redirect_to profile_url, notice: 'Profile was successfully updated.'
+      end
     else
       render :edit
     end

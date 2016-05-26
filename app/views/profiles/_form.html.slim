@@ -4,7 +4,7 @@
 - content_for :javascripts
   = javascript_include_tag 'variables', 'profiles'
 
-.row
+div
   = simple_form_for current_user, method: :put, url: profile_url do |f|
     - if @bank_account.errors.any?
       #error_authorize_net.alert.alert-danger
@@ -34,7 +34,15 @@
                 span.text-info
                   i You can only upload jpg, gif, png
 
-          .col-md-8.col-md-offset-2
+          
+          .col-md-12
+            h4 PERSONAL INFORMATION
+            h2 Create Your Traveler Profile... 
+            p
+              | Take a few moments to fill in the easy form below. This information helps us customize Travel  Trunk to your needs and vision.  
+            br
+            
+          .col-md-12
             .row
               .col-md-6
                 .form-group
@@ -44,7 +52,7 @@
                 .form-group
                   = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
 
-          .col-md-8.col-md-offset-2
+          .col-md-12
             .row
               .col-md-6
                 .form-group
@@ -52,9 +60,9 @@
 
               .col-md-6
                 .form-group
-                  = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
+                  = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control input-custom input-select' }, error_html: { class: 'error-message' }
 
-          .col-md-8.col-md-offset-2
+          .col-md-12
             .row
               .col-md-6
                 .form-group
@@ -64,26 +72,19 @@
                 .form-group
                   = profile_form.input :place_to_visit, label: 'Name place you’d like to visit someday', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
 
-          .col-md-6.col-md-offset-3
-            h4 PERSONAL INFORMATION
-            h2 Create Your Traveler Profile... 
-            p
-              | Take a few moments to fill in the easy form below. This information helps us customize Travel  Trunk to your needs and vision.  
-            br
-
-          .col-md-6.col-md-offset-3
+          .col-md-12
             .form-group
               = profile_form.input :address, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
 
-          .col-md-6.col-md-offset-3
+          .col-md-12
             .form-group
               = profile_form.input :address_1, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
 
-          .col-md-6.col-md-offset-3
+          .col-md-12
             .form-group
               = profile_form.input :address_2, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
 
-          .col-md-8.col-md-offset-2
+          .col-md-12
             .row
               .col-md-6
                 .form-group
@@ -103,7 +104,7 @@
                   = profile_form.country_select(:country_code, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom' })
 
                   - if profile_form.error :country_code
-                  span.error.error-message please select one
+                    span.error.error-message please select one
 
         .row
           .col-md-8.col-md-offset-2
@@ -112,7 +113,7 @@
                 small &ldquo;Address must match credit card information&rdquo;
             br
             center
-              .form-group
+              .form-group.bank_account
                 = f.button :submit, 'Update Profile', class: 'btn btn-saving btn-green'
 
         .col-md-12
@@ -120,7 +121,7 @@
           hr
 
   .row
-    .col-md-12
+    .col-md-12#bank_account
       h4
         | SAVINGS PLAN
       h2 Create Your Savings Plan...

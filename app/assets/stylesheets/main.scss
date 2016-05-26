@@ -17,7 +17,7 @@ body {
   color: #777777;
   // margin-bottom: 60px;
   height: 100%;
-  padding-bottom: 200px;
+  // padding-bottom: 200px;
   overflow-x: hidden;
 }
 
@@ -28,6 +28,24 @@ body {
   background: -webkit-linear-gradient(left,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* Chrome10-25,Safari5.1-6 */
   background: linear-gradient(140deg,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 ); /* IE6-9 */
+}
+
+.grey-link-arrows {
+  padding-top: 80px;
+  padding-bottom: 50px;
+  color: grey;
+  display: block;
+  &:hover, &:focus, &:active {
+    color: grey;
+    text-decoration: none;
+  }
+}
+
+.hide-deals{
+  display: none;
+  &.card-orange {
+    display: table;
+  }
 }
 
 // End Reset Style

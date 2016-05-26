@@ -9,12 +9,12 @@
           span.icon-bar
         .wrapper-navbar-brand
 
-          a#logo-color-white.color href="/"
-
-          a#logo-color-orange.color href="/" class="hide"
-            / = image_tag 'logo1.png' 
-            / span style="color:grey;"
-            /   | TravelTrunk
+          - if user_signed_in?
+            = link_to '', deals_path, id: 'logo-color-white', class: 'color'
+            = link_to '', deals_path, id: 'logo-color-orange', class: 'color hide'
+          - else
+            = link_to '', '/', id: 'logo-color-white', class: 'color'
+            = link_to '', '/', id: 'logo-color-orange', class: 'color hide'
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         - if user_signed_in?
