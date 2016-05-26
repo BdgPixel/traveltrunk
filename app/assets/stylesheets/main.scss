@@ -30,6 +30,24 @@ body {
   filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 ); /* IE6-9 */
 }
 
+.grey-link-arrows {
+  padding-top: 80px;
+  padding-bottom: 50px;
+  color: grey;
+  display: block;
+  &:hover, &:focus, &:active {
+    color: grey;
+    text-decoration: none;
+  }
+}
+
+.hide-deals{
+  display: none;
+  &.card-orange {
+    display: table;
+  }
+}
+
 // End Reset Style
 
 // Full Background
