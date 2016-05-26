@@ -12,6 +12,8 @@
 # = require ratyrate
 # = require savings_form_validation
 # = require autoNumeric-min
+# = require moment
+# = require moment-timezone
 
 root = exports ? this
 
@@ -260,7 +262,9 @@ $(document).ready ->
 
     $.get '/deals'
 
-    today = getFormattedDate(new Date)
+    moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
+    moment.tz.link('America/Los_Angeles|US/Pacific');
+    today = moment.tz('US/Pacific').format('M/D/Y')
 
     $('input#search_deals_arrival_date').datepicker(
       startDate: today

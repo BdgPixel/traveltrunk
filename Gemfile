@@ -112,3 +112,7 @@ gem 'rails_12factor', group: :production
 
 # Sidekiq web UI dependency
 gem 'sinatra', :require => nil
+
+gem 'momentjs-rails'
+
+gem 'moment_timezone-rails'

@@ -2,7 +2,8 @@ class Destination < ActiveRecord::Base
   belongs_to :destinationable, polymorphic: true
 
   def get_search_params(group)
-    today = Date.today
+    today = Time.now.utc.to_date
+
     if arrival_date < today
       new_arrival_date = today
       new_departure_date = new_arrival_date + (departure_date - arrival_date).to_i

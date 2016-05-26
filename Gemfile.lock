@@ -308,6 +308,9 @@ GEM
     mini_magick (4.5.1)
     mini_portile2 (2.0.0)
     minitest (5.8.4)
+    moment_timezone-rails (0.5.0)
+    momentjs-rails (2.11.1)
+      railties (>= 3.1)
     multi_json (1.12.0)
     multi_xml (0.5.5)
     net-scp (1.2.1)
@@ -505,6 +508,8 @@ DEPENDENCIES
   less-rails-bootstrap
   letter_opener
   mini_magick
+  moment_timezone-rails
+  momentjs-rails
   nprogress-rails
   pg
   pry-byebug

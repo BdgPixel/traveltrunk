@@ -14,7 +14,7 @@ class DealsController < ApplicationController
 
   def index
     if @destination
-      new_arrival_date = Date.today
+      new_arrival_date = Time.zone.now.to_date
 
       if @destination.arrival_date < new_arrival_date
         @destination.departure_date = new_arrival_date + (@destination.departure_date - @destination.arrival_date).to_i
