@@ -35,20 +35,6 @@ module DealsHelper
     end
   end
 
-  # def tax_values(taxs)
-  #   tags = ""
-  #   if taxs["Surcharges"].present? && taxs["Surcharges"]["@size"].to_i > 1
-  #     taxs["Surcharges"]["Surcharge"].select do |tax|
-  #       unless tax["@type"].eql? "TaxAndServiceFee"
-  #         tags += "<tr><td><b>#{tax['@type']}</b></td>"
-  #         tags += "<td>#{number_to_currency tax["@amount"]}</td></tr>"
-  #       end
-  #     end
-
-  #     tags.html_safe
-  #   end
-  # end
-
   def nightly_rates_per_room(rates, key_date)
     tags = ""
     
@@ -63,4 +49,3 @@ module DealsHelper
     tags.html_safe
   end
 end
-
