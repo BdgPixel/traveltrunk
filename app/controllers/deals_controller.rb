@@ -54,12 +54,7 @@ class DealsController < ApplicationController
     else
       current_destination = @destination.get_search_params(@group)
 
-      number_of_adults =
-        if @group
-          @group.members.size + 1
-        else
-          1
-        end
+      number_of_adults = @group ? (@group.members.size + 1) : 1
 
       bed_type = params[:confirmation_book][:bed_type].nil? ? "" : params[:confirmation_book][:bed_type].split(' ').join(',')
 
@@ -128,7 +123,7 @@ class DealsController < ApplicationController
             member.total_credit = total_credit
             member.save(validate: false)
 
-            # add to reservation
+            # create reservation for each member (so it can be refunded for each member too later)
             reservation_params[:user_id] = member.id
             reservation_params[:total] = (amount_to_charge * 100).to_i
             reservation_params[:reservation_type] = 'group'
@@ -146,7 +141,7 @@ class DealsController < ApplicationController
           user.total_credit = total_credit
           user.save(validate: false)
 
-          # add to reservation if not group
+          # create reservation for single user instead, if user don't have group
           reservation = current_user.reservations.new(reservation_params)
           reservation.save
           @reservation_id = reservation.id
@@ -188,7 +183,7 @@ class DealsController < ApplicationController
     end
   end
 
-  # Charge using authorizenet
+  # one time payment using authorize.net
   def update_credit
     begin
       exp_month = params[:update_credit][:exp_month].rjust(2, '0')
@@ -216,6 +211,7 @@ class DealsController < ApplicationController
         else
           current_user.profile.get_profile_hash
         end
+
       response_payment = payment.charge(params_hash, customer_profile)
 
       if response_payment.messages.resultCode.eql? 'Ok'
@@ -251,21 +247,6 @@ class DealsController < ApplicationController
       end
     rescue => e
       error_message(e)
-      # if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-      #   @error_response = 
-      #     if e.error_message[:response_error_text]
-      #       "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
-      #     else
-      #       e.error_message[:response_message].split('-').last.strip
-      #     end
-          
-     
-      # else
-      #   logger.error e.message
-      #   e.backtrace.each { |line| logger.error line }
-      # end
-
-      # false
     end
   end
 
@@ -284,11 +265,11 @@ class DealsController < ApplicationController
     else
       redirect_to deals_url, notice: 'You need to provide reservation id'
     end
-
   end
 
   def room_availability
     @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
+
     @total_credit =
       if @group
         @group.total_credit
@@ -310,6 +291,7 @@ class DealsController < ApplicationController
 
   def like
     @hotel_id = params[:id]
+    
     notice =
       if @like.present?
         @like.destroy

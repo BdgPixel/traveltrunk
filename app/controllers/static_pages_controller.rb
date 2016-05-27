@@ -1,27 +1,19 @@
 class StaticPagesController < ApplicationController
   layout 'static_page'
   
-  def about_us
-  end
+  def about_us; end
 
-  def our_mission
-  end
+  def our_mission; end
 
-  def privacy_policy
-  end
+  def privacy_policy; end
 
-  def refund
-  end
+  def refund; end
 
-  def contact_us
-  end
+  def contact_us; end
 
-  def trust_and_security
-  end
+  def trust_and_security; end
 
-  def partnerships
-  end
+  def partnerships; end
 
-  def our_team
-  end
+  def our_team; end
 end

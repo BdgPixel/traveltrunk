@@ -9,7 +9,7 @@ class PaymentsController < ApplicationController
         amount_to_cents    = params[:payment][:amount].to_f * 100
 
         charge = Stripe::Charge.create(
-          amount: amount_to_cents.to_i, # amount in cents, again
+          amount: amount_to_cents.to_i,
           currency: "usd",
           source: params[:stripeToken],
           description: "Manual payment"
@@ -69,7 +69,6 @@ class PaymentsController < ApplicationController
           subscription_status = recurring_authorize.get_subscription_status(response['x_subscription_id'])
 
           if ['suspended', 'cancelled', 'terminated'].include? subscription_status
-            # begin
             recurring_authorize.cancel_subscription(response['x_subscription_id'], customer_profile_id)
             
             user.create_activity(
@@ -87,9 +86,6 @@ class PaymentsController < ApplicationController
             BankAccount.where(user_id: user.id).delete_all
 
             PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
-            # rescue => e
-            #   logger.error e.message
-            # end
           end
         end
       end
@@ -105,4 +101,3 @@ class PaymentsController < ApplicationController
     render nothing: true, status: 200
   end
 end
-

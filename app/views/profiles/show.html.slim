@@ -16,12 +16,12 @@
             h1
               = @user.full_name
 
-            h4 = @user.profile.place_to_visit.titleize rescue 'Information not specified'
+            h4 = @user.profile.place_to_visit.try(:titleize) || 'Place to visit not specified'
 
             p
               span.glyphicon.glyphicon-map-marker
               | &nbsp;
-              b = @user.profile.home_airport.titleize rescue 'Information not specified'
+              b = @user.profile.home_airport.try(:titleize) || 'Home airport not specified'
       .col-sm-4.col-md-4.col-lg-4
         .div class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
           | &nbsp;

@@ -4,16 +4,14 @@ class ProfilesController < ApplicationController
 
   def show
     @hide_informations = false
+
     if params[:id]
       @hide_informations = true
-    else
-      @hide_informations = false
     end
   end
 
   def edit
     current_user.build_profile unless current_user.profile
-    # current_user.build_bank_account unless current_user.bank_account
     @bank_account = current_user.bank_account || current_user.build_bank_account
   end
 
@@ -55,23 +53,21 @@ class ProfilesController < ApplicationController
   end
 
   def unsubscript
-    current_user.bank_account.destroy
-    current_user.update(total_credit: 0)
-    redirect_to profile_url, notice: 'Savings plan was successfully deleted.'
+    if current_user.bank_account.destroy
+      redirect_to profile_url, notice: 'Savings plan was successfully deleted.'
+    else
+      redirect_to profile_url, notice: 'Some errors occurred when try deleting your savings plan.'
+    end
   end
 
   private
     def set_profile
-      if params[:id]
-        @user = User.find params[:id]
-      else
-        @user = current_user
-      end
-
-      unless @user.profile
-        redirect_to edit_profile_path, alert: "You haven't entered your profile. \n
-          Please fill information below"
-      end
+      @user = 
+        if params[:id]
+          User.find params[:id]
+        else
+          current_user
+        end
     end
 
     def user_params
