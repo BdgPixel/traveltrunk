@@ -91,7 +91,7 @@
                         = @user.profile.country_name rescue 'Information not specified'
               .col-sm-offset-3.col-sm-6
                 h3.color-orange SAVINGS PLAN
-                - if @user.subscription
+                - if @user.bank_account
                   table.table.table-user-information.table-custom
                     tbody
                       tr
@@ -103,7 +103,7 @@
                         td Amount
                         td 
                           | : &nbsp;
-                          = currency_in_usd(@user.subscription.amount)
+                          = number_to_currency(@user.bank_account.amount_transfer)
                       tr
                         td Frequency
                         td 

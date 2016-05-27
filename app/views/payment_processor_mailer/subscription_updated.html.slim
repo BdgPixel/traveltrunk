@@ -1,8 +1,24 @@
-SubscriptionMailer#updated
-  p = "Hello #{@profile.first_name} #{@profile.last_name}"
+p#subscriptionCreated
+  | Hi #{@profile.first_name.try(:titleize)}!
 
-  p
-    | You've successfully updated your savings plan to <b>#{@subscription.plan_name}</b><br/>
-    | #{currency_in_usd(@subscription.amount)} / #{pluralize(@subscription.interval_count, @subscription.interval)}
+  br
+  br
 
-  p = render 'partials/footer_mailer'
+  | You’ve successfully upgraded your savings plan to #{currency_in_usd(@subscription.amount)} every #{payment_frequency_label(@bank_account.transfer_frequency)}. Nice!
+
+  br
+  br
+
+  | Starting next period, Travel Trunk will charge your credit card on file #{currency_in_usd(@subscription.amount)}, adding this new amount to your travel savings every #{payment_frequency_label(@bank_account.transfer_frequency, 'day')}.
+
+  br
+  br
+
+  | Your adventure just got closer…
+
+  br
+  br
+
+  | Congrats,
+  br
+  = render 'partials/footer_mailer'

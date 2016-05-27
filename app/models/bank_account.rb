@@ -6,6 +6,8 @@ class BankAccount < ActiveRecord::Base
   before_create :create_subscription
   before_update :update_subscription
   before_destroy :unsubscriptions
+  after_create :send_savings_plan_created_email
+  after_update :send_savings_plan_updated_email
 
   attr_accessor :exp_month, :exp_year, :card_number, :stripe_token, :credit_card, :cvc
 
@@ -26,6 +28,8 @@ class BankAccount < ActiveRecord::Base
 
   def create_subscription
     customer = Customer.where(user_id: self.user_id).first
+    subscription = Subscription.where(user_id: self.user_id).first
+
     params_recurring = get_recurring_params
     
     params_recurring[:customer][:customer_id] = 
@@ -47,14 +51,21 @@ class BankAccount < ActiveRecord::Base
           Customer.create(customer_id: params_recurring[:customer][:customer_id], user_id: user.id, customer_profile_id: response.profile.customerProfileId)
         end
 
-        Subscription.create({
-          subscription_id: response.subscriptionId,
-          amount: params_recurring[:plan][:amount] * 100,
-          interval: params_recurring[:plan][:interval_unit],
-          interval_count: params_recurring[:plan][:interval_length],
-          plan_name: params_recurring[:plan][:plan_name],
-          user_id: user.id
-        })
+        subscription_params = 
+          {
+            subscription_id: response.subscriptionId,
+            amount: params_recurring[:plan][:amount] * 100,
+            interval: params_recurring[:plan][:interval_unit],
+            interval_count: params_recurring[:plan][:interval_length],
+            plan_name: params_recurring[:plan][:plan_name],
+            user_id: user.id
+          }
+
+        if subscription
+          subscription.update_attributes(subscription_params)
+        else
+          Subscription.create(subscription_params)
+        end
       end
     rescue => e
       logger.error e
@@ -125,11 +136,6 @@ class BankAccount < ActiveRecord::Base
 
       if user_subscription
         if credit_card_changed || self.changed.include?('amount_transfer') || self.changed.include?('transfer_frequency')
-          if customer_payment_profile
-            response = recurring_authorize.cancel_subscription(user_subscription.subscription_id, customer_profile.customerProfileId, customer_payment_profile.customerPaymentProfileId)
-            response.messages.resultCode
-          end
-
           selected_params = params_recurring.select { |k, v| [:subscription_id, :plan].include?(k) }
           subscription_hash = user_subscription.get_params_hash(selected_params)
           
@@ -141,6 +147,12 @@ class BankAccount < ActiveRecord::Base
 
           subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
           user_subscription.update(subscription_hash)
+
+          if customer_payment_profile
+            # response = recurring_authorize.cancel_subscription(user_subscription.subscription_id, customer_profile.customerProfileId, customer_payment_profile.customerPaymentProfileId)
+            # response.messages.resultCode
+            AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(user_subscription.subscription_id, customer_profile.customerProfileId)
+          end
         end 
       end
     rescue => e
@@ -359,14 +371,15 @@ class BankAccount < ActiveRecord::Base
         payment_profile_id = get_customer.paymentProfiles.first.customerPaymentProfileId
 
         subscription_id = self.user.subscription.subscription_id
-        cancel_subscription = recurring_authorize.cancel_subscription(subscription_id, customer_profile_id, payment_profile_id)
+        # cancel_subscription = recurring_authorize.cancel_subscription(subscription_id, customer_profile_id, payment_profile_id)
+        Subscription.where(user_id: self.user_id).destroy_all
+        PaymentProcessorMailer.delay.cancel_subscription(self.user.id)
+        user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
+        
+        AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(nil, customer_profile_id)
 
         # customer_authorize.delete_customer_profile(customer_profile_id)
-        Subscription.where(user_id: self.user_id).destroy_all
         # Customer.where(user_id: self.user_id).destroy_all
-
-        PaymentProcessorMailer.cancel_subscription(self.user.id).deliver_now
-        user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
       rescue => e
         logger.error e.message
         
@@ -379,7 +392,7 @@ class BankAccount < ActiveRecord::Base
             end
             
           self.errors.add(:authorize_net_error, @error_response)
-          # false
+          false
         else
           logger.error e.message
           e.backtrace.each { |line| logger.error line }
@@ -387,5 +400,13 @@ class BankAccount < ActiveRecord::Base
 
       end
     end
+  end
+
+  def send_savings_plan_created_email
+    PaymentProcessorMailer.delay.subscription_created(self.user_id)
+  end
+
+  def send_savings_plan_updated_email
+    PaymentProcessorMailer.delay.subscription_updated(self.user_id)
   end
 end

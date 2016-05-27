@@ -25,6 +25,22 @@ class Profile < ActiveRecord::Base
     "#{self.first_name} #{self.last_name}".titleize
   end
 
+  def pronoun(type)
+    if self.gender
+      case type
+      when 'object' then self.gender.eql?('Male') ? 'him' : 'her'
+      when 'subject' then self.gender.eql?('Male') ? "He's" : "She's"
+      when 'possesive' then self.gender.eql?('Male') ? 'his' : 'her'
+      end
+    else
+      case type
+      when 'object' then 'him / her'
+      when 'subject' then "He's / She's"
+      when 'possesive' then self.gender.eql?('Male') ? 'his' : 'her'
+      end
+    end
+  end
+
   def address_valid?
     city && state && country_code && postal_code
   end

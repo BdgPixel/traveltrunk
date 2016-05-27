@@ -25,7 +25,7 @@
             tr
               td = transaction.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
               td = transaction.trans_id
-              td = link_to transaction.user.full_name, admin_user_path(transaction.user)
+              td = link_to transaction.user.try(:full_name), admin_user_path(transaction.user)
               td = transaction.transaction_type
               td = currency_in_usd transaction.amount
            

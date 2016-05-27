@@ -43,6 +43,19 @@ module AuthorizeNetLib
       response.profile
     end
 
+    def get_customer_payment_profile(customer_profile_id, customer_payment_profile_id)
+      request = AuthorizeNet::API::GetCustomerPaymentProfileRequest.new
+      request.customerProfileId = customer_profile_id
+      request.customerPaymentProfileId = customer_payment_profile_id
+
+      response = @transaction.get_customer_payment_profile(request)
+      error_params, message_params = [response.messages, "Failed to get customer payment profile information with id #{customer_payment_profile_id}"]
+
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
+
+      response
+    end
+
     def delete_customer_profile(customer_profile_id)
       request = AuthorizeNet::API::DeleteCustomerProfileRequest.new
       request.customerProfileId = customer_profile_id
@@ -164,6 +177,45 @@ module AuthorizeNetLib
       end
 
       response  
+    end
+
+    def self.cancel_other_subscriptions(current_subscription_id, customer_profile_id)
+      api_login_id = ENV['AUTHORIZE_NET_API_LOGIN_ID']
+      api_transaction_key = ENV['AUTHORIZE_NET_API_TRANSACTION_KEY']
+      gateway = Rails.env.eql?('development') ? :sandbox : :production
+
+      transaction = AuthorizeNet::API::Transaction.new(api_login_id, api_transaction_key, gateway: gateway)
+
+      customer_authorize = AuthorizeNetLib::Customers.new
+      customer_profile = customer_authorize.get_customer_profile(customer_profile_id);0
+
+      customer_profile.paymentProfiles.each do |payment_profile|
+        payment_profile_id = payment_profile.customerPaymentProfileId
+
+        payment_profile_response = customer_authorize.get_customer_payment_profile(customer_profile_id, payment_profile_id)
+        subscription_ids = payment_profile_response.paymentProfile.subscriptionIds.subscriptionId.to_a
+
+        puts current_subscription_id
+        puts '=========='
+        puts subscription_ids
+        puts '=========='
+
+        subscription_ids.each do |subscription_id|
+          unless subscription_id.eql?(current_subscription_id)
+            request = AuthorizeNet::API::ARBCancelSubscriptionRequest.new
+
+            request.subscriptionId = subscription_id
+            response = transaction.cancel_subscription(request)
+            puts "#{subscription_id} canceled"
+          end
+        end
+
+        unless subscription_ids.include?(current_subscription_id)
+          sleep 3
+          customer_authorize.delete_payment_profile(customer_profile_id, payment_profile_id)
+          puts "#{payment_profile_id} deleted"
+        end
+      end;0
     end
 
     def get_subscription_status(subscription_id)

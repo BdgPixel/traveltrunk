@@ -24,6 +24,21 @@ module SavingsHelper
     else
       'month'
     end
-    
+  end
+
+  def payment_frequency_label(frequency, frequency_unit = nil)
+    if frequency_unit.eql?('day')
+      case frequency
+      when 'Weekly' then 'seven days'
+      when 'Bi Weekly' then 'fourteen days'
+      when 'Monthly' then 'thirty days'
+      end
+    else
+      case frequency
+      when 'Weekly' then 'week'
+      when 'Bi Weekly' then 'two weeks'
+      when 'Monthly' then 'month'
+      end
+    end
   end
 end

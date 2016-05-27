@@ -5,18 +5,20 @@ class PaymentProcessorMailer < ApplicationMailer
     user = User.select(:id, :email).find user_id
 
     @profile = user.profile
+    @bank_account = user.bank_account
     @subscription = user.subscription
 
-    mail to: user.email, subject: 'Your new saving plan'
+    mail to: user.email, subject: 'Saving Plan Created'
   end
 
   def subscription_updated(user_id)
     user = User.select(:id, :email).find user_id
 
     @profile = user.profile
+    @bank_account = user.bank_account
     @subscription = user.subscription
 
-    mail to: user.email, subject: 'Your new saving plan'
+    mail to: user.email, subject: 'Saving Plan Updated'
   end
 
   def subscription_charged(user_id, amount)

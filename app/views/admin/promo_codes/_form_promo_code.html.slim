@@ -4,31 +4,34 @@
       strong Warning! &nbsp;&nbsp;
       = "#{pluralize(@promo_code.errors.count, "error")} prohibited this profile from being saved"
 
-  .col-md-6
-    .form-group.form-group-md
-      = f.input :token, input_html: { class: "form-control", readonly: true }
+  .row
+    .col-md-6
+      .form-group.form-group-md
+        = f.input :token, input_html: { class: "form-control", readonly: true }
 
-  .col-md-6
-    .form-group
-      = f.label :amount
-      .input-group
-        .input-group-addon $
-        = f.input_field :amount, class: "form-control", autofocus: true, error_html: { class: "error-message" }, label: "Total Amount"
-      = f.error :amount
-      .payment-errors.amount
+    .col-md-6
+      .form-group.form-group-md
+        = f.label :amount
+        .input-group
+          .input-group-addon $
+          = f.input_field :amount, class: "form-control", autofocus: true, error_html: { class: "error-message" }, label: "Total Amount"
+        = f.error :amount
+        .payment-errors.amount
 
-  .col-md-6
-    .form-group
-      = f.input :exp_date, wrapper: :horizontal_select_date, start_year: Date.today.year, order: [:month, :day, :year], input_html: { class: "form-control" }
+  .row
+    .col-md-6
+      .form-group
+        = f.input :exp_date, wrapper: :horizontal_select_date, start_year: Date.today.year, order: [:month, :day, :year], input_html: { class: "form-control" }
 
-  .col-md-6
-    .form-group
-      = f.input :user_id, collection: @user_collections, prompt: "- Select a User -", input_html: { class: "form-control" }
-      .payment-errors.user-id
+    .col-md-6
+      .form-group
+        = f.input :user_id, collection: @user_collections, prompt: "- Select a User -", input_html: { class: "form-control" }
+        .payment-errors.user-id
 
-  .col-md-12.text-center
-    br
-    .form-group
-      = f.submit "Save changes", class: "btn btn-saving btn-green"
-      | &nbsp;
-      = link_to 'Back', admin_promo_codes_path, class: "btn btn-saving btn-orange-soft"
+  .row
+    .col-md-12.text-center
+      br
+      .form-group
+        = f.submit "Save changes", class: "btn btn-saving btn-green"
+        | &nbsp;
+        = link_to 'Back', admin_promo_codes_path, class: "btn btn-saving btn-orange-soft"
