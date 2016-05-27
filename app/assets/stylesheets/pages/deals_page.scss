@@ -26,7 +26,6 @@
   		}
   	}
 
-
   }
 
   .view-price-deals  {
@@ -38,8 +37,6 @@
     	font-size: 14px !important;
   	}
   }
-
-
 
   .price-deals {
     position: absolute;
@@ -242,9 +239,6 @@
 }
 
 .card-item {
-	// -webkit-box-shadow: 0px 0px 10px 5px rgba(207,207,207,0.66);
-	// -moz-box-shadow: 0px 0px 10px 5px rgba(207,207,207,0.66);
-	// box-shadow: 0px 0px 15px 2px rgba(207,207,207,0.66);
 	@include border-radius(5px);
   margin-bottom: 20px;
 	padding: 0px;
@@ -255,7 +249,6 @@
   transition: all 250ms ease-in-out 0s;
   &:hover {
     box-shadow: 0px 0px 15px 2px #C7C7C7;
-    // box-shadow: 0px 0px 15px 2px #FEA960;
   }
 }
 
@@ -331,44 +324,3 @@
     from {background-position: 0px 0px;opacity: 1;}
     to {background-position: 0px 17px;opacity: 0;}
 }
-
-
-
-// .pagination {
-// 	margin: 30px 0px;
-// 	.active > .number {
-// 		border-radius: 100%;
-// 		background-color: #36b3af;
-// 		border: none;
-// 		color: #ffffff;
-// 		padding: 3px 0px;
-// 		width: 28px;
-// 		height: 28px;
-// 		text-align: center;
-// 	}
-
-// 	li > a {
-// 		border: none;
-// 		margin: 0px 3px;
-// 		color: #36b3af;
-// 		font-size: 18px;
-// 		padding: 3px 12px;
-// 		line-height: 1.2;
-// 	}
-
-// 	.number:focus {
-// 		border-radius: 100%;
-// 		background-color: #36b3af;
-// 		border: none;
-// 		color: #ffffff;
-// 		padding: 3px 0px;
-// 		width: 28px;
-// 		height: 28px;
-// 		text-align: center;
-// 	}
-// 	.number:hover {
-// 		border-radius: 100%;
-// 		border: none;
-// 		text-align: center;
-// 	}
-// }
