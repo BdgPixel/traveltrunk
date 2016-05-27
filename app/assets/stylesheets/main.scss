@@ -15,14 +15,11 @@ html {
 body {
   font-family: 'Lato', sans-serif;
   color: #777777;
-  // margin-bottom: 60px;
   height: 100%;
-  // padding-bottom: 200px;
   overflow-x: hidden;
 }
 
 .bg-gradient {
-  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f54b43+0,ffaf53+100 */
   background: rgb(245,75,67); /* Old browsers */
   background: -moz-linear-gradient(left,  rgba(245,75,67,1) 0%, rgba(255,175,83,1) 100%); /* FF3.6-15 */
   background: -webkit-linear-gradient(left,  rgba(245,75,67,1) 0%,rgba(255,175,83,1) 100%); /* Chrome10-25,Safari5.1-6 */
@@ -254,7 +251,6 @@ body {
   }
 }
 
-
 // End Naviagtion Style
 
 // Button Style
@@ -483,11 +479,6 @@ body {
 
 // End Deal Page Style
 
-// Result Deals Page Style
-
-
-// End Result Deals Page Style
-
 // Detail Deals Page Style
 
 .wrapper-detail-deals {
@@ -521,8 +512,7 @@ body {
   }
 }
 
-// Detail Deals Page Style
-
+// End Detail Deals Page Style
 
 // Saving Page
 
@@ -607,12 +597,6 @@ body {
   }
 }
 
-// .wrapper-navbar-traveltrunk .navbar-default ul a {
-//   &:hover {
-//     color: grey !important;
-//   }
-// }
-
 .normal-font {
   font-family: 'times' !important;
   font-weight: 600 !important;
@@ -620,20 +604,10 @@ body {
 
 .wrap-nav-color {
   background: white;
-  // background: #f54b43;
-  // background: -moz-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  // background: -webkit-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  // background: linear-gradient(147deg, #f54b43 0%, #ffaf53 100%);
-  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 );
   height: 75px;
 }
 
 .wrapper-profile {
-  // background: #f54b43;
-  // background: -moz-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  // background: -webkit-linear-gradient(left, #f54b43 0%, #ffaf53 100%);
-  // background: linear-gradient(147deg, #f54b43 0%, #ffaf53 100%);
-  // filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f54b43', endColorstr='#ffaf53',GradientType=1 );
   padding: 25px 0px;
   color: black;
   img {
@@ -669,69 +643,70 @@ h3.hotel-name {
 }
 
 // notification page
-  .notif {
-    display: inline-block;
+
+.notif {
+  display: inline-block;
+  width: 100%;
+  margin-top: 40px;
+  h1 {
+    font-size: 36px;
+    letter-spacing: 2px;
+    font-family: 'Lato', sans-serif;
+    font-weight: 600;
+    color: #585656;
+    text-transform: uppercase;
+    margin-bottom: 50px;
+  }
+  .notif-background {
+    background: #FDFDFD;
+    padding: 20px;
+    margin-bottom: 2px;
+    display: table;
     width: 100%;
-    margin-top: 40px;
-    h1 {
-      font-size: 36px;
-      letter-spacing: 2px;
-      font-family: 'Lato', sans-serif;
-      font-weight: 600;
-      color: #585656;
-      text-transform: uppercase;
-      margin-bottom: 50px;
+    height: 100px;
+    -webkit-transition: all 250ms ease-in-out 0s;
+    -moz-transition: all 250ms ease-in-out 0s;
+    -ms-transition: all 250ms ease-in-out 0s;
+    -o-transition: all 250ms ease-in-out 0s;
+    transition: all 250ms ease-in-out 0s;
+    &:hover {
+      opacity: 0.7;
     }
-    .notif-background {
-      background: #FDFDFD;
-      padding: 20px;
-      margin-bottom: 2px;
-      display: table;
-      width: 100%;
-      height: 100px;
-      -webkit-transition: all 250ms ease-in-out 0s;
-      -moz-transition: all 250ms ease-in-out 0s;
-      -ms-transition: all 250ms ease-in-out 0s;
-      -o-transition: all 250ms ease-in-out 0s;
-      transition: all 250ms ease-in-out 0s;
+    &:nth-child(2n) {
+      background-color: #f7f7f7;
       &:hover {
         opacity: 0.7;
       }
-      &:nth-child(2n) {
-        background-color: #f7f7f7;
-        &:hover {
-          opacity: 0.7;
-        }
+    }
+    .description {
+      width: 50%;
+      display: table-cell;
+      vertical-align: middle;
+      line-height: 24px;
+      letter-spacing: 0.5px;
+      span {
+        font-size: 14px;
+        font-family: 'Lato', sans-serif;
+        color: #9b9999;
+        line-height: 24px;
+        letter-spacing: 0.5px
       }
-      .description {
-        width: 50%;
-        display: table-cell;
-        vertical-align: middle;
+    }
+    .date {
+      width: 50%;
+      display: table-cell;
+      vertical-align: middle;
+      text-align: right;
+      span {
+        font-size: 14px;
+        font-family: 'Lato', sans-serif;
+        color: #9b9999;
         line-height: 24px;
         letter-spacing: 0.5px;
-        span {
-          font-size: 14px;
-          font-family: 'Lato', sans-serif;
-          color: #9b9999;
-          line-height: 24px;
-          letter-spacing: 0.5px
-        }
-      }
-      .date {
-        width: 50%;
-        display: table-cell;
-        vertical-align: middle;
-        text-align: right;
-        span {
-          font-size: 14px;
-          font-family: 'Lato', sans-serif;
-          color: #9b9999;
-          line-height: 24px;
-          letter-spacing: 0.5px;
-        }
       }
     }
   }
+}
 
 .wrapper-group-saving-img {
   padding: 90px 0;
@@ -959,6 +934,7 @@ h3.hotel-name {
 }
 
 /* Effect 4: bottom border enlarge */
+
 .footer-custom {
   li {
     padding-bottom: 0px;
@@ -980,9 +956,9 @@ h3.hotel-name {
 
 // Alert Style 
 
- .alert-dismissible .close {
+.alert-dismissible .close {
   top: 5px;
- }
+}
 
 .alert-success {
   background-color: #ffffff;
@@ -998,7 +974,6 @@ h3.hotel-name {
 
   .close {
     opacity: 1.2;
-
   }
 }
 

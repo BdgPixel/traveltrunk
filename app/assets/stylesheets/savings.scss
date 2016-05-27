@@ -1,10 +1,7 @@
-// Place all the styles related to the Savings controller here.
-// They will automatically be included in application.css.
-// You can use Sass (SCSS) here: http://sass-lang.com/
-
 .wrapper-img-saving {
     margin-top: 15px;
 }
+
 .wrapper-img-saving img {
     width: 100%;
 }
@@ -14,7 +11,6 @@ ul {
 }
 
 // override bootstrap token-input
-
 
 li.token-input-token{
   padding: 2% 1% !important;
