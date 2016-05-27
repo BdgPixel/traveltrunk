@@ -1,7 +1,3 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
-#
 # = require bootstrap.file-input
 # = require savings_form_validation
 # = require autoNumeric-min
@@ -22,4 +18,5 @@ $(document).ready ->
     $('#profile_image').attr('width', 226)
     $('#profile_image').attr('height', 226)
     $('#profile_image')[0].src = window.URL.createObjectURL(@files[0])
+    
     return

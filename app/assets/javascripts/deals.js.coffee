@@ -1,7 +1,3 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
-
 # = require blueimp-gallery
 # = require blueimp-gallery-indicator
 # = require jquery.lazyload
@@ -152,7 +148,6 @@ root.roomSelected = (selector)->
 
       if room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['@size'] == ('1')
         table.append("<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['NightlyRate']['@rate']}</td></tr>")
-        # change @baseRate to @rate
       else
         listOfDate = "<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td>"
         $.each room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['NightlyRate'], (keyRate, rate) ->
@@ -177,7 +172,6 @@ root.roomSelected = (selector)->
       $('.form-book').hide()
       $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
       $('.form-vote ').show()
-
 
     if room[0]['RoomImages']
       if room[0]["RoomImages"]["@size"] == ("1")
@@ -284,7 +278,6 @@ $(document).ready ->
       startDate: today
       autoclose: true
 
-
     if $('#slideToggleLink').length > 0
       $('#slideToggleLink').on 'click', (e) ->
         $('#slideToggle').slideToggle()
@@ -328,7 +321,6 @@ $(document).ready ->
       $('.modal-lg').on 'hidden.bs.modal', (e) ->
         $('#formBook').get(0).reset()
         $('.form-book').show()
-        # $('#linkVote').attr('href')
         $('.payment-errors').html("")
 
       return
@@ -357,4 +349,3 @@ $(document).ready ->
           container: '#blueimp-gallery-carousel'
           carousel: true
       , 3000)
-
