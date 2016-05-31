@@ -13,8 +13,6 @@ Rails.application.routes.draw do
 
   get 'static_pages/refund'
 
-  get 'static_pages/contact_us'
-
   get 'static_pages/trust_and_security'
 
   get 'static_pages/partnerships'

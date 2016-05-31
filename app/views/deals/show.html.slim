@@ -59,10 +59,11 @@
             a.play-pause
             ol.indicator.hide
 
+
           #links
             - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
-              = link_to hotel_image["url"].gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
-                = image_tag hotel_image["thumbnailUrl"], alt: hotel_image["caption"], class: 'hide-thumb-image'
+              = link_to hotel_image["url"].gsub('http', 'https').gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
+                = image_tag hotel_image["thumbnailUrl"].gsub('http', 'https'), alt: hotel_image["caption"], class: 'hide-thumb-image'
 
     .row
       .col-md-12

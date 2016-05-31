@@ -49,7 +49,7 @@ class GroupsController < ApplicationController
         invited_users_count += ids.size
       end
 
-      notice = "#{invited_users_count} User was successfully invited."
+      notice = "#{invited_users_count} user(s) successfully invited."
       notice << " #{existing_emails.join(', ')} can't be invited because already registered" unless existing_emails.empty?
       redirect_to savings_path, notice: notice
     end

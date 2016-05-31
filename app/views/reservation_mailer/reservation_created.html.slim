@@ -1,36 +1,34 @@
-ReservationMailer#created
-  p = "Hello #{@profile.first_name} #{@profile.last_name}"
+p#reservationCreatedMailer
+  | Hi #{@profile.try(:first_name).try(:titleize)},
 
-  p
-    | Your  itinerary #{@reservation['itineraryId']}
+  br
+  br
 
-  p
-    | Confirmation number: #{@reservation['confirmationNumbers']}
+  | Your  itinerary #{@reservation['itineraryId']}
+  br
+  | Confirmation number: #{@reservation['confirmationNumbers']}
+  br
+  | Arrival date #{@reservation['arrivalDate']} and departure date #{@reservation['departureDate']}
+  br
+  | Hotel name #{@reservation['hotelName']}
+  br
+  | Hotel address #{@reservation['hotelAddress']}
+  br
+  | City #{@reservation['hotelCity']}
+  br
+  | Country code #{@reservation['countryCode']}
+  br
+  | Postal code #{@reservation['hotelPostalCode']}
+  br 
+  | Room booked #{@reservation['numberOfRoomsBooked']} and room description #{@reservation['roomDescription']}
+  br
+  | Number of adults #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']}
+  br
+  | Total rate #{number_to_currency(@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])}
+  
+  br
+  br
 
-  p
-    | Arrival date #{@reservation['arrivalDate']} and departure date #{@reservation['departureDate']}
-
-  p
-    | Hotel name #{@reservation['hotelName']}
-
-  p
-    | Hotel address #{@reservation['hotelAddress']}
-
-  p
-    | City #{@reservation['hotelCity']}
-
-  p
-    | Country code #{@reservation['countryCode']}
-
-  p
-    | Postal code #{@reservation['hotelPostalCode']}
-
-  p | Room booked #{@reservation['numberOfRoomsBooked']} and room description #{@reservation['roomDescription']}
-
-  p
-    | Number of adults #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']}
-
-  p
-    | Total rate #{number_to_currency(@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])}
-  p
-    = render 'partials/footer_mailer'
+  | Happy travels,
+  br
+  = render 'partials/footer_mailer'

@@ -40,7 +40,7 @@ class Transaction < ActiveRecord::Base
               transaction_type: 'payment.recurring'
             )
             
-            PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+            PaymentProcessorMailer.delay.subscription_charged(user.id, transaction.amount) if transaction.save
           end
         elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
           recurring_authorize = AuthorizeNetLib::RecurringBilling.new
@@ -70,7 +70,7 @@ class Transaction < ActiveRecord::Base
           if subscription
             subscription.destroy
             Bank_account.where(user_id: user.id).delete_all
-            PaymentProcessorMailer.subscription_failed(user.id, transaction_detail.transaction.subscription, subscription_status).deliver_now
+            PaymentProcessorMailer.delay.subscription_failed(user.id, transaction_detail.transaction.subscription, subscription_status)
           end
         end
       else

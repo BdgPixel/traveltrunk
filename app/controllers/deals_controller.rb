@@ -242,7 +242,7 @@ class DealsController < ApplicationController
 
           card_last_4 = response_payment.transactionResponse.accountNumber
 
-          PaymentProcessorMailer.payment_succeed(current_user.id, transaction.amount, card_last_4).deliver_now
+          PaymentProcessorMailer.delay.payment_succeed(current_user.id, transaction.amount, card_last_4)
         end
       end
     rescue => e

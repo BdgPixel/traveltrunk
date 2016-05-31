@@ -43,7 +43,7 @@ class Admin::RefundsController < Admin::ApplicationController
           )
         end
 
-        PaymentProcessorMailer.refund_approved(@refund, @transaction_type).deliver_now
+        PaymentProcessorMailer.delay.refund_approved(@refund, @transaction_type)
       end
 
       notice = "Successfully refunded a transaction (Transaction ID #{@response_refund_transaction.transactionResponse.transId}"

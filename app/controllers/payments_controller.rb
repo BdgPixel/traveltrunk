@@ -23,7 +23,7 @@ class PaymentsController < ApplicationController
             user.total_credit += charge.amount.to_i
             user.save
 
-            StripeMailer.payment_succeed(current_user.id, transaction.amount, charge.source.last4).deliver_now
+            StripeMailer.delay.payment_succeed(current_user.id, transaction.amount, charge.source.last4)
             redirect_to payments_thank_you_page_path(charge_id: charge.id)
           else
             redirect_to payments_path, alert: 'Some errors occured'
@@ -50,7 +50,7 @@ class PaymentsController < ApplicationController
     if customer
       user, customer_profile_id = [customer.user, customer.customer_profile_id]
 
-      PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
+      PaymentProcessorMailer.delay.send_request_params_webhook(response)
 
       if response['x_type'].eql?('auth_capture') && response['x_subscription_id']
         if response['x_response_code'].eql?('1')
@@ -63,7 +63,7 @@ class PaymentsController < ApplicationController
             trans_id: response['x_trans_id']
           )
 
-          PaymentProcessorMailer.subscription_charged(user.id, transaction.amount).deliver_now if transaction.save
+          PaymentProcessorMailer.delay.subscription_charged(user.id, transaction.amount) if transaction.save
         else
           recurring_authorize = AuthorizeNetLib::RecurringBilling.new
           subscription_status = recurring_authorize.get_subscription_status(response['x_subscription_id'])
@@ -85,7 +85,7 @@ class PaymentsController < ApplicationController
             Subscription.where(user_id: user.id, subscription_id: response['x_subscription_id']).destroy_all
             BankAccount.where(user_id: user.id).delete_all
 
-            PaymentProcessorMailer.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text']).deliver_now
+            PaymentProcessorMailer.delay.subscription_failed(user.id, response['x_subscription_id'], subscription_status, response['x_response_reason_text'])
           end
         end
       end
@@ -96,7 +96,7 @@ class PaymentsController < ApplicationController
 
   def get_authorize_net_webhook
     response = request.parameters
-    PaymentProcessorMailer.send_request_params_webhook(response).deliver_now
+    PaymentProcessorMailer.delay.send_request_params_webhook(response)
     
     render nothing: true, status: 200
   end

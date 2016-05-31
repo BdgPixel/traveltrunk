@@ -18,7 +18,7 @@ class Admin::PromoCodesController < Admin::ApplicationController
     amount_in_cents = (@promo_code.amount.to_f * 100).to_i
 
     if @promo_code.save
-      PromoCodeMailer.promo_code_created(@promo_code).deliver_now
+      PromoCodeMailer.delay.promo_code_created(@promo_code)
       redirect_to admin_promo_codes_url, notice: 'Promo code was successfully created'
     else
       render :new

@@ -8,7 +8,7 @@ class PaymentProcessorMailer < ApplicationMailer
     @bank_account = user.bank_account
     @subscription = user.subscription
 
-    mail to: user.email, subject: 'Saving Plan Created'
+    mail to: user.email, subject: 'Savings Plan Created'
   end
 
   def subscription_updated(user_id)
@@ -18,7 +18,7 @@ class PaymentProcessorMailer < ApplicationMailer
     @bank_account = user.bank_account
     @subscription = user.subscription
 
-    mail to: user.email, subject: 'Saving Plan Updated'
+    mail to: user.email, subject: 'Savings Plan Updated'
   end
 
   def subscription_charged(user_id, amount)
@@ -39,14 +39,14 @@ class PaymentProcessorMailer < ApplicationMailer
     @amount = amount
     @card_last4 = card_last4
 
-    mail to: @user.email, subject: 'One time Payment Successful'
+    mail to: @user.email, subject: 'One Time Payment'
   end
 
   def cancel_subscription(user_id)
     user = User.select(:id, :email, :total_credit).find user_id
 
     @profile = user.profile
-    mail to: user.email, subject: 'Subscription Canceled'
+    mail to: user.email, subject: 'Savings Plan Deleted'
   end
 
   def subscription_failed(user_id, subscription_id, subscription_status, subscription_message = nil)
@@ -57,7 +57,7 @@ class PaymentProcessorMailer < ApplicationMailer
     @subscription_id = subscription_id
     @subscription_message = subscription_message
 
-    mail to: user.email, subject: "Payment #{subscription_status.titleize}"
+    mail to: user.email, subject: "Subscription #{subscription_status.titleize}"
   end
 
   def send_request_params_webhook(params)
@@ -69,6 +69,6 @@ class PaymentProcessorMailer < ApplicationMailer
   def refund_approved(refund, transaction_type)
     @refund = refund
     @transaction_type = transaction_type
-    mail to: @refund.user.email, subject: 'Refund Successfully Approved'
+    mail to: @refund.user.email, subject: 'Refund Approved'
   end
 end

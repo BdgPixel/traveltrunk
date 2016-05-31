@@ -6,17 +6,17 @@ tr
     - if room["RoomImages"]
       br
       - if room["RoomImages"]["@size"].eql? "1"
-        = image_tag room["RoomImages"]["RoomImage"]["url"]
+        = image_tag room["RoomImages"]["RoomImage"]["url"].gsub('http', 'https')
       - else
-        = image_tag room["RoomImages"]["RoomImage"].first["url"]
+        = image_tag room["RoomImages"]["RoomImage"].first["url"].gsub('http', 'https')
       br
       br
     - else
-      = image_tag "http://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg"
+      = image_tag "https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg"
       br
-      small
-        i
-          | *This image may not be that exact room titled above
+      small 
+        | *This image may not be that exact room titled above
+        
       br
       br
 

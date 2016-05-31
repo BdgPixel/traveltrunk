@@ -9,8 +9,6 @@ class StaticPagesController < ApplicationController
 
   def refund; end
 
-  def contact_us; end
-
   def trust_and_security; end
 
   def partnerships; end

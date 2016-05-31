@@ -4,12 +4,12 @@ p#subscriptionCreated
   br
   br
 
-  | You’ve successfully upgraded your savings plan to #{currency_in_usd(@subscription.amount)} every #{payment_frequency_label(@bank_account.transfer_frequency)}. Nice!
+  | You’ve successfully updated your savings plan to #{number_to_currency(@bank_account.amount_transfer.to_f)} every #{payment_frequency_label(@bank_account.transfer_frequency)}. Nice!
 
   br
   br
 
-  | Starting next period, Travel Trunk will charge your credit card on file #{currency_in_usd(@subscription.amount)}, adding this new amount to your travel savings every #{payment_frequency_label(@bank_account.transfer_frequency, 'day')}.
+  | Starting next period, Travel Trunk will charge your credit card on file #{currency_in_usd(@subscription.amount)}, adding this new amount to your travel savings every #{payment_frequency_label(@bank_account.transfer_frequency)}.
 
   br
   br

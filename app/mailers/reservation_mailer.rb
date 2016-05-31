@@ -5,6 +5,6 @@ class ReservationMailer < ApplicationMailer
     @profile = user.profile
     @reservation = reservation
 
-    mail to: user.email, subject: 'TravelTrunk - Reservation Created'
+    mail to: user.email, subject: 'Reservation Success'
   end
 end
