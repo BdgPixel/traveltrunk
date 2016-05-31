@@ -77,7 +77,7 @@ module Expedia
                     end
 
                     if hotels_list.empty?
-                      @error_response = "There are no hotels that match your criteria and saving credits"
+                      @error_response = "There is no hotels that match your criteria and saving credits"
                       response_result(error_response: @error_response)
                     else
                       hotels_list =

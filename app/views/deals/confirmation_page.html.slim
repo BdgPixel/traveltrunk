@@ -1,108 +1,120 @@
-ThankYouPage#created
-  - unless @error_response
-    .row
-      .col-md-12
-        - if flash[:reservation_message]
-          .alert.alert-success = flash[:reservation_message]
+.pad-top-97
+.container
+  #ThankYouPage
+    - unless @error_response
+      .row
+        .col-md-12
+          - if flash[:reservation_message]
+            #notice.alert.alert-info 
+              strong Notice: &nbsp;
+              = flash[:reservation_message]
 
-        .col-md-6
-          p Your reservation is confirmed and your card has been charged
+          .col-md-6 style="margin-bottom: 20px"
+            h4 Your reservation is confirmed and your card has been charged
 
-          p
-            b Customer name:&nbsp;
-            = "#{current_user.profile.first_name} #{current_user.profile.last_name}"
+            br
 
-          p
-            b Customer email:&nbsp;
-            = current_user.email
+            p
+              b Customer name:&nbsp;
+              = "#{current_user.profile.first_name} #{current_user.profile.last_name}"
 
-          p
-            b
-              | Itinerary Number:&nbsp;
-            = "#{@reservation.itinerary}"
+            p
+              b Customer email:&nbsp;
+              = current_user.email
 
-          p
-            b Room Confirmation number:&nbsp;
-            = @reservation.confirmation_number
-          br
+            p
+              b
+                | Itinerary Number:&nbsp;
+              = "#{@reservation.itinerary}"
 
-          p
+            p
+              b Room Confirmation number:&nbsp;
+              = @reservation.confirmation_number
+            br
+
+            
             h4 Hotel and Room Reservation
-            | Hotel name:&nbsp;
-            = @itinerary_response["Hotel"]["name"]
 
-          p
-            | Address:&nbsp;
-            = @itinerary_response["Hotel"]["address1"]
+            br
 
-          p
-            | City #{@reservation.city}
+            p
+              | Hotel name:&nbsp;
+              = @itinerary_response["Hotel"]["name"]
 
-          p
-            | Country code #{@reservation.country_code}
+            p
+              | Address:&nbsp;
+              = @itinerary_response["Hotel"]["address1"]
 
-          p
-            | Postal code #{@reservation.postal_code}
+            p
+              | City #{@reservation.city}
 
-          p
-            | Phone:&nbsp;
-            = @itinerary_response["Hotel"]["phone"]
+            p
+              | Country code #{@reservation.country_code}
 
-          p
-            | Fax:&nbsp;
-            = @itinerary_response["Hotel"]["fax"]
+            p
+              | Postal code #{@reservation.postal_code}
 
-          br
-          p
-            | Room type:&nbsp;
-            = @reservation.room_description
+            p
+              | Phone:&nbsp;
+              = @itinerary_response["Hotel"]["phone"]
 
-          p
-            | Check-in:&nbsp;
-            = @reservation.arrival_date.strftime("%B %d, %Y")
-          p
-            | Check-out:&nbsp;
-            = @reservation.departure_date.strftime("%B %d, %Y")
+            p
+              | Fax:&nbsp;
+              = @itinerary_response["Hotel"]["fax"]
 
-          p
-            | Number of adults #{@reservation.number_of_adult}
+            br
 
-        .col-md-6
-          table.table
-            - @list_of_dates.each_with_index do |date, key|
+            p
+              | Room type:&nbsp;
+              = @reservation.room_description
+
+            p
+              | Check-in:&nbsp;
+              = @reservation.arrival_date.strftime("%B %d, %Y")
+            p
+              | Check-out:&nbsp;
+              = @reservation.departure_date.strftime("%B %d, %Y")
+
+            p
+              | Number of adults: 
+              = @reservation.number_of_adult
+
+          .col-md-6
+            table.table
+              - @list_of_dates.each_with_index do |date, key|
+                tr
+                  td = date.strftime("%B %d, %Y")
+                  = nightly_rates_per_room(@charge_able_rate_info["NightlyRatesPerRoom"], key)
+                  / - @charge_able_rate_info["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["NightlyRatesPerRoom"]["NightlyRate"].each_with_index do |rate, key_rate|
+                  /   - if key.eql? key_rate
+                  /     td = number_to_currency rate["@rate"]
               tr
-                td = date.strftime("%B %d, %Y")
-                = nightly_rates_per_room(@charge_able_rate_info["NightlyRatesPerRoom"], key)
-                / - @charge_able_rate_info["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["NightlyRatesPerRoom"]["NightlyRate"].each_with_index do |rate, key_rate|
-                /   - if key.eql? key_rate
-                /     td = number_to_currency rate["@rate"]
-            tr
-              td
-                b Total taxes and fees
-              td
-                = number_to_currency @charge_able_rate_info["@surchargeTotal"]
-            tr
-              td
-                b Total Charges
-                br
-                  small
-                    i
-                      | (includes tax recovery charges and service fees)
-              td = number_to_currency @charge_able_rate_info["@total"]
+                td
+                  b Total taxes and fees
+                td
+                  = number_to_currency @charge_able_rate_info["@surchargeTotal"]
+              tr
+                td
+                  b Total Charges
+                  br
+                    small
+                      i
+                        | (includes tax recovery charges and service fees)
+                td = number_to_currency @charge_able_rate_info["@total"]
 
-            = tax_values @charge_able_rate_info
-          p
-            i
-              b You have charged your credit card for the full payment of this reservation
-          br
-          br
+              = tax_values @charge_able_rate_info
+            p
+              i
+                b You have charged your credit card for the full payment of this reservation
+              
+              br
+              br
+              
+              = link_to "Back to hotel list", deals_path, class: "btn btn-saving btn-orange-soft"
 
-      .text-center
-        = link_to "Back to hotel list", deals_path, class: "btn btn-orange"
-
-- if @error_response
-  #error_response.alert.alert-info
-    strong Notice: &nbsp;
-    = @error_response
-- else
-  #error_response.alert.alert-info.hide
+    - if @error_response
+      #error_response.alert.alert-info
+        strong Notice: &nbsp;
+        = @error_response
+    - else
+      #error_response.alert.alert-info.hide

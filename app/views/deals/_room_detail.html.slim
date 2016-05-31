@@ -5,18 +5,25 @@ tr
 
     - if room["RoomImages"]
       br
+
       - if room["RoomImages"]["@size"].eql? "1"
-        = image_tag room["RoomImages"]["RoomImage"]["url"].gsub('http', 'https')
+        = image_tag room["RoomImages"]["RoomImage"]["url"].gsub('http', 'https'), class: 'room-image'
       - else
-        = image_tag room["RoomImages"]["RoomImage"].first["url"].gsub('http', 'https')
+        = image_tag room["RoomImages"]["RoomImage"].first["url"].gsub('http', 'https'), class: 'room-image'
+
       br
       br
+      
     - else
-      = image_tag "https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg"
+      - if first_room_image
+        = image_tag first_room_image, class: 'room-image'
+      - else
+        = image_tag "https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg", class: 'room-image'
+
       br
-      small 
+      small.image-disclaimer
         | *This image may not be that exact room titled above
-        
+
       br
       br
 

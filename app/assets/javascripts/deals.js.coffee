@@ -173,15 +173,25 @@ root.roomSelected = (selector)->
       $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
       $('.form-vote ').show()
 
-    if room[0]['RoomImages']
-      if room[0]["RoomImages"]["@size"] == ("1")
-        $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage']['url'])
+    existingRoomImage = $(this).closest('tr').find('.room-image')
+
+    if existingRoomImage
+      $('#roomImage').attr('src', existingRoomImage.attr('src'))
+
+      if $(this).closest('tr').find('small.image-disclaimer').length is 0
+        $('#imageDisclaimer').hide()
       else
-        $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage'][0]['url'])
-      $('#imageDisclaimer').hide()
+        $('#imageDisclaimer').show()
     else
-      $('#roomImage').attr('src', 'http://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg')
-      $('#imageDisclaimer').show()
+      if room[0]['RoomImages']
+        if room[0]["RoomImages"]["@size"] == ("1")
+          $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage']['url'].replace('http', 'https'))
+        else
+          $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage'][0]['url'].replace('http', 'https'))
+        $('#imageDisclaimer').hide()
+      else
+        $('#roomImage').attr('src', 'https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg')
+        $('#imageDisclaimer').show()
 
     if room[0]['BedTypes']['@size'] == '1'
       $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])

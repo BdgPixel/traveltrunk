@@ -283,6 +283,8 @@ class DealsController < ApplicationController
       room_response = Expedia::Hotels.room_availability(room_params_hash).first
 
       @room_availability = room_response[:response]
+      @first_room_image = get_first_room_image(@room_availability)
+
       @error_category_room_message = room_response[:category_room]
       @error_response = room_response[:error_response]
       respond_to :js
@@ -385,6 +387,32 @@ class DealsController < ApplicationController
       unless current_user.profile.address_valid?
         redirect_to edit_profile_url, alert: "In order to book, you need to provide city, state, country code, postal code information first"
       end
+    end
+
+    def get_room_image(room_images)
+      if room_images
+        if room_images["@size"].eql? "1"
+          room_images["RoomImage"]["url"].gsub('http', 'https')
+        else
+          room_images["RoomImage"].first["url"].gsub('http', 'https')
+        end
+      end
+    end
+
+    def get_first_room_image(room_availability)
+      first_room_image = nil
+
+      if room_availability["@size"].eql? "1"
+        room = room_availability["HotelRoomResponse"]
+        first_room_image = get_room_image(room["RoomImages"])
+      else
+        room_availability["HotelRoomResponse"].uniq.each do |room|
+          first_room_image = get_room_image(room["RoomImages"])
+          break if first_room_image
+        end
+      end
+
+      first_room_image
     end
 
     def set_reservation_params(reservation, arrival_date, departure_date)

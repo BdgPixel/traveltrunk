@@ -26,7 +26,7 @@
         = f.hidden_field :bed_type
 
       .form-group
-        = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>By selecting to complete this booking I acknowledge that I have read and accept the <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe
+        = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>&nbsp; By selecting to complete this booking I acknowledge that I have read and accept the <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe
         .payment-errors
 
       .row
