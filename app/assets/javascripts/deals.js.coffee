@@ -264,7 +264,7 @@ $(document).ready ->
 
     validateSearchForm()
 
-    $.get '/deals.js'
+    $.get '/deals'
 
     moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
     moment.tz.link('America/Los_Angeles|US/Pacific');
@@ -320,7 +320,7 @@ $(document).ready ->
 
     popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'left')
 
-    $.get "/deals/#{ params_path_id }/room_availability.js", ->
+    $.get "/deals/#{ params_path_id }/room_availability", ->
       roomSelected('.room-selected')
       appendCreditform()
 
