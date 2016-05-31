@@ -282,6 +282,9 @@ class DealsController < ApplicationController
 
       room_response = Expedia::Hotels.room_availability(room_params_hash).first
 
+      puts 'Error Response'
+      puts room_response[:error_response]
+
       @room_availability = room_response[:response]
       @first_room_image = get_first_room_image(@room_availability)
 
@@ -400,19 +403,21 @@ class DealsController < ApplicationController
     end
 
     def get_first_room_image(room_availability)
-      first_room_image = nil
+      if room_availability
+        first_room_image = nil
 
-      if room_availability["@size"].eql? "1"
-        room = room_availability["HotelRoomResponse"]
-        first_room_image = get_room_image(room["RoomImages"])
-      else
-        room_availability["HotelRoomResponse"].uniq.each do |room|
+        if room_availability["@size"].eql? "1"
+          room = room_availability["HotelRoomResponse"]
           first_room_image = get_room_image(room["RoomImages"])
-          break if first_room_image
+        else
+          room_availability["HotelRoomResponse"].uniq.each do |room|
+            first_room_image = get_room_image(room["RoomImages"])
+            break if first_room_image
+          end
         end
-      end
 
-      first_room_image
+        first_room_image
+      end
     end
 
     def set_reservation_params(reservation, arrival_date, departure_date)

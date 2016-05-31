@@ -15,8 +15,8 @@
               = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], first_room_image: @first_room_image
 
 - if @error_response
-  #error_response.alert.alert-info
-    strong Notice: &nbsp;
+  #error_response.alert.alert-success style="position: relative !important"
+    strong Cannot get room availability informations for this hotel, please try again later. Reason: &nbsp;
     = @error_response
 - else
   #error_response.alert.alert-info.hide
