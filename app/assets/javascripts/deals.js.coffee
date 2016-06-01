@@ -264,7 +264,10 @@ $(document).ready ->
 
     validateSearchForm()
 
-    $.get '/deals.js'
+    $.ajax
+      url: '/deals.js'
+      cache: false
+      timeout: 30000
 
     moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
     moment.tz.link('America/Los_Angeles|US/Pacific');
@@ -320,20 +323,24 @@ $(document).ready ->
 
     popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'left')
 
-    $.get "/deals/#{ params_path_id }/room_availability.js", ->
-      roomSelected('.room-selected')
-      appendCreditform()
+    $.ajax
+      url: "/deals/#{ params_path_id }/room_availability.js"
+      cache: false
+      timeout: 30000
+      success: (data, textStatus, jqXHR) ->
+        roomSelected('.room-selected')
+        appendCreditform()
 
-      $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
-        $('#formAddToSavings').get(0).reset()
-        $('.payment-errors').html("")
+        $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
+          $('#formAddToSavings').get(0).reset()
+          $('.payment-errors').html("")
 
-      $('.modal-lg').on 'hidden.bs.modal', (e) ->
-        $('#formBook').get(0).reset()
-        $('.form-book').show()
-        $('.payment-errors').html("")
+        $('.modal-lg').on 'hidden.bs.modal', (e) ->
+          $('#formBook').get(0).reset()
+          $('.form-book').show()
+          $('.payment-errors').html("")
 
-      return
+        return
 
     if $('#hotelRating').length > 0
       rating_count = parseFloat($('#hotelRating').data('rating'))
