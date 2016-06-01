@@ -282,9 +282,6 @@ class DealsController < ApplicationController
 
       room_response = Expedia::Hotels.room_availability(room_params_hash).first
 
-      puts 'Error Response'
-      puts room_response[:error_response]
-
       @room_availability = room_response[:response]
       @first_room_image = get_first_room_image(@room_availability)
 
