@@ -13,6 +13,10 @@
 
 root = exports ? this
 
+replaceImageInterval = undefined
+imageSizeType = null
+imageLoadedCount = 0
+
 getFormattedDate = (date) ->
   day = date.getDate()
   month = date.getMonth() + 1
@@ -219,29 +223,47 @@ appendCreditform = ->
     $('#update_credit_rate_code').val(rateCode)
     $('#update_credit_total').val($(this).data('total'))
 
-root.replaceImage = ->
+checkImage = (previousSrc, numberOfImages, i)->
+  image = new Image()
+
+  image.onload = ()->
+    imageLoadedCount += 1
+
+  image.onerror = ()->
+    src = $(this).attr('src');
+    targetElement = $("a.slider-images[href='#{src}']")
+
+    newSrc = null
+
+    if src.split('_')[2] is 'z.jpg'
+      newSrc = src.replace('_z.jpg', '_y.jpg')
+      imageSizeType = 'y'
+    else if src.split('_')[2] is 'y.jpg'
+      newSrc = src.replace('_y.jpg', '_b.jpg')
+      imageSizeType = 'b'
+
+    $(targetElement).attr('href', newSrc)
+
+    if imageSizeType != 'b'
+      checkImage(newSrc, numberOfImages, i)
+    else
+      newImage = new Image()
+
+      newImage.onload = ()->
+        imageLoadedCount += 1
+
+      newImage.src = newSrc
+
+  image.src = previousSrc
+
+root.replaceImage = ()->
   sliderImages = $('a.slider-images')
+  numberOfImages = sliderImages.length
 
   i = 0
-  while i < sliderImages.length
+  while i < numberOfImages
     previousSrc = $(sliderImages[i]).attr('href')
-    image = new Image()
-
-    image.onerror = ()->
-      console.error("Cannot load image")
-      src = $(this).attr('src');
-      targetElement = $("a.slider-images[href='#{src}']")
-
-      newSrc = null
-
-      if src.split('_')[2] is 'z.jpg'
-        newSrc = src.replace('_z.jpg', '_y.jpg')
-      else if src.split('_')[2] is 'y.jpg'
-        newSrc = src.replace('_y.jpg', '_b.jpg')
-
-      $(targetElement).attr('href', newSrc)
-
-    image.src = previousSrc
+    checkImage(previousSrc, numberOfImages, i)
 
     i++
 
@@ -357,12 +379,13 @@ $(document).ready ->
     if $('#links').length > 0
       replaceImage() # replace biggest image if not found, with medium image
 
-      setTimeout( ->
-        replaceImage() # replace medium image if not found, with small image
-      , 1000)
+      replaceImageInterval = setInterval(->
+        if (imageLoadedCount == $('.slider-images').length) || imageSizeType == 'b'
+          clearInterval replaceImageInterval
 
-      setTimeout( ->
-        blueimp.Gallery $('.slider-images'),
-          container: '#blueimp-gallery-carousel'
-          carousel: true
-      , 3000)
+          setTimeout( ->
+            blueimp.Gallery $('.slider-images'),
+            container: '#blueimp-gallery-carousel'
+            carousel: true
+          , 2000)
+      , 1000)

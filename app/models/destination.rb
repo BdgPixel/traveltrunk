@@ -12,7 +12,7 @@ class Destination < ActiveRecord::Base
     {
       latitude: latitude,
       longitude: longitude,
-      searchRadius: '80',
+      searchRadius: '10',
       destinationString: destination_string.upcase,
       city: city,
       stateProvinceCode: state_province_code,
@@ -26,7 +26,8 @@ class Destination < ActiveRecord::Base
           'numberOfAdults' => group ? group.members.size.next.to_s : '1'
         }
       },
-      numberOfResults: '200'
+      numberOfResults: '200',
+      includeSurrounding: 'yes'
     }
   end
 

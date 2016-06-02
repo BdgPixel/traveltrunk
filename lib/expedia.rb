@@ -72,9 +72,16 @@ module Expedia
 
                     response_result(response: [], error_response: @error_response)
                   else
-                    hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
-                      hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
-                    end
+                    hotels_list = 
+                      if response["HotelListResponse"]["HotelList"]["@size"].eql? '1'
+                        if response["HotelListResponse"]["HotelList"]["HotelSummary"]["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
+                          [response["HotelListResponse"]["HotelList"]["HotelSummary"]]
+                        end
+                      else
+                        response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
+                          hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
+                        end
+                      end
 
                     if hotels_list.empty?
                       @error_response = "There is no hotels that match your criteria and saving credits"
@@ -96,7 +103,11 @@ module Expedia
                   response_result(response: [], error_response: "Unable to get hotel list from Expedia. Please try again later")
                 end
               rescue Exception => e
-                response_result(response: [], error_response: "Some errors occurred. Please contact administrator or try again later.")
+                if e.is_a? Errno::ECONNRESET
+                  response_result(response: [], error_response: 'Unable to get hotel list from Expedia. Please try again later')
+                else
+                  response_result(response: [], error_response: "Some errors occurred. Please contact administrator or try again later.")
+                end
               end
             else
               @hotels_list    = []
