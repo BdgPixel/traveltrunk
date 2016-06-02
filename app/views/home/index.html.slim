@@ -15,7 +15,6 @@
                     h1.normal-font
                      | Your Journey Starts Here
                 
-
                     = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
      
     .wrap-arrow-down
@@ -24,7 +23,6 @@
           a href="#slogan" 
             | Learn More
             span.icon.arrow-down
-
 
 section.slogan#slogan
   .container
@@ -51,12 +49,15 @@ section.money.parallax-image3
               .row
                 .col-sm-7.col-md-7.col-lg-7
                   h2
-                    | No more stressful budgeting, 
+                    | No more stressful budgeting,
+
                   p
                     | no more overwhelming options. Here, we make travel planning fun and hassle-free. 
-                    | Now, you can plot your adventure, and savor every moment of anticipation. 
+                    | Now, you can plot your adventure, and savor every moment of anticipation.
+
                     br
                     br
+
                     | Here’s how it works…
 
 section.information
@@ -67,8 +68,9 @@ section.information
           .save
             .text-center
               = image_tag 'icon_save.png'
-              h3 
-                | Save
+
+              h3 Save
+
               p
                 | First, design your very own savings plan. 
                 br
@@ -83,8 +85,9 @@ section.information
           .create
             .text-center
               = image_tag 'icon_create.png'
-              h3
-                | Create
+
+              h3 Create
+
               p
                 | From boutique hotels to international flights, 
                 br
@@ -97,8 +100,9 @@ section.information
           .explore
             .text-center
               = image_tag 'icon_explore.png'
-              h3
-                | Explore
+
+              h3 Explore
+
               p
                 | Pack your bags and you’re off and away. 
                 br
@@ -120,6 +124,7 @@ section.couple.parallax-image2
                     | Your Dream Vacation 
                     br
                     | Is Just Around the Corner
+
                   p
                     | We can’t wait to help you make travel an exciting reality. 
                     | Simply sign up   with a safe, secure account, 
@@ -129,39 +134,3 @@ section.couple.parallax-image2
                   = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
 
 = render 'partials/footer'
-/ section.vacation
-/   .wrap-vacation-desc
-/     .vacation-desc
-/       .col-md-4
-/         h1.text-center
-/           | Your Dream Vacation Is Just Around the Corner
-/         p.text-center
-/          | We can’t wait to help you make travel an exciting reality. Simply sign up with a safe, secure account, and the world is at your fingertips.
-
-/         .text-center
-/           = link_to "Click HERE to Get in on the Fun!", new_user_session_path, class: "btn btn-default"
-
-/     .image-vacation
-/       .col-md-8.no-pad-right
-/         .inner-image
-/           = image_tag 'banner_img_3.jpg'
-
-  / .wrap-couple
-  /   .couple
-  /     = image_tag 'banner_img_3.jpg'
-  /     .inner-item
-  /       .item-content
-  /         .item-center
-  /           .container
-  /             .row
-  /               .col-sm-12.col-md-12.col-lg-12
-  /                 h1
-  /                   | Your Dream Vacation Is Just Around the Corner
-  /                 p
-  /                   | We can’t wait to help you make travel an exciting reality. 
-  /                   | Simply sign up   with a safe, secure account, 
-  /                   br
-  /                   | and the world is at your fingertips.
-                    
-  /                 = link_to "Click HERE to Get Started!", new_user_session_path, class: "btn btn-default"
-

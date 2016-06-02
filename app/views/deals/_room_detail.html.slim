@@ -1,6 +1,7 @@
 tr
   td
     strong = room["rateDescription"].html_safe
+
     br
 
     - if room["RoomImages"]
@@ -21,6 +22,7 @@ tr
         = image_tag "https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg", class: 'room-image'
 
       br
+      
       small.image-disclaimer
         | *This image may not be that exact room titled above
 
@@ -42,7 +44,8 @@ tr
 
   td width="300px"
     - if @error_category_room_message
-      h4 category_room_message
+      h4 @error_category_room_message
+
     ul.room-availability
       - unless room["ValueAdds"].nil?
         - if room["ValueAdds"]["@size"].eql? "1"
@@ -54,6 +57,7 @@ tr
   td width="280px"
     b.column-price
       = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+
     p
       - if room["RateInfos"]["RateInfo"]["nonRefundable"]
         i
@@ -61,6 +65,7 @@ tr
       - else
         i
           small Refundable rate
+
     = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
   td width="200px"

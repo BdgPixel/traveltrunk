@@ -4,7 +4,9 @@
       .modal-header
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true" &times;
+
         h3 Add to savings
+
         i
           small &ldquo;minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below.)&rdquo;
 
@@ -18,11 +20,14 @@
           = f.hidden_field :id, value: params[:id]
           = f.hidden_field :rate_code
           = f.hidden_field :total
+
           .form-group
             .payment-errors
+
             .row
               .col-md-6
                 = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;' }
+
                 = image_tag asset_path('cards/mastercard.png')
                 |&nbsp;
                 = image_tag asset_path('cards/visa.png')
@@ -48,6 +53,7 @@
             .row
               .col-md-6
                   = f.label :amount
+
                   .input-group
                     .input-group-addon $
                     = f.input_field :formatted_amount, class: "form-control update_credit_amount amount"
@@ -56,12 +62,15 @@
           .modal-footer
             .text-center
               | Would you like us to submit this transaction now?
+
               br
               br
+
             .row
               .col-md-8.col-md-offset-4
                 = f.submit "Submit", class: "btn btn-saving btn-green"
+
                 | &nbsp;&nbsp;
+                
                 button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
                   | Cancel
-

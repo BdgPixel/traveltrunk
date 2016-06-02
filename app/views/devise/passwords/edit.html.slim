@@ -3,10 +3,9 @@
     .col-md-8.col-md-offset-2
       .wrapper-forgot-password
         h1.text-center Change your password
-        .forgot-password
 
+        .forgot-password
           = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :put }) do |f|
-            / = devise_error_messages!
             = f.hidden_field :reset_password_token
 
             .row
@@ -16,9 +15,6 @@
 
                   - if f.error :reset_password_token
                     span.error reset password token is invalid
-
-                  - if @minimum_password_length
-                    em (@minimum_password_length characters minimum)
 
             .row
               .col-md-12

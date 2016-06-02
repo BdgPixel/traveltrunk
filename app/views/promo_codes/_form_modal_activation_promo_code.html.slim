@@ -4,15 +4,20 @@
       .modal-header
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"  &times;
+
         h4#myModalLabel.modal-title Activation Promo Code
+
       = simple_form_for :promo_code, url: promo_codes_update_path, remote: true do |f|
         .modal-body
           .form-group 
             = f.input :token, label: false, input_html: { class: "form-control", placeholder: "Enter promo code", autofocus: true }
+            
             span.error = flash[:error]
 
         .modal-footer
           = f.submit "Activated", class: "btn btn-saving btn-green"
+
           | &nbsp;&nbsp;
+
           button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
             | Close

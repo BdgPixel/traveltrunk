@@ -12,10 +12,13 @@
     .col-md-6
       .form-group.form-group-md
         = f.label :amount
+
         .input-group
           .input-group-addon $
           = f.input_field :amount, class: "form-control", autofocus: true, error_html: { class: "error-message" }, label: "Total Amount"
+
         = f.error :amount
+
         .payment-errors.amount
 
   .row
@@ -31,6 +34,7 @@
   .row
     .col-md-12.text-center
       br
+
       .form-group
         = f.submit "Save changes", class: "btn btn-saving btn-green"
         | &nbsp;

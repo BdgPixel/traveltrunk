@@ -27,15 +27,20 @@
 
       .form-group
         = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>&nbsp; By selecting to complete this booking I acknowledge that I have read and accept the <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe
+        
         .payment-errors
 
       .row
         .col-md-8
           .form-group
             | Would you still like to book this hotel ?
+
             br
             br
+
             = f.button :submit, "Yes", class: 'btn btn-saving btn-green'
+
             | &nbsp;
+            
             button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
               | No

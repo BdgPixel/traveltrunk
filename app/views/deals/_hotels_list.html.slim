@@ -37,15 +37,15 @@
 
           div.text-center
             i
-              small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
+              small 
+                | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
           - if @hotels_list.first[:num_of_hotel] > 15
-          .wrapper-pagination
-            #pagination
+            .wrapper-pagination
+              #pagination
 
-            p#pagination-info.text-center
-              | 1 - 15 of #{@hotels_list.first[:num_of_hotel]} Hotels
-
+              p#pagination-info.text-center
+                | 1 - 15 of #{@hotels_list.first[:num_of_hotel]} Hotels
 
   - else
     #error_response.alert.alert-info style="margin-top: 20px"

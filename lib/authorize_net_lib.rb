@@ -1,6 +1,5 @@
 module AuthorizeNetLib
   require 'authorizenet'
-  # include AuthorizeNet::API
 
   class Global
     def initialize
@@ -34,7 +33,6 @@ module AuthorizeNetLib
 
     def get_customer_profile(customer_profile_id)
       request = AuthorizeNet::API::GetCustomerProfileRequest.new(nil, nil, customer_profile_id)
-      # request.customerProfileId = customer_profile_id
 
       response = @transaction.get_customer_profile(request)
       error_params, message_params = [response.messages, "Failed to get customer profile information with id #{customer_profile_id}"]
@@ -160,8 +158,6 @@ module AuthorizeNetLib
           customer = Customers.new
           if customer_payment_profile_id
             delete_payment_profile = customer.delete_payment_profile(customer_profile_id, customer_payment_profile_id)
-          # else
-            # delete_customer_profile = customer.delete_customer_profile(customer_profile_id)
           end
         end
       else
@@ -195,27 +191,20 @@ module AuthorizeNetLib
         payment_profile_response = customer_authorize.get_customer_payment_profile(customer_profile_id, payment_profile_id)
         subscription_ids = payment_profile_response.paymentProfile.subscriptionIds.subscriptionId.to_a
 
-        puts current_subscription_id
-        puts '=========='
-        puts subscription_ids
-        puts '=========='
-
         subscription_ids.each do |subscription_id|
           unless subscription_id.eql?(current_subscription_id)
             request = AuthorizeNet::API::ARBCancelSubscriptionRequest.new
 
             request.subscriptionId = subscription_id
             response = transaction.cancel_subscription(request)
-            puts "#{subscription_id} canceled"
           end
         end
 
         unless subscription_ids.include?(current_subscription_id)
           sleep 3
           customer_authorize.delete_payment_profile(customer_profile_id, payment_profile_id)
-          puts "#{payment_profile_id} deleted"
         end
-      end;0
+      end
     end
 
     def get_subscription_status(subscription_id)
@@ -302,8 +291,7 @@ module AuthorizeNetLib
 
         response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
 
-        # Check duplicate transaction
-        # errorCode '11' as duplicate transaction
+        # Check duplicate transaction, errorCode '11' as duplicate transaction
         response_error_text = 'Please wait several minutes for another transaction' if response_error_code.eql?('11')
         
         error_messages = { 
@@ -380,8 +368,6 @@ module AuthorizeNetLib
   class TransactionReporting < Global
     def get_settled_batch_list(first_date = nil, last_date = nil)
       request = AuthorizeNet::API::GetSettledBatchListRequest.new
-      # request.firstSettlementDate = (DateTime.now().utc - 1.day).strftime('%Y-%m-%dT00:00:00Z')
-      # request.lastSettlementDate = (DateTime.now().utc).strftime('%Y-%m-%dT00:00:00Z')
 
       if first_date && last_date
         request.firstSettlementDate = first_date
@@ -440,7 +426,6 @@ module AuthorizeNetLib
           response_error_code: message.code
         }
         
-        # raise RescueErrorsResponse.new(error_messages), message_params
         raise RescueErrorsResponse.new(error_messages), message.text
       end
     end

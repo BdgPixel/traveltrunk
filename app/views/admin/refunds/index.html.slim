@@ -1,6 +1,7 @@
 .pad-top-97
 .container  
   h3 Void / Refund Requests
+  
   br
 
   - if @refunds.empty?
@@ -29,6 +30,7 @@
               span class="#{status_label(refund.confirmed)}" 
                 = refund.confirmed.titleize
             td
-             - if refund.confirmed.eql? 'pending'
-              = link_to 'Approve', admin_refund_path(refund), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure approve this refund ?'}, :method => :put
+              - if refund.confirmed.eql? 'pending'
+                = link_to 'Approve', admin_refund_path(refund), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure approve this refund ?'}, :method => :put
+              
     = paginate @refunds

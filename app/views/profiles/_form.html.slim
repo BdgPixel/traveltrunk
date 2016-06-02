@@ -23,23 +23,29 @@ div
             .wrapper-titile-edit-profile
               h2.text-center
                 | Let the Adventure Begin!
+
             .form-group
               .thumbnail
                 = link_to 'javascript:void(0)'
                   = image_tag current_user.profile.image.url, id: 'profile_image', class: "img-circle" unless current_user.profile.image.nil?
+
                 br
+
                 = profile_form.input_field :image, as: :file, id: 'choose_profile_image',  data: {filename_placement: 'inside' }, class: 'btn btn-block btn-saving btn-green'
-                .hide
-                  = profile_form.input :image_cache, as: :hidden
+
+                .hide = profile_form.input :image_cache, as: :hidden
+
                 span.text-info
                   i You can only upload jpg, gif, png
-
           
           .col-md-12
             h4 PERSONAL INFORMATION
-            h2 Create Your Traveler Profile... 
+
+            h2 Create Your Traveler Profile...
+
             p
               | Take a few moments to fill in the easy form below. This information helps us customize Travel  Trunk to your needs and vision.  
+
             br
             
           .col-md-12
@@ -111,7 +117,9 @@ div
             p
               i
                 small &ldquo;Address must match credit card information&rdquo;
+
             br
+
             center
               .form-group.bank_account
                 = f.button :submit, 'Update Profile', class: 'btn btn-saving btn-green'
@@ -124,7 +132,9 @@ div
     .col-md-12#bank_account
       h4
         | SAVINGS PLAN
+
       h2 Create Your Savings Plan...
+
       p
         | You decide how much you want to save, and how often. With regular, automatic deposits into  your Travel Trunk account, you’ll be amazed how quickly your funds build up! 
 
@@ -138,11 +148,13 @@ div
         p
           i
             small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
-          br
-          br
-    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account", class: "transaction-form" } do |f|
 
+          br
+          br
+
+    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account", class: "transaction-form" } do |f|
       .payment-errors
+
       .row
         .col-md-6
           .form-group
@@ -166,6 +178,7 @@ div
         .col-md-6
           .form-group
             = f.label :amount_transfer
+
             .input-group
               .input-group-addon $
               = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
@@ -182,6 +195,7 @@ div
       .row
         .col-md-12
           br
+
           center
             .form-group
               = f.button :submit, 'Update Savings', class: 'btn btn-saving btn-green'
@@ -189,6 +203,7 @@ div
                 | &nbsp;&nbsp;
                 button.btn.btn-saving.btn-orange-soft data-target=".unsubscript" data-toggle="modal" type="button"
                   | Delete Bank Account
+
           br
           br
 
@@ -199,8 +214,10 @@ div
                   button.close aria-label="Close" data-dismiss="modal" type="button"
                     span aria-hidden="true"  &times;
                   h4.modal-title Reoccurring transaction
+
                 .modal-body
                   p Are you sure you want to stop reoccurring transaction on this account?
+                  
                 .modal-footer
                   button.button.btn.btn-saving.btn-green data-dismiss="modal" type="button" No, keep my savings plan.
                   | &nbsp;&nbsp;

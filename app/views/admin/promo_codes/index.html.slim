@@ -1,6 +1,7 @@
 .pad-top-97
 .container
   h3 Promo Codes
+
   br
 
   - if @promo_codes.empty?
@@ -37,4 +38,4 @@
 
   = link_to new_admin_promo_code_path, class: "btn btn-saving btn-orange-soft btn-md"
     span.glyphicon.glyphicon-plus
-    | &nbsp;Add to Promo Code
+    | &nbsp; Add to Promo Code

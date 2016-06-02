@@ -217,6 +217,5 @@ module Expedia
         response_result(error_response: @error_response)
       end
     end
-
   end
 end

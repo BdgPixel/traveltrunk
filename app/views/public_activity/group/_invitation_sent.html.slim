@@ -2,8 +2,11 @@
   .description 
     span
       = link_to activity.owner.profile.first_name.try(:titleize), user_profile_path(activity.owner.profile) if activity.owner
+
       | &nbsp;
+
       | would like you to join #{activity.owner.try(:profile).try(:pronoun, 'possesive') || 'his / her' } trip.
+      
       | &nbsp;
 
       - if activity.trackable
@@ -13,7 +16,9 @@
           | (already accepted)
       - else
         | (deleted)
+
       | &nbsp;
+      
   .date 
     span
       = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

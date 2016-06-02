@@ -1,10 +1,10 @@
 <%- if @destination %>
-  $("#slideToggleLink").text("<%= @destination.title_destination %>")
+  $("#slideToggleLink").text("<%= @destination.title_destination %>");
 <%- else %>
-  $("#slideToggleLink").text("Where would you like to be?")
+  $("#slideToggleLink").text("Where would you like to be?");
 <% end %>
 
-$("#dealsHotelsList").html("<%= j render 'hotels_list' %>")
+$("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
 
 <% unless @hotels_list.first[:error_response] %>
   initDealsPage(<%= raw @hotels_list.first[:num_of_page] %>, <%= raw @hotels_list.first[:num_of_hotel] %>);

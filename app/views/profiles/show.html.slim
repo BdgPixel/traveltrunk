@@ -10,11 +10,11 @@
       .col-sm-4.col-md-4.col-lg-3.col-sm-offset-3
         .wrapper-img-profile
           = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
+
       .col-sm-4.col-md-4.col-lg-6
         .wrapper-user-name
           .col-md-7.col-lg-8
-            h1
-              = @user.full_name
+            h1 = @user.full_name
 
             h4 = @user.profile.place_to_visit.try(:titleize) || 'Place to visit not specified'
 
@@ -22,11 +22,14 @@
               span.glyphicon.glyphicon-map-marker
               | &nbsp;
               b = @user.profile.home_airport.try(:titleize) || 'Home airport not specified'
+
       .col-sm-4.col-md-4.col-lg-4
         .div class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
           | &nbsp;
+
           span.text-right
             = link_to 'Edit Profile', edit_profile_path, class: ''
+
         .clearfix
 
   .wrapper-profile-content
@@ -37,6 +40,7 @@
             .row
               .col-sm-offset-3.col-sm-6
                 h3.color-orange PERSONAL INFORMATION
+
                 table.table.table-user-information.table-custom
                   tbody
                     tr
@@ -89,8 +93,10 @@
                       td
                         | : &nbsp;
                         = @user.profile.country_name rescue 'Information not specified'
+
               .col-sm-offset-3.col-sm-6
                 h3.color-orange SAVINGS PLAN
+                
                 - if @user.bank_account
                   table.table.table-user-information.table-custom
                     tbody

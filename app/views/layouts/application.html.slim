@@ -2,25 +2,34 @@ doctype html
 html lang="en"
   head
     title Travel Trunk
+
     meta charset="utf-8"
     meta content="IE=edge" http-equiv="X-UA-Compatible"
     meta content="width=device-width, initial-scale=1" name="viewport"
+
     link href=("/favicon.ico") rel=("shortcut icon") type='image/x-icon'
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = yield :css
+
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
+
     - if Rails.env.eql? 'production'
       = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyBQolMUFZOcsbrcYVyg4ypd0RyZvMuKbzY&signed_in=true&libraries=places"
     - else
       = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyCAT4MD-BT8TBMYqlhtkaFvth4cRvz-mGE&signed_in=true&libraries=places"
+
     = csrf_meta_tags
 
   body data-controller="#{controller_name}" data-action="#{action_name}"
     = yield :css_body
+
     = render 'partials/notice'
+
     = yield
     
     = render partial: 'partials/navbar'
+
     #loading
 
     = yield :javascripts

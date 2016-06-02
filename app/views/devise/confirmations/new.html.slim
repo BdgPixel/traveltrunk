@@ -3,11 +3,9 @@
     .col-md-8.col-md-offset-2
       .wrapper-forgot-password
         h1.text-center Resend confirmation instructions
+        
         .forgot-password
-
           = simple_form_for(resource, as: resource_name, url: confirmation_path(resource_name), html: { method: :post }) do |f|
-            / = devise_error_messages!
-
             .row
               .col-md-8
                 .form-group
@@ -15,5 +13,3 @@
 
               .col-md-4
                 = f.submit "Resend", class: 'btn btn-block btn-global'
-
-      / = render "devise/shared/links"

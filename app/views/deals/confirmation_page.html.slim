@@ -23,8 +23,7 @@
               = current_user.email
 
             p
-              b
-                | Itinerary Number:&nbsp;
+              b Itinerary Number:&nbsp;
               = "#{@reservation.itinerary}"
 
             p
@@ -71,6 +70,7 @@
             p
               | Check-in:&nbsp;
               = @reservation.arrival_date.strftime("%B %d, %Y")
+
             p
               | Check-out:&nbsp;
               = @reservation.departure_date.strftime("%B %d, %Y")
@@ -85,9 +85,6 @@
                 tr
                   td = date.strftime("%B %d, %Y")
                   = nightly_rates_per_room(@charge_able_rate_info["NightlyRatesPerRoom"], key)
-                  / - @charge_able_rate_info["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["NightlyRatesPerRoom"]["NightlyRate"].each_with_index do |rate, key_rate|
-                  /   - if key.eql? key_rate
-                  /     td = number_to_currency rate["@rate"]
               tr
                 td
                   b Total taxes and fees
@@ -96,10 +93,13 @@
               tr
                 td
                   b Total Charges
+                  
                   br
-                    small
-                      i
-                        | (includes tax recovery charges and service fees)
+                  
+                  small
+                    i
+                      | (includes tax recovery charges and service fees)
+
                 td = number_to_currency @charge_able_rate_info["@total"]
 
               = tax_values @charge_able_rate_info
