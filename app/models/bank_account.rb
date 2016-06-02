@@ -95,37 +95,6 @@ class BankAccount < ActiveRecord::Base
     params_recurring = get_recurring_params
 
     begin
-      # params_recurring = {
-      #   ref_id: AuthorizeNetLib::Global.generate_random_id('ref'),
-      #   card: {
-      #     credit_card: self.credit_card,
-      #     cvc: self.cvc,
-      #     exp_card: "#{self.exp_month.rjust(2, '0')}#{self.exp_year[-2, 2]}",
-      #   },
-      #   plan: {
-      #     interval_unit: interval_frequency,
-      #     interval_length: interval_count,
-      #     trial_occurrences: '0',
-      #     amount: amount,
-      #     plan_name: plan_name
-      #   },
-      #   customer: {
-      #     customer_id: customer.customer_id,
-      #     first_name: user.profile.first_name,
-      #     last_name: user.profile.last_name,
-      #     email: user.email,
-      #     company: nil,
-      #     address: user.profile.address,
-      #     city: user.profile.city,
-      #     state: user.profile.state,
-      #     zip: user.profile.postal_code,
-      #     country: user.profile.country_code,
-      #   },
-      #   order: {
-      #     invoice_number: AuthorizeNetLib::Global.generate_random_id('inv') 
-      #   },
-      # }
-
       customer_authorize = AuthorizeNetLib::Customers.new
       customer_profile = customer_authorize.get_customer_profile(customer.customer_profile_id)
       customer_payment_profile = customer_profile.paymentProfiles.first
@@ -149,8 +118,6 @@ class BankAccount < ActiveRecord::Base
           user_subscription.update(subscription_hash)
 
           if customer_payment_profile
-            # response = recurring_authorize.cancel_subscription(user_subscription.subscription_id, customer_profile.customerProfileId, customer_payment_profile.customerPaymentProfileId)
-            # response.messages.resultCode
             AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(user_subscription.subscription_id, customer_profile.customerProfileId)
           end
         end 
@@ -199,7 +166,6 @@ class BankAccount < ActiveRecord::Base
         start_date: Time.now.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
       },
       customer: {
-        # customer_id: customer_id,
         first_name: profile.first_name,
         last_name: profile.last_name,
         email: self.user.email,
@@ -216,150 +182,6 @@ class BankAccount < ActiveRecord::Base
     }
   end
 
-=begin
-  def set_customer_profile
-    user = self.user
-
-    if user
-      unless user.customer
-        begin
-          customer_from_authorize_net = AuthorizeNetLib::Customers.new
-          merchant_customer_id = AuthorizeNetLib::Global.generate_random_id('cus')
-
-          response = customer_from_authorize_net.create_profile({ 
-            merchant_customer_id: merchant_customer_id, 
-            email: self.user.email 
-          })
-
-          if response.messages.resultCode.eql? 'Ok'
-            @customer_id = response.customerProfileId
-            Customer.create(customer_id: merchant_customer_id, user_id: user.id, customer_profile_id: response.customerProfileId)
-          end
-        rescue => e
-          logger.error e.message
-
-          self.errors.add(:authorize_net_error, e.error_message[:response_message])
-          false
-        end
-      end
-    end
-  end
-
-  def set_recurring_subscription
-    user = self.user
-    
-    if user
-      customer = Customer.where(user_id: user).first
-
-      user_subscription = user.subscription
-      amount = self.amount_transfer.to_f
-      interval_frequency, interval_count = self.transfer_type
-      plan_name = "#{user.profile.first_name.titleize} #{self.transfer_frequency} Savings Plan"
-
-      begin
-        params_recurring = {
-          ref_id: AuthorizeNetLib::Global.generate_random_id('ref'),
-          card: {
-            credit_card: self.credit_card,
-            cvc: self.cvc,
-            exp_card: "#{self.exp_month.rjust(2, '0')}#{self.exp_year[-2, 2]}",
-          },
-          plan: {
-            interval_unit: interval_frequency,
-            interval_length: interval_count,
-            trial_occurrences: '0',
-            amount: amount,
-            plan_name: plan_name
-          },
-          customer: {
-            customer_id: customer.customer_id,
-            first_name: user.profile.first_name,
-            last_name: user.profile.last_name,
-            email: user.email,
-            company: nil,
-            address: user.profile.address,
-            city: user.profile.city,
-            state: user.profile.state,
-            zip: user.profile.postal_code,
-            country: user.profile.country_code,
-          },
-          order: {
-            invoice_number: AuthorizeNetLib::Global.generate_random_id('inv') 
-          },
-        }
-        
-        customer_authorize = AuthorizeNetLib::Customers.new
-        customer_profile = customer_authorize.get_customer_profile(customer.customer_profile_id)
-        customer_payment_profile = customer_profile.paymentProfiles.first
-
-        recurring_authorize = AuthorizeNetLib::RecurringBilling.new
-        start_date = Time.now.in_time_zone("Pacific Time (US & Canada)")
-
-        if user_subscription
-          customer_credit_card_last_4 = customer_payment_profile.payment.creditCard.cardNumber.last(4) rescue nil
-          credit_card_changed = customer_credit_card_last_4 != self.credit_card.last(4)
-        
-          if credit_card_changed || self.changed.include?('amount_transfer') || self.changed.include?('transfer_frequency')
-            if customer_payment_profile
-              response = recurring_authorize.cancel_subscription(user_subscription.subscription_id, customer_profile.customerProfileId, customer_payment_profile.customerPaymentProfileId)
-              response.messages.resultCode
-            end
-
-            selected_params = params_recurring.select { |k, v| [:subscription_id, :plan].include?(k) }
-            subscription_hash = user_subscription.get_params_hash(selected_params)
-            
-            start_date = (start_date + eval("#{interval_count}.#{interval_frequency}")).strftime("%Y-%m-%d")
-            params_recurring[:plan][:start_date] = start_date
-            subscription_response = recurring_authorize.create_subscription(params_recurring)
-
-            subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
-            user_subscription.update(subscription_hash)
-          end 
-        else
-          # create subscription
-          params_recurring[:plan][:start_date] = start_date.strftime("%Y-%m-%d")
-          response = recurring_authorize.create_subscription(params_recurring)
-
-          if response.messages.resultCode.eql? 'Ok'
-            Subscription.create({
-              subscription_id: response.subscriptionId,
-              amount: amount * 100,
-              interval: interval_frequency,
-              interval_count: interval_count,
-              plan_name: plan_name,
-              user_id: user.id
-            })
-          else
-            puts user.customer.inspect
-          end
-        end
-      rescue => e
-        logger.error @customer_id
-
-        if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-          @error_response = 
-            if e.error_message[:response_error_text]
-              "#{e.error_message[:response_message]} #{response_error_code}"
-            else
-              e.error_message[:response_message].split('-').last.strip
-            end
-            
-          if e.error_message[:response_error_code].eql? 'E00040'
-            customer_authorize = AuthorizeNetLib::Customers.new
-            customer_authorize.delete_customer_profile(@customer_id)
-          end
-
-          self.errors.add(:authorize_net_error, @error_response)
-          false
-        else
-          logger.error e.message
-          e.backtrace.each { |line| logger.error line }
-        end
-      end
-    end
-  end
-=end
-
   def unsubscriptions
     if self.user
       begin
@@ -371,15 +193,14 @@ class BankAccount < ActiveRecord::Base
         payment_profile_id = get_customer.paymentProfiles.first.customerPaymentProfileId
 
         subscription_id = self.user.subscription.subscription_id
-        # cancel_subscription = recurring_authorize.cancel_subscription(subscription_id, customer_profile_id, payment_profile_id)
+
         Subscription.where(user_id: self.user_id).destroy_all
+
         PaymentProcessorMailer.delay.cancel_subscription(self.user.id)
+
         user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
         
         AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(nil, customer_profile_id)
-
-        # customer_authorize.delete_customer_profile(customer_profile_id)
-        # Customer.where(user_id: self.user_id).destroy_all
       rescue => e
         logger.error e.message
         

@@ -16,7 +16,6 @@ class UsersGroup < ActiveRecord::Base
   end
 
   def accept_invitation
-    # InvitationMailer.delay.information_after_invited(self.member.id)
     self.create_activity key: "group.accept_invitation", owner: self.member,
       recipient: self.joined_group.user, parameters: { token: self.invitation_token }
   end
@@ -28,7 +27,6 @@ class UsersGroup < ActiveRecord::Base
 
     def send_invitation_notification
       current_user = self.joined_group.user
-      # InvitationMailer.delay.invite(current_user, self)
       self.create_activity key: "group.invitation_sent", owner: current_user,
         recipient: User.find(self.user_id), parameters: { token: self.invitation_token, group_id: current_user.id }
     end

@@ -45,10 +45,6 @@ class Profile < ActiveRecord::Base
     city && state && country_code && postal_code
   end
 
-  def change_camel_case_to()
-    
-  end
-
   def change_to_hash(args)
     hash = {}
 

@@ -6,5 +6,4 @@ class Reservation < ActiveRecord::Base
   def self.get_reservation_list
     self.select(:id, :user_id, :hotel_name, :city, :total, :reservation_type, :status, :created_at).order(created_at: :desc)
   end
-
 end

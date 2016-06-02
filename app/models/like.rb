@@ -3,8 +3,6 @@ class Like < ActiveRecord::Base
 
   belongs_to :user
 
-  # after_create :send_notification_to_groups
-
   private
     def send_notification_to_groups
       self.user.joined_groups.first.members.each do |user|
@@ -13,6 +11,5 @@ class Like < ActiveRecord::Base
             recipient: User.find(user.id), parameters: { hotel_id: self.hotel_id }
         end
       end
-
     end
 end

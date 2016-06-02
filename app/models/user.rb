@@ -21,15 +21,11 @@ class User < ActiveRecord::Base
   has_many :refunds, dependent: :destroy
 
   accepts_nested_attributes_for :profile
-  # accepts_nested_attributes_for :bank_account
 
   attr_accessor :stripe_token, :execute_stripe_callbacks, :group_id
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :confirmable, :async
-
 
   def no_profile?
     self.profile.nil? || self.profile.new_record?
@@ -81,19 +77,6 @@ class User < ActiveRecord::Base
 
     room_hash
   end
-
-  # commented but will be used later
-  #
-  # def current_group
-  #   self.group || self.joined_groups.first
-  # end
-
-  # def members_liked(hotel_id)
-  #   group = self.group || self.joined_groups.first
-
-  #   User.joins(:likes).joins("LEFT JOIN users_groups ON users_groups.user_id = users.id")
-  #     .where("hotel_id = ? AND (users_groups.group_id = ? OR users.id IN (?))", hotel_id, group.id, [self.id, group.user_id])
-  # end
 
   def self.get_autocomplete_data(email, current_user)
     User.joins("FULL OUTER JOIN profiles ON profiles.user_id = users.id")

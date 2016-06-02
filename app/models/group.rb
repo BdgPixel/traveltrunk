@@ -16,5 +16,4 @@ class Group < ActiveRecord::Base
     members = self.members.select(:total_credit)
     members.map(&:total_credit).sum + self.user.total_credit
   end
-
 end
