@@ -5,7 +5,7 @@ module AuthorizeNetLib
     def initialize
       api_login_id = ENV['AUTHORIZE_NET_API_LOGIN_ID']
       api_transaction_key = ENV['AUTHORIZE_NET_API_TRANSACTION_KEY']
-      gateway = Rails.env.eql?('production') ? :production : :sandbox
+      gateway = ENV['AUTHORIZE_NET_MODE']
 
       @transaction = AuthorizeNet::API::Transaction.new(api_login_id, api_transaction_key, gateway: gateway)
     end
