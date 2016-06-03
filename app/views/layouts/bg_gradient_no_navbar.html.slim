@@ -13,11 +13,7 @@ html lang="en"
     = yield :css
 
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-
-    - if Rails.env.eql? 'production'
-      = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyBQolMUFZOcsbrcYVyg4ypd0RyZvMuKbzY&signed_in=true&libraries=places"
-    - else
-      = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyCAT4MD-BT8TBMYqlhtkaFvth4cRvz-mGE&signed_in=true&libraries=places"
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&signed_in=true&libraries=places"
 
     = csrf_meta_tags
 
