@@ -343,7 +343,7 @@ $(document).ready ->
 
     validateFormBook()
 
-    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'left')
+    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'focus', 'left')
 
     $.ajax
       url: "/deals/#{ params_path_id }/room_availability.js"
