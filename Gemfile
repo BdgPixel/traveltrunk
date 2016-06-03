@@ -74,6 +74,8 @@ gem 'devise-async'
 
 gem 'exception_notification'
 
+gem 'redis-namespace'
+
 group :development, :test do
   gem 'rspec', '~> 3.4'
 
