@@ -2,4 +2,4 @@ $("#roomAvailability").html("<%= j render partial: 'room_availability' %>");
 
 var rooms = <%= raw @room_availability.to_json %>;
 
-popOver('.popover-links', null, '.content-popover', 'focus');
+popOver('.popover-links', null, '.content-popover', 'focus', 'top');

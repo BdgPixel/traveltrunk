@@ -343,7 +343,13 @@ $(document).ready ->
 
     validateFormBook()
 
-    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'left')
+    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'top')
+
+    $(document).on 'click', '[data-dismiss="popover"]', (e) ->
+      $(this).closest('div').prev().popover('hide')
+
+    $('body').on 'hidden.bs.popover', (e) ->
+      $(e.target).data("bs.popover").inState = { click: false, hover: false, focus: false }
 
     $.ajax
       url: "/deals/#{ params_path_id }/room_availability.js"
