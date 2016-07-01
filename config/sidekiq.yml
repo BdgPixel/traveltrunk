@@ -4,7 +4,7 @@
 :timeout: 30
 
 production:
-  :concurrency: 10
+  :concurrency: 5
 
 :queues:
   - [default, 2]
