@@ -68,7 +68,7 @@ class PaymentsController < ApplicationController
           recurring_authorize = AuthorizeNetLib::RecurringBilling.new
           subscription_status = recurring_authorize.get_subscription_status(response['x_subscription_id'])
 
-          if ['suspended', 'cancelled', 'terminated'].include? subscription_status
+          if ['suspended', 'cancelled', 'terminated', 'declined'].include? subscription_status
             recurring_authorize.cancel_subscription(response['x_subscription_id'], customer_profile_id)
             
             user.create_activity(

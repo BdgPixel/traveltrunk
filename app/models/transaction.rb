@@ -24,7 +24,7 @@ class Transaction < ActiveRecord::Base
 
     transaction_detail = transaction_reporting_authorize.get_transaction_details(transaction_id)
 
-    if transaction_detail
+    if transaction_detail && transaction_detail.transaction.subscription
       customer = Customer.find_by(customer_id: transaction_detail.transaction.customer.id)
       user = customer.user if customer
 
@@ -43,40 +43,29 @@ class Transaction < ActiveRecord::Base
             PaymentProcessorMailer.delay.subscription_charged(user.id, transaction.amount) if transaction.save
           end
         elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
+          subscription_id = transaction_detail.transaction.subscription.chop
           recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
-          begin
-            recurring_authorize.cancel_subscription(transaction_detail.transaction.subscription)
-          rescue => e
-            recurring_authorize.cancel_subscription(transaction_detail.transaction.subscription.chop)
-          end
-
-          subscription_status =
-            begin
-              recurring_authorize.get_subscription_status(transaction_detail.transaction.subscription)
-            rescue => e
-              if e.error_message[:response_error_code].eql? 'E00035'
-                recurring_authorize.get_subscription_status(transaction_detail.transaction.subscription.chop)
-              end
-            end
+          recurring_authorize.cancel_subscription(subscription_id)
+          subscription_status = recurring_authorize.get_subscription_status(subscription_id)
 
           user.create_activity(
             key: 'payment.subscription_failed', 
             owner: user, 
             recipient: user,
             parameters: {
-              subscription_id: transaction_detail.transaction.subscription,
+              subscription_id: subscription_id,
               subscription_status: subscription_status,
               subscription_message: nil
             }
           )
 
-          subscription = Subscription.where(user_id: user.id, subscription_id: transaction_detail.transaction.subscription).first
+          subscription = Subscription.where(user_id: user.id, subscription_id: subscription_id).first
           
           if subscription
             subscription.destroy
             Bank_account.where(user_id: user.id).delete_all
-            PaymentProcessorMailer.delay.subscription_failed(user.id, transaction_detail.transaction.subscription, subscription_status)
+            PaymentProcessorMailer.delay.subscription_failed(user.id, subscription_id, subscription_status)
           end
         end
       else
