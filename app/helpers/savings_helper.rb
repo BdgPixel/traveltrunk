@@ -40,4 +40,8 @@ module SavingsHelper
       end
     end
   end
+
+  def subscription_failed_reason(subscription_message)
+    subscription_message ? ['(reason: ', subscription_message.downcase, ')'].join : 'due to some reasons'
+  end
 end

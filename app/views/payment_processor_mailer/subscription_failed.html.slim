@@ -4,7 +4,7 @@ p#subscriptionFailed
   br
   br
 
-  | Your subscription with ID #{@subscription_id} is #{@subscription_status.downcase} #{ @subscription_message ? ['(reason: ', @subscription_message.downcase, ')'].join : "due to some reasons" }. 
+  | Your subscription with ID #{@subscription_id} is #{@subscription_status.downcase} #{subscription_failed_reason(@subscription_message)}. 
 
   br
   br
