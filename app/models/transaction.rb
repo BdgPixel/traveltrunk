@@ -45,6 +45,12 @@ class Transaction < ActiveRecord::Base
         elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
           recurring_authorize = AuthorizeNetLib::RecurringBilling.new
 
+          begin
+            recurring_authorize.cancel_subscription(transaction_detail.transaction.subscription)
+          rescue => e
+            recurring_authorize.cancel_subscription(transaction_detail.transaction.subscription.chop)
+          end
+
           subscription_status =
             begin
               recurring_authorize.get_subscription_status(transaction_detail.transaction.subscription)
@@ -60,7 +66,7 @@ class Transaction < ActiveRecord::Base
             recipient: user,
             parameters: {
               subscription_id: transaction_detail.transaction.subscription,
-              subscription_status: transaction_detail.transaction.transactionStatus,
+              subscription_status: subscription_status,
               subscription_message: nil
             }
           )
