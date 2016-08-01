@@ -80,11 +80,11 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
 
   config.action_mailer.smtp_settings = {
-    address:        ENV['MAILGUN_SMTP_SERVER'],
-    port:           ENV['MAILGUN_SMTP_PORT'],
+    address:        ENV['SMTP_ADDRESS'],
+    port:           ENV['SMTP_PORT'],
     domain:         'www.traveltrunk.us',
-    user_name:      ENV['MAILGUN_SMTP_LOGIN'],
-    password:       ENV['MAILGUN_SMTP_PASSWORD'],
+    user_name:      ENV['SMTP_LOGIN'],
+    password:       ENV['SMTP_PASSWORD'],
     authentication: :plain
   }
 
