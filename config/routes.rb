@@ -80,7 +80,8 @@ Rails.application.routes.draw do
 
   devise_for :users, :controllers => {
     :registrations => 'registrations',
-    :invitations => 'users/invitations'
+    :invitations => 'users/invitations',
+    :omniauth_callbacks => "users/omniauth_callbacks"
   }
 
   # root 'deals#index'
