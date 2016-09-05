@@ -25,7 +25,7 @@ class User < ActiveRecord::Base
   attr_accessor :stripe_token, :execute_stripe_callbacks, :group_id
 
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable, :async
+         :recoverable, :rememberable, :trackable, :validatable, :async
 
   def no_profile?
     self.profile.nil? || self.profile.new_record?
