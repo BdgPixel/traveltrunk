@@ -118,3 +118,7 @@ gem 'sinatra', :require => nil
 gem 'momentjs-rails'
 
 gem 'moment_timezone-rails'
+
+gem 'omniauth'
+
+gem 'omniauth-facebook'
