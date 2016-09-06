@@ -282,6 +282,7 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
 
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
+    console.log 'yuhuu'
     disableEnterFormSubmit()
 
     validateSearchForm()
@@ -292,7 +293,7 @@ $(document).ready ->
       timeout: 30000
 
     moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
-    moment.tz.link('America/Los_Angeles|US/Pacific');
+    moment.tz.link('America/Los_Angeles|US/Pacific')
     today = moment.tz('US/Pacific').format('M/D/Y')
 
     $('input#search_deals_arrival_date').datepicker(

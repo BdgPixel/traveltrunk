@@ -3,8 +3,8 @@ class DealsController < ApplicationController
   include ExceptionErrorResponse
 
   before_action :check_like, only: [:like]
-  before_action :authenticate_user!
-  before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book, :update_credit]
+  before_action :authenticate_user!, except: [:search, :show, :room_availability]
+  before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book,:update_credit]
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :update_arrival_and_departure_date, only: [:index, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
@@ -20,7 +20,12 @@ class DealsController < ApplicationController
     end
   end
 
-  def search; end
+  def search
+    respond_to do |format|
+      format.html
+      format.js
+    end
+  end
 
   def show
     expedia_params_hash = { hotelId: params[:id] }
@@ -28,7 +33,6 @@ class DealsController < ApplicationController
 
     @votes = Like.where(hotel_id: params[:id])
     @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
-
     redirect_to deals_url, notice: 'A problem occured when request hotel details information to expedia. Please try again later' unless @hotel_information.present?
   end
 
@@ -268,27 +272,42 @@ class DealsController < ApplicationController
   end
 
   def room_availability
-    @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
+    if user_signed_in?
+      @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
 
-    @total_credit =
-      if @group
-        @group.total_credit
-      else
-        current_user.total_credit
+      @total_credit =
+        if @group
+          @group.total_credit
+        else
+          current_user.total_credit
+        end
+
+      if request.xhr?
+        room_params_hash = current_user.expedia_room_params(params[:id], @destination, @group)
+
+        room_response = Expedia::Hotels.room_availability(room_params_hash).first
+
+        @room_availability = room_response[:response]
+        @first_room_image = get_first_room_image(@room_availability)
+
+        @error_category_room_message = room_response[:category_room]
+        @error_response = room_response[:error_response]
       end
+    else
+      if request.xhr?
+        room_params_hash = expedia_room_hashes(params[:id], session[:destination], @group)
 
-    if request.xhr?
-      room_params_hash = current_user.expedia_room_params(params[:id], @destination, @group)
+        room_response = Expedia::Hotels.room_availability(room_params_hash).first
 
-      room_response = Expedia::Hotels.room_availability(room_params_hash).first
+        @room_availability = room_response[:response]
+        @first_room_image = get_first_room_image(@room_availability)
 
-      @room_availability = room_response[:response]
-      @first_room_image = get_first_room_image(@room_availability)
-
-      @error_category_room_message = room_response[:category_room]
-      @error_response = room_response[:error_response]
-      respond_to :js
+        @error_category_room_message = room_response[:category_room]
+        @error_response = room_response[:error_response]
+      end
     end
+
+    respond_to :js
   end
 
   def like
@@ -344,26 +363,69 @@ class DealsController < ApplicationController
       departure_date: departure_date
     })
 
-    if @destination
-      @destination.update(custom_params)
+    if user_signed_in?
+      if @destination
+        @destination.update(custom_params)
+      else
+        @destination = @destinationable.build_destination(custom_params)
+        @destination.save
+      end
     else
-      @destination = @destinationable.build_destination(custom_params)
-      @destination.save
+      @destination = Destination.new(custom_params)
+      set_destination_to_session(@destination)
     end
 
     set_search_data
+  end
+
+  def expedia_room_hashes(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
+    room_hash = {}
+    
+    if destination
+      current_search = Destination.get_session_search_hashes(destination, group)
+
+      room_hash[:hotelId]       = hotel_id.to_s
+      room_hash[:arrivalDate]   = current_search[:arrivalDate]
+      room_hash[:departureDate] = current_search[:departureDate]
+
+
+      if rate_code && room_type_code
+        room_hash[:rateCode]     = rate_code
+        room_hash[:roomTypeCode] = room_type_code
+      end
+
+      room_hash[:includeRoomImages] = 'true'
+      room_hash[:options]           = "ROOM_TYPES"
+      room_hash[:includeDetails]    = 'true'
+
+      room_hash[:RoomGroup] = {
+        'Room' => {
+          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+        }
+      }
+    end
+
+    room_hash
   end
 
   private
     def set_search_data
       Expedia::Hotels
       Expedia::Hotels.current_user = current_user
-      @hotels_list = Expedia::Hotels.list(@destination, @group)
+
+      @hotels_list = 
+        if user_signed_in?
+          Expedia::Hotels.list(@destination, @group)
+        else
+          Expedia::Hotels.list_without_sign_user(@destination, @group)
+        end
     end
 
     def set_hotel
-      Expedia::Hotels
-      Expedia::Hotels.current_user = current_user
+      if user_signed_in?
+        Expedia::Hotels
+        Expedia::Hotels.current_user = current_user
+      end
     end
 
     def check_like
@@ -371,12 +433,15 @@ class DealsController < ApplicationController
     end
 
     def destination_params
-      params.require(:search_deals).permit(:destination_string, :city, :state_province_code, :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code)
+      params.require(:search_deals).permit(:destination_string, :city, :state_province_code,
+        :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code)
     end
 
     def get_destination
-      @destinationable = @group || current_user
-      @destination = @destinationable.destination
+      if user_signed_in?
+        @destinationable = @group || current_user
+        @destination = @destinationable.destination
+      end
     end
 
     def update_arrival_and_departure_date
@@ -432,6 +497,19 @@ class DealsController < ApplicationController
         total:                (reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
         arrival_date:         arrival_date,
         departure_date:       departure_date
+      }
+    end
+
+    def set_destination_to_session(destination)
+      session[:destination] = { 
+        destination_string: destination.destination_string,
+        city: destination.city,
+        state_province_code: destination.state_province_code,
+        country_code: destination.country_code,
+        latitude: destination.latitude,
+        longitude: destination.longitude,
+        arrival_date: destination.arrival_date,
+        departure_date: destination.departure_date
       }
     end
 end

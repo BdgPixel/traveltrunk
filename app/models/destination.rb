@@ -31,6 +31,38 @@ class Destination < ActiveRecord::Base
     }
   end
 
+  def self.get_session_search_hashes(destination, group)
+    today_utc = Date.today
+    arrival_date = Date.parse destination['arrival_date']
+    departure_date = Date.parse destination['departure_date']
+
+    if arrival_date < today_utc
+      destination['departure_date'] = today_utc + (departure_date - arrival_date).to_i
+      destination['arrival_date'] = today_utc
+    end
+    
+    {
+      latitude: destination['latitude'],
+      longitude: destination['longitude'],
+      searchRadius: '10',
+      destinationString: destination['destination_string'].upcase,
+      city: destination['city'],
+      stateProvinceCode: destination['state_province_code'],
+      countryCode: destination['country_code'],
+      arrivalDate: arrival_date.strftime('%m/%d/%Y'),
+      departureDate: departure_date.strftime('%m/%d/%Y'),
+      options: 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
+      moreResultsAvailable: 'true',
+      'RoomGroup' => {
+        'Room' => {
+          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+        }
+      },
+      numberOfResults: '200',
+      includeSurrounding: 'yes'
+    }
+  end
+
   def title_destination
     destination_string.split(", ").first
   end

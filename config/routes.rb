@@ -73,6 +73,7 @@ Rails.application.routes.draw do
   get   'deals/book' => 'deals#book', as: 'deals/book'
   get   'deals/confirmation_page'
   post  'deals/create_book' => 'deals#create_book', as: 'deals/create_book'
+  get  'deals/search' => 'deals#search'
   post  'deals/search' => 'deals#search'
   post  'deals/create_destination' => 'deals/create_destination'
   # patch 'deals/update_credit' => 'deals/update_credit'

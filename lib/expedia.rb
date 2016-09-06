@@ -124,6 +124,67 @@ module Expedia
         end
       end
     end
+    
+    def self.list_without_sign_user(destination = nil, group = nil)
+      if destination
+        custom_params = destination.get_search_params(group)
+
+        url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
+        xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
+        url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
+
+        begin
+          response = HTTParty.get(url_custom_params)
+
+          if response
+            if response["HotelListResponse"]["EanWsError"]
+              @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
+
+              response_result(response: [], error_response: @error_response)
+            else
+              hotels_list = 
+                if response["HotelListResponse"]["HotelList"]["@size"].eql? '1'
+                  if response["HotelListResponse"]["HotelList"]["HotelSummary"]["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
+                    [response["HotelListResponse"]["HotelList"]["HotelSummary"]]
+                  end
+                else
+                  response["HotelListResponse"]["HotelList"]["HotelSummary"]
+                end
+
+              if hotels_list.empty?
+                @error_response = "There is no hotels that match your criteria and saving credits"
+                response_result(error_response: @error_response)
+              else
+                hotels_list =
+                  hotels_list.sort do |hotel_x, hotel_y|
+                    hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
+                  end
+
+                @num_of_hotel = hotels_list.size
+                @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
+                @num_of_page = @hotels_list.size
+
+                response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page )
+              end
+            end
+          else
+            response_result(response: [], error_response: "Unable to get hotel list from Expedia. Please try again later")
+          end
+        rescue Exception => e
+          if e.is_a? Errno::ECONNRESET
+            response_result(response: [], error_response: 'Unable to get hotel list from Expedia. Please try again later')
+          else
+            response_result(response: [], error_response: "Some errors occurred. Please contact administrator or try again later.")
+          end
+        end
+      else
+        @hotels_list    = []
+        @error_response = "You haven’t selected a destination yet."
+
+        response_result(response: @hotels_list, error_response: @error_response)
+      end
+    end
+
 
     def self.information(custom_params)
       url = "http://api.ean.com/ean-services/rs/hotel/v3/info?"

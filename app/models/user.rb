@@ -52,7 +52,7 @@ class User < ActiveRecord::Base
 
   def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
     room_hash = {}
-
+    
     if destination
       current_search = destination.get_search_params(group)
 
