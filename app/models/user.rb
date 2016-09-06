@@ -27,7 +27,7 @@ class User < ActiveRecord::Base
 
   devise :invitable, :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable, :async,
-         :omniauthable, :omniauth_providers => [:facebook]
+         :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
   def no_profile?
     self.profile.nil? || self.profile.new_record?
@@ -101,11 +101,12 @@ class User < ActiveRecord::Base
     user_collections
   end
 
-  def self.from_omniauth(auth)
-    case auth.provider
-    when "facebook"
-      @user = self.find_by(email: auth.info.email)
-      
+  def self.find_for_oauth(auth)
+    @user = self.find_by(email: auth.info.email)
+
+    if @user
+      identity = Identity.find_for_oauth(auth, @user.id)
+    else
       unless @user
         @user = User.new
         @user.build_profile
@@ -117,28 +118,10 @@ class User < ActiveRecord::Base
         @user.profile.remote_image_url = auth.info.image
         @user.profile.validate_personal_information = false
 
-        if @user.save
-          @user.identities.create(provider: auth.provider, uid: auth.uid)
-        end
+        @user.identities.create(provider: auth.provider, uid: auth.uid) if @user.save
       end
-
-      @user
-      # where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      #   profile = user.build_profile
-      #   user.email = auth.info.email
-      #   user.password = Devise.friendly_token[0, 20]
-      #   profile.first_name = auth.info.first_name
-      #   profile.last_name = auth.info.last_name
-      #   profile.remote_image_url = auth.info.image
-      # end
-    else
-      # where(provider: auth.provider, uid: auth.uid).first_or_create do |user|
-      #   user.password = Devise.friendly_token[0, 20]
-      #   user.email = "#{auth.uid}@twitter.com"
-      #   user.first_name = auth.info.name.split.first
-      #   user.last_name = auth.info.name.split[1..-1].join(' ')
-      #   user.remote_image_url = auth.info.image
-      # end
     end
+
+    @user
   end
 end
