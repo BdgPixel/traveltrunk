@@ -9,16 +9,12 @@
     .row
       .col-sm-12
         h1 = session[:nightly_price]
-
         br
-
-        = link_to raw("<i class='icon-deals btn-back-to-deals'></i><span>Back</span>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
+        = back_link_to_deals_page
 
       .col-sm-12
         h3.hotel-name = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
-       
         hr
-
         .row
           .text-left.col-md-12
             .row
