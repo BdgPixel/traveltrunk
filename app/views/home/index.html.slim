@@ -2,8 +2,8 @@
   = stylesheet_link_tag 'height'
 
 - content_for :javascripts
-  = javascript_include_tag "home"
-  / = javascript_include_tag "variables"
+  = javascript_include_tag "search"
+  = javascript_include_tag "variables"
 
 .wrap-hero 
   #myCarousel-1.carousel.slide data-ride="carousel" 
@@ -52,6 +52,10 @@
                         .col-md-6
                           .form-group
                             = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control", placeholder: "Departing when?"
+
+                        .col-md-6
+                          .form-group
+                            = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: :first, class: "form-control"
 
                         .col-md-12
                           .form-group.text-center

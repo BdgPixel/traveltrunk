@@ -127,7 +127,7 @@ module Expedia
     
     def self.list_without_sign_user(destination = nil, group = nil)
       if destination
-        custom_params = destination.get_search_params(group)
+        custom_params = Destination.get_session_search_hashes(destination, group)
 
         url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
         xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
@@ -159,7 +159,6 @@ module Expedia
                   hotels_list.sort do |hotel_x, hotel_y|
                     hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                   end
-
                 @num_of_hotel = hotels_list.size
                 @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                 @num_of_page = @hotels_list.size

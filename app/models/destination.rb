@@ -1,6 +1,8 @@
 class Destination < ActiveRecord::Base
   belongs_to :destinationable, polymorphic: true
 
+  attr_accessor :number_of_adult
+
   def get_search_params(group)
     today_utc = Time.now.utc.to_date
 
@@ -33,14 +35,25 @@ class Destination < ActiveRecord::Base
 
   def self.get_session_search_hashes(destination, group)
     today_utc = Date.today
-    arrival_date = Date.parse destination['arrival_date']
-    departure_date = Date.parse destination['departure_date']
+    arrival_date = 
+      if destination['arrival_date'].is_a?(Date)
+        destination['arrival_date']
+      else
+        Date.parse destination['arrival_date']
+      end
+
+    departure_date = 
+      if destination['departure_date'].is_a?(Date)
+        destination['departure_date']
+      else
+        Date.parse destination['departure_date']
+      end
 
     if arrival_date < today_utc
       destination['departure_date'] = today_utc + (departure_date - arrival_date).to_i
       destination['arrival_date'] = today_utc
     end
-    
+
     {
       latitude: destination['latitude'],
       longitude: destination['longitude'],
@@ -55,10 +68,10 @@ class Destination < ActiveRecord::Base
       moreResultsAvailable: 'true',
       'RoomGroup' => {
         'Room' => {
-          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+          'numberOfAdults' => group ? group.members.size.next.to_s : destination['number_of_adult']
         }
       },
-      numberOfResults: '200',
+      numberOfResults: '100',
       includeSurrounding: 'yes'
     }
   end

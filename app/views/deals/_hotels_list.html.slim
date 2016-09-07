@@ -42,6 +42,7 @@
 
           - if @hotels_list.first[:num_of_hotel] > 15
             .wrapper-pagination
+              #valueOfPagination data-num-of-pages="#{@hotels_list.first[:num_of_page]}" data-num-of-hotels="#{@hotels_list.first[:num_of_hotel]}"
               #pagination
 
               p#pagination-info.text-center

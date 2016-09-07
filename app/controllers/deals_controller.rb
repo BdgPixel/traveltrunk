@@ -295,7 +295,7 @@ class DealsController < ApplicationController
       end
     else
       if request.xhr?
-        room_params_hash = expedia_room_hashes(params[:id], session[:destination], @group)
+        room_params_hash = expedia_room_hashes(params[:id], session[:destination], @group, )
 
         room_response = Expedia::Hotels.room_availability(room_params_hash).first
 
@@ -378,36 +378,6 @@ class DealsController < ApplicationController
     set_search_data
   end
 
-  def expedia_room_hashes(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
-    room_hash = {}
-    
-    if destination
-      current_search = Destination.get_session_search_hashes(destination, group)
-
-      room_hash[:hotelId]       = hotel_id.to_s
-      room_hash[:arrivalDate]   = current_search[:arrivalDate]
-      room_hash[:departureDate] = current_search[:departureDate]
-
-
-      if rate_code && room_type_code
-        room_hash[:rateCode]     = rate_code
-        room_hash[:roomTypeCode] = room_type_code
-      end
-
-      room_hash[:includeRoomImages] = 'true'
-      room_hash[:options]           = "ROOM_TYPES"
-      room_hash[:includeDetails]    = 'true'
-
-      room_hash[:RoomGroup] = {
-        'Room' => {
-          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
-        }
-      }
-    end
-
-    room_hash
-  end
-
   private
     def set_search_data
       Expedia::Hotels
@@ -417,7 +387,7 @@ class DealsController < ApplicationController
         if user_signed_in?
           Expedia::Hotels.list(@destination, @group)
         else
-          Expedia::Hotels.list_without_sign_user(@destination, @group)
+          Expedia::Hotels.list_without_sign_user(session[:destination], @group)
         end
     end
 
@@ -434,7 +404,8 @@ class DealsController < ApplicationController
 
     def destination_params
       params.require(:search_deals).permit(:destination_string, :city, :state_province_code,
-        :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code)
+        :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code,
+        :number_of_adult)
     end
 
     def get_destination
@@ -502,14 +473,45 @@ class DealsController < ApplicationController
 
     def set_destination_to_session(destination)
       session[:destination] = { 
-        destination_string: destination.destination_string,
-        city: destination.city,
-        state_province_code: destination.state_province_code,
-        country_code: destination.country_code,
-        latitude: destination.latitude,
-        longitude: destination.longitude,
-        arrival_date: destination.arrival_date,
-        departure_date: destination.departure_date
+        'destination_string' => destination.destination_string,
+        'city' => destination.city,
+        'state_province_code' => destination.state_province_code,
+        'country_code' => destination.country_code,
+        'latitude' => destination.latitude,
+        'longitude' => destination.longitude,
+        'arrival_date' => destination.arrival_date,
+        'departure_date' => destination.departure_date,
+        'number_of_adult' => destination.number_of_adult
       }
+    end
+
+    def expedia_room_hashes(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
+      room_hash = {}
+      
+      if destination
+        current_search = Destination.get_session_search_hashes(destination, group)
+
+        room_hash[:hotelId]       = hotel_id.to_s
+        room_hash[:arrivalDate]   = current_search[:arrivalDate]
+        room_hash[:departureDate] = current_search[:departureDate]
+
+
+        if rate_code && room_type_code
+          room_hash[:rateCode]     = rate_code
+          room_hash[:roomTypeCode] = room_type_code
+        end
+
+        room_hash[:includeRoomImages] = 'true'
+        room_hash[:options]           = "ROOM_TYPES"
+        room_hash[:includeDetails]    = 'true'
+
+        room_hash[:RoomGroup] = {
+          'Room' => {
+            'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+          }
+        }
+      end
+
+      room_hash
     end
 end

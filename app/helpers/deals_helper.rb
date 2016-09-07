@@ -1,5 +1,6 @@
 module DealsHelper
   include ActionView::Helpers::UrlHelper
+  include ActionView::Helpers::TextHelper
 
   def unescape_expedia_html(string)
     raw CGI.unescapeHTML(string)
@@ -47,5 +48,11 @@ module DealsHelper
     end
 
     tags.html_safe
+  end
+
+  def number_of_adults_collection
+    number_of_array = []
+    1.upto(8) { |i| number_of_array << [pluralize(i, 'Guest'), i] }
+    number_of_array
   end
 end

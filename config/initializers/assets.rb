@@ -15,7 +15,7 @@ Rails.application.config.assets.precompile += %w(
   profiles.js
   deals.js
   notifications.js
-  home.js
+  search.js
   profiles.css
   savings.css
   deals.css

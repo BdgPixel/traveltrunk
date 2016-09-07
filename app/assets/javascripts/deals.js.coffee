@@ -282,7 +282,6 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
 
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
-    console.log 'yuhuu'
     disableEnterFormSubmit()
 
     validateSearchForm()
@@ -396,3 +395,4 @@ $(document).ready ->
             carousel: true
           , 2000)
       , 1000)
+    console.log 'wiro'

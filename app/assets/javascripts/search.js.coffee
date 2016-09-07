@@ -1,7 +1,11 @@
+# = require jquery.lazyload
 # = require bootstrap-datepicker
 # = require google-api
+# = require jquery.simplePagination
 # = require moment
 # = require moment-timezone
+
+root = exports ? this
 
 getFormattedDate = (date) ->
   day = date.getDate()
@@ -21,6 +25,30 @@ validateSearchForm = ->
       autocomplete: 'Please enter your destination'
 
   return
+
+root.initDealsPage = (numOfpages, numOfHotels)->
+  if numOfpages && numOfHotels && numOfHotels > 15
+    $('#pagination')
+      .pagination
+        pages: numOfpages
+        cssStyle: 'light-theme'
+        displayedPages: 3
+        edges: 1
+        onPageClick: (pageNumber, event)->
+          selectedPage = $("#page-#{pageNumber}")
+          selectedPage.show()
+          $(".deal-pages").not(selectedPage).hide()
+          $('html, body').animate { scrollTop: 0 }, 'slow'
+
+          prevPage = pageNumber - 1
+          startRange = (prevPage * 15) + 1
+          endRange = pageNumber * 15
+          endRange = numOfHotels if endRange > numOfHotels
+          $("p#pagination-info").text(startRange + " - " + endRange + ' of ' + numOfHotels + " Hotels")
+
+          false
+
+  $('div.lazy').lazyload()
 
 $(document).ready ->
   validateSearchForm()
@@ -63,3 +91,8 @@ $(document).ready ->
         return
       $('#slideToggle').slideUp()
       return
+
+  numOfpages = $('#valueOfPagination').data('num-of-pages')
+  numOfHotels = $('#valueOfPagination').data('num-of-hotels')
+
+  initDealsPage(numOfpages, numOfHotels)
