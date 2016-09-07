@@ -64,6 +64,7 @@ module DealsHelper
   end
 
   def button_actions_in_deals_detail(room)
+    link = ''
     if @group
       if @group.user_id.eql? current_user.id
         if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
@@ -81,13 +82,35 @@ module DealsHelper
     else
       if user_signed_in?
         if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
-          link_to "Add to savings", "#", class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+          link = link_to "Add to savings", "#", class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
         else
-          link_to "Book Now", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+          link = link_to "Book Now", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
         end
       else
-        link_to "Start saving for a vacation like this", new_user_session_path, class: 'btn btn-saving btn-yellow'
+        link += link_to "Book Now", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+
+        link += link_to "Start saving for a vacation like this", '#', class: 'btn btn-saving btn-yellow', data: { toggle: 'modal', target: '#modalUserSignUp' }
       end
     end
+
+    link.html_safe
+  end
+
+  def resource_name
+    :user
+  end
+
+  def resource
+    @resource ||= User.new
+    @resource.build_profile
+    @resource
+  end
+
+  def devise_mapping
+    @devise_mapping ||= Devise.mappings[:user]
+  end
+
+  def resource_class
+    devise_mapping.to
   end
 end

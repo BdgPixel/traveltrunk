@@ -33,7 +33,8 @@ class DealsController < ApplicationController
 
     @votes = Like.where(hotel_id: params[:id])
     @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
-    redirect_to deals_url, notice: 'A problem occured when request hotel details information to expedia. Please try again later' unless @hotel_information.present?
+    redirect_to deals_url, notice: 'A problem occured when request hotel details information to expedia.
+      Please try again later' unless @hotel_information.present?
   end
 
   def book
