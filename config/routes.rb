@@ -35,7 +35,7 @@ Rails.application.routes.draw do
     resources :transactions, only: [:index]
     resources :refunds, only: [:index, :update]
     resources :promo_codes
-    resources :users, only: [:index, :show]
+    resources :users, only: [:index, :show, :update]
   end
 
   get  'helps' => 'helps#index'
