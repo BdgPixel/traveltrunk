@@ -234,11 +234,12 @@ checkImage = (previousSrc, numberOfImages, i)->
     targetElement = $("a.slider-images[href='#{src}']")
 
     newSrc = null
+    extension = src.split('_').slice(-1)[0]
 
-    if src.split('_')[2] is 'z.jpg'
+    if extension is 'z.jpg'
       newSrc = src.replace('_z.jpg', '_y.jpg')
       imageSizeType = 'y'
-    else if src.split('_')[2] is 'y.jpg'
+    else if extension is 'y.jpg'
       newSrc = src.replace('_y.jpg', '_b.jpg')
       imageSizeType = 'b'
 
