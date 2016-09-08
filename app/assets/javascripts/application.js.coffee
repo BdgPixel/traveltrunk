@@ -56,5 +56,4 @@ root.initAutoNumeric = (selector, hiddenSelector) ->
 root.removeBackdropModal = (selector) ->
   $(selector).on 'hidden.bs.modal', ->
     $('.modal-backdrop').remove()
-    console.log 'yuhuu'
     return

@@ -48,7 +48,7 @@ validateSearchForm = ->
 
   return
 
-validateFormBook = ->
+root.validateFormBook = ->
   if $('#formBook').length > 0
     $('#formBook').on 'submit', (e) ->
       returnValue = undefined
@@ -160,7 +160,7 @@ root.roomSelected = (selector)->
             table.append(listOfDate + nightlyRate)
 
     table.append("<tr><td><b>Total taxes and fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
-    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
+    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td dom='total_charges_text'>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
 
     taxs = room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']
 
@@ -338,7 +338,7 @@ $(document).ready ->
         return
 
   else
-    initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
+    initAutoNumeric('.formatted-amount', '.amount')
 
     params_path_id = window.location.pathname.split('/')[2]
 
@@ -398,9 +398,15 @@ $(document).ready ->
       , 1000)
 
     $('#linkBtnYes').on 'click', ->
-      removeBackdropModal '#modalBook'
-      $('#modalBook').modal 'hide'
-      $('.modal-dialog').modal 'hide'
-      $('#modalSavingsForm').modal 'show'
+      if $('#confirmation_book_policy').is(':checked') == false
+        $('.payment-errors').html 'Cancellation policy must be approved'
+      else
+        removeBackdropModal '#modalBook'
+        $('#modalBook').modal 'hide'
+        $('.modal-dialog').modal 'hide'
+        $('#modalSavingsForm').modal 'show'
+
+        totalCharges = $('[dom="total_charges_text"]').text().split('$')[1]
+        $('#totalCharges').attr('data-total-charges', totalCharges)
       return
     

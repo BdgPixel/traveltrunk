@@ -46,6 +46,9 @@ $('form.transaction-form').on('submit', function(e) {
     } else if ($('.postal-code').val() == 0) {
       $('.payment-errors').html('Postal code cannot be blank or zero');
       returnValue = false; 
+    } else if (parseFloat($('.formatted-amount').val()) < $('#totalCharges').data('total-charges')) {
+      $('.payment-errors').html('Amount cannot less than total charges ' + $('#totalCharges').data('total-charges'));
+      returnValue = false;
     }
   }
 
