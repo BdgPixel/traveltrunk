@@ -16,7 +16,7 @@
           = @error_response
 
       .modal-body
-        = simple_form_for user_signed_in? ? :update_credit : :create_creadit, method: :post, url: user_signed_in? ? deals_update_credit_path : deals_create_credit_path, remote: true, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
+        = simple_form_for user_signed_in? ? :update_credit : :create_credit, method: :post, url: user_signed_in? ? deals_update_credit_path : deals_create_credit_path, remote: true, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
 
           = f.hidden_field :id, value: params[:id]
           = f.hidden_field :rate_code
@@ -76,11 +76,19 @@
             .row
               .col-md-6
                 = label_tag "Expiration Month (MM)"
-                = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+
+                - if user_signed_in?
+                  = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+                - else
+                  = select_month Date.today, { use_two_digit_numbers: true }, { name: "create_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
 
               .col-md-6
                 = label_tag "Expiration Year (YYYY)"
-                = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+
+                - if user_signed_in?
+                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+                - else
+                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "create_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
 
           .form-group
             .row
@@ -89,8 +97,9 @@
 
                   .input-group
                     .input-group-addon $
-                    = f.input_field :formatted_amount, class: "form-control update_credit_amount amount"
+                    = f.input_field :formatted_amount, class: "form-control update_credit_amount formatted-amount"
                     = f.hidden_field :amount, class: "form-control update_credit_amount amount"
+                    #totalCharges
 
           .modal-footer
             .text-center

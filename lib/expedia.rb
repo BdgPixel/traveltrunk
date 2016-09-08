@@ -184,7 +184,6 @@ module Expedia
       end
     end
 
-
     def self.information(custom_params)
       url = "http://api.ean.com/ean-services/rs/hotel/v3/info?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelInformationRequest").gsub(" ", "").gsub("\n", "") }
@@ -236,7 +235,7 @@ module Expedia
       url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
       url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-
+      
       begin
         response = HTTParty.post(url_custom_params)
 

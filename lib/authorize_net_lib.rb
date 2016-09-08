@@ -21,7 +21,7 @@ module AuthorizeNetLib
       request = AuthorizeNet::API::CreateCustomerProfileRequest.new
 
       request.profile = AuthorizeNet::API::CustomerProfileType.new(
-        customer_params[:merchant_customer_id], nil, customer_params[:email], nil, nil
+        customer_params[:merchant_customer_id], customer_params[:description], customer_params[:email], nil, nil
       )
       
       response = @transaction.create_customer_profile(request)
