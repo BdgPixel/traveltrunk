@@ -46,7 +46,7 @@ module Expedia
       unless @current_user.try(:admin?)
         if @current_user.profile.birth_date.blank? || @current_user.bank_account.blank?
           @welcome_state = 'no_profile'
-          @error_response = ''
+          @error_response = 'You should completed the profile before selected a destination'
           response_result(welcome_state: @welcome_state, error_response: @error_response)
         elsif destination.blank?
           @welcome_state = 'no_destination'

@@ -11,8 +11,13 @@ class RegistrationsController < Devise::RegistrationsController
     respond_with self.resource
   end
 
+  def sign_up(resource_name, resource)
+    sign_in(resource_name, resource)
+  end
+
   protected
     def sign_up_params
-      params.require(:user).permit(:email, :password, :password_confirmation, profile_attributes: [:first_name, :last_name])
+      params.require(:user).permit(:email, :password, :password_confirmation,
+        profile_attributes: [:first_name, :last_name])
     end
 end
