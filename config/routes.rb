@@ -77,6 +77,7 @@ Rails.application.routes.draw do
   post  'deals/search' => 'deals#search'
   post  'deals/create_destination' => 'deals/create_destination'
   # patch 'deals/update_credit' => 'deals/update_credit'
+  post   'deals/create_credit' => 'deals/create_credit'
   post   'deals/update_credit' => 'deals/update_credit'
 
   devise_for :users, :controllers => {

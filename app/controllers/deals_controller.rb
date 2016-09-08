@@ -189,6 +189,73 @@ class DealsController < ApplicationController
   end
 
   # one time payment using authorize.net
+  def create_credit
+    binding.pry
+    # begin
+    #   exp_month = params[:create_credit][:exp_month].rjust(2, '0')
+    #   exp_year = params[:create_credit][:exp_year][-2, 2]
+    #   invoice = AuthorizeNetLib::Global.generate_random_id('inv')
+
+    #   params_hash = {
+    #     amount: params[:create_credit][:amount].to_f,
+    #     card_number: params[:create_credit][:card_number],
+    #     exp_date: "#{exp_month}#{exp_year}",
+    #     cvv: params[:create_credit][:cvv],
+    #     order: { 
+    #       invoice: invoice,
+    #       description: 'Add to Saving'
+    #     }
+    #   }
+      
+    #   payment = AuthorizeNetLib::PaymentTransactions.new
+    #   customer_authorize = AuthorizeNetLib::Customers.new
+
+    #   customer_profile = 
+    #     if current_user.customer
+    #       get_customer_profile = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
+    #       current_user.profile.get_profile_hash(get_customer_profile)
+    #     else
+    #       current_user.profile.get_profile_hash
+    #     end
+
+    #   response_payment = payment.charge(params_hash, customer_profile)
+
+    #   if response_payment.messages.resultCode.eql? 'Ok'
+    #     amount_in_cents = (params[:create_credit][:amount].to_f * 100).to_i
+    #     customer_id = current_user.customer.customer_id if current_user.customer
+
+    #     transaction = current_user.transactions.new(
+    #       amount: amount_in_cents,
+    #       invoice_id: invoice,
+    #       customer_id: customer_id,
+    #       transaction_type: 'add_to_saving', 
+    #       ref_id: response_payment.refId,
+    #       trans_id: response_payment.transactionResponse.transId
+    #     )
+
+    #     if transaction.save
+    #       @user_total_credit = current_user.total_credit / 100.0
+    #       @transaction_amount = transaction.amount / 100.0
+
+    #       @total_credit = 
+    #         if @group
+    #           @group.total_credit / 100.0
+    #         else
+    #           @user_total_credit
+    #         end
+
+    #       @notification_count = current_user.get_notification(false).count
+
+    #       card_last_4 = response_payment.transactionResponse.accountNumber
+
+    #       PaymentProcessorMailer.delay.payment_succeed(current_user.id, transaction.amount, card_last_4)
+    #     end
+    #   end
+    # rescue => e
+    #   error_message(e)
+    # end 
+  end
+
   def update_credit
     begin
       exp_month = params[:update_credit][:exp_month].rjust(2, '0')

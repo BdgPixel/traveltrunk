@@ -52,3 +52,9 @@ root.initAutoNumeric = (selector, hiddenSelector) ->
 
   $input.on 'blur focusout mouseleave', ->
     doneTyping()
+
+root.removeBackdropModal = (selector) ->
+  $(selector).on 'hidden.bs.modal', ->
+    $('.modal-backdrop').remove()
+    console.log 'yuhuu'
+    return

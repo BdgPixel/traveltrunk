@@ -396,3 +396,11 @@ $(document).ready ->
             carousel: true
           , 2000)
       , 1000)
+
+    $('#linkBtnYes').on 'click', ->
+      removeBackdropModal '#modalBook'
+      $('#modalBook').modal 'hide'
+      $('.modal-dialog').modal 'hide'
+      $('#modalSavingsForm').modal 'show'
+      return
+    

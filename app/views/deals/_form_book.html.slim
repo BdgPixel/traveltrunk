@@ -34,13 +34,17 @@
         .col-md-8
           .form-group
             | Would you still like to book this hotel ?
-
             br
             br
 
-            = f.button :submit, "Yes", class: 'btn btn-saving btn-green'
-
-            | &nbsp;
+            - if user_signed_in?
+              = f.button :submit, "Yes", class: 'btn btn-saving btn-green'
+              | &nbsp;
+            - else
+              = link_to 'Yes', 'javascript:void(0)', id: 'linkBtnYes', class: 'btn btn-saving btn-green'
+              / , data: { toggle: 'modal', target: '#modalSavingsForm' }
+              | &nbsp;
             
             button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
               | No
+

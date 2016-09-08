@@ -16,7 +16,8 @@
           = @error_response
 
       .modal-body
-        = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
+        = simple_form_for user_signed_in? ? :update_credit : :create_creadit, method: :post, url: user_signed_in? ? deals_update_credit_path : deals_create_credit_path, remote: true, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
+
           = f.hidden_field :id, value: params[:id]
           = f.hidden_field :rate_code
           = f.hidden_field :total
@@ -24,6 +25,38 @@
           .form-group
             .payment-errors
 
+          - unless user_signed_in?
+            #profile.
+              .form-group
+                .row
+                  .col-md-6
+                    = f.label :first_name
+                    = f.input_field :first_name, class: 'first-name'
+
+                  .col-md-6
+                    = f.label :last_name
+                    = f.input_field :last_name, class: 'last-name'
+
+              .form-group
+                .row
+                  .col-md-6
+                    = f.label :address
+                    = f.input_field :address, class: 'address'
+
+                  .col-md-6
+                    = f.label :city
+                    = f.input_field :city, class: 'city'
+              .form-group
+                .row
+                  .col-md-6
+                    = f.label :state
+                    = f.input_field :state, class: 'state'
+
+                  .col-md-6
+                    = f.label :postal_code
+                    = f.input_field :postal_code, class: 'postal-code'
+
+          .form-group
             .row
               .col-md-6
                 = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;' }
