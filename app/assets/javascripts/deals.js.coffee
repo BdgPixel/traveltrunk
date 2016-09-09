@@ -281,6 +281,16 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
       else
         false
 
+appendValueRoomParams = () ->
+  console.log $('#confirmation_book_arrival_date').val()
+  $('#create_credit_arrival_date').val($('#confirmation_book_arrival_date').val())
+  $('#create_credit_departure_date').val($('#confirmation_book_departure_date').val())
+  $('#create_credit_rate_code_room').val($('#confirmation_book_rate_code').val())
+  $('#create_credit_room_type_code').val($('#confirmation_book_room_type_code').val())
+  $('#create_credit_rate_key').val($('#confirmation_book_rate_key').val())
+  $('#create_credit_total_charge').val($('#confirmation_book_total').val())
+  $('#create_credit_bed_type').val($('#confirmation_book_bed_type').val())
+
 $(document).ready ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
     disableEnterFormSubmit()
@@ -406,7 +416,9 @@ $(document).ready ->
         $('.modal-dialog').modal 'hide'
         $('#modalSavingsForm').modal 'show'
 
-        totalCharges = $('[dom="total_charges_text"]').text().split('$')[1]
+        totalCharges = $('[dom="total_charges_text"]').text().replace('$', '')
         $('#totalCharges').attr('data-total-charges', totalCharges)
+        appendValueRoomParams()
+
       return
     
