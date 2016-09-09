@@ -16,11 +16,11 @@
 
             p
               b Customer name:&nbsp;
-              = "#{current_user.profile.first_name} #{current_user.profile.last_name}"
+              = "#{@profile[:first_name]} #{@profile[:last_name]}"
 
             p
               b Customer email:&nbsp;
-              = current_user.email
+              = @profile[:email]
 
             p
               b Itinerary Number:&nbsp;
@@ -110,7 +110,11 @@
               br
               br
               
-              = link_to "Back to hotel list", deals_path, class: "btn btn-saving btn-orange-soft"
+              - if user_signed_in?
+                = link_to "Back to hotel list", deals_path, class: "btn btn-saving btn-orange-soft"
+              - else
+                = link_to "Back to hotel list", :back, class: "btn btn-saving btn-orange-soft"
+
 
     - if @error_response
       #error_response.alert.alert-info
