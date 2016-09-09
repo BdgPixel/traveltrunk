@@ -16,7 +16,7 @@
           = @error_response
 
       .modal-body
-        = simple_form_for user_signed_in? ? :update_credit : :create_credit, method: :post, url: user_signed_in? ? deals_update_credit_path : deals_create_credit_path, remote: true, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
+        = simple_form_for user_signed_in? ? :update_credit : :create_credit, method: :post, url: user_signed_in? ? deals_update_credit_path : deals_create_credit_path, remote: user_signed_in? ? true : false, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
 
           = f.hidden_field :id, value: params[:id]
           = f.hidden_field :rate_code
@@ -31,30 +31,64 @@
                 .row
                   .col-md-6
                     = f.label :first_name
-                    = f.input_field :first_name, class: 'first-name'
+                    = f.input_field :first_name, class: 'first-name', maxlength: 50
 
                   .col-md-6
                     = f.label :last_name
-                    = f.input_field :last_name, class: 'last-name'
+                    = f.input_field :last_name, class: 'last-name', maxlength: 50
 
               .form-group
                 .row
                   .col-md-6
                     = f.label :address
-                    = f.input_field :address, class: 'address'
+                    = f.input_field :address, class: 'address', maxlength: 60
 
                   .col-md-6
                     = f.label :city
-                    = f.input_field :city, class: 'city'
+                    = f.input_field :city, class: 'city', maxlength: 40
               .form-group
                 .row
                   .col-md-6
                     = f.label :state
-                    = f.input_field :state, class: 'state'
+                    = f.input_field :state, class: 'state', maxlength: 40
 
                   .col-md-6
-                    = f.label :postal_code
-                    = f.input_field :postal_code, class: 'postal-code'
+                    = f.label :zip
+                    = f.input_field :zip, class: 'zip', maxlength: 20
+
+              .form-group
+                .row
+                  .col-md-6
+                    = f.label :country, 'Country'
+                    = f.country_select(:country, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom country' })
+
+                    / - if f.error :country_code
+                    /   span.error.error-message please select one
+
+                  .col-md-6
+                    = f.label :email_saving, 'Email'
+                    = f.input_field :email_saving, class: 'email-saving'
+            #selectedRooms.hide
+              .form-group
+                = f.hidden_field :hotel_id
+
+              .form-group
+                = f.hidden_field :arrival_date
+
+              .form-group
+                = f.hidden_field :departure_date
+
+              .form-group
+                = f.hidden_field :rate_code_room
+
+              .form-group
+                = f.hidden_field :room_type_code
+
+              .form-group
+                = f.hidden_field :rate_key
+
+              .form-group
+                = f.hidden_field :bed_type
 
           .form-group
             .row
