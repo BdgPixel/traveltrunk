@@ -33,7 +33,7 @@ class Destination < ActiveRecord::Base
     }
   end
 
-  def self.get_session_search_hashes(destination, group)
+  def self.get_session_search_hashes(destination)
     today_utc = Date.today
     arrival_date = 
       if destination['arrival_date'].is_a?(Date)
@@ -68,7 +68,7 @@ class Destination < ActiveRecord::Base
       moreResultsAvailable: 'true',
       'RoomGroup' => {
         'Room' => {
-          'numberOfAdults' => group ? group.members.size.next.to_s : destination['number_of_adult']
+          'numberOfAdults' => destination['number_of_adult']
         }
       },
       numberOfResults: '100',
