@@ -14,7 +14,7 @@ module AuthorizeNetLib
       random_id = "#{string_uniqe}_#{SecureRandom.urlsafe_base64(10)}"
     end
   end
-
+  
   # Customer Information Manager (CIM)
   class Customers < Global
     def create_profile(customer_params)
@@ -253,7 +253,7 @@ module AuthorizeNetLib
       request.refId = AuthorizeNetLib::Global.generate_random_id('ref')
 
       request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
-      request.transactionRequest.amount = payment_params[:amount]
+      request.transactionRequest.amount = payment_params[:amount].to_f
 
       request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
 
@@ -284,6 +284,7 @@ module AuthorizeNetLib
       request.transactionRequest.order = AuthorizeNet::API::OrderType.new(payment_params[:order][:invoice], payment_params[:order][:description])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
+      
       response = @transaction.create_transaction(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
@@ -409,7 +410,7 @@ module AuthorizeNetLib
       end
     end
   end
-
+  
   class RescueErrorsResponse < StandardError
     attr_accessor :error_message
 

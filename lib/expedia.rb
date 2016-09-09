@@ -127,7 +127,7 @@ module Expedia
     
     def self.list_without_sign_user(destination = nil, group = nil)
       if destination
-        custom_params = Destination.get_session_search_hashes(destination, group)
+        custom_params = Destination.get_session_search_hashes(destination)
 
         url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
         xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
@@ -235,7 +235,7 @@ module Expedia
       url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
       url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-      
+
       begin
         response = HTTParty.post(url_custom_params)
 
