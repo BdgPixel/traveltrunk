@@ -7,7 +7,7 @@
   $.get("<%= edit_profile_path %>", function(data) {
     $('#showBankAccount').html("<%= j render 'profiles/form_bank_account', is_remote: true %>");
     validationForm();
-    initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer')
+    initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer');
     $('#showBankAccount').show();
   });
 <% end %>

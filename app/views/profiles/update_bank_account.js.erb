@@ -3,7 +3,6 @@
     errorKey = "<%= errorKey.to_s.split('.').last %>";
     $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
   <% end %>
-  console.log("<%= @bank_account.errors.full_messages %>")
 <% else %>
   window.location = "<%= deals_path %>";
   // $('#modalUserProfile').modal('hide');

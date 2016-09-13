@@ -7,8 +7,6 @@
     $('.payment-errors').text("<%= @error_card_number %>");
     $('.error').text('');
   <% end %>
-  console.log("<%= @wew %>")
-  console.log("<%= @error_card_number %>")
 <% else %>
   window.location = "<%= deals_path %>";
   // $('#modalUserProfile').modal('hide');
