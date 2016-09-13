@@ -9,7 +9,7 @@ root.showPopUpProfile = () ->
     $('#modalUserProfile').modal backdrop: 'static'
     $('.wrapper-titile-edit-profile').hide()
     $('#imgProfile').hide()
-    $('#bankAccount').hide()
+    $('#showBankAccount').hide()
 
   return
 
