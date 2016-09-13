@@ -1,6 +1,6 @@
 - content_for :javascripts
   = javascript_include_tag "deals"
-  = javascript_include_tag "variables"
+  = javascript_include_tag "variables", "profiles"
 
 #slide.wrapper-deals.hide-deals class="#{ 'card-orange' if current_user.total_credit.zero? }"
   .wrap-middle
@@ -69,12 +69,14 @@
 .container
   .row
   .row
-  
   .wrapper-list-hotel
 
   #dealsHotelsList
-  
   br
   br
-  
   .pad-btm-350.hide
+
+  - if user_signed_in? 
+   - unless current_user.profile.try(:birth_date)
+    #popUpProfile
+      = render 'profiles/complete_profile'

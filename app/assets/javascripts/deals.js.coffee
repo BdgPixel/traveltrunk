@@ -347,6 +347,8 @@ $(document).ready ->
 
         return
 
+    showPopUpProfile()
+
   else
     initAutoNumeric('.formatted-amount', '.amount')
 
@@ -421,4 +423,3 @@ $(document).ready ->
         appendValueRoomParams()
 
       return
-    
