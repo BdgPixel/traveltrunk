@@ -16,6 +16,9 @@ class DealsController < ApplicationController
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
   def index
+    current_user.build_profile unless current_user.profile
+    @bank_account = current_user.bank_account || current_user.build_bank_account
+    
     if request.xhr?
       set_search_data
       respond_to :js

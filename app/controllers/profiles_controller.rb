@@ -20,35 +20,53 @@ class ProfilesController < ApplicationController
 
     current_user.profile.validate_personal_information = true
 
-    if current_user.update_attributes(user_params)
-      if current_user.bank_account.new_record?
-        redirect_to edit_profile_url(anchor: 'bank_account'), notice: 'Profile was successfully updated.'
+    respond_to do |format|
+      if current_user.update_attributes(user_params)
+        if current_user.bank_account.new_record?
+          format.html { redirect_to edit_profile_url(anchor: 'bank_account'),
+            notice: 'Profile was successfully updated.' }
+          format.js
+        else
+          format.html { redirect_to profile_url, alert: 'Profile was unsuccessfully updated.' }
+          format.js
+        end
       else
-        redirect_to profile_url, alert: 'Profile was unsuccessfully updated.'
+        format.html { render :edit }
+        format.js
       end
-    else
-      render :edit
     end
   end
 
   def create_bank_account
     @bank_account = current_user.build_bank_account(bank_account_params)
 
-    if @bank_account.save
-      redirect_to profile_url, notice: 'Savings plan was successfully created.'
-    else
-      render :edit
+    respond_to do |format|
+      if @bank_account.save
+        format.html { redirect_to profile_url, notice: 'Savings plan was successfully created.' }
+        format.js
+      else
+        @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
+        @wew = 'asdf (6)'.html_safe
+        puts @bank_account.errors[:authorize_net_error]
+        format.html { render :edit }
+        format.js
+      end
     end
   end
 
   def update_bank_account
     @bank_account = current_user.bank_account
 
-    if @bank_account.update_attributes(bank_account_params)
-      redirect_to profile_url, notice: 'Savings plan was successfully updated.'
-    else
-      puts @bank_account.errors[:authorize_net_error]
-      render :edit
+    respond_to do |format|
+      if @bank_account.update_attributes(bank_account_params)
+        format.html { redirect_to profile_url, notice: 'Savings plan was successfully updated.' }
+        format.js
+      else
+        @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
+        puts @bank_account.errors[:authorize_net_error]
+        format.html { render :edit }
+        format.js
+      end
     end
   end
 

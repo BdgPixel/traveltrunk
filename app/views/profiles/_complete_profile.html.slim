@@ -1,4 +1,4 @@
-#modalUserProfile.modal.fade aria-labelledby="modalUserProfiel" data-backdrop="static" role="dialog" tabindex="-1"
+#modalUserProfile.modal.fade aria-labelledby="modalUserProfile" data-backdrop="static" role="dialog" tabindex="-1"
   .modal-dialog
     .modal-content
       .modal-header
@@ -9,8 +9,8 @@
         .modal-body
           = render 'profiles/form', is_remote: true
 
-        .modal-footer
-          / = f.submit "Sign up", class: 'btn btn-saving btn-green'
-          | &nbsp;&nbsp;
-          button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
-            | Close
+        / .modal-footer
+        /   / = f.submit "Sign up", class: 'btn btn-saving btn-green'
+        /   | &nbsp;&nbsp;
+        /   button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
+        /     | Close
