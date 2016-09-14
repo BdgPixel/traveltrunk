@@ -11,8 +11,8 @@ module Expedia
     end
 
     def self.global_api_params_hash
-      api_key = '5fd6485clmp3oogs8gfb43p2uf'
-      shared_secret = 'cjkao1pfqt0tk'
+      api_key = ENV['EXPEDIA_API_KEY']
+      shared_secret = ENV['EXPEDIA_SHARED_SECRET']
       timestamp = Time.now.utc.to_i
       md5 = Digest::MD5.new
       md5.update [api_key, shared_secret, timestamp].join
@@ -125,7 +125,7 @@ module Expedia
       end
     end
     
-    def self.list_without_sign_user(destination = nil, group = nil)
+    def self.list_for_guest(destination = nil, group = nil)
       if destination
         custom_params = Destination.get_session_search_hashes(destination)
 
@@ -235,7 +235,7 @@ module Expedia
       url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
       url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-
+      
       begin
         response = HTTParty.post(url_custom_params)
 
