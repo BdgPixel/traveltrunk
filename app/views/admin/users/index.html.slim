@@ -33,38 +33,39 @@
             td.pull-right = currency user.total_credit_in_usd
             td = user.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
             td = link_to 'Detail', admin_user_path(user), class: 'btn btn-saving btn-orange-soft'
-            td = link_to 'Correct Amount', 'javascript:void(0)', class: 'btn btn-saving btn-yellow', data: { toggle: 'modal', target: '.modalCorrectAmount' }, style: 'background-color'
-            
-          .modalCorrectAmount.modal.fade aria-labelledby="modalCorrectAmount" data-backdrop="static" role="dialog" tabindex="-1"
-            .modal-dialog
-              .modal-content
-                .modal-header
-                  button.close aria-label="Close" data-dismiss="modal" type="button"
-                    span aria-hidden="true" &times;
-
-                  h4#myModalLabel.modal-title Correct Amount
-
-                = simple_form_for :user, url: admin_user_path(user), method: :put do |f|
-                  .modal-body
-                    .alert.alert-danger style="max-width: 95%"
-                      | Be carefull, you will change the user amount
-                    br
-                    br
-                    br
-                    br
-                    = f.label :total_credit, 'Amount'
-                    .form-group 
-                      = f.input_field :total_credit, class: "form-control", placeholder: "$0.0", autofocus: true
-                      
-                      span.error = flash[:error]
-
-                  .modal-footer
-                    = f.submit "Activated", class: "btn btn-saving btn-green"
-
-                    | &nbsp;&nbsp;
-
-                    button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
-                      | Close
+            td = link_to 'Correct Amount', 'javascript:void(0)', class: 'btn btn-saving btn-yellow btn-correct-amount', data: { id: user.id }, style: 'background-color'
                 
     = paginate @users
 
+
+#modalCorrectAmount.modal.fade aria-labelledby="modalCorrectAmount" data-backdrop="static" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+
+        h4#myModalLabel.modal-title Correct Amount
+
+      = simple_form_for :user, method: :put, html: { id: 'formCorrectAmount' } do |f|
+        .modal-body
+          .alert.alert-danger style="max-width: 95%"
+            | Be carefull, you will change the user amount
+          br
+          br
+          br
+          br
+          = f.label :total_credit, 'Amount'
+          .form-group
+            / = f.input_field :id
+            = f.input_field :total_credit, class: "form-control", placeholder: "$0.0", autofocus: true
+            
+            span.error = flash[:error]
+
+        .modal-footer
+          = f.submit "Activated", class: "btn btn-saving btn-green"
+
+          | &nbsp;&nbsp;
+
+          button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
+            | Close

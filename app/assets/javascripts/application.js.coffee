@@ -24,6 +24,9 @@ ready = ->
     $('#notice').fadeOut()
     $('#alert').fadeOut()
   , 5000)
+
+  if $('.btn-correct-amount').length > 0
+    displayCorrectAmount('.btn-correct-amount')
   
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
@@ -56,4 +59,10 @@ root.initAutoNumeric = (selector, hiddenSelector) ->
 root.removeBackdropModal = (selector) ->
   $(selector).on 'hidden.bs.modal', ->
     $('.modal-backdrop').remove()
+    return
+
+displayCorrectAmount = (selector) ->
+  $(selector).on 'click', ->
+    $('#modalCorrectAmount').modal backdrop: 'static'
+    $('#formCorrectAmount').attr 'action', 'users/' + $(this).data 'id'
     return
