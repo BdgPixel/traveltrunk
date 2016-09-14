@@ -176,7 +176,6 @@ class DealsController < ApplicationController
     smoking_preferences = payment_params[:smoking_preferences].nil? ? "" : payment_params[:smoking_preferences]
 
     affiliateConfirmationId = SecureRandom.uuid
-
     reservation_hash = {
       hotelId: payment_params[:hotel_id],
       arrivalDate: current_destination[:arrivalDate],
@@ -231,7 +230,6 @@ class DealsController < ApplicationController
       @reservation_id = reservation.id
 
       flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-
       redirect_to deals_confirmation_page_path(
         reservation_id: @reservation_id,
         email: customer_params[:email_saving],
@@ -239,7 +237,7 @@ class DealsController < ApplicationController
         last_name: customer_params[:last_name],
       )
     else
-      redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
+      redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
     end
   end
 
@@ -291,12 +289,19 @@ class DealsController < ApplicationController
       payment = AuthorizeNetLib::PaymentTransactions.new
 
       response_payment = payment.charge(params_hash, customer_params_hash)
-
+      
       if response_payment.messages.resultCode.eql? 'Ok'
         create_book_for_guest
+
+        card_last_4 = response_payment.transactionResponse.accountNumber
+        amount_in_cents = (payment_params[:amount].to_f * 100).to_i
+
+        PaymentProcessorMailer.delay.payment_succeed_for_guest(
+          customer_params[:first_name], amount_in_cents, card_last_4)
       end
-    rescue => e
+    rescue AuthorizeNetLib::RescueErrorsResponse => e
       error_message(e)
+      redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
     end 
   end
 
@@ -506,7 +511,7 @@ class DealsController < ApplicationController
         if user_signed_in?
           Expedia::Hotels.list(@destination, @group)
         else
-          Expedia::Hotels.list_without_sign_user(session[:destination], @group)
+          Expedia::Hotels.list_for_guest(session[:destination], @group)
         end
     end
 
@@ -614,7 +619,7 @@ class DealsController < ApplicationController
         'longitude' => destination.longitude,
         'arrival_date' => destination.arrival_date,
         'departure_date' => destination.departure_date,
-        'number_of_adult' => destination.number_of_adult
+        'number_of_adult' => destination.number_of_adult ? destination.number_of_adult : '1'
       }
     end
 

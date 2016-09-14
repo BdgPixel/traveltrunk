@@ -282,7 +282,6 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
         false
 
 appendValueRoomParams = () ->
-  console.log $('#confirmation_book_arrival_date').val()
   $('#create_credit_arrival_date').val($('#confirmation_book_arrival_date').val())
   $('#create_credit_departure_date').val($('#confirmation_book_departure_date').val())
   $('#create_credit_rate_code_room').val($('#confirmation_book_rate_code').val())
