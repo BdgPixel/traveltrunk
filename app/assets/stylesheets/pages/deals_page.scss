@@ -62,15 +62,13 @@
 .wrapper-search-deal {
 
   .icon {
-    width: 10px;
-    height: 10px;
+    width: 12px;
+    height: 12px;
     display: inline-block;
 
     &.delete {
       background: image-url("icon_delete_fill_input.png") no-repeat;
       background-size: cover;
-      position: relative;
-      top: 13px;
     }
   }
 
@@ -80,6 +78,28 @@
       position: relative;
     }
 
+    span.wrapper-icon-delete {
+      position: absolute;
+      top: 6px;
+      right: 9px;
+      // transform: translate(50%, 50%);
+
+      @media (max-width: 1200px) {
+        top: 18px;
+        right: 9px;
+      }
+
+      @media (max-width: 1440px) {
+        top: 18px;
+        right: 9px;
+      }
+
+      @media (max-width: 1800px) {
+        top: 18px;
+        right: 9px;
+      }
+    }
+
     span {
       position: absolute;
       right: 11px;
@@ -87,8 +107,39 @@
     }
   }
 
-  .btn-default {
-    
+  &.wrapper-home-search-deal {
+    position: absolute;
+    width: 100%;
+    margin-top: 50px;
+
+    .no-border-radius {
+      @include border-radius(0px);
+    }
+
+    .no-border-radius-right {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+
+    select {
+      font-size: 18px;
+      height: 52px;
+      color: #a09c9c;
+      -webkit-appearance: none;
+      @include border-radius(0px);
+    }
+
+    span.caret {
+      color: #a9a9a9;
+      border-top: 8px dashed;
+      border-top: 8px solid \9;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+    }
+
+    span.caret-select {
+      top: 23px;
+    }
   }
 }
 
@@ -172,7 +223,7 @@
 }
 
 .wrapper-header-saving {
-  
+
   &.card-orange {
     min-height: 900px;
   }
@@ -286,7 +337,7 @@
 
 .text-header-slide {
 	position: relative;
-  
+
 	.round-button {
 		position: absolute;
     bottom: -70px;

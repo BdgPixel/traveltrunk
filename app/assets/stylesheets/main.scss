@@ -9,7 +9,7 @@ html {
   position: relative;
   min-height: 100%;
   height: auto;
-  overflow-x: hidden; 
+  overflow-x: hidden;
 }
 
 body {
@@ -73,14 +73,14 @@ body {
 
 // Navigation Style
 
-.wrapper-navbar-traveltrunk { 
+.wrapper-navbar-traveltrunk {
 
   .navbar {
     border: none;
   }
 
   .navbar-header {
-    
+
     button {
       z-index: 2;
       background-color: white;
@@ -231,7 +231,7 @@ body {
   width: 170px;
   height: 50px;
   display: inline-block;
-  
+
   &.color {
     background: image-url("logo_color.png") no-repeat;
     position: relative;
@@ -243,7 +243,7 @@ body {
   width: 170px;
   height: 50px;
   display: inline-block;
-  
+
   &.color {
     background: image-url("logo_color.png") no-repeat;
     position: relative;
@@ -614,7 +614,7 @@ body {
     border: 7px solid white;
   }
   h2 {
-  
+
     margin-top: 0;
   }
 
@@ -629,7 +629,7 @@ body {
   }
 
   span {
-    
+
     a {
       margin-left: 13px;
       margin-top: 13px;
@@ -774,7 +774,7 @@ h3.hotel-name {
   width: 100%;
   color: #ffffff;
   overflow: hidden;
- 
+
   ul {
     list-style: none;
     margin: 0;
@@ -821,7 +821,7 @@ h3.hotel-name {
     @media screen and (max-width: 990px) {
       text-align: center;
     }
-    
+
     li {
       display: inline-block;
     }
@@ -837,7 +837,7 @@ h3.hotel-name {
     }
 
   }
-  
+
   .wrap-brand-footer {
     @media screen and (max-width: 990px) {
       margin-top: 40px;
@@ -859,9 +859,9 @@ h3.hotel-name {
 
   &.no-navbar {
     margin-top: 50px;
-    
+
     ul {
-      
+
       li {
         display: inline-block;
         margin-right: 40px;
@@ -952,9 +952,9 @@ h3.hotel-name {
   }
 }
 
-// End 
+// End
 
-// Alert Style 
+// Alert Style
 
 .alert-dismissible .close {
   top: 5px;
@@ -1056,6 +1056,23 @@ a.login.show {
     color: grey !important;
     opacity: 0.5;
   }
+}
+
+// End
+
+// Reset Css
+
+.no-border-radius-left {
+  border-top-left-radius: 0px;
+  border-bottom-right-radius: 0px;
+}
+
+.no-pad-left {
+  padding-left: 0px;
+}
+
+.no-pad-right {
+  padding-right: 0px;
 }
 
 // End
