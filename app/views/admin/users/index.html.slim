@@ -33,9 +33,9 @@
             td.pull-right = currency user.total_credit_in_usd
             td = user.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
             td = link_to 'Detail', admin_user_path(user), class: 'btn btn-saving btn-orange-soft'
-            td = link_to 'Correct Amount', 'javascript:void(0)', class: 'btn btn-saving btn-yellow', data: { toggle: 'modal', target: '#modalCorrectAmount' }, style: 'background-color'
+            td = link_to 'Correct Amount', 'javascript:void(0)', class: 'btn btn-saving btn-yellow', data: { toggle: 'modal', target: '.modalCorrectAmount' }, style: 'background-color'
             
-          #modalCorrectAmount.modal.fade aria-labelledby="modalCorrectAmount" data-backdrop="static" role="dialog" tabindex="-1"
+          .modalCorrectAmount.modal.fade aria-labelledby="modalCorrectAmount" data-backdrop="static" role="dialog" tabindex="-1"
             .modal-dialog
               .modal-content
                 .modal-header
