@@ -1,0 +1,139 @@
+- content_for :css
+  = stylesheet_link_tag 'profiles'
+
+- content_for :javascripts
+  = javascript_include_tag 'variables', 'profiles'
+
+div
+  = simple_form_for current_user, method: :put, url: profile_url, html: { data: { model: 'user' } }, remote: is_remote do |f|
+    - if @bank_account.errors.any?
+      #error_authorize_net.alert.alert-danger
+        strong Warning! &nbsp;&nbsp;
+        = @bank_account.errors[:authorize_net_error].to_sentence
+
+    - if current_user.errors.any?
+      #error_explanation.alert.alert-danger
+        strong Warning! &nbsp;&nbsp;
+        = "#{pluralize(current_user.errors.count, "error")} prohibited this profile from being saved"
+
+    = f.simple_fields_for :profile do |profile_form|
+      .wrapper-edit-profile
+        .row
+          .col-md-6.col-md-offset-3
+            .wrapper-titile-edit-profile
+              h2.text-center
+                | Let the Adventure Begin!
+
+            #imgProfile.form-group
+              .thumbnail
+                = link_to 'javascript:void(0)'
+                  = image_tag current_user.profile.image.url, id: 'profile_image', class: "img-circle" unless current_user.profile.image.nil?
+
+                br
+
+                = profile_form.input_field :image, as: :file, id: 'choose_profile_image',  data: {filename_placement: 'inside' }, class: 'btn btn-block btn-saving btn-green'
+
+                .hide = profile_form.input :image_cache, as: :hidden
+
+                span.text-info
+                  i You can only upload jpg, gif, png
+          
+          .col-md-12
+            h4 PERSONAL INFORMATION
+
+            h2 Create Your Traveler Profile...
+
+            p
+              | Take a few moments to fill in the easy form below. This information helps us customize Travel  Trunk to your needs and vision.  
+
+            br
+            
+          .col-md-12
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
+
+          .col-md-12
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control input-custom input-select' }, error_html: { class: 'error-message' }
+
+          .col-md-12
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :home_airport, label: 'Your Home airport?', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
+                  span.error.error-message.error-home_airport
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :place_to_visit, label: 'Name place you’d like to visit someday', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
+                  span.error.error-message.error-place_to_visit
+
+          .col-md-12
+            .form-group
+              = profile_form.input :address, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+              span.error.error-message.error-address
+
+          .col-md-12
+            .form-group
+              = profile_form.input :address_1, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+
+          .col-md-12
+            .form-group
+              = profile_form.input :address_2, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+
+          .col-md-12
+            .row
+              .col-md-6
+                .form-group
+                  = profile_form.input :city, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+                  span.error.error-message.error-city
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :state, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+                  span.error.error-message.error-state
+
+              .col-md-6
+                .form-group
+                  = profile_form.input :postal_code, input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
+                  span.error.error-message.error-postal_code
+
+              .col-md-6
+                .form-group
+                  = profile_form.label :country_code
+                  = profile_form.country_select(:country_code, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom' })
+                  span.error.error-message.error-postal_code
+
+                  - if profile_form.error :country_code
+                    span.error.error-message please select one
+
+        .row
+          .col-md-8.col-md-offset-2
+            p
+              i
+                small &ldquo;Address must match credit card information&rdquo;
+
+            br
+
+            center
+              .form-group.bank_account
+                = f.button :submit, 'Update Profile', class: 'btn btn-saving btn-green'
+
+        .col-md-12
+          br
+          
+  #showBankAccount
+    hr
+    = render 'profiles/form_modal_bank_account', is_remote: is_remote

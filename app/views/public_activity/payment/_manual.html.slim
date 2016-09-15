@@ -1,0 +1,9 @@
+- if activity.trackable
+  .notif-background
+    .description
+      span
+        | You successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
+
+    .date 
+      span
+        = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

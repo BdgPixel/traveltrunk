@@ -1,0 +1,52 @@
+@import 'mixins';
+
+.wrapper-registration {
+  margin-top: 200px;
+
+  img {
+    width: 70px;
+  }
+  
+  .registration {
+    background: rgba(255, 255, 255, 0.12);
+    padding: 45px;
+    margin-top: 55px;
+    border-radius: 5px;
+    @media screen and (max-width: 480px) {
+      padding: 15px;
+    } 
+    .form-group {
+      margin-bottom: 20px;
+    }
+    @media screen and (max-width: 990px) {
+      .pad-right-10 {
+        padding-right: 15px;
+      }
+      .pad-left-10 {
+        padding-left: 15px;
+      }
+    }
+
+    input.input-registration {
+      @extend %input-global;
+
+      @include placeholder {
+        color: #d9d8d8;
+        font-size: 20px;
+        letter-spacing: 1px;
+        font-weight: normal;
+      }
+    }
+
+    .btn-default {
+      @extend %btn-green-2;
+      margin-top: 14px;
+    }
+  }
+
+  a {
+    font-size: 18px;
+    letter-spacing: 1px;
+    color: #ffffff;
+  }
+}

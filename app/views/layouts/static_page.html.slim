@@ -1,0 +1,32 @@
+doctype html
+html lang="en"
+  head
+    title Travel Trunk
+
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=device-width, initial-scale=1" name="viewport"
+
+    link href=("/favicon.ico") rel=("shortcut icon") type='image/x-icon'
+
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
+    = yield :css
+
+    = javascript_include_tag 'application', 'data-turbolinks-track' => true
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&signed_in=true&libraries=places"
+    = render 'partials/google_analytic'
+
+    = csrf_meta_tags
+
+  body data-controller="#{controller_name}" data-action="#{action_name}"
+    = yield :css_body
+
+    = render 'partials/notice'
+
+    = yield
+    
+    = render partial: 'partials/navbar'
+
+    #loading
+
+    = yield :javascripts

@@ -1,0 +1,13 @@
+- content_for :javascripts
+  = javascript_include_tag 'variables'
+
+.pad-top-97
+.container
+  .row
+    .col-md-8.col-md-offset-2
+      .panel.panel-default
+        .panel-heading
+          h4.panel-title New Promo Code
+          
+        .panel-body
+          = render 'form_promo_code'

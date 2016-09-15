@@ -1,0 +1,9 @@
+- if activity.trackable
+  .notif-background
+    .description
+      span
+        | Your transaction with ID (#{activity.parameters[:trans_id]}) and amount #{currency_in_usd(activity.parameters[:amount])} has been refunded. Your total credit is #{currency_in_usd(activity.parameters[:total_credit])}&nbsp;
+
+    .date 
+      span
+        = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

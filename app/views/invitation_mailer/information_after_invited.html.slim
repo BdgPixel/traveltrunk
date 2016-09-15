@@ -1,0 +1,29 @@
+p#afterInvitedMailer
+  | Hi, 
+
+  br
+  br
+
+  | #{@user_group.joined_group.try(:user).try(:profile).try(:first_name).try(:titleize) || 'No Name'} wants to go on a vacation and has invited you to join #{@user_group.joined_group.try(:user).try(:profile).try(:pronoun, 'object') || 'him / her'}.
+
+  br
+  br
+
+  | #{@user_group.joined_group.try(:user).try(:profile).try(:pronoun, 'subject') || "He's / She's"} using #{ link_to 'TravelTrunk.us', 'https://www.traveltrunk.us' } to plan #{@current_user.profile.try(:pronoun, 'possesive') || 'his / her'} next getaway and wants you in the loop.
+
+  br
+  br
+
+  | Sign up today. It’s safe, fast and easy. Just click the link below and you’ll be all set to go.
+
+  br
+  br
+
+  = link_to 'TravelTrunk.us', 'https://www.traveltrunk.us'
+
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

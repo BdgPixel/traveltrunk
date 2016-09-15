@@ -1,0 +1,14 @@
+p#refundApproved
+  | Hi #{@refund.user.try(:profile).try(:first_name).try(:titleize)},
+
+  br
+  br
+  
+  | Your refund request has been approved by admin. 
+  
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

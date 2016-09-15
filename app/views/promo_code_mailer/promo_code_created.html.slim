@@ -1,0 +1,24 @@
+p#subscriptionPaymentSucceed
+  = "Hi #{ @promo_code.user.try(:profile).try(:first_name).try(:titleize) }," 
+
+  br
+  br
+
+  | You’ll find a friendly promo code below. Enjoy the savings!
+
+  br
+  br
+
+  | To use, simply copy and paste, or click the link:
+
+  br
+  br
+
+  = link_to @promo_code.token, promo_codes_activation_url(promo_token: @promo_code.token)
+
+  br
+  br
+
+  | Happy travels,
+  br
+  = render "partials/footer_mailer"

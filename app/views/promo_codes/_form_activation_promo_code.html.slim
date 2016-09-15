@@ -1,0 +1,11 @@
+= simple_form_for :promo_code, url: promo_codes_update_path do |f|
+  .col-md-12
+    .form-group
+      = f.input :token, label: false, input_html: { class: "form-control", placeholder: "Enter promo code", value: params[:promo_token] }
+      = f.error :token
+      
+      span.error = flash[:error]
+
+  .col-md-12
+    .form-group
+      = f.submit "Activate", class: "btn btn-orange"

@@ -1,0 +1,19 @@
+p#refundApproved
+  | Hi #{@refund.user.try(:profile).try(:first_name).try(:titleize)},
+  
+  br
+  br
+
+  | Your transaction with amount #{currency_in_usd(@refund.amount)} (Transaction ID #{@refund.trans_id}) has been #{@transaction_type.eql?('refund') ? 'refunded' : 'voided' }. 
+
+  br
+  br
+
+  | Your total credit now is #{currency_in_usd(@refund.user.total_credit)}&nbsp;
+
+  br
+  br
+    
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

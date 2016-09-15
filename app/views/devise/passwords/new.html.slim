@@ -1,0 +1,18 @@
+.container
+  .row
+    .col-md-8.col-md-offset-2
+      .wrapper-forgot-password
+        h1.text-center Forgot your password?
+
+        .forgot-password
+          = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+            .row
+              .col-md-8
+                .form-group
+                  = f.input :email, label:false, autofocus: true, placeholder: "Email Address", input_html: { class: 'form-control' }
+
+              .col-md-4
+                = f.submit "Send", class: 'btn btn-block btn-global'
+
+        .text-center
+          / = link_to "Didn't receive confirmation instructions?", new_user_confirmation_path

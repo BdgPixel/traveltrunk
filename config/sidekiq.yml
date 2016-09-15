@@ -1,0 +1,11 @@
+:verbose: false
+:concurrency:  1
+
+:timeout: 30
+
+production:
+  :concurrency: 5
+
+:queues:
+  - [default, 2]
+  - mailer

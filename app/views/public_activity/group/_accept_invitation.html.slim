@@ -1,0 +1,17 @@
+- if activity.trackable
+	.notif-background
+		.description 
+			span 
+				= link_to activity.owner.try(:profile).try(:first_name).try(:titleize), user_profile_path(activity.owner) if activity.owner
+				
+				| &nbsp;
+
+				| accepted your invitation to&nbsp;
+
+				= link_to activity.trackable.joined_group.name, savings_path
+				
+				| &nbsp;
+
+		.date 
+			span 
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

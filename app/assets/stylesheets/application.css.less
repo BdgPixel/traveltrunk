@@ -1,0 +1,108 @@
+/*
+ *= require twitter/bootstrap
+ *= require bootstrap-datepicker
+ *= require nprogress
+ *= require nprogress-bootstrap
+ *= require blueimp-gallery
+ *= require blueimp-gallery-indicator
+ *= require token-input-facebook
+ *= require simplePagination
+ *= require deals
+ *= require main
+ *= require_self
+ */
+
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
+  margin: 0;
+}
+
+#loading {
+  background: asset-url("ajax_loader.gif") no-repeat scroll center center;
+  position: fixed;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+  height: 100%;
+  z-index: 9999;
+  display: none;
+}
+
+#slideToggle {
+  display: none;
+}
+
+// Center group member
+.wrapper-group-saving ul{
+  margin: 0 auto;
+  padding: 0px;
+}
+
+.wrapper-group-saving ul li{
+  display: inline-block;
+}
+
+// Stripe error message
+.payment-errors{
+  color: red;
+}
+
+.registration {
+  span.error {
+    color: #ffffff;
+  }
+}
+
+.forgot-password {
+  span.error {
+    color: #ffffff;
+  }
+}
+
+span.error {
+  display: block;
+  padding: 10px 0px;
+}
+
+.wrapper-edit-profile {
+  .thumbnail {
+    padding:15px;
+  }
+}
+.notification-bubble {
+  background: rgb(239,62,54); /* Old browsers */
+  background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgb(239,62,54)), color-stop(100%,rgb(247,148,30))); /* Chrome,Safari4+ */
+  background: -webkit-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Chrome10+,Safari5.1+ */
+  background: -o-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* Opera 11.10+ */
+  background: -ms-linear-gradient(top,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* IE10+ */
+  background: linear-gradient(to bottom,  rgb(239,62,54) 0%,rgb(247,148,30) 100%); /* W3C */
+  filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ef3e36', endColorstr='#f7941e',GradientType=0 ); /* IE6-9 */
+    padding: 3px 5px;
+    border-radius: 10px;
+    font-size: 10px;
+    color: #fff;
+    position: relative;
+    bottom: 8px;
+    left: 6px;
+    text-align: center;
+}
+
+.img-saving {
+  width: 300px !important;
+  display: block;
+  margin: 20px auto;
+}
+
+.name-saving {
+  padding-left:0 !important;
+}
+
+// override bootstrap token-input
+
+li.token-input-token{
+  padding: 2% 1% !important;
+  font-size: 1em !important;
+}

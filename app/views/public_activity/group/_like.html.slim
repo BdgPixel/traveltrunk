@@ -1,0 +1,17 @@
+- if activity.trackable
+	.notif-background
+		.description 
+			span
+				= link_to activity.owner.try(:profile).try(:first_name).try(:titleize) if activity.owner
+
+				| &nbsp;
+
+				| vote for hotel&nbsp;
+
+				= link_to activity.parameters[:hotel_name], deals_show_path(activity.parameters[:hotel_id])
+				
+				| &nbsp;
+
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

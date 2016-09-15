@@ -1,0 +1,9 @@
+- if activity.trackable
+	.notif-background
+		.description
+			span
+				| You've successfully delete your latest savings plan. &nbsp;
+
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

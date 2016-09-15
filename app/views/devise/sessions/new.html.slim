@@ -1,0 +1,44 @@
+.container
+  .row
+    .col-md-6.col-md-offset-3
+      .wrapper-login
+        .login
+          = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
+            .form-group
+              = f.email_field :email, autofocus: true, class: 'form-control',  placeholder: 'Email Address'
+
+            .form-group
+              = f.password_field :password, autocomplete: "off", class: 'form-control', placeholder: 'Password'
+
+            - if devise_mapping.rememberable?
+              .row
+                .col-xs-12.col-md-6
+                  .form-group
+                    = f.check_box :remember_me
+                    | &nbsp;
+                    = f.label :remember_me
+
+                .col-xs-12.col-md-6
+                  .forgot-password.text-right
+                    = link_to "Forgot your password?", new_password_path(resource_name)
+
+            .row
+              .col-md-6.col-md-offset-3
+                .actions.form-group
+                  = f.submit "Log in", class: 'btn btn-default btn-block btn-global'
+
+            .text-center
+              = render "devise/shared/social_media_links"
+
+            / .text-center
+            /   = link_to "Didn't receive confirmation instructions?", new_confirmation_path(resource_name)
+
+    .col-md-6.col-md-offset-3
+      .wrapper-sign-up-login
+        .sign-up-login
+          .text-center
+            h1
+             | Need an account?
+
+            = link_to new_registration_path(resource_name)
+              | Sign Up Now

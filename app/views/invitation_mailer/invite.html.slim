@@ -1,0 +1,19 @@
+p#inviteMailer
+  - if @invite.member.try(:profile)
+    | Hi #{@invite.member.try(:profile).try(:first_name).try(:titleize)},
+  - else
+    | Hi,
+
+  br
+  br
+
+  | #{@current_user.try(:profile).try(:first_name).try(:titleize)} invite you to join his group
+  | &nbsp;
+  = link_to 'Join the group', accept_invitation_group_url(token: @invite.invitation_token, group_id: @current_user.id)
+
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

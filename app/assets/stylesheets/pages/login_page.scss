@@ -1,0 +1,56 @@
+@import 'mixins';
+
+.wrapper-login {
+  @extend .wrapper-registration;
+
+  .login {
+    @extend .registration;
+    @media screen and (max-width: 480px) { 
+      padding: 15px !important; 
+    }
+
+    input.input-login {
+      @extend input.input-registration;
+    }
+
+    .btn-default {
+      @extend %btn-green-dark;
+      margin-bottom: 30px;
+    }
+
+    label {
+      font-size: 18px;
+      color: #ffffff;
+      font-weight: lighter;
+      letter-spacing: 1px;
+      position: relative;
+      top: 3px;
+      left: 5px;
+    }
+
+    .forgot-password {
+      a {
+        margin-top: 5px;
+        display: inline-block;
+      }
+    }
+  }
+}
+
+.wrapper-sign-up-login {
+  @extend .wrapper-login;
+  margin-top: 0px !important;
+
+  .sign-up-login {
+    @extend .login;
+    margin-top: 25px;
+
+    h1 {
+      margin-top: 0px;
+      color: #ffffff;
+      font-size: 19px;
+      font-weight: normal;
+      letter-spacing: 1px;
+    }
+  }
+}

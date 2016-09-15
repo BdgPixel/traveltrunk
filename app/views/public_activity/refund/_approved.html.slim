@@ -1,0 +1,9 @@
+- if activity.trackable
+	.notif-background
+		.description
+			span
+				| You successfully refunded #{currency_in_usd(activity.parameters[:amount])} to your TravelTrunk account. Your total credit is #{currency_in_usd(activity.parameters[:total_credit])}&nbsp;
+
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

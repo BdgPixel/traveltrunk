@@ -1,0 +1,21 @@
+- content_for :javascripts
+  = javascript_include_tag 'notifications'
+
+.wrap-nav-color
+	| &nbsp;
+
+section.notif
+	.container
+		.row
+			.col-md-12
+				h1 Notification
+
+				- if @activities.empty?
+				  .alert.alert-info
+				    strong Notice:&nbsp;
+				    | No Activities
+				- else
+				  table.table.table-striped.table-hover
+				    tbody
+				      - @activities.each do |activity|
+				        == render_activity activity, locals: { current_total_credit: @current_total_credit }

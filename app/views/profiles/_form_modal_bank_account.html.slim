@@ -1,0 +1,94 @@
+.row
+  .col-md-12#bank_account
+    h4
+      | SAVINGS PLAN
+
+    h2 Create Your Savings Plan...
+
+    p
+      | You decide how much you want to save, and how often. With regular, automatic deposits into  your Travel Trunk account, you’ll be amazed how quickly your funds build up! 
+
+- if current_user.profile.birth_date.blank? || current_user.errors.any?
+  .row
+    .col-md-12
+      .alert.alert-info Please complete your profile before you can create your savings plan.
+- else
+  .row
+    .col-md-12
+      p
+        i
+          small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
+
+        br
+        br
+
+  = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account", class: "transaction-form" }, remote: is_remote do |f|
+    .payment-errors
+
+    .row
+      .col-md-6
+        .form-group
+          = f.input :credit_card, input_html: { class: "form-control  input-custom card_number" }
+
+      .col-md-2
+        .form-group
+          = f.input :cvc, as: :password, input_html: { class: "form-control  input-custom input-custom cvc", maxlength: 4 }
+
+      .col-md-2
+        .form-group
+          = label_tag "Expiration Month (MM)"
+          = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control input-custom', data: { stripe: 'exp-month' } }
+
+      .col-md-2
+        .form-group
+          = label_tag "Expiration Year (YYYY)"
+          = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "bank_account[exp_year]", id: "card_year", class: 'form-control input-custom', data: { stripe: 'exp-year' } }
+
+    .row
+      .col-md-6
+        .form-group
+          = f.label :amount_transfer
+
+          .input-group
+            .input-group-addon $
+            = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
+            = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
+
+          = f.error :amount_transfer, class: 'error-message'
+          .amount-error
+
+      .col-md-6
+        .form-group
+          = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control input-custom transfer_frequency' }, error_html: { class: 'error-message' }
+          .transfer-frequency-error
+
+    .row
+      .col-md-12
+        br
+
+        center
+          .form-group
+            = f.button :submit, 'Update Savings', class: 'btn btn-saving btn-green'
+            - unless current_user.bank_account.new_record?
+              | &nbsp;&nbsp;
+              button.btn.btn-saving.btn-orange-soft data-target=".unsubscript" data-toggle="modal" type="button"
+                | Delete Bank Account
+
+        br
+        br
+
+        .modal.unsubscript.fade role="dialog" tabindex="-1" data-backdrop="static"
+          .modal-dialog
+            .modal-content
+              .modal-header
+                button.close aria-label="Close" data-dismiss="modal" type="button"
+                  span aria-hidden="true"  &times;
+                h4.modal-title Reoccurring transaction
+
+              .modal-body
+                p Are you sure you want to stop reoccurring transaction on this account?
+                
+              .modal-footer
+                button.button.btn.btn-saving.btn-green data-dismiss="modal" type="button" No, keep my savings plan.
+                | &nbsp;&nbsp;
+                = link_to 'Yes, discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-saving btn-orange-soft"

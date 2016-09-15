@@ -1,0 +1,24 @@
+p#subscriptionFailed
+  | Hi #{@profile.try(:first_name).try(:titleize)},
+
+  br
+  br
+
+  | Your subscription with ID #{@subscription_id} is #{@subscription_status.downcase} #{subscription_failed_reason(@subscription_message)}. 
+
+  br
+  br
+
+  | We've deleted your savings plan and you need to create a new one with correct payment information this time.
+
+  br
+  br
+
+  | Please contact administrator for further assistance.
+
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

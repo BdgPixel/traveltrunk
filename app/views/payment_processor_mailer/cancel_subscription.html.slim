@@ -1,0 +1,19 @@
+p#subscriptionCanceled
+  | Hi #{@profile.try(:first_name).try(:titleize)},
+
+  br
+  br
+
+  | You've successfully deleted your savings plan.
+
+  br
+  br
+
+  | This means you’ve discontinued your savings plan and we won't charge your credit card every certain period anymore.
+
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

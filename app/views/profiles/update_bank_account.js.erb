@@ -1,0 +1,9 @@
+<% if @bank_account.errors.present? %>
+  <% @bank_account.errors.each do |errorKey, errorMessage| %>
+    errorKey = "<%= errorKey.to_s.split('.').last %>";
+    $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
+  <% end %>
+<% else %>
+  window.location = "<%= deals_path %>";
+  // $('#modalUserProfile').modal('hide');
+<% end %> 

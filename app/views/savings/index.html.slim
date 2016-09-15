@@ -1,0 +1,66 @@
+- content_for :css
+  = stylesheet_link_tag 'profiles', 'savings'
+
+- content_for :javascripts
+  = javascript_include_tag 'groups', 'variables'
+
+.row
+  - if current_user.profile.birth_date && current_user.bank_account
+    - if @group
+      - if @group.members.any?
+        = render 'people', group: @group
+      - else
+        = render 'single_person'
+    - else
+      = render 'single_person'
+
+    .row
+      .col-md-12
+        .wrap-credit.text-center
+          p
+            = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
+
+            |&emsp;&emsp;&emsp;
+
+            = link_to "Promo Code", "#", data: { toggle: "modal", target: "#modalActivationPromoCode" }
+
+            |&emsp;&emsp;&emsp;
+
+            = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
+
+            - if current_user.group
+              |&emsp;&emsp;&emsp;
+
+              = link_to "Dismiss group", leave_group_path, id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'Are you sure you want to leave this group ?'}, :method => :delete
+
+            - elsif current_user.joined_groups.any?
+              |&emsp;&emsp;&emsp;
+
+              = link_to "Leave group", leave_group_path(id: current_user.joined_groups.first.id), id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'Are you sure you want to leave this group ?'}, :method => :delete
+
+    .col-md-12
+      .col-md-4.col-offset-4
+        = render partial: 'savings/form_invite_friend'
+
+    = render 'savings/form_add_saving'
+    = render 'savings/transfer_success'
+    = render 'promo_codes/form_modal_activation_promo_code'
+
+  - else
+    .wrapper-header-saving.card-orange
+      .wrap-middle
+        .container
+          .row
+            .col-md-12
+              h1.text-center 
+               | Save Up, Up and Away! Count Down to Your Next Adventure...
+
+              br
+
+              p.text-center
+                | This page is an overview of your trip savings. Whether you’re planning an expedition to Switzerland or a voyage to Hawaii, you’ll quickly build the funds to make your dreams a reality. Even better, invite your friends and family to save together; now, you can save through a convenient joint account.
+                
+              br
+
+              .text-center.bank_account
+                = link_to 'CLICK HERE TO GET STARTED', edit_profile_path(anchor: 'bank_account'), class: 'btn btn-saving btn-green'

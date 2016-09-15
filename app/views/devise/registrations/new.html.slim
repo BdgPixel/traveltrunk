@@ -1,0 +1,29 @@
+ = simple_form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f|
+  - if controller_name.eql? 'registrations'
+    .container
+      .row
+        .col-md-6.col-md-offset-3
+          .wrapper-registration
+            .registration
+              = render partial: 'devise/registrations/form', locals: { f: f }
+              .text-center
+                = render "devise/shared/social_media_links"
+  - else
+    #modalUserSignUp.modal.fade aria-labelledby="modalUserSignUp" data-backdrop="static" role="dialog" tabindex="-1"
+      .modal-dialog
+        .modal-content
+          .modal-header
+            button.close aria-label="Close" data-dismiss="modal" type="button"
+              span aria-hidden="true" &times;
+            h3#myModalLabel.modal-title User Sign Up
+            hr
+            .modal-body
+              = render partial: 'devise/registrations/form', locals: { f: f }
+              .text-center
+                = render "devise/shared/social_media_links"
+
+            .modal-footer
+              = f.submit "Sign up", class: 'btn btn-saving btn-green'
+              | &nbsp;&nbsp;
+              button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
+                | Close

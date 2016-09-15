@@ -1,0 +1,80 @@
+.wrapper-navbar-traveltrunk.navbar-fixed-top
+  .nav.navbar.navbar-default.transparent
+    .container
+      .navbar-header
+        button.navbar-toggle.collapsed aria-expanded="false" data-target="#bs-example-navbar-collapse-1" data-toggle="collapse" type="button"
+          span.sr-only Toggle navigation
+
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+
+        .wrapper-navbar-brand
+          - if user_signed_in?
+            = link_to '', deals_path, id: 'logo-color-white', class: 'color'
+            = link_to '', deals_path, id: 'logo-color-orange', class: 'color hide'
+          - else
+            = link_to '', '/', id: 'logo-color-white', class: 'color'
+            = link_to '', '/', id: 'logo-color-orange', class: 'color hide'
+
+      #bs-example-navbar-collapse-1.collapse.navbar-collapse
+        - if user_signed_in?
+          - if current_user.admin?
+            ul.nav.navbar-nav.navbar-right.navbar-admin
+              li = link_to 'Users', admin_users_path
+              li = link_to 'Transactions', admin_transactions_path
+              li = link_to 'Void / Refund Requests', admin_refunds_path
+              li = link_to 'Reservations', admin_reservations_path
+              li = link_to 'Promo Codes', admin_promo_codes_path
+
+              li.dropdown
+                a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                  = current_user.email
+                  span.caret
+
+                ul.dropdown-menu
+                  li = link_to 'Sign Out', destroy_user_session_path, method: :delete
+
+          - else
+            ul.nav.navbar-nav.navbar-right
+              li.link-top-login = link_to 'DEALS', deals_path
+              li.link-top-login = link_to 'SAVINGS', savings_path
+
+              li.dropdown.dropdown-top-active
+                a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+                  - if @notification_count.zero?
+                    span.notification-bubble.hide = @notification_count
+                  - else
+                    span.notification-bubble = @notification_count
+
+                  - if current_user.no_profile?
+                    = image_tag "thumb_default_user.png", class: "img-circle", width:"20px"
+                    | &nbsp;
+                    | PROFILE
+                  - else
+                    = image_tag current_user.profile.image.thumb.url, class: "img-circle", width:"20px"
+                    | &nbsp;
+                    = current_user.profile.first_name.upcase
+
+                  span.caret
+
+                ul.dropdown-menu.dropdown-top-login
+                  li = link_to 'My Profile', profile_path
+                  li = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
+                  li = link_to 'Help', helps_path
+
+                  li.divider role="separator"
+                  
+                  li = link_to 'Sign Out', destroy_user_session_path, method: :delete
+        - else
+          ul.nav.navbar-nav.navbar-right 
+            li
+              = link_to new_user_session_path, class: "login show"
+               | Login
+            li
+              = link_to new_user_registration_path, class: "navbar-btn btn-border show"
+               | Sign Up
+
+              = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide"
+               | Sign Up
+              

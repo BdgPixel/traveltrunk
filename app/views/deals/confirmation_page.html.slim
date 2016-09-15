@@ -1,0 +1,124 @@
+.pad-top-97
+.container
+  #ThankYouPage
+    - unless @error_response
+      .row
+        .col-md-12
+          - if flash[:reservation_message]
+            #notice.alert.alert-info 
+              strong Notice: &nbsp;
+              = flash[:reservation_message]
+
+          .col-md-6 style="margin-bottom: 20px"
+            h4 Your reservation is confirmed and your card has been charged
+
+            br
+
+            p
+              b Customer name:&nbsp;
+              = "#{@profile[:first_name]} #{@profile[:last_name]}"
+
+            p
+              b Customer email:&nbsp;
+              = @profile[:email]
+
+            p
+              b Itinerary Number:&nbsp;
+              = "#{@reservation.itinerary}"
+
+            p
+              b Room Confirmation number:&nbsp;
+              = @reservation.confirmation_number
+            br
+
+            
+            h4 Hotel and Room Reservation
+
+            br
+
+            p
+              | Hotel name:&nbsp;
+              = @itinerary_response["Hotel"]["name"]
+
+            p
+              | Address:&nbsp;
+              = @itinerary_response["Hotel"]["address1"]
+
+            p
+              | City #{@reservation.city}
+
+            p
+              | Country code #{@reservation.country_code}
+
+            p
+              | Postal code #{@reservation.postal_code}
+
+            p
+              | Phone:&nbsp;
+              = @itinerary_response["Hotel"]["phone"]
+
+            p
+              | Fax:&nbsp;
+              = @itinerary_response["Hotel"]["fax"]
+
+            br
+
+            p
+              | Room type:&nbsp;
+              = @reservation.room_description
+
+            p
+              | Check-in:&nbsp;
+              = @reservation.arrival_date.strftime("%B %d, %Y")
+
+            p
+              | Check-out:&nbsp;
+              = @reservation.departure_date.strftime("%B %d, %Y")
+
+            p
+              | Number of adults: 
+              = @reservation.number_of_adult
+
+          .col-md-6
+            table.table
+              - @list_of_dates.each_with_index do |date, key|
+                tr
+                  td = date.strftime("%B %d, %Y")
+                  = nightly_rates_per_room(@charge_able_rate_info["NightlyRatesPerRoom"], key)
+              tr
+                td
+                  b Total taxes and fees
+                td
+                  = number_to_currency @charge_able_rate_info["@surchargeTotal"]
+              tr
+                td
+                  b Total Charges
+                  
+                  br
+                  
+                  small
+                    i
+                      | (includes tax recovery charges and service fees)
+
+                td = number_to_currency @charge_able_rate_info["@total"]
+
+              = tax_values @charge_able_rate_info
+            p
+              i
+                b You have charged your credit card for the full payment of this reservation
+              
+              br
+              br
+              
+              - if user_signed_in?
+                = link_to "Back to hotel list", deals_path, class: "btn btn-saving btn-orange-soft"
+              - else
+                = link_to "Back to hotel list", :back, class: "btn btn-saving btn-orange-soft"
+
+
+    - if @error_response
+      #error_response.alert.alert-info
+        strong Notice: &nbsp;
+        = @error_response
+    - else
+      #error_response.alert.alert-info.hide
