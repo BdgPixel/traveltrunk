@@ -1,4 +1,4 @@
-$(document).ready(function(){ 
+$(document).ready(function(){
   $('.parallax-image').parallax("50%", 0.1);
   $('.parallax-image2').parallax("50%", 0.1);
   $('.parallax-image3').parallax("50%", 0.1);
@@ -18,7 +18,7 @@ $(document).ready(function(){
   });
 });
 
-$(window).scroll(function() {    
+$(window).scroll(function() {
   var scroll = $(window).scrollTop();
 
   if (scroll >= 10) {

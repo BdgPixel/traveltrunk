@@ -2,6 +2,7 @@
 @import 'mixins';
 @import 'owl.carousel';
 @import url(https://fonts.googleapis.com/css?family=Lato:400,400italic,700,700italic,900,900italic);
+@import 'https://fonts.googleapis.com/css?family=Source+Sans+Pro:200,300,400';
 
 // Reset Style
 
@@ -229,7 +230,7 @@ body {
 
 #logo-color-white {
   width: 170px;
-  height: 50px;
+  height: 52px;
   display: inline-block;
 
   &.color {
@@ -598,8 +599,14 @@ body {
 }
 
 .normal-font {
-  font-family: 'times' !important;
-  font-weight: 600 !important;
+  font-family: 'Source Sans Pro', sans-serif !important;
+  font-weight: 300 !important;
+  letter-spacing: -.5px;
+
+  &.light {
+    font-weight: 200 !important;
+    font-size: 26px;
+  }
 }
 
 .wrap-nav-color {

@@ -14,58 +14,66 @@
           source src="#{video_path('teaser-video.webm')}"
         .inner-item
           .item-content
-            .item-center
+            .item-center.title-center
               .container
                 .row
                   .col-sm-12.col-md-12.col-lg-12
                     h1.normal-font
-                     | Your Journey Starts Here
+                     | Vacation planning made simple
+                    h2.normal-font.light
+                      | Share the experience and expense with friends.
 
-                    = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
+                    / = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
 
-                    = simple_form_for :search_deals, method: :get, url: deals_search_path, html: { id: 'searchDealsForm' } do |f|
-                      .wrapper-search-deal.wrapper-home-search-deal
-                        .col-xs-3.no-pad-left.no-pad-right
-                          .form-group
-                            = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
+          = simple_form_for :search_deals, method: :get, url: deals_search_path, html: { id: 'searchDealsForm' } do |f|
+            .wrapper-search-deal.wrapper-home-search-deal
+              .container
+                .row
+                  .col-xs-4.no-pad-left.no-pad-right
+                    .form-group
+                      = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
 
-                            span.wrapper-icon-delete
-                              a#btnClearText href="javascript:void(0)"
-                                i.icon.delete
+                      span.wrapper-icon-delete
+                        a#btnClearText href="javascript:void(0)"
+                          i.icon.delete
 
-                          .show
-                            = hidden_field_tag :street_number, nil, id: "street_number"
-                            = hidden_field_tag :route, nil, id: "route"
-                            = hidden_field_tag :postal_code, nil, id: "postal_code"
-                            = f.hidden_field :city, id: "locality"
-                            = f.hidden_field :state_province_code, id: "administrative_area_level_1"
-                            = f.hidden_field :country_code, as: :string, id: "country"
-                            = f.hidden_field :latitude, id: "lat", value: @destination.try(:latitude)
-                            = f.hidden_field :longitude, id: "lng", value: @destination.try(:longitude)
+                    .show
+                      = hidden_field_tag :street_number, nil, id: "street_number"
+                      = hidden_field_tag :route, nil, id: "route"
+                      = hidden_field_tag :postal_code, nil, id: "postal_code"
+                      = f.hidden_field :city, id: "locality"
+                      = f.hidden_field :state_province_code, id: "administrative_area_level_1"
+                      = f.hidden_field :country_code, as: :string, id: "country"
+                      = f.hidden_field :latitude, id: "lat", value: @destination.try(:latitude)
+                      = f.hidden_field :longitude, id: "lng", value: @destination.try(:longitude)
 
-                        .col-xs-2.no-pad-left.no-pad-right
-                          .form-group
-                            = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Arriving when?"
+                  .col-xs-2.no-pad-left.no-pad-right
+                    .form-group
+                      = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Arriving when?"
 
-                        .col-xs-2.no-pad-left.no-pad-right
-                          .form-group
-                            = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
+                  .col-xs-2.no-pad-left.no-pad-right
+                    .form-group
+                      = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
+                  .col-xs-2.no-pad-left.no-pad-right
+                    .form-group
+                      input.form-control.no-border-radius type="text" placeholder="Group"
 
-                        .col-xs-2.no-pad-left.no-pad-right
-                          .form-group
-                            = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: :first, class: "form-control no-border-radius"
-                            span.caret.caret-select
+                  .col-xs-2.no-pad-left.no-pad-right
+                    .form-group
+                      = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: :first, class: "form-control no-border-radius"
+                      span.caret.caret-select
 
-                        .col-xs-3.no-pad-left.no-pad-right
-                          .form-group
-                            = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
+                  .col-xs-2.no-pad-left
+                    .form-group
+                      = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
 
-    .wrap-arrow-down
-      .arrow-down
-        .click-me
-          a href="#slogan"
-            | Learn More
-            span.icon.arrow-down
+
+    / .wrap-arrow-down
+    /   .arrow-down
+    /     .click-me
+    /       a href="#slogan"
+    /         | Learn More
+    /         span.icon.arrow-down
 
 section.slogan#slogan
   .container

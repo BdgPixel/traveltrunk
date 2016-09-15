@@ -2,7 +2,7 @@
 @import 'fonts';
 
 .wrap-hero {
-  height: 100%;
+  height: 550px !important;
 
 	.hero {
 		height: 100%;
@@ -52,6 +52,10 @@
 			display: table-cell;
 			vertical-align: middle;
 			text-align: center;
+
+			&.title-center {
+				padding-top: 100px;
+			}
 
 			h1 {
 				font-family: 'Avenirbold';
