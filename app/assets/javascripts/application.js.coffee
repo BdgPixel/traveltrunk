@@ -65,6 +65,7 @@ displayCorrectAmount = (selector) ->
   $(selector).on 'click', ->
     $('#modalCorrectAmount').modal backdrop: 'static'
     $('#formCorrectAmount').attr 'action', 'users/' + $(this).data 'id'
+
     return
 
 root.showSearchForm = () ->
@@ -96,3 +97,5 @@ root.showSearchForm = () ->
       $('#slideToggleLink').css 'padding-bottom', '50px'
       $('#slideToggleLink').addClass 'arrow-downs'
       return
+
+    return

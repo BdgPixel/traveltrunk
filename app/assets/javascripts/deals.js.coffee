@@ -324,22 +324,6 @@ $(document).ready ->
       autoclose: true
 
     showSearchForm()
-    # if $('#slideToggleLink').length > 0
-    #   $('#slideToggleLink').on 'click', (e) ->
-    #     $('#slideToggle').slideToggle()
-    #     return
-
-    #   $('.slide').on 'click', (e) ->
-    #     if e.target != this
-    #       return
-    #     $('#slideToggle').slideUp()
-    #     return
-
-    #   $('.text-header-slide').on 'click', (e) ->
-    #     if e.target != this
-    #       return
-    #     $('#slideToggle').slideUp()
-    #     return
 
     if $('#btnClearText').length > 0
       $('#btnClearText').click ->
