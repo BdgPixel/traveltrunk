@@ -364,6 +364,7 @@ $(document).ready ->
           $('#formBook').get(0).reset()
           $('.form-book').show()
           $('.payment-errors').html("")
+          removeBackdropModal '#modalBook'
 
         return
 
@@ -399,7 +400,7 @@ $(document).ready ->
       else
         removeBackdropModal '#modalBook'
         $('#modalBook').modal 'hide'
-        modalDialog = $(this).parents('.modal').find('.modal-dialog')
+        root.modalDialog = $(this).parents('.modal').find('.modal-dialog')
         modalDialog.modal 'hide'
         # $('.modal-dialog').modal 'hide'
         $('#modalSavingsForm').modal 'show'
@@ -407,5 +408,7 @@ $(document).ready ->
         totalCharges = $('[dom="total_charges_text"]').text().replace('$', '')
         $('#totalCharges').attr('data-total-charges', totalCharges)
         appendValueRoomParams()
+        $('#modalSavingsForm .modal-header > h3').text $('#roomName').text()
+        $('.amount').val parseFloat($('#totalCharges').data('total-charges'))
 
       return
