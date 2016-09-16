@@ -22,6 +22,10 @@
           = f.hidden_field :id, value: params[:id]
           = f.hidden_field :rate_code
           = f.hidden_field :total
+          
+          - unless user_signed_in?          
+            small
+              strong Adress must match credit card information
 
           .form-group
             .payment-errors
@@ -100,8 +104,8 @@
                 |&nbsp;
                 = image_tag asset_path('cards/visa.png')
                 |&nbsp;
-                = image_tag asset_path('cards/amex.png')
-                |&nbsp;
+                / = image_tag asset_path('cards/amex.png')
+                / |&nbsp;
                 = image_tag asset_path('cards/discover.png')
 
               .col-md-6
