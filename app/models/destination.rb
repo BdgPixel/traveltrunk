@@ -10,7 +10,6 @@ class Destination < ActiveRecord::Base
       self.departure_date = today_utc + (self.departure_date - self.arrival_date).to_i
       self.arrival_date = today_utc
     end
-
     {
       latitude: latitude,
       longitude: longitude,
@@ -34,7 +33,8 @@ class Destination < ActiveRecord::Base
   end
 
   def self.get_session_search_hashes(destination)
-    today_utc = Date.today
+    today_utc = Time.now.utc.to_date
+    
     arrival_date = 
       if destination['arrival_date'].is_a?(Date)
         destination['arrival_date']
@@ -62,8 +62,8 @@ class Destination < ActiveRecord::Base
       city: destination['city'],
       stateProvinceCode: destination['state_province_code'],
       countryCode: destination['country_code'],
-      arrivalDate: arrival_date.strftime('%m/%d/%Y'),
-      departureDate: departure_date.strftime('%m/%d/%Y'),
+      arrivalDate: destination['arrival_date'].strftime('%m/%d/%Y'),
+      departureDate: destination['departure_date'].strftime('%m/%d/%Y'),
       options: 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
       moreResultsAvailable: 'true',
       'RoomGroup' => {

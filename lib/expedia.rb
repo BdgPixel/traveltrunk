@@ -132,7 +132,7 @@ module Expedia
         url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
         xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
         url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-
+        # binding.pry
         begin
           response = HTTParty.get(url_custom_params)
 
@@ -142,15 +142,13 @@ module Expedia
 
               response_result(response: [], error_response: @error_response)
             else
-              hotels_list = 
+              hotels_list =
                 if response["HotelListResponse"]["HotelList"]["@size"].eql? '1'
-                  if response["HotelListResponse"]["HotelList"]["HotelSummary"]["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
-                    [response["HotelListResponse"]["HotelList"]["HotelSummary"]]
-                  end
+                  [response["HotelListResponse"]["HotelList"]["HotelSummary"]]
                 else
                   response["HotelListResponse"]["HotelList"]["HotelSummary"]
                 end
-
+              
               if hotels_list.empty?
                 @error_response = "There is no hotels that match your criteria and saving credits"
                 response_result(error_response: @error_response)

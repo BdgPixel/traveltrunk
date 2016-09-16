@@ -506,7 +506,7 @@ class DealsController < ApplicationController
     def set_search_data
       Expedia::Hotels
       Expedia::Hotels.current_user = current_user
-
+      
       @hotels_list = 
         if user_signed_in?
           Expedia::Hotels.list(@destination, @group)
