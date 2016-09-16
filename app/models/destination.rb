@@ -50,8 +50,8 @@ class Destination < ActiveRecord::Base
       end
 
     if arrival_date < today_utc
-      destination['departure_date'] = today_utc + (departure_date - arrival_date).to_i
-      destination['arrival_date'] = today_utc
+      departure_date = today_utc + (departure_date - arrival_date).to_i
+      arrival_date = today_utc
     end
 
     {
@@ -62,8 +62,8 @@ class Destination < ActiveRecord::Base
       city: destination['city'],
       stateProvinceCode: destination['state_province_code'],
       countryCode: destination['country_code'],
-      arrivalDate: destination['arrival_date'].strftime('%m/%d/%Y'),
-      departureDate: destination['departure_date'].strftime('%m/%d/%Y'),
+      arrivalDate: arrival_date.strftime('%m/%d/%Y'),
+      departureDate: departure_date.strftime('%m/%d/%Y'),
       options: 'HOTEL_SUMMARY,ROOM_RATE_DETAILS',
       moreResultsAvailable: 'true',
       'RoomGroup' => {
