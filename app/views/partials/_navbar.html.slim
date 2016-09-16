@@ -72,9 +72,9 @@
               = link_to new_user_session_path, class: "login show"
                | Login
             li
-              = link_to new_user_registration_path, class: "navbar-btn btn-border show"
+              = link_to new_user_registration_path, class: "navbar-btn btn-border show", data: { no_turbolink: true }
                | Sign Up
 
-              = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide"
+              = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide", data: { no_turbolink: true }
                | Sign Up
 
