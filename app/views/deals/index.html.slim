@@ -24,9 +24,9 @@
         .text-header-slide
           h1.text-center
             - if current_user.profile.birth_date && current_user.bank_account && current_user.total_credit > 0
-              = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "javascript:void(0)", id: 'slideToggleLink', class: "arrow-downs grey-link-arrows", data: { toggle: 'tooltip', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
+              = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "javascript:void(0)", id: 'slideToggleLink', class: "arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'tooltip', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
             - else
-              = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs grey-link-arrows", data: { toggle: 'tooltip', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
+              = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'tooltip', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
 
         #slideToggle
           .row
@@ -75,6 +75,6 @@
   .pad-btm-350.hide
 
   - if user_signed_in?
-   - unless current_user.profile.try(:birth_date)
+   - unless current_user.profile.try(:home_airport)
       #popUpProfile
         = render 'profiles/complete_profile'
