@@ -6,7 +6,7 @@
   img {
     width: 70px;
   }
-  
+
   .registration {
     background: rgba(255, 255, 255, 0.12);
     padding: 45px;
@@ -14,9 +14,10 @@
     border-radius: 5px;
     @media screen and (max-width: 480px) {
       padding: 15px;
-    } 
+    }
     .form-group {
       margin-bottom: 20px;
+      position: relative;
     }
     @media screen and (max-width: 990px) {
       .pad-right-10 {
@@ -44,9 +45,128 @@
     }
   }
 
+  select {
+    font-size: 18px;
+    height: 52px;
+    color: #a09c9c;
+    -webkit-appearance: none;
+  }
+
+  span.caret-select {
+    position: absolute;
+    right: 13px;
+    top: 23px;
+  }
+
+  span.caret {
+    color: #a9a9a9;
+    border-top: 8px dashed;
+    border-top: 8px solid \9;
+    border-right: 8px solid transparent;
+    border-left: 8px solid transparent;
+  }
+
   a {
     font-size: 18px;
     letter-spacing: 1px;
     color: #ffffff;
   }
+}
+
+.wrapper-birthday {
+
+  label {
+    font-size: 16px;
+    color: #ffffff;
+    margin-right: 7px;
+    margin-bottom: 15px;
+  }
+
+  span {
+    color: #ffffff;
+    position: relative;
+    top: 2px;
+  }
+
+  span.icon {
+    font-size: 16px;
+  }
+}
+
+.tipr_content {
+ color: #333;
+ background-color: #fff;
+ padding: 9px 17px;
+}
+
+.tipr_container_bottom {
+ display: none;
+ position: absolute;
+ margin-top: 13px;
+ box-shadow: 2px 2px 5px #f9f9f9;
+ z-index: 1000;
+}
+
+.tipr_container_top {
+  color: #999999;
+  width: 280px;
+  display: none;
+  position: absolute;
+  margin-top: -128px;
+  left: 0px;
+  z-index: 1000;
+}
+
+.tipr_point_top, .tipr_point_bottom {
+  position: relative;
+  background: #fff;
+  border: 1px solid #dcdcdc;
+}
+
+.tipr_point_top:after, .tipr_point_top:before {
+  position: absolute;
+  pointer-events: none;
+  border: solid transparent;
+  top: 100%;
+  content: "";
+  height: 0;
+  width: 0;
+}
+
+.tipr_point_top:after {
+  border-top-color: #fff;
+  border-width: 8px;
+  left: 50%;
+  margin-left: -8px;
+}
+
+.tipr_point_top:before {
+  border-top-color: #dcdcdc;
+  border-width: 9px;
+  left: 50%;
+  margin-left: -9px;
+}
+
+.tipr_point_bottom:after, .tipr_point_bottom:before {
+  position: absolute;
+  pointer-events: none;
+  border: solid transparent;
+  bottom: 100%;
+  content: "";
+  height: 0;
+  width: 0;
+}
+
+.tipr_point_bottom:after {
+  border-bottom-color: #fff;
+  border-width: 8px;
+  left: 50%;
+  margin-left: -8px;
+}
+
+.tipr_point_bottom:before {
+  border-bottom-color: #dcdcdc;
+  border-width: 9px;
+  left: 50%;
+  margin-left: -9px;
 }

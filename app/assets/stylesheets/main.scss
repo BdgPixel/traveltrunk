@@ -145,7 +145,7 @@ body {
         &:hover,
         &:focus,
         &:active {
-          color: #ffffff;
+          // color: #ffffff;
           background-color: rgba(255, 255, 255, 0.44);
         }
 
@@ -155,13 +155,13 @@ body {
       }
 
       a.btn-orange2 {
-        border: 2px solid $orange;
+        border: 2px solid #ff9e51;
         -moz-border-radius: 7px;
         -webkit-border-radius: 7px;
         -ms-border-radius: 7px;
         border-radius: 7px;
         padding: 7px 14px;
-        background-color: $orange;
+        background-color: #ff9e51;
         color: white;
         -webkit-transition: all 250ms ease-in-out 0s;
         -moz-transition: all 250ms ease-in-out 0s;
@@ -592,8 +592,8 @@ body {
 .wrapper-navbar-traveltrunk .navbar-default ul a.btn-border {
   border: 2px solid #E4E4E4;
   &:hover {
-    border: 2px solid $orange;
-    background-color: $orange;
+    border: 2px solid #ff9e51;
+    background-color: #ff9e51;
     color: white !important;
   }
 }
@@ -1071,6 +1071,11 @@ a.login.show {
 
 .no-border-radius-left {
   border-top-left-radius: 0px;
+  border-bottom-left-radius: 0px;
+}
+
+.no-border-radius-right {
+ border-top-right-radius: 0px;
   border-bottom-right-radius: 0px;
 }
 

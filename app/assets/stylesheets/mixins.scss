@@ -255,3 +255,19 @@ a.round-slide-prev {
 	height: 54px;
 	box-shadow: -1px 3px 10px -4px #000000;
 }
+
+.btn-social-media {
+  padding: 16px 13px;
+  line-height: 30px;
+  border-radius: 5px;
+  display: block;
+
+  &.fb {
+		background-color: #3b539a;
+  }
+
+  &.google-plus {
+  	background-color: #ffffff;
+  	color: #000000;
+  }
+}

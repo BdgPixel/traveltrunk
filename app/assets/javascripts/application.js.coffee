@@ -11,6 +11,7 @@
 # = require twitter/bootstrap/alert
 # = require jquery.validate
 # = require jquery.parallax-1.1.3
+# = require tipr
 # = require custom
 
 $(document).ajaxSend ->
@@ -27,7 +28,7 @@ ready = ->
 
   if $('.btn-correct-amount').length > 0
     displayCorrectAmount('.btn-correct-amount')
-  
+
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
 

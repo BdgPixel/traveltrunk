@@ -105,6 +105,19 @@
       right: 13px;
       top: 17px;
     }
+
+    input.destination[type=text] {
+      border-top-right-radius: 0px;
+      border-bottom-right-radius: 0px;
+    }
+
+    .date-1 {
+      border-radius: 0px;
+    }
+
+    .date-2 {
+      border-radius: 0px;
+    }
   }
 
   &.wrapper-home-search-deal {
