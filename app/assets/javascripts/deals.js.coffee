@@ -94,7 +94,7 @@ root.roomSelected = (selector)->
     roomTypeCode = $(this).data('room-type-code')
     numberOfRoomsRequested = rooms.numberOfRoomsRequested
 
-    $('.bs-example-modal-lg').modal({ backdrop: 'static' })
+    $('#modalBook').modal('show')
     $('.modal .modal-header h3').not('#myModalLabel').text(rooms.hotelName)
     $('.modal #roomRating').attr('data-rating', rooms.tripAdvisorRating)
 
@@ -364,7 +364,7 @@ $(document).ready ->
           $('#formBook').get(0).reset()
           $('.form-book').show()
           $('.payment-errors').html("")
-          removeBackdropModal '#modalBook'
+          # removeBackdropModal '#modalBook'
 
         return
 
@@ -398,7 +398,7 @@ $(document).ready ->
       if $('#confirmation_book_policy').is(':checked') == false
         $('.payment-errors').html 'Cancellation policy must be approved'
       else
-        removeBackdropModal '#modalBook'
+        # removeBackdropModal '#modalBook'
         $('#modalBook').modal 'hide'
         root.modalDialog = $(this).parents('.modal').find('.modal-dialog')
         modalDialog.modal 'hide'

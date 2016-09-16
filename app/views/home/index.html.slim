@@ -54,11 +54,12 @@
                   .col-xs-2.no-pad-left.no-pad-right
                     .form-group
                       = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
-                  .col-xs-1.no-pad-left.no-pad-right
-                    .form-group
-                      input.form-control.no-border-radius type="text" placeholder="Group"
 
-                  .col-xs-2.no-pad-left.no-pad-right
+                  / .col-xs-2.no-pad-left.no-pad-right
+                  /   .form-group
+                      / input.form-control.no-border-radius type="text" placeholder="Group"
+
+                  .col-xs-3.no-pad-left.no-pad-right
                     .form-group
                       = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: :first, class: "form-control no-border-radius"
                       span.caret.caret-select

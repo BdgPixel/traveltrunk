@@ -24,8 +24,9 @@
           = f.hidden_field :total
           
           - unless user_signed_in?          
-            small
-              strong Adress must match credit card information
+            i
+              b
+                | *Address must match credit card information*
 
           .form-group
             .payment-errors
@@ -141,7 +142,7 @@
                     #totalCharges
 
           .modal-footer
-            .text-center
+            .text-right
               | Would you like us to submit this transaction now?
 
               br

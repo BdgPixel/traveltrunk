@@ -16,8 +16,8 @@
   .row
     .col-md-12
       p
-        i
-          small &ldquo;Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)&rdquo;
+        b
+          | *Minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below. Considered as first contribution.)
 
         br
         br
@@ -30,16 +30,17 @@
         .form-group
           = f.input :credit_card, input_html: { class: "form-control  input-custom card_number" }
 
-      .col-md-2
+      .col-md-6
         .form-group
           = f.input :cvc, as: :password, input_html: { class: "form-control  input-custom input-custom cvc", maxlength: 4 }
 
-      .col-md-2
+    .row
+      .col-md-6
         .form-group
           = label_tag "Expiration Month (MM)"
           = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control input-custom', data: { stripe: 'exp-month' } }
 
-      .col-md-2
+      .col-md-6
         .form-group
           = label_tag "Expiration Year (YYYY)"
           = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "bank_account[exp_year]", id: "card_year", class: 'form-control input-custom', data: { stripe: 'exp-year' } }
@@ -68,12 +69,7 @@
 
         center
           .form-group
-            = f.button :submit, 'Update Savings', class: 'btn btn-saving btn-green'
-            - unless current_user.bank_account.new_record?
-              | &nbsp;&nbsp;
-              button.btn.btn-saving.btn-orange-soft data-target=".unsubscript" data-toggle="modal" type="button"
-                | Delete Bank Account
-
+            = f.button :submit, 'Save', class: 'btn btn-saving btn-green'
         br
         br
 
