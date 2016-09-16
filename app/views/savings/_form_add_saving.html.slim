@@ -7,8 +7,9 @@
 
         h3 Add to savings
 
-        i
-          small &ldquo;minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below.)&rdquo;
+        - if user_signed_in?
+          i
+            small &ldquo;minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below.)&rdquo;
 
       - if @error_response
         #error_authorize_net.alert.alert-danger
@@ -124,14 +125,14 @@
                 - else
                   = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "create_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
 
-          .form-group
+          .form-group.hide
             .row
               .col-md-6
                   = f.label :amount
 
                   .input-group
                     .input-group-addon $
-                    = f.input_field :formatted_amount, class: "form-control update_credit_amount formatted-amount"
+                    = f.input_field :formatted_amount, as: :hidden, class: "form-control update_credit_amount formatted-amount"
                     = f.hidden_field :amount, class: "form-control update_credit_amount amount"
                     #totalCharges
 

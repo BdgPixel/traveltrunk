@@ -52,15 +52,12 @@ validationForm = function() {
       } else if (validateEmail($('.email-saving').val()) == false) {
         $('.payment-errors').html('Email not valid format');
         returnValue = false;
-      } else if (parseFloat($('.amount').val()) < parseFloat($('#totalCharges').data('total-charges'))) {
-        $('.payment-errors').html('Amount cannot less than total charges $' + $('#totalCharges').data('total-charges'));
-        returnValue = false;
       } else if ($('#create_credit_country_code').val() == '') {
         $('.payment-errors').html('Please select one a country code');
         returnValue = false;
       }
     }
-
+    
     return returnValue;
   });
 };
