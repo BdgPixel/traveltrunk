@@ -7,7 +7,11 @@
             .registration
               = render partial: 'devise/registrations/form', locals: { f: f }
               .text-center
+
                 = render "devise/shared/social_media_links"
+                    / a.btn-social-media.fb href="#" Sign in with Facebook
+
+                    / a.btn-social-media.google-plus href="#" Sign in with Google Oauth2
   - else
     #modalUserSignUp.modal.fade aria-labelledby="modalUserSignUp" data-backdrop="static" role="dialog" tabindex="-1"
       .modal-dialog

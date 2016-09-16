@@ -47,3 +47,7 @@ $(window).scroll(function() {
       $(".link-top-login").removeClass('grey-nav-color');
   }
 });
+
+$(document).ready(function() {
+  $('.tip').tipr();
+});
