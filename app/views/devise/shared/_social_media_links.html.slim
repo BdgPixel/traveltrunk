@@ -2,6 +2,3 @@
   - resource_class.omniauth_providers.each do |provider|
     = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
     br
-    
-= link_to "Already have an account? Login here", new_session_path(resource_name)
-br
