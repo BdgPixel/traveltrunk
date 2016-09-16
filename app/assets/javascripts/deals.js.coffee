@@ -95,7 +95,7 @@ root.roomSelected = (selector)->
     numberOfRoomsRequested = rooms.numberOfRoomsRequested
 
     $('.bs-example-modal-lg').modal({ backdrop: 'static' })
-    $('.modal .modal-header h3').text(rooms.hotelName)
+    $('.modal .modal-header h3').not('#myModalLabel').text(rooms.hotelName)
     $('.modal #roomRating').attr('data-rating', rooms.tripAdvisorRating)
 
     if rooms.tripAdvisorRating
