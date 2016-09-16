@@ -25,15 +25,13 @@ class ProfilesController < ApplicationController
         if current_user.bank_account.new_record?
           format.html { redirect_to edit_profile_url(anchor: 'bank_account'),
             notice: 'Profile was successfully updated.' }
-          format.js
         else
           format.html { redirect_to profile_url, alert: 'Profile was unsuccessfully updated.' }
-          format.js
         end
       else
         format.html { render :edit }
-        format.js
       end
+      format.js
     end
   end
 
