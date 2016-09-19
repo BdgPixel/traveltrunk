@@ -1,4 +1,10 @@
-- if devise_mapping.omniauthable?
-  - resource_class.omniauth_providers.each do |provider|
-    = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
-    br
+/ - if devise_mapping.omniauthable?
+/   - resource_class.omniauth_providers.each do |provider|
+/     = link_to "Sign in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider)
+/     br
+
+
+p.text-center.separated Or
+
+a.btn-social-media.fb href="#" Sign in with Facebook
+a.btn-social-media.google-plus href="#" Sign in with Google

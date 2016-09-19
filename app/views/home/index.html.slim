@@ -31,7 +31,7 @@
                 .col-md-12
                   .wrapper-search-deal.wrapper-home-search-deal
                     .home-search-deal
-                      .col-xs-3.no-pad-left.no-pad-right
+                      .col-xs-4.no-pad-left.no-pad-right
                         .form-group
                           = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
 
@@ -61,7 +61,7 @@
                       /   .form-group
                           / input.form-control.no-border-radius type="text" placeholder="Group"
 
-                      .col-xs-3.no-pad-left.no-pad-right
+                      .col-xs-2.no-pad-left.no-pad-right
                         .form-group
                           = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, class: "form-control no-border-radius"
                           span.caret.caret-select
