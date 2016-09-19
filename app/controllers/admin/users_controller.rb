@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::ApplicationController
-  before_action :set_user, only: [:show, :update]
+  before_action :set_user, only: [:show, :update, :destroy]
   before_action :authenticate_user!
 
   def index
@@ -14,6 +14,11 @@ class Admin::UsersController < Admin::ApplicationController
     else
       redirect_to admin_users_url, alert: 'Amount was unsuccessfully updated.'
     end
+  end
+
+  def destroy
+    notice = @user.destroy ? 'User has been deleted' : 'Some errors occurred when deleting user'
+    redirect_to admin_users_url, notice: notice
   end
 
   private
