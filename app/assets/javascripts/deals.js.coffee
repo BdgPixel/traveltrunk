@@ -326,10 +326,7 @@ $(document).ready ->
     showSearchForm()
 
     if $('#btnClearText').length > 0
-      $('#btnClearText').click ->
-        $('input#autocomplete').val ''
-
-        return
+      clearSearchText '#btnClearText', 'input#autocomplete'
 
     showPopUpProfile()
 

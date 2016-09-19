@@ -24,6 +24,9 @@ ready = ->
   if $('.btn-correct-amount').length > 0
     displayCorrectAmount('.btn-correct-amount')
 
+  if $('#btnClearText').length > 0
+    clearSearchText '#btnClearText', 'input#autocomplete'
+
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
 
@@ -96,3 +99,14 @@ root.showSearchForm = () ->
       return
 
     return
+
+root.clearSearchText = (selector, target) ->
+  $(selector).click ->
+    $(target).val ''
+    return
+
+if $('#btnClearText').length > 0
+      $('#btnClearText').click ->
+        $('input#autocomplete').val ''
+
+        return
