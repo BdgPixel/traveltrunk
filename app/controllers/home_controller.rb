@@ -1,3 +1,5 @@
 class HomeController < ApplicationController
-  def index; end
+  def index
+    @destination = Destination.new(session[:destination]) if session[:destination].present?
+  end
 end

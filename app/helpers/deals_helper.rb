@@ -55,6 +55,10 @@ module DealsHelper
     number_of_array
   end
 
+  def selected_number_of_adult
+    session[:destination].nil? ? nil : session[:destination]['number_of_adult'].to_i
+  end
+
   def back_link_to_deals_page
     if user_signed_in?
       link_to raw("<i class='icon-deals btn-back-to-deals'></i><span>Back</span>"), deals_path, class: '', data: { no_turbolink: true }, title: 'Back to deals'
