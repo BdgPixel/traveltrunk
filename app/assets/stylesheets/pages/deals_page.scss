@@ -127,6 +127,7 @@
     width: 100%;
     bottom: 30px;
     right: 0;
+    @include border-radius(4px);
 
     .no-border-radius {
       @include border-radius(0px);
@@ -158,8 +159,10 @@
     }
   }
 
-  .error {
+  label.error {
+    position: absolute;
     color: #ffffff;
+    bottom: -25px;
   }
 
   .no-border-radius {
