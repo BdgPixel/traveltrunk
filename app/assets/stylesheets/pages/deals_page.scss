@@ -121,12 +121,13 @@
   }
 
   &.wrapper-home-search-deal {
-    background: rgba(0, 0, 0, 0.6);
+    background: rgba(0,0,0,0.2);
     padding: 25px 22px 10px 22px;
     position: absolute;
     width: 100%;
     margin-top: 50px;
     bottom: -55px;
+    right: 0;
 
     .no-border-radius {
       @include border-radius(0px);
