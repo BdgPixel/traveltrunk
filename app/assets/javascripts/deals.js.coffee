@@ -308,6 +308,7 @@ $(document).ready ->
     $('input#search_deals_arrival_date').datepicker(
       startDate: today
       autoclose: true).on 'changeDate', (e) ->
+        $(this).valid()
         departureDate = e.date
         departureDate.setDate(departureDate.getDate() + 1)
 
@@ -319,9 +320,10 @@ $(document).ready ->
           $('input#search_deals_departure_date').datepicker('show')
         , 100)
 
-    $('input#search_deals_departure_date').datepicker
+    $('input#search_deals_departure_date').datepicker(
       startDate: today
-      autoclose: true
+      autoclose: true).on 'changeDate', (e) ->
+        $(this).valid()
 
     showSearchForm()
 
