@@ -93,7 +93,7 @@ module DealsHelper
       else
         link += link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
 
-        link += link_to "Start saving for a vacation like this", '#', data: { toggle: 'modal', target: '#modalUserSignUp' }
+        link += link_to "Start saving for a vacation like this", new_user_registration_path
       end
     end
 
