@@ -5,8 +5,15 @@
 
   .login {
     @extend .registration;
-    @media screen and (max-width: 480px) { 
-      padding: 15px !important; 
+    @media screen and (max-width: 480px) {
+      padding: 15px !important;
+    }
+
+    .actions {
+
+      input {
+        margin-bottom: 10px;
+      }
     }
 
     input.input-login {

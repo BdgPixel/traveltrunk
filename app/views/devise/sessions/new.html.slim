@@ -22,10 +22,12 @@
                   .forgot-password.text-right
                     = link_to "Forgot your password?", new_password_path(resource_name)
 
-            .row
-              .col-md-6.col-md-offset-3
-                .actions.form-group
-                  = f.submit "Log in", class: 'btn btn-default btn-block btn-global'
+            .actions
+              = f.submit "Log in", class: 'btn btn-default btn-block btn-global'
+            / .row
+            /   .col-md-6.col-md-offset-3
+            /     .actions
+            /       = f.submit "Log in", class: 'btn btn-default btn-block btn-global'
 
             .text-center
               = render "devise/shared/social_media_links"
