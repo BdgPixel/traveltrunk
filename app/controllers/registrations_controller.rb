@@ -22,7 +22,7 @@ class RegistrationsController < Devise::RegistrationsController
     yield resource if block_given?
     if resource.persisted?
       if session[:destination].present?
-        Destination.create(session_destination_params)
+        Destination.create(session_destination_params(resource.id))
       end
 
       if resource.active_for_authentication?
@@ -47,9 +47,9 @@ class RegistrationsController < Devise::RegistrationsController
         profile_attributes: [:first_name, :last_name, :birth_date])
     end
 
-    def session_destination_params
+    def session_destination_params(user_id)
       session[:destination].symbolize_keys.merge(
-        destinationable_id: 212,
+        destinationable_id: user_id,
         destinationable_type: 'User',
       )
     end
