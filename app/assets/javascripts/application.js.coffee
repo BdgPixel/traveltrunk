@@ -61,6 +61,7 @@ displayCorrectAmount = (selector) ->
   $(selector).on 'click', ->
     $('#modalCorrectAmount').modal backdrop: 'static'
     $('#formCorrectAmount').attr 'action', 'users/' + $(this).data 'id'
+    $('#user_current_amount').val '$' + $(this).data('current-amount')
 
     return
 
