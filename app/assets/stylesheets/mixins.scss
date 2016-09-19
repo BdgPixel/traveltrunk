@@ -267,6 +267,7 @@ a.round-slide-prev {
     -ms-transition: all 250ms ease-in-out 0s;
     -o-transition: all 250ms ease-in-out 0s;
     transition: all 250ms ease-in-out 0s;
+    position: relative;
 
   &:hover,
   &:active,
@@ -311,5 +312,9 @@ a.round-slide-prev {
 		&:focus {
 			background-color: #f7f5f5;
 		}
+  }
+
+  .mar-bottom {
+  	margin-bottom: 15px;
   }
 }

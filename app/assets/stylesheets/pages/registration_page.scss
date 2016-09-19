@@ -1,7 +1,7 @@
 @import 'mixins';
 
 .wrapper-registration {
-  margin-top: 200px;
+  margin-top: 130px;
 
   img {
     width: 70px;
@@ -11,6 +11,7 @@
     background: rgba(255, 255, 255, 0.12);
     padding: 45px;
     margin-top: 55px;
+    margin-bottom: 55px;
     border-radius: 5px;
     @media screen and (max-width: 480px) {
       padding: 15px;
@@ -42,6 +43,13 @@
     .btn-default {
       @extend %btn-green-2;
       margin-top: 14px;
+    }
+
+    .actions {
+
+      input {
+        margin-bottom: 15px;
+      }
     }
   }
 

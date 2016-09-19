@@ -45,7 +45,5 @@
 
     .col-md-12
       - if controller_name.eql? 'registrations'
-        .actions.form-group
-          .row
-            .col-md-6.col-md-offset-3
-              = f.submit "Sign up", class: 'btn btn-default btn-block btn-global'
+        .actions
+          = f.submit "Sign up", class: 'btn btn-default btn-block btn-global'

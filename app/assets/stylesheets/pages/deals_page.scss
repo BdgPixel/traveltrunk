@@ -125,8 +125,7 @@
     padding: 25px 22px 10px 22px;
     position: absolute;
     width: 100%;
-    margin-top: 50px;
-    bottom: -55px;
+    bottom: 30px;
     right: 0;
 
     .no-border-radius {
@@ -157,6 +156,10 @@
     span.caret-select {
       top: 23px;
     }
+  }
+
+  .error {
+    color: #ffffff;
   }
 }
 
