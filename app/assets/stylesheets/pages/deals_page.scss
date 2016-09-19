@@ -161,6 +161,15 @@
   .error {
     color: #ffffff;
   }
+
+  .no-border-radius {
+    @include border-radius(0px);
+  }
+
+  .no-border-radius-right {
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+  }
 }
 
 #profile_image {
@@ -252,7 +261,8 @@
 #slideToggle {
 
 	.panel-default {
-		background-color: transparent;
+    background: rgba(0,0,0,0.2);
+    padding: 25px 22px 10px 22px;
 		border: transparent;
 	}
 
@@ -382,6 +392,10 @@
 	  	}
 	  }
 	}
+}
+
+.search-top {
+  margin-top: 12em;
 }
 
 /* Chrome, Safari, Opera */
