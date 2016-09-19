@@ -399,11 +399,15 @@ $(document).ready ->
         $('.payment-errors').html 'Cancellation policy must be approved'
       else
         # removeBackdropModal '#modalBook'
+        $('#confirmation_book_policy').removeAttr('checked');
+        $('.payment-errors').text('')
         $('#modalBook').modal 'hide'
         root.modalDialog = $(this).parents('.modal').find('.modal-dialog')
         modalDialog.modal 'hide'
-        # $('.modal-dialog').modal 'hide'
         $('#modalSavingsForm').modal 'show'
+        $('#modalSavingsForm').on 'shown.bs.modal', (e) ->
+          $('#modalSavingsForm').css('overflow-x', 'hidden')
+          $('#modalSavingsForm').css('overflow-y', 'auto')
 
         totalCharges = $('[dom="total_charges_text"]').text().replace('$', '')
         $('#totalCharges').attr('data-total-charges', totalCharges)
