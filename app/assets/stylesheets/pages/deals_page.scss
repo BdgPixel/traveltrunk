@@ -157,6 +157,20 @@
     span.caret-select {
       top: 23px;
     }
+
+    @media (max-width: 768px) {
+
+      bottom: 0px;
+
+      input,
+      select {
+        font-size: 16px;
+      }
+    }
+
+    @media (max-width: 1200px) {
+      bottom: 0px;
+    }
   }
 
   label.error {
