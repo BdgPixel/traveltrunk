@@ -65,35 +65,46 @@
                 .col-md-12.wrapper-birth-date
                   .row
                     .col-md-12
-                      label
-                        | Birth date
+                      label Birthday
 
                     .col-md-4
                       .form-group
-                        select.form-control
-                          option 1
-                          option 2
-                          option 3
-                          option 4
-                          option 5
+                        = select_month profile_form.object.try(:birth_date), { field_name: 'birth_date(2i)', prefix: 'user[profile_attributes]' }, { class: 'form-control' }
 
                     .col-md-4
                       .form-group
-                        select.form-control
-                          option 1
-                          option 2
-                          option 3
-                          option 4
-                          option 5
+                        = select_day profile_form.object.try(:birth_date), { field_name: 'birth_date(3i)', prefix: 'user[profile_attributes]' }, { class: 'form-control' }
 
                     .col-md-4
                       .form-group
-                        select.form-control
-                          option 1
-                          option 2
-                          option 3
-                          option 4
-                          option 5
+                        = select_year profile_form.object.try(:birth_date), { field_name: 'birth_date(1i)', prefix: 'user[profile_attributes]', start_year: 1950, end_year: 1998 }, { class: 'form-control' }
+
+                    / .col-md-4
+                    /   .form-group
+                    /     select.form-control
+                    /       option 1
+                    /       option 2
+                    /       option 3
+                    /       option 4
+                    /       option 5
+
+                    / .col-md-4
+                    /   .form-group
+                    /     select.form-control
+                    /       option 1
+                    /       option 2
+                    /       option 3
+                    /       option 4
+                    /       option 5
+
+                    / .col-md-4
+                    /   .form-group
+                    /     select.form-control
+                    /       option 1
+                    /       option 2
+                    /       option 3
+                    /       option 4
+                    /       option 5
 
                 / .col-md-12
                 /   .form-group
