@@ -13,7 +13,7 @@ class Destination < ActiveRecord::Base
     {
       latitude: latitude,
       longitude: longitude,
-      searchRadius: '10',
+      searchRadius: '80',
       destinationString: destination_string.upcase,
       city: city,
       stateProvinceCode: state_province_code,
@@ -57,7 +57,7 @@ class Destination < ActiveRecord::Base
     {
       latitude: destination['latitude'],
       longitude: destination['longitude'],
-      searchRadius: '10',
+      searchRadius: '80',
       destinationString: destination['destination_string'].upcase,
       city: destination['city'],
       stateProvinceCode: destination['state_province_code'],
