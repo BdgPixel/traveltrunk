@@ -278,10 +278,46 @@
 #slideToggle {
 
 	.panel-default {
-    background: rgba(0,0,0,0.2);
-    padding: 25px 22px 10px 22px;
 		border: transparent;
-    @include border-radius(4px);
+
+    select {
+      font-size: 14px;
+      height: 42px;
+      color: #a09c9c;
+      -webkit-appearance: none;
+      @include border-radius(0px);
+    }
+
+    input {
+      font-size: 14px;
+      height: 42px;
+
+      @include placeholder {
+        font-size: 11px;
+      }
+    }
+
+    span.caret {
+      top: 19px;
+      color: #a9a9a9;
+      border-top: 8px dashed;
+      border-top: 8px solid \9;
+      border-right: 8px solid transparent;
+      border-left: 8px solid transparent;
+    }
+    
+    label.error  {
+      color: red;
+      font-size: 11px;
+    }
+
+    .icon {
+
+      &.delete {
+        top: -4px;
+        position: relative;
+      }
+    }
 	}
 
 	input.input-deal {

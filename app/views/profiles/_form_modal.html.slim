@@ -79,33 +79,6 @@
                       .form-group
                         = select_year profile_form.object.try(:birth_date), { field_name: 'birth_date(1i)', prefix: 'user[profile_attributes]', start_year: 1950, end_year: 1998 }, { class: 'form-control' }
 
-                    / .col-md-4
-                    /   .form-group
-                    /     select.form-control
-                    /       option 1
-                    /       option 2
-                    /       option 3
-                    /       option 4
-                    /       option 5
-
-                    / .col-md-4
-                    /   .form-group
-                    /     select.form-control
-                    /       option 1
-                    /       option 2
-                    /       option 3
-                    /       option 4
-                    /       option 5
-
-                    / .col-md-4
-                    /   .form-group
-                    /     select.form-control
-                    /       option 1
-                    /       option 2
-                    /       option 3
-                    /       option 4
-                    /       option 5
-
                 / .col-md-12
                 /   .form-group
                 /     = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control input-custom input-select' }, error_html: { class: 'error-message' }
