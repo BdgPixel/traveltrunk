@@ -420,6 +420,21 @@ body {
 
 .wrapper-edit-profile {
 
+  .wrapper-birth-date {
+    margin-bottom: 20px;
+  }
+
+  .bank_account {
+
+    input {
+      margin-bottom: 0px !important
+    }
+  }
+
+  select {
+    height: 52px;
+  }
+
   h1 {
     padding-left: 10px;
     padding-bottom: 24px;

@@ -37,17 +37,17 @@ div
 
                 span.text-info
                   i You can only upload jpg, gif, png
-          
+
           .col-md-12
             h4 PERSONAL INFORMATION
 
             h2 Create Your Traveler Profile...
 
             p
-              | Take a few moments to fill in the easy form below. This information helps us customize Travel  Trunk to your needs and vision.  
+              | Take a few moments to fill in the easy form below. This information helps us customize Travel  Trunk to your needs and vision.
 
             br
-            
+
           .col-md-12
             .row
               .col-md-6
@@ -133,7 +133,7 @@ div
 
         .col-md-12
           br
-          
+
   .row
     .col-md-12#bank_account
       h4
@@ -142,7 +142,7 @@ div
       h2 Create Your Savings Plan...
 
       p
-        | You decide how much you want to save, and how often. With regular, automatic deposits into  your Travel Trunk account, you’ll be amazed how quickly your funds build up! 
+        | You decide how much you want to save, and how often. With regular, automatic deposits into  your Travel Trunk account, you’ll be amazed how quickly your funds build up!
 
   - if current_user.profile.birth_date.blank? || current_user.errors.any?
     .row
@@ -223,7 +223,7 @@ div
 
                 .modal-body
                   p Are you sure you want to stop reoccurring transaction on this account?
-                  
+
                 .modal-footer
                   button.button.btn.btn-saving.btn-green data-dismiss="modal" type="button" No, keep my savings plan.
                   | &nbsp;&nbsp;
