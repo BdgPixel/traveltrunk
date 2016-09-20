@@ -290,7 +290,7 @@ appendValueRoomParams = () ->
   $('#create_credit_total_charge').val($('#confirmation_book_total').val())
   $('#create_credit_bed_type').val($('#confirmation_book_bed_type').val())
 
-$(document).ready ->
+ready  = ->
   if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
     disableEnterFormSubmit()
 
@@ -415,3 +415,6 @@ $(document).ready ->
         $('.amount').val parseFloat($('#totalCharges').data('total-charges'))
 
       return
+
+$(document).ready -> ready()
+$(document).on 'page:load', -> ready()

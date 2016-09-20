@@ -18,4 +18,5 @@ if ($('.arrow-downs').length) {
   initDealsPage(<%= raw @hotels_list.first[:num_of_page] %>, <%= raw @hotels_list.first[:num_of_hotel] %>);
 <% end %>
 
-$("#slideToggle").collapse('hide')
+$("#slideToggle").collapse('hide');
+$('[data-toggle="tooltip"]').tooltip();

@@ -7,3 +7,5 @@ $("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
 <% unless @hotels_list.first[:error_response] %>
   initDealsPage(<%= raw @hotels_list.first[:num_of_page] %>, <%= raw @hotels_list.first[:num_of_hotel] %>);
 <% end %>
+
+$('[data-toggle="tooltip"]').tooltip();

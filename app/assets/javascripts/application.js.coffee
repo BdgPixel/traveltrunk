@@ -20,6 +20,8 @@ ready = ->
     $('#alert').fadeOut()
   , 5000)
 
+  $('[data-toggle="tooltip"]').tooltip()
+
   if $('.btn-correct-amount').length > 0
     displayCorrectAmount('.btn-correct-amount')
 
@@ -101,6 +103,15 @@ root.clearSearchText = (selector, target) ->
   $(selector).click ->
     $(target).val ''
     return
+
+root.showPopUpProfile = () ->
+  if $('#popUpProfile').length > 0
+    $('#modalUserProfile').modal backdrop: 'static'
+    $('.wrapper-titile-edit-profile').hide()
+    $('#imgProfile').hide()
+    # $('#showBankAccount').hide()
+
+  return
 
 if $('#btnClearText').length > 0
   $('#btnClearText').click ->
