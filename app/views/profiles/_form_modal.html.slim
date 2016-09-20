@@ -5,7 +5,7 @@
   = javascript_include_tag 'variables', 'profiles'
 
 #myCarousel.carousel.slide data-ride="carousel" data-interval="false"
-  .carousel-inner role="listbox" 
+  .carousel-inner role="listbox"
     .item.active
       div
         = simple_form_for current_user, method: :put, url: profile_url, html: { data: { model: 'user' } }, remote: is_remote do |f|
@@ -40,41 +40,70 @@
 
                       span.text-info
                         i You can only upload jpg, gif, png
-                
+
                 .col-md-12
                   p
                     | Please take a few moments to fill out the form below. This information helps us customize TravelTrunk to your needs and vision
 
                   br
-                  
+
                 .col-md-12
                   .row
-                    .col-md-6
+                    .col-md-4
                       .form-group
                         = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
 
-                    .col-md-6
+                    .col-md-4
                       .form-group
                         = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
 
-                .col-md-12
+                    .col-md-4
+                      .form-group
+                        = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
+                        span.error.error-message.error-gender
+
+                .col-md-12.wrapper-birth-date
                   .row
                     .col-md-12
+                      label
+                        | Birth date
+
+                    .col-md-4
                       .form-group
-                        = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control input-custom input-select' }, error_html: { class: 'error-message' }
+                        select.form-control
+                          option 1
+                          option 2
+                          option 3
+                          option 4
+                          option 5
+
+                    .col-md-4
+                      .form-group
+                        select.form-control
+                          option 1
+                          option 2
+                          option 3
+                          option 4
+                          option 5
+
+                    .col-md-4
+                      .form-group
+                        select.form-control
+                          option 1
+                          option 2
+                          option 3
+                          option 4
+                          option 5
+
+                / .col-md-12
+                /   .form-group
+                /     = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control input-custom input-select' }, error_html: { class: 'error-message' }
 
                 .col-md-12
                   .row
                     .col-md-6
                       .form-group
-                        = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-gender
-                  hr
-                .col-md-12
-                  .row
-                    .col-md-6
-                      .form-group
-                        = profile_form.input :home_airport, label: 'Your Home airport?', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
+                        = profile_form.input :home_airport, label: 'Your home airport ?', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
                         span.error.error-message.error-home_airport
 
                     .col-md-6
@@ -83,16 +112,19 @@
                         span.error.error-message.error-place_to_visit
 
                 .col-md-12
-                  .form-group
-                    i 
-                      | *Address must match credit card information*
+                  .row
+                    .col-md-12
+                      .form-group
+                        i
+                          | *Address must match credit card information*
+                    .col-md-6
+                      .form-group
+                        = profile_form.input :address, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+                        span.error.error-message.error-address
 
-                    = profile_form.input :address, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
-                    span.error.error-message.error-address
-
-                .col-md-12
-                  .form-group
-                    = profile_form.input :address_1, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
+                    .col-md-6
+                      .form-group
+                        = profile_form.input :address_1, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
 
                 .col-md-12
                   .row
@@ -121,14 +153,9 @@
                           span.error.error-message please select one
 
               .row
-                .col-md-8.col-md-offset-2
-                  center
-                    .form-group.bank_account
-                      = f.button :submit, 'Save', class: 'btn btn-saving btn-green'
-
-              .col-md-12
-                br
-
+                .col-md-4.col-md-offset-4
+                  .bank_account.text-center
+                    = f.button :submit, 'Save', class: 'btn btn-saving btn-green btn-block'
     .item
       #showBankAccount
         / = render 'profiles/form_modal_bank_account', is_remote: is_remote
