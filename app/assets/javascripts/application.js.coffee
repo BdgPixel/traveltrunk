@@ -105,7 +105,7 @@ root.clearSearchText = (selector, target) ->
     return
 
 if $('#btnClearText').length > 0
-      $('#btnClearText').click ->
-        $('input#autocomplete').val ''
+  $('#btnClearText').click ->
+    $('input#autocomplete').val ''
 
-        return
+    return
