@@ -13,6 +13,7 @@ class ProfilesController < ApplicationController
   def edit
     current_user.build_profile unless current_user.profile
     @bank_account = current_user.bank_account || current_user.build_bank_account
+    flash[:notice] = 'You should create bank account before add to saving' if params[:is_notice].eql? 'true'
   end
 
   def update
