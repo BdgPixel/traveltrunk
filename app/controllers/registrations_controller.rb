@@ -17,9 +17,9 @@ class RegistrationsController < Devise::RegistrationsController
 
   def create
     build_resource(sign_up_params)
-    # binding.pry
     resource.save
     yield resource if block_given?
+    
     if resource.persisted?
       if session[:destination].present?
         Destination.create(session_destination_params(resource.id))

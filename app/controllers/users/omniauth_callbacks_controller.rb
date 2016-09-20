@@ -5,6 +5,10 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
         @user = User.find_for_oauth(env["omniauth.auth"])
 
         if @user.persisted?
+          if session[:destination].present?
+            Destination.create(session_destination_params(@user.id))
+          end
+
           sign_in_and_redirect @user, event: :authentication
           set_flash_message(:notice, :success, kind: "#{provider}".capitalize) if is_navigational_format?
         else
@@ -18,4 +22,12 @@ class Users::OmniauthCallbacksController < Devise::OmniauthCallbacksController
   [:facebook, :google_oauth2].each do |provider|
     provides_callback_for provider
   end
+
+  private
+    def session_destination_params(user_id)
+      session[:destination].symbolize_keys.merge(
+        destinationable_id: user_id,
+        destinationable_type: 'User',
+      )
+    end
 end
