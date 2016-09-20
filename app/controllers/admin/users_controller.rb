@@ -1,5 +1,5 @@
 class Admin::UsersController < Admin::ApplicationController
-  before_action :set_user, only: [:show]
+  before_action :set_user, only: [:show, :update, :destroy]
   before_action :authenticate_user!
 
   def index
@@ -8,8 +8,27 @@ class Admin::UsersController < Admin::ApplicationController
 
   def show; end
 
+  def update
+    if @user.update(user_params)
+      redirect_to admin_users_url, notice: 'Amount was successfully updated.'
+    else
+      redirect_to admin_users_url, alert: 'Amount was unsuccessfully updated.'
+    end
+  end
+
+  def destroy
+    notice = @user.destroy ? 'User has been deleted' : 'Some errors occurred when deleting user'
+    redirect_to admin_users_url, notice: notice
+  end
+
   private
     def set_user
       @user = User.find params[:id]
+    end
+
+    def user_params
+      current_params = params.require(:user).permit(:total_credit)
+      current_params[:total_credit] = current_params[:total_credit].to_f * 100
+      current_params
     end
 end
