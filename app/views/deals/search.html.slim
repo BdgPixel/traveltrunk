@@ -4,14 +4,11 @@
 
 .wrap-middle
   .container
-    .wrapper-top-deals.search-top
+    .wrapper-top-deals
       .col-xs-12.col-md-12.slide
         .text-header-slide
           h1.text-center
             = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs grey-link-arrows", data: { toggle: 'tooltip', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
-            / - if current_user.profile.birth_date && current_user.bank_account &&current_user.total_credit > 0
-            / - else
-            /   = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs grey-link-arrows"
 
         #slideToggle
           .row
