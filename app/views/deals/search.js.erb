@@ -6,6 +6,14 @@
 
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
 
+if ($('.arrow-downs').length) {
+  $('#slideToggleLink').css('padding-bottom', 0);
+  $('#slideToggleLink').removeClass('arrow-downs');
+} else {
+  $('#slideToggleLink').css('padding-bottom', '50px');
+  $('#slideToggleLink').addClass('arrow-downs');
+}
+
 <% unless @hotels_list.first[:error_response] %>
   initDealsPage(<%= raw @hotels_list.first[:num_of_page] %>, <%= raw @hotels_list.first[:num_of_hotel] %>);
 <% end %>
