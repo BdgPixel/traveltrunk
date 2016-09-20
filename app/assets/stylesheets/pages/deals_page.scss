@@ -281,6 +281,7 @@
     background: rgba(0,0,0,0.2);
     padding: 25px 22px 10px 22px;
 		border: transparent;
+    @include border-radius(4px);
 	}
 
 	input.input-deal {

@@ -100,14 +100,14 @@
             .row
               .col-md-6
                 = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;' }
-
-                = image_tag asset_path('cards/mastercard.png')
-                |&nbsp;
-                = image_tag asset_path('cards/visa.png')
-                |&nbsp;
-                / = image_tag asset_path('cards/amex.png')
-                / |&nbsp;
-                = image_tag asset_path('cards/discover.png')
+                .wrapper-icon-payment
+                  = image_tag asset_path('cards/mastercard.png')
+                  |&nbsp;
+                  = image_tag asset_path('cards/visa.png')
+                  |&nbsp;
+                  / = image_tag asset_path('cards/amex.png')
+                  / |&nbsp;
+                  = image_tag asset_path('cards/discover.png')
 
               .col-md-6
                 = f.input :cvv, as: :password, input_html: { class: "form-control cvc", maxlength: 4 }
@@ -118,17 +118,17 @@
                 = label_tag "Expiration Month (MM)"
 
                 - if user_signed_in?
-                  = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+                  = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
                 - else
-                  = select_month Date.today, { use_two_digit_numbers: true }, { name: "create_credit[exp_month]", id: "card_month", class: 'form-control', data: { stripe: 'exp-month' } }
+                  = select_month Date.today, { use_two_digit_numbers: true }, { name: "create_credit[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
 
               .col-md-6
                 = label_tag "Expiration Year (YYYY)"
 
                 - if user_signed_in?
-                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
                 - else
-                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "create_credit[exp_year]", id: "card_year", class: 'form-control', data: { stripe: 'exp-year' } }
+                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "create_credit[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
 
           .form-group.hide
             .row

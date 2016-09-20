@@ -4,47 +4,51 @@
 
 .wrap-middle
   .container
-    .wrapper-top-deals
-      .col-xs-12.col-md-12.slide
-        .text-header-slide
-          h1.text-center
-            = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "javascript:void(0)", id: 'slideToggleLink', class:"arrow-downs grey-link-arrows", data: { toggle: 'tooltip', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
+    .row
+      .col-md-12.pad-left-75.pad-right-75
+        .wrapper-top-deals
+          .slide
+            .text-header-slide
+              h1.text-center
+                span data-toggle="tooltip" data-placement="bottom" data-title="Click here to search other destinations and change dates"
+                  = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "#slideToggle", id: 'slideToggleLink', class:"arrow-downs grey-link-arrows", data: { toggle: 'collapse' }
 
-        #slideToggle
+        #slideToggle.collapse
           .row
-            .panel.panel-default.box-shadow-none
-              .panel-body
-                = simple_form_for :search_deals, method: :post, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
-                  .wrapper-search-deal
-                    .col-xs-6.no-pad-left.no-pad-right
-                      .form-group
-                        = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
+            .col-md-12
+              .panel.panel-default.box-shadow-none
+                .panel-body
+                  = simple_form_for :search_deals, method: :post, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
+                    .wrapper-search-deal
+                      .col-xs-6.no-pad-left.no-pad-right
+                        .form-group
+                          = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
 
-                        span
-                          a#btnClearText href="javascript:void(0)"
-                            i.icon.delete
+                          span
+                            a#btnClearText href="javascript:void(0)"
+                              i.icon.delete
 
-                      .show
-                        = hidden_field_tag :street_number, nil, id: "street_number"
-                        = hidden_field_tag :route, nil, id: "route"
-                        = hidden_field_tag :postal_code, nil, id: "postal_code"
-                        = f.hidden_field :city, id: "locality"
-                        = f.hidden_field :state_province_code, id: "administrative_area_level_1"
-                        = f.hidden_field :country_code, as: :string, id: "country"
-                        = f.hidden_field :latitude, id: "lat", value: @destination.try(:latitude)
-                        = f.hidden_field :longitude, id: "lng", value: @destination.try(:longitude)
+                        .show
+                          = hidden_field_tag :street_number, nil, id: "street_number"
+                          = hidden_field_tag :route, nil, id: "route"
+                          = hidden_field_tag :postal_code, nil, id: "postal_code"
+                          = f.hidden_field :city, id: "locality"
+                          = f.hidden_field :state_province_code, id: "administrative_area_level_1"
+                          = f.hidden_field :country_code, as: :string, id: "country"
+                          = f.hidden_field :latitude, id: "lat", value: @destination.try(:latitude)
+                          = f.hidden_field :longitude, id: "lng", value: @destination.try(:longitude)
 
-                    .col-xs-2.no-pad-left.no-pad-right
-                      .form-group
-                        = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Arriving when?"
+                      .col-xs-2.no-pad-left.no-pad-right
+                        .form-group
+                          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Arriving when?"
 
-                    .col-xs-2.no-pad-left.no-pad-right
-                      .form-group
-                        = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
+                      .col-xs-2.no-pad-left.no-pad-right
+                        .form-group
+                          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
 
-                    .col-xs-2.no-pad-left.no-pad-right
-                      .form-group
-                        = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
+                      .col-xs-2.no-pad-left.no-pad-right
+                        .form-group
+                          = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
 
 .container
   .row

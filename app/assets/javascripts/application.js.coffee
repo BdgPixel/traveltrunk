@@ -79,20 +79,18 @@ root.showSearchForm = () ->
         $('#slideToggleLink').css 'padding-bottom', '50px'
         $('#slideToggleLink').addClass 'arrow-downs'
 
-      $('#slideToggle').slideToggle()
-
       return
 
     $('.slide').on 'click', (e) ->
       if e.target != this
         return
-      $('#slideToggle').slideUp()
+      $("#slideToggle").collapse('hide')
       return
 
     $('.text-header-slide').on 'click', (e) ->
       if e.target != this
         return
-      $('#slideToggle').slideUp()
+      $("#slideToggle").collapse('hide')
       $('#slideToggleLink').css 'padding-bottom', '50px'
       $('#slideToggleLink').addClass 'arrow-downs'
       return
