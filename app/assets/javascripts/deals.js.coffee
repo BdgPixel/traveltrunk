@@ -291,7 +291,11 @@ appendValueRoomParams = () ->
   $('#create_credit_bed_type').val($('#confirmation_book_bed_type').val())
 
 ready  = ->
-  if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
+  controller = $('body').data('controller')
+  action = $('body').data('action')
+
+  # if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
+  if controller == 'deals' && action == 'index'
     disableEnterFormSubmit()
 
     validateSearchForm()
@@ -332,7 +336,7 @@ ready  = ->
 
     showPopUpProfile()
 
-  else
+  else if controller == 'deals' && action == 'show'
     initAutoNumeric('.formatted-amount', '.amount')
 
     params_path_id = window.location.pathname.split('/')[2]
@@ -346,7 +350,7 @@ ready  = ->
 
     $('body').on 'hidden.bs.popover', (e) ->
       $(e.target).data("bs.popover").inState = { click: false, hover: false, focus: false }
-
+    
     $.ajax
       url: "/deals/#{ params_path_id }/room_availability.js"
       cache: false
