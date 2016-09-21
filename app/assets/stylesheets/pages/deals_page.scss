@@ -274,6 +274,7 @@
       color: #a09c9c;
       -webkit-appearance: none;
       @include border-radius(0px);
+      background: #ffffff asset-url("icon_caret.png") no-repeat scroll 90% center / 16px 8px !important;
     }
 
     input {
@@ -283,15 +284,6 @@
       @include placeholder {
         font-size: 11px;
       }
-    }
-
-    span.caret {
-      top: 19px;
-      color: #a9a9a9;
-      border-top: 8px dashed;
-      border-top: 8px solid \9;
-      border-right: 8px solid transparent;
-      border-left: 8px solid transparent;
     }
 
     label.error  {
