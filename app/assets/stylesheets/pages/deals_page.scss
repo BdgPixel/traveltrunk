@@ -144,22 +144,10 @@
       color: #a09c9c;
       -webkit-appearance: none;
       @include border-radius(0px);
-    }
-
-    span.caret {
-      color: #a9a9a9;
-      border-top: 8px dashed;
-      border-top: 8px solid \9;
-      border-right: 8px solid transparent;
-      border-left: 8px solid transparent;
-    }
-
-    span.caret-select {
-      top: 23px;
+      background: #ffffff asset-url("icon_caret.png") no-repeat scroll 93% center / 20px 13px !important;
     }
 
     @media (max-width: 768px) {
-
       bottom: 0px;
 
       input,
@@ -305,7 +293,7 @@
       border-right: 8px solid transparent;
       border-left: 8px solid transparent;
     }
-    
+
     label.error  {
       color: red;
       font-size: 11px;
