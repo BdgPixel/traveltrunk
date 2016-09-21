@@ -31,17 +31,14 @@
           .col-md-4.pad-right-10
             .form-group
               = select_month Date.today, { field_name: 'birth_date(2i)', prefix: 'user[profile_attributes]' }, { class: 'form-control' }
-              span.caret.caret-select
 
           .col-md-4.pad-left-10
             .form-group
               = select_day Date.today, { field_name: 'birth_date(3i)', prefix: 'user[profile_attributes]' }, { class: 'form-control' }
-              span.caret.caret-select
 
           .col-md-4.pad-left-10
             .form-group
               = select_year Date.today, { field_name: 'birth_date(1i)', prefix: 'user[profile_attributes]', start_year: 1950, end_year: 1998 }, { class: 'form-control' }
-              span.caret.caret-select
 
     .col-md-12
       - if controller_name.eql? 'registrations'
