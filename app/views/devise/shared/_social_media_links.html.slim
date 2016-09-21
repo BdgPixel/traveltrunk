@@ -2,7 +2,13 @@ p.text-center.separated Or
 - if devise_mapping.omniauthable?
   - resource_class.omniauth_providers.each do |provider|
     - if provider.eql? :facebook
-      = link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: 'btn-social-media fb'
+      - if controller_name.eql? 'sessions'
+        = link_to "Log in with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: 'btn-social-media fb'
+      - elsif controller_name.eql? 'registrations'
+        = link_to "Sign up with #{provider.to_s.titleize}", omniauth_authorize_path(resource_name, provider), class: 'btn-social-media fb'
 
     - elsif provider.eql? :google_oauth2
-      = link_to "Log in with Google", omniauth_authorize_path(resource_name, provider), class: 'btn-social-media google-plus'
+      - if controller_name.eql? 'sessions'
+        = link_to "Log in with Google", omniauth_authorize_path(resource_name, provider), class: 'btn-social-media google-plus'
+      - elsif controller_name.eql? 'registrations'
+        = link_to "Sign up with Google", omniauth_authorize_path(resource_name, provider), class: 'btn-social-media google-plus'
