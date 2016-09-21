@@ -86,7 +86,10 @@ Rails.application.routes.draw do
     :omniauth_callbacks => "users/omniauth_callbacks"
   }
 
-  # root 'deals#index'
+  authenticated :user do
+    root 'deals#index', as: :authenticated_root
+  end
+
   root 'home#index'
 
   resource :profile, except: [:destroy, :new, :create]
