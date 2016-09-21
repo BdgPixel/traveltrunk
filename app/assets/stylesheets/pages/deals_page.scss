@@ -165,6 +165,10 @@
     position: absolute;
     color: #ffffff;
     bottom: -25px;
+
+    @media (min-width: 1820px) {
+      bottom: -38px;
+    }
   }
 
   .no-border-radius {
@@ -289,6 +293,7 @@
     label.error  {
       color: red;
       font-size: 11px;
+      bottom: -25px;
     }
 
     .icon {
