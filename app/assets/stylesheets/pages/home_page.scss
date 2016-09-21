@@ -423,6 +423,10 @@ section.vacation {
 			.item {
 				height: 100%;
 
+				h1 {
+		    	letter-spacing: -6px;
+				}
+
 		  	@media (min-width: 320px) {
 
 					h1 {
