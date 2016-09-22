@@ -287,7 +287,7 @@ Devise.setup do |config|
   # config.omniauth :github, 'APP_ID', 'APP_SECRET', scope: 'user,public_repo'
   config.omniauth :facebook, ENV['FACEBOOK_KEY'], ENV['FACEBOOK_SECRET'],
     :scope => 'email',:info_fields => 'email, first_name, last_name, gender',
-    :secure_image_url => true
+    :secure_image_url => true, :image_size =>  { :width => 600, :height => 600 }
 
   config.omniauth :google_oauth2, ENV['GOOGLE_CLIENT_ID'], ENV['GOOGLE_CLIENT_SECRET']
 
