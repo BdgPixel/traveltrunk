@@ -113,6 +113,18 @@ root.showPopUpProfile = () ->
 
   return
 
+root.disableEnterFormSubmit = ->
+  $('#searchDealsForm').on 'keyup keypress', (e) ->
+    code = e.keyCode or e.which
+    if code == 13
+      e.preventDefault()
+
+      return false
+
+    return
+
+  return
+
 if $('#btnClearText').length > 0
   $('#btnClearText').click ->
     $('input#autocomplete').val ''

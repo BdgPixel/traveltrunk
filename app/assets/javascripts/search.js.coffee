@@ -50,7 +50,8 @@ root.initDealsPage = (numOfpages, numOfHotels)->
 
   $('div.lazy').lazyload()
 
-$(document).ready ->
+ready = ->
+  disableEnterFormSubmit()
   validateSearchForm()
 
   moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
@@ -86,3 +87,6 @@ $(document).ready ->
 
   $('.price-deals').tooltip()
   $('#slideToggleLink').tooltip()
+
+$(document).ready -> ready()
+$(document).on 'page:load', -> ready()

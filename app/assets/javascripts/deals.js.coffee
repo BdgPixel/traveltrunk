@@ -25,18 +25,6 @@ getFormattedDate = (date) ->
 
   formattedDate
 
-disableEnterFormSubmit = ->
-  $('#searchDealsForm').on 'keyup keypress', (e) ->
-    code = e.keyCode or e.which
-    if code == 13
-      e.preventDefault()
-
-      return false
-
-    return
-
-  return
-
 validateSearchForm = ->
   $('#searchDealsForm').validate
     ignore: ".ignore"
