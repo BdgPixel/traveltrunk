@@ -228,16 +228,17 @@ class DealsController < ApplicationController
       reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest'))
       reservation.save
       @reservation_id = reservation.id
+      @customer_params = customer_params
 
-      flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-      redirect_to deals_confirmation_page_path(
-        reservation_id: @reservation_id,
-        email: customer_params[:email_saving],
-        first_name: customer_params[:first_name],
-        last_name: customer_params[:last_name],
-      )
+      # flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
+      # redirect_to deals_confirmation_page_path(
+      #   reservation_id: @reservation_id,
+      #   email: customer_params[:email_saving],
+      #   first_name: customer_params[:first_name],
+      #   last_name: customer_params[:last_name],
+      # )
     else
-      redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
+      # redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
     end
   end
 
@@ -291,17 +292,18 @@ class DealsController < ApplicationController
       response_payment = payment.charge(params_hash, customer_params_hash)
       
       if response_payment.messages.resultCode.eql? 'Ok'
-        create_book_for_guest
-
         card_last_4 = response_payment.transactionResponse.accountNumber
         amount_in_cents = (payment_params[:amount].to_f * 100).to_i
 
         PaymentProcessorMailer.delay.payment_succeed_for_guest(
           customer_params[:first_name], amount_in_cents, card_last_4)
+
+        create_book_for_guest
+        puts customer_params
       end
     rescue AuthorizeNetLib::RescueErrorsResponse => e
       error_message(e)
-      redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
+      # redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
     end 
   end
 
