@@ -52,12 +52,12 @@ form {
 input[type="text"],input[type="password"], input[type="email"] {
 	width: 100%;
 	margin: 0 auto;
-	height: 52px;
-	padding: 0 20px;
+	height: 40px;
+	padding: 0 10px;
 	-webkit-box-sizing: border-box;
 	-moz-box-sizing: border-box;
 	box-sizing: border-box;
-	font-size: 18px;
+	font-size: 16px;
 	color: #505050;
 	-webkit-box-shadow: none;
 	-moz-box-shadow: none;
@@ -69,8 +69,8 @@ input[type="text"],input[type="password"], input[type="email"] {
 }
 
 .btn-global {
-	height: 52px;
-	padding: 0 20px;
+	height: 40px;
+	padding: 0 15px;
 	background-color: #3db1ae;
   border-color: #3db1ae;
   font-size: 20px;
@@ -229,7 +229,7 @@ a.round-slide-prev {
 }
 
 .input-custom {
-	height: 54px;
+	height: 40px;
 
 	&.input-select {
 

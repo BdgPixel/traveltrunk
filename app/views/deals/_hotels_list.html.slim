@@ -17,8 +17,7 @@
                   .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
                     .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
                       h4
-                        strong
-                          = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+                        = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
                     
                     .card-item
                       = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }

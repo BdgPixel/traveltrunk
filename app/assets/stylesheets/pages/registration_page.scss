@@ -55,11 +55,12 @@
 
   select {
     font-size: 18px;
-    height: 52px;
+    height: 40px;
     color: #a09c9c;
     -webkit-appearance: none;
     @include border-radius(0px);
     background: #ffffff asset-url("icon_caret.png") no-repeat scroll 90% center / 16px 8px !important;
+    background-size:15px !important;
   }
 
 
