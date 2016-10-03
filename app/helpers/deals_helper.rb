@@ -57,7 +57,11 @@ module DealsHelper
 
   def selected_number_of_adult(destination = nil, group = nil)
     if user_signed_in?
-      group ? (group.members.size + 1) : destination.number_of_adult
+      if destination
+        group ? (group.members.size + 1) : destination.number_of_adult
+      else
+        group.members.size + 1
+      end
     else
       session[:destination].nil? ? nil : session[:destination]['number_of_adult'].to_i
     end
