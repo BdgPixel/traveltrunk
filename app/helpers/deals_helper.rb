@@ -60,7 +60,7 @@ module DealsHelper
       if destination
         group ? (group.members.size + 1) : destination.number_of_adult
       else
-        group.members.size + 1
+        group ? (group.members.size + 1) : 1
       end
     else
       session[:destination].nil? ? nil : session[:destination]['number_of_adult'].to_i
