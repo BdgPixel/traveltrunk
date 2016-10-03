@@ -55,8 +55,12 @@ module DealsHelper
     number_of_array
   end
 
-  def selected_number_of_adult
-    session[:destination].nil? ? nil : session[:destination]['number_of_adult'].to_i
+  def selected_number_of_adult(destination = nil, group = nil)
+    if user_signed_in?
+      group ? (group.members.size + 1) : destination.number_of_adult
+    else
+      session[:destination].nil? ? nil : session[:destination]['number_of_adult'].to_i
+    end
   end
 
   def back_link_to_deals_page

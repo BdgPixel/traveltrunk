@@ -72,7 +72,7 @@ class User < ActiveRecord::Base
 
       room_hash[:RoomGroup] = {
         'Room' => {
-          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+          'numberOfAdults' => group ? group.members.size.next.to_s : destination.number_of_adult.to_s
         }
       }
     end

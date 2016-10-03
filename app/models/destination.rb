@@ -1,8 +1,6 @@
 class Destination < ActiveRecord::Base
   belongs_to :destinationable, polymorphic: true
 
-  attr_accessor :number_of_adult
-
   def get_search_params(group)
     today_utc = Time.now.utc.to_date
 
@@ -24,7 +22,7 @@ class Destination < ActiveRecord::Base
       moreResultsAvailable: 'true',
       'RoomGroup' => {
         'Room' => {
-          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+          'numberOfAdults' => group ? group.members.size.next.to_s : self.number_of_adult.to_s
         }
       },
       numberOfResults: '200',

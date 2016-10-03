@@ -421,7 +421,7 @@ class DealsController < ApplicationController
       end
     else
       if request.xhr?
-        room_params_hash = expedia_room_hashes(params[:id], session[:destination], @group, )
+        room_params_hash = expedia_room_hashes(params[:id], session[:destination])
 
         room_response = Expedia::Hotels.room_availability(room_params_hash).first
 
@@ -488,7 +488,7 @@ class DealsController < ApplicationController
       arrival_date:   arrival_date,
       departure_date: departure_date
     })
-
+    
     if user_signed_in?
       if @destination
         @destination.update(custom_params)
@@ -621,11 +621,11 @@ class DealsController < ApplicationController
         'longitude' => destination.longitude,
         'arrival_date' => destination.arrival_date,
         'departure_date' => destination.departure_date,
-        'number_of_adult' => destination.number_of_adult ? destination.number_of_adult : '1'
+        'number_of_adult' => destination.number_of_adult ? destination.number_of_adult.to_s : '1'
       }
     end
 
-    def expedia_room_hashes(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
+    def expedia_room_hashes(hotel_id, destination, rate_code = nil, room_type_code = nil)
       room_hash = {}
       
       if destination
@@ -634,7 +634,6 @@ class DealsController < ApplicationController
         room_hash[:hotelId]       = hotel_id.to_s
         room_hash[:arrivalDate]   = current_search[:arrivalDate]
         room_hash[:departureDate] = current_search[:departureDate]
-
 
         if rate_code && room_type_code
           room_hash[:rateCode]     = rate_code
@@ -647,11 +646,11 @@ class DealsController < ApplicationController
 
         room_hash[:RoomGroup] = {
           'Room' => {
-            'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+            'numberOfAdults' => current_search["RoomGroup"]["Room"]["numberOfAdults"]
           }
         }
       end
-
+      
       room_hash
     end
 end

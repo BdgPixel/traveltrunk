@@ -67,7 +67,7 @@
 
                       .col-xs-2.no-pad-left.no-pad-right
                         .form-group
-                          = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, id: 'selectGuest', class: "form-control no-border-radius"
+                          = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult(@destination, @group), id: 'selectGuest', class: "form-control no-border-radius", disabled: @group ? true : false
 
                       .col-xs-2.no-pad-left.no-pad-right
                         .form-group.text-center
