@@ -85,15 +85,15 @@ module DealsHelper
     if @group
       if @group.user_id.eql? current_user.id
         if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
-          link_to "Add to savings", "#", class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+          link = link_to "Add to savings", "#", class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
         else
-          link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+          link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
         end
       else
         if @current_user_votes_count.zero?
-          link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], group: "member" }
+          link = link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], group: "member" }
         else
-          link_to "Cancel Vote", deals_like_path(params[:id]), class: "btn btn-saving btn-orange-soft btn-full-size"
+          link = link_to "Cancel Vote", deals_like_path(params[:id]), class: "btn btn-saving btn-orange-soft btn-full-size"
         end
       end
     else
