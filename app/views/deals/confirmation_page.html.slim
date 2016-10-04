@@ -93,14 +93,13 @@
               tr
                 td
                   b Total Charges
-                  
                   br
-                  
                   small
                     i
                       | (includes tax recovery charges and service fees)
 
-                td = number_to_currency @charge_able_rate_info["@total"]
+                td 
+                  h4 = number_to_currency @charge_able_rate_info["@total"]
 
               = tax_values @charge_able_rate_info
             p
