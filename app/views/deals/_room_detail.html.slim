@@ -32,6 +32,10 @@ tr
       | Show more room information
 
     .content-popover style="display:none"
+      - if special_checkin_instructions
+        = special_checkin_instructions.html_safe
+        br
+        br
       = checkin_instructions.html_safe
 
   td width="300px"

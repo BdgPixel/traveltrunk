@@ -100,6 +100,10 @@ root.roomSelected = (selector)->
       $('.modal .hotel-info-state').html("&nbsp;State:&nbsp; Information not specified")
 
     $('.modal .hotel-info-country').html("&nbsp;Country:&nbsp; #{rooms.hotelCountry}")
+
+    if rooms.specialCheckInInstructions
+      $('.modal .special-checkin-instructions').html(rooms.specialCheckInInstructions)
+      
     $('.modal .checkin-intructions').html(rooms.checkInInstructions)
 
     $('#confirmation_book_hotel_id').val($(this).data('id'))
