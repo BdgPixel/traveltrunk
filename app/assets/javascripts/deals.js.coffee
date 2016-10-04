@@ -148,7 +148,7 @@ root.roomSelected = (selector)->
             table.append(listOfDate + nightlyRate)
 
     table.append("<tr><td><b>Total taxes and fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
-    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td dom='total_charges_text'>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
+    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4></td></tr>")
 
     taxs = room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']
 
