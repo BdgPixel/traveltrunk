@@ -10,6 +10,14 @@ module Expedia
       @current_user
     end
 
+    def self.set_session_customer_id=(session_)
+      @customer_session_id = session_ 
+    end
+
+    def self.session_customer_id
+      @customer_session_id
+    end
+
     def self.global_api_params_hash
       api_key = ENV['EXPEDIA_API_KEY']
       shared_secret = ENV['EXPEDIA_SHARED_SECRET']
@@ -18,14 +26,16 @@ module Expedia
       md5.update [api_key, shared_secret, timestamp].join
       sig = md5.hexdigest
 
-      {
+      config_hash = {
         'apiKey' => api_key,
         'cid' => 496147,
         'sig' => sig,
         'minorRev' => 30,
         'locale' => "en_US",
-        'currencyCode' => "USD",
+        'currencyCode' => "USD"
       }
+
+      merge_config_hash = config_hash.merge('customerSessionId' => session_customer_id)
     end
 
     def self.response_result(*args)
@@ -33,6 +43,7 @@ module Expedia
         {
           welcome_state: arg[:welcome_state],
           response: arg[:response],
+          customer_session_id: arg[:customer_session_id],
           num_of_hotel: arg[:num_of_hotel] || 0,
           num_of_page: arg[:num_of_page] || 0,
           error_response: {
@@ -54,6 +65,7 @@ module Expedia
 
             url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
             xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
+
             url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
             
             begin
@@ -84,8 +96,8 @@ module Expedia
                     @num_of_hotel = hotels_list.size
                     @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                     @num_of_page = @hotels_list.size
-
-                    response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page )
+                    
+                    response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page, customer_session_id: response["HotelListResponse"]["customerSessionId"] )
                   end
                 end
               else
@@ -144,7 +156,7 @@ module Expedia
                 @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                 @num_of_page = @hotels_list.size
 
-                response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page )
+                response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page, customer_session_id: response["HotelListResponse"]["customerSessionId"])
               end
             end
           else

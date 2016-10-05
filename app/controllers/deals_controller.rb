@@ -26,6 +26,8 @@ class DealsController < ApplicationController
   end
 
   def search
+    session[:customer_session_id] = @hotels_list.first[:customer_session_id] unless session[:customer_session_id]
+
     respond_to do |format|
       format.html
       format.js
@@ -112,6 +114,7 @@ class DealsController < ApplicationController
         },
       }
 
+      set_session_customer_id = session[:customer_session_id]
       reservation_response = Expedia::Hotels.reservation(reservation_hash).first
       @reservation = reservation_response[:response]
       @error_response = reservation_response[:error_response]
@@ -383,8 +386,7 @@ class DealsController < ApplicationController
         last_name: user_signed_in? ? current_user.profile.last_name : params[:last_name],
       }
 
-      itinerary_params = { itineraryId: @reservation.itinerary, email: @profile[:email]}
-
+      itinerary_params = { itineraryId: @reservation.itinerary, email: @profile[:email] }
       itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
       
       @itinerary_response = itinerary_response[:response]["Itinerary"]["HotelConfirmation"]
@@ -398,6 +400,8 @@ class DealsController < ApplicationController
   end
 
   def room_availability
+    set_session_customer_id = session[:customer_session_id]
+
     if user_signed_in?
       @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
 
@@ -410,9 +414,7 @@ class DealsController < ApplicationController
 
       if request.xhr?
         room_params_hash = current_user.expedia_room_params(params[:id], @destination, @group)
-
         room_response = Expedia::Hotels.room_availability(room_params_hash).first
-
         @room_availability = room_response[:response]
         @first_room_image = get_first_room_image(@room_availability)
 
@@ -506,9 +508,8 @@ class DealsController < ApplicationController
 
   private
     def set_search_data
-      Expedia::Hotels
       Expedia::Hotels.current_user = current_user
-      
+
       @hotels_list = 
         if user_signed_in?
           Expedia::Hotels.list(@destination, @group)
@@ -519,9 +520,10 @@ class DealsController < ApplicationController
 
     def set_hotel
       if user_signed_in?
-        Expedia::Hotels
         Expedia::Hotels.current_user = current_user
       end
+
+      Expedia::Hotels.set_session_customer_id = session[:customer_session_id]
     end
 
     def check_like
