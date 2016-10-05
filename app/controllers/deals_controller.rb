@@ -11,7 +11,7 @@ class DealsController < ApplicationController
   before_action :update_arrival_and_departure_date, only: [:index, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
-  before_action :set_hotel, only: [:show, :room_availability, :create_book, :confirmation_page]
+  before_action :set_hotel, only: [:show, :room_availability, :create_book, :confirmation_page, :create_book_for_guest]
 
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 
@@ -114,7 +114,6 @@ class DealsController < ApplicationController
         },
       }
 
-      set_session_customer_id = session[:customer_session_id]
       reservation_response = Expedia::Hotels.reservation(reservation_hash).first
       @reservation = reservation_response[:response]
       @error_response = reservation_response[:error_response]
@@ -388,7 +387,7 @@ class DealsController < ApplicationController
 
       itinerary_params = { itineraryId: @reservation.itinerary, email: @profile[:email] }
       itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
-      
+
       @itinerary_response = itinerary_response[:response]["Itinerary"]["HotelConfirmation"]
       @charge_able_rate_info = @itinerary_response["RateInfos"]["RateInfo"]["ChargeableRateInfo"]
       @error_response = itinerary_response[:error_response]
