@@ -1,4 +1,24 @@
 Rails.application.routes.draw do
+  require 'sidekiq/web'
+
+  authenticate :user, lambda { |u| u.admin? } do
+    mount Sidekiq::Web => '/sidekiq'
+  end
+
+  get 'static_pages/about_us'
+
+  get 'static_pages/our_mission'
+
+  get 'static_pages/privacy_policy'
+
+  get 'static_pages/refund'
+
+  get 'static_pages/trust_and_security'
+
+  get 'static_pages/partnerships'
+
+  get 'static_pages/our_team'
+
   get 'home/index'
 
   get  'privacy_policy' => 'policies#privacy'
@@ -15,7 +35,7 @@ Rails.application.routes.draw do
     resources :transactions, only: [:index]
     resources :refunds, only: [:index, :update]
     resources :promo_codes
-    resources :users, only: [:index, :show]
+    resources :users, only: [:index, :show, :update, :destroy]
   end
 
   get  'helps' => 'helps#index'
@@ -53,17 +73,23 @@ Rails.application.routes.draw do
   get   'deals/book' => 'deals#book', as: 'deals/book'
   get   'deals/confirmation_page'
   post  'deals/create_book' => 'deals#create_book', as: 'deals/create_book'
+  get  'deals/search' => 'deals#search'
   post  'deals/search' => 'deals#search'
   post  'deals/create_destination' => 'deals/create_destination'
   # patch 'deals/update_credit' => 'deals/update_credit'
+  post   'deals/create_credit' => 'deals/create_credit'
   post   'deals/update_credit' => 'deals/update_credit'
 
   devise_for :users, :controllers => {
     :registrations => 'registrations',
-    :invitations => 'users/invitations'
+    :invitations => 'users/invitations',
+    :omniauth_callbacks => "users/omniauth_callbacks"
   }
 
-  # root 'deals#index'
+  authenticated :user do
+    root 'deals#index', as: :authenticated_root
+  end
+
   root 'home#index'
 
   resource :profile, except: [:destroy, :new, :create]
@@ -72,5 +98,4 @@ Rails.application.routes.draw do
   post   'create_bank_account' => 'profiles#create_bank_account'
   put    'update_bank_account' => 'profiles#update_bank_account'
   delete 'unsubscript' => 'profiles#unsubscript', as: 'unsubscript'
-
 end

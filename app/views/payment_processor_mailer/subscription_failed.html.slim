@@ -1,6 +1,24 @@
-SubscriptionMailer#updated
-  p = "Hello #{@profile.first_name} #{@profile.last_name}"
+p#subscriptionFailed
+  | Hi #{@profile.try(:first_name).try(:titleize)},
 
-  p Your subscription with ID #{@subscription_id} is #{@subscription_status.titleize} #{@subscription_message.downcase if @subscription_message}. We deleted your savings plan. Please create new savings plan with correct payment information. 
+  br
+  br
 
-  p = render 'partials/footer_mailer'
+  | Your subscription with ID #{@subscription_id} is #{@subscription_status.downcase} #{subscription_failed_reason(@subscription_message)}. 
+
+  br
+  br
+
+  | We've deleted your savings plan and you need to create a new one with correct payment information this time.
+
+  br
+  br
+
+  | Please contact administrator for further assistance.
+
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

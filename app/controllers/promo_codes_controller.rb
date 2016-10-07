@@ -5,6 +5,7 @@ class PromoCodesController < ApplicationController
 
   def update
     today = Date.today
+
     if params[:promo_code][:token].empty?
       flash[:error] = "Can't be blank"
 
@@ -12,14 +13,14 @@ class PromoCodesController < ApplicationController
         format.js
         format.html { redirect_to promo_codes_activation_url }
       end
-
     else
       @promo_code = PromoCode.find_by(user_id: current_user.id, token: params[:promo_code][:token])
 
       respond_to do |format|
         if @promo_code
           if @promo_code.is_expired?
-            flash[:error] = "Your token is expired"
+            flash[:error] = "Your promo code is expired"
+
             format.js
             format.html { redirect_to promo_codes_activation_url, notice: flash[:error] }
           else
@@ -27,7 +28,7 @@ class PromoCodesController < ApplicationController
               @promo_code.update_attributes(status: 'used')
              
               amount_in_cents = (@promo_code.amount.to_f * 100).to_i
-              # upc = used_promo_code
+
               invoice_cc = AuthorizeNetLib::Global.generate_random_id('inv_upc')
 
               Transaction.create(
@@ -38,17 +39,19 @@ class PromoCodesController < ApplicationController
                 user_id: @promo_code.user.id
               )
 
-              flash[:notice] = 'Your token promo code has been activated'
+              flash[:notice] = 'Your promo code has been activated'
+
               format.js { render js: "window.location.href='#{savings_url}'", notice: flash[:notice]   }
               format.html { redirect_to promo_codes_activation_url, notice: flash[:notice] }
             else
               flash[:error] = 'Promo code already used'
-              format.js {}
+
+              format.js
               format.html { redirect_to promo_codes_activation_url }
             end
           end
         else
-          flash[:error] = 'Invalid token promo code'
+          flash[:error] = 'Invalid promo code'
           format.js {}
           format.html { redirect_to promo_codes_activation_url }
         end

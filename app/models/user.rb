@@ -3,7 +3,7 @@ class User < ActiveRecord::Base
 
   paginates_per 10
 
-  scope :non_admin, -> { where(admin: false) }
+  scope :non_admin, -> { where(admin: false).order(created_at: :desc) }
 
   has_one  :profile, dependent: :destroy
   has_one  :bank_account, dependent: :destroy
@@ -19,17 +19,15 @@ class User < ActiveRecord::Base
   has_many :transactions, dependent: :destroy
   has_many :reservations, dependent: :destroy
   has_many :refunds, dependent: :destroy
+  has_many :identities, dependent: :destroy
 
   accepts_nested_attributes_for :profile
-  # accepts_nested_attributes_for :bank_account
 
   attr_accessor :stripe_token, :execute_stripe_callbacks, :group_id
 
-  # Include default devise modules. Others available are:
-  # :confirmable, :lockable, :timeoutable and :omniauthable
   devise :invitable, :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable, :confirmable
-
+         :recoverable, :rememberable, :trackable, :validatable, :async,
+         :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
   def no_profile?
     self.profile.nil? || self.profile.new_record?
@@ -54,7 +52,7 @@ class User < ActiveRecord::Base
 
   def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
     room_hash = {}
-
+    
     if destination
       current_search = destination.get_search_params(group)
 
@@ -74,26 +72,13 @@ class User < ActiveRecord::Base
 
       room_hash[:RoomGroup] = {
         'Room' => {
-          'numberOfAdults' => group ? group.members.size.next.to_s : '1'
+          'numberOfAdults' => group ? group.members.size.next.to_s : destination.number_of_adult.to_s
         }
       }
     end
 
     room_hash
   end
-
-  # commented but will be used later
-  #
-  # def current_group
-  #   self.group || self.joined_groups.first
-  # end
-
-  # def members_liked(hotel_id)
-  #   group = self.group || self.joined_groups.first
-
-  #   User.joins(:likes).joins("LEFT JOIN users_groups ON users_groups.user_id = users.id")
-  #     .where("hotel_id = ? AND (users_groups.group_id = ? OR users.id IN (?))", hotel_id, group.id, [self.id, group.user_id])
-  # end
 
   def self.get_autocomplete_data(email, current_user)
     User.joins("FULL OUTER JOIN profiles ON profiles.user_id = users.id")
@@ -114,5 +99,29 @@ class User < ActiveRecord::Base
       user_collections << ["#{user.profile.first_name} #{user.profile.last_name}", user.id].to_a if user.profile
     end
     user_collections
+  end
+
+  def self.find_for_oauth(auth)
+    @user = self.find_by(email: auth.info.email)
+
+    if @user
+      identity = Identity.find_for_oauth(auth, @user.id)
+    else
+      unless @user
+        @user = User.new
+        @user.build_profile
+        @user.email = auth.info.email
+        @user.password = Devise.friendly_token[0, 20]
+        @user.profile.first_name = auth.info.first_name
+        @user.profile.last_name = auth.info.last_name
+        @user.profile.gender = auth.extra.raw_info.gender
+        @user.profile.remote_image_url = auth.info.image
+        @user.profile.validate_personal_information = false
+
+        @user.identities.create(provider: auth.provider, uid: auth.uid) if @user.save
+      end
+    end
+
+    @user
   end
 end

@@ -1,7 +1,24 @@
-SubscriptionMailer#paymentSucceed
-  p = "Hi #{@profile.first_name},"
+p#oneTimePayment
+  | Congratulations #{@profile.first_name.try(:titleize)}!
 
-  p
-    | We’ve successfully charged your credit card ending in …#{@card_last4} to add #{currency_in_usd(@amount)} to your Travel Trunk savings account. Bringing your total savings to #{currency_in_usd(@user.total_credit)}.
+  br
+  br
 
-  p = render 'partials/footer_mailer'
+  | Your card ending in …#{@card_last4} has successfully been charged.
+
+  br
+  br
+
+  | This means you’ve added #{currency_in_usd(@amount)} to your Travel Trunk savings account. Your total savings is now #{currency_in_usd(@user.total_credit)}.
+
+  br
+  br
+
+  | You’re on your way!
+
+  br
+  br
+
+  | Bon voyage,
+  br
+  = render 'partials/footer_mailer'

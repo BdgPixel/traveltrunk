@@ -1,25 +1,29 @@
-p
-  = "Hi, #{@current_user.profile.first_name} "
-  | wants to go on a vacation and has invited you to join he. She's using &ldquo;
-  = link_to "TravelTrunkUSA.com", accept_invitation_url(@resource, :invitation_token => @token)
-  | &rdquo; to plan her next vacation and wants you in the loop. Sign up today to join #{@current_user.group.name}. It's safe, fast, and easy. Just click the link below and you're all set to got. &ldquo;
-  = link_to "TravelTrunkUSA.com", accept_invitation_url(@resource, :invitation_token => @token)
-  | &rdquo;
+p#invitationInstruction
+  | Hi,
 
-p = render 'partials/footer_mailer'
+  br
+  br
 
-/ p = t("devise.mailer.invitation_instructions.hello", email: @resource.email)
+  | #{@current_user.profile.try(:first_name).try(:titleize) || 'No Name'} wants to go on a vacation and has invited you to join #{@current_user.profile.try(:pronoun, 'object') || 'him / her'}.
 
-/ p = t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url)
+  br
+  br
 
-/ p = link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token)
+  | #{@current_user.profile.try(:pronoun, 'subject') || "He's / She's"} using #{ link_to 'TravelTrunk.us', accept_invitation_url(@resource, :invitation_token => @token) } to plan #{@current_user.profile.try(:pronoun, 'possesive') || 'his / her'} next getaway and wants you in the loop.
 
-/ p = t("devise.mailer.invitation_instructions.ignore").html_safe
+  br
+  br
 
-/ p = t("devise.mailer.invitation_instructions.hello", email: @resource.email)
-/ p = t("devise.mailer.invitation_instructions.someone_invited_you", url: root_url)
-/ p = link_to t("devise.mailer.invitation_instructions.accept"), accept_invitation_url(@resource, :invitation_token => @token)
-/ -if @resource.invitation_due_at
-/   p = t("devise.mailer.invitation_instructions.accept_until", due_date: l(@resource.invitation_due_at, format: :'devise.mailer.invitation_instructions.accept_until_format'))
+  | Sign up today. It’s safe, fast and easy. Just click the link below and you’ll be all set to go.
 
-/ p = t("devise.mailer.invitation_instructions.ignore").html_safe
+  br
+  br
+
+  = link_to 'TravelTrunk.us', accept_invitation_url(@resource, :invitation_token => @token)
+
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

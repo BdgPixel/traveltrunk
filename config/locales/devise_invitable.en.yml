@@ -14,10 +14,10 @@ en:
         submit_button: "Send an invitation"
       edit:
         header: "Set your name and password"
-        submit_button: "Save"
+        submit_button: "Sign up"
     mailer:
       invitation_instructions:
-        subject: "Invitation instructions"
+        subject: "You’ve been invited to join Travel Trunk"
         hello: "Hello %{email}"
         someone_invited_you: "Someone has invited you to %{url}, you can accept it through the link below."
         accept: "Accept invitation"

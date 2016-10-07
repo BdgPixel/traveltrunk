@@ -1,7 +1,9 @@
 - if activity.trackable
-  tr
-    td.activity
-      | Your transaction with ID (#{activity.parameters[:trans_id]}) and amount #{currency_in_usd(activity.parameters[:amount])} has been voided. Your total credit is #{currency_in_usd(activity.parameters[:total_credit])}&nbsp;
-      small
-        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
-
+	.notif-background
+		.description
+  		span
+  			| Your transaction with ID (#{activity.parameters[:trans_id]}) and amount #{currency_in_usd(activity.parameters[:amount])} has been voided. Your total credit is #{currency_in_usd(activity.parameters[:total_credit])}&nbsp;
+		
+		.date 
+  		span
+  			= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

@@ -1,12 +1,11 @@
 module AuthorizeNetLib
   require 'authorizenet'
-  # include AuthorizeNet::API
 
   class Global
     def initialize
       api_login_id = ENV['AUTHORIZE_NET_API_LOGIN_ID']
       api_transaction_key = ENV['AUTHORIZE_NET_API_TRANSACTION_KEY']
-      gateway = Rails.env.eql?('development') ? :sandbox : :production
+      gateway = ENV['AUTHORIZE_NET_MODE']
 
       @transaction = AuthorizeNet::API::Transaction.new(api_login_id, api_transaction_key, gateway: gateway)
     end
@@ -15,14 +14,14 @@ module AuthorizeNetLib
       random_id = "#{string_uniqe}_#{SecureRandom.urlsafe_base64(10)}"
     end
   end
-
+  
   # Customer Information Manager (CIM)
   class Customers < Global
     def create_profile(customer_params)
       request = AuthorizeNet::API::CreateCustomerProfileRequest.new
 
       request.profile = AuthorizeNet::API::CustomerProfileType.new(
-        customer_params[:merchant_customer_id], nil, customer_params[:email], nil, nil
+        customer_params[:merchant_customer_id], customer_params[:description], customer_params[:email], nil, nil
       )
       
       response = @transaction.create_customer_profile(request)
@@ -34,13 +33,25 @@ module AuthorizeNetLib
 
     def get_customer_profile(customer_profile_id)
       request = AuthorizeNet::API::GetCustomerProfileRequest.new(nil, nil, customer_profile_id)
-      # request.customerProfileId = customer_profile_id
 
       response = @transaction.get_customer_profile(request)
       error_params, message_params = [response.messages, "Failed to get customer profile information with id #{customer_profile_id}"]
       RescueErrorsResponse::get_error_messages(error_params, message_params)
 
       response.profile
+    end
+
+    def get_customer_payment_profile(customer_profile_id, customer_payment_profile_id)
+      request = AuthorizeNet::API::GetCustomerPaymentProfileRequest.new
+      request.customerProfileId = customer_profile_id
+      request.customerPaymentProfileId = customer_payment_profile_id
+
+      response = @transaction.get_customer_payment_profile(request)
+      error_params, message_params = [response.messages, "Failed to get customer payment profile information with id #{customer_payment_profile_id}"]
+
+      RescueErrorsResponse::get_error_messages(error_params, message_params)
+
+      response
     end
 
     def delete_customer_profile(customer_profile_id)
@@ -147,8 +158,6 @@ module AuthorizeNetLib
           customer = Customers.new
           if customer_payment_profile_id
             delete_payment_profile = customer.delete_payment_profile(customer_profile_id, customer_payment_profile_id)
-          # else
-            # delete_customer_profile = customer.delete_customer_profile(customer_profile_id)
           end
         end
       else
@@ -164,6 +173,38 @@ module AuthorizeNetLib
       end
 
       response  
+    end
+
+    def self.cancel_other_subscriptions(current_subscription_id, customer_profile_id)
+      api_login_id = ENV['AUTHORIZE_NET_API_LOGIN_ID']
+      api_transaction_key = ENV['AUTHORIZE_NET_API_TRANSACTION_KEY']
+      gateway = Rails.env.eql?('development') ? :sandbox : :production
+
+      transaction = AuthorizeNet::API::Transaction.new(api_login_id, api_transaction_key, gateway: gateway)
+
+      customer_authorize = AuthorizeNetLib::Customers.new
+      customer_profile = customer_authorize.get_customer_profile(customer_profile_id);0
+
+      customer_profile.paymentProfiles.each do |payment_profile|
+        payment_profile_id = payment_profile.customerPaymentProfileId
+
+        payment_profile_response = customer_authorize.get_customer_payment_profile(customer_profile_id, payment_profile_id)
+        subscription_ids = payment_profile_response.paymentProfile.subscriptionIds.subscriptionId.to_a
+
+        subscription_ids.each do |subscription_id|
+          unless subscription_id.eql?(current_subscription_id)
+            request = AuthorizeNet::API::ARBCancelSubscriptionRequest.new
+
+            request.subscriptionId = subscription_id
+            response = transaction.cancel_subscription(request)
+          end
+        end
+
+        unless subscription_ids.include?(current_subscription_id)
+          sleep 3
+          customer_authorize.delete_payment_profile(customer_profile_id, payment_profile_id)
+        end
+      end
     end
 
     def get_subscription_status(subscription_id)
@@ -212,7 +253,7 @@ module AuthorizeNetLib
       request.refId = AuthorizeNetLib::Global.generate_random_id('ref')
 
       request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new
-      request.transactionRequest.amount = payment_params[:amount]
+      request.transactionRequest.amount = payment_params[:amount].to_f
 
       request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
 
@@ -243,6 +284,7 @@ module AuthorizeNetLib
       request.transactionRequest.order = AuthorizeNet::API::OrderType.new(payment_params[:order][:invoice], payment_params[:order][:description])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
+      
       response = @transaction.create_transaction(request)
 
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
@@ -250,8 +292,7 @@ module AuthorizeNetLib
 
         response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
 
-        # Check duplicate transaction
-        # errorCode '11' as duplicate transaction
+        # Check duplicate transaction, errorCode '11' as duplicate transaction
         response_error_text = 'Please wait several minutes for another transaction' if response_error_code.eql?('11')
         
         error_messages = { 
@@ -328,8 +369,6 @@ module AuthorizeNetLib
   class TransactionReporting < Global
     def get_settled_batch_list(first_date = nil, last_date = nil)
       request = AuthorizeNet::API::GetSettledBatchListRequest.new
-      # request.firstSettlementDate = (DateTime.now().utc - 1.day).strftime('%Y-%m-%dT00:00:00Z')
-      # request.lastSettlementDate = (DateTime.now().utc).strftime('%Y-%m-%dT00:00:00Z')
 
       if first_date && last_date
         request.firstSettlementDate = first_date
@@ -352,7 +391,7 @@ module AuthorizeNetLib
       error_params, message_params = [response.messages, "Failed to get Transaction list."]
       RescueErrorsResponse::get_error_messages(error_params, message_params)
 
-      response.transactions.transaction
+      response.try(:transactions).try(:transaction)
     end
 
     def get_transaction_details(trans_id)
@@ -362,12 +401,16 @@ module AuthorizeNetLib
       response = @transaction.get_transaction_details(request)
       error_params, message_params = [response.messages, "Failed to get transaction Details."]
 
-      RescueErrorsResponse::get_error_messages(error_params, message_params)
+      response_message = error_params.messages.first
+      
+      if !response_message.code.eql?('E00040') && !response_message.text.eql?("The record cannot be found.")
+        RescueErrorsResponse::get_error_messages(error_params, message_params)
 
-      response
+        response
+      end
     end
   end
-
+  
   class RescueErrorsResponse < StandardError
     attr_accessor :error_message
 
@@ -384,7 +427,7 @@ module AuthorizeNetLib
           response_error_code: message.code
         }
         
-        raise RescueErrorsResponse.new(error_messages), message_params
+        raise RescueErrorsResponse.new(error_messages), message.text
       end
     end
   end

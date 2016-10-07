@@ -1,6 +1,9 @@
 - if activity.trackable
-  tr
-    td.activity
-      | Your subscription with ID #{activity.parameters[:subscription_id]} is #{activity.parameters[:subscription_status].titleize} #{activity.parameters[:subscription_message].downcase}. We deleted your savings plan. Please create new savings plan with correct payment information. &nbsp;
-      small
-        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+  .notif-background
+    .description
+      span
+        | Your subscription with ID #{activity.parameters[:subscription_id]} is #{activity.parameters[:subscription_status].downcase} #{subscription_failed_reason(activity.parameters[:subscription_message])}. We've deleted your savings plan and you need to create a new one with correct payment information this time. &nbsp;
+
+    .date 
+      span
+        = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

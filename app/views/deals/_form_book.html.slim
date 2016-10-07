@@ -26,7 +26,8 @@
         = f.hidden_field :bed_type
 
       .form-group
-        = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>By selecting to complete this booking I acknowledge that I have read and accept the <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe
+        = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>&nbsp; By selecting to complete this booking I acknowledge that I have read and accept the cancellation policy for this room as well as our <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe
+        
         .payment-errors
 
       .row
@@ -35,7 +36,16 @@
             | Would you still like to book this hotel ?
             br
             br
-            = f.button :submit, "Yes", class: 'btn btn-orange btn-md'
-            | &nbsp;
-            button.btn.btn-default.btn-md aria-label="Close" data-dismiss="modal" type="button"
-              | No
+
+            - if user_signed_in?
+              = f.button :submit, "Yes", class: 'btn btn-saving btn-green'
+              | &nbsp;&nbsp;
+            - else
+              = link_to 'Yes', 'javascript:void(0)', id: 'linkBtnYes', class: 'btn btn-saving btn-green'
+              / , data: { toggle: 'modal', target: '#modalSavingsForm' }
+              | &nbsp;&nbsp;
+            
+            = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
+            / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
+            /   | I want to keep looking
+

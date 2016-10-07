@@ -25,7 +25,7 @@ class GroupsController < ApplicationController
       # check if array element is string id or string email
       invitation_params = invitation_params.group_by { |param| !/\A\d+\z/.match(param) ? 'emails' : 'ids' }
 
-      # check users invite if users have group or not
+      # check if invited users already joined a group or not
       invited_users_count = 0
       existing_emails = []
 
@@ -49,7 +49,7 @@ class GroupsController < ApplicationController
         invited_users_count += ids.size
       end
 
-      notice = "#{invited_users_count} User was successfully invited."
+      notice = "#{invited_users_count} user(s) successfully invited."
       notice << " #{existing_emails.join(', ')} can't be invited because already registered" unless existing_emails.empty?
       redirect_to savings_path, notice: notice
     end
@@ -78,5 +78,4 @@ class GroupsController < ApplicationController
       redirect_to savings_url, notice: 'Some errors occurred when leave the group'
     end
   end
-
 end

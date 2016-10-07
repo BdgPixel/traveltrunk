@@ -10,22 +10,44 @@ module Expedia
       @current_user
     end
 
+    def self.set_session_customer_id=(session_)
+      @customer_session_id = session_ 
+    end
+
+    def self.session_customer_id
+      @customer_session_id
+    end
+
+    def self.set_request_headers=(request)
+      @customer_ip = request[:customer_ip]
+      @customer_user_agent = request[:customer_user_agent]
+    end
+
+    def self.request_headers
+      @customer_ip
+      @customer_user_agent
+    end
+
     def self.global_api_params_hash
-      api_key = '5fd6485clmp3oogs8gfb43p2uf'
-      shared_secret = 'cjkao1pfqt0tk'
+      api_key = ENV['EXPEDIA_API_KEY']
+      shared_secret = ENV['EXPEDIA_SHARED_SECRET']
       timestamp = Time.now.utc.to_i
       md5 = Digest::MD5.new
       md5.update [api_key, shared_secret, timestamp].join
       sig = md5.hexdigest
 
-      {
+      config_hash = {
         'apiKey' => api_key,
         'cid' => 496147,
         'sig' => sig,
         'minorRev' => 30,
         'locale' => "en_US",
         'currencyCode' => "USD",
+        'customerIpAddress' => @customer_ip,
+        'customerUserAgent' => @customer_user_agent
       }
+
+      merge_config_hash = config_hash.merge('customerSessionId' => session_customer_id)
     end
 
     def self.response_result(*args)
@@ -33,6 +55,7 @@ module Expedia
         {
           welcome_state: arg[:welcome_state],
           response: arg[:response],
+          customer_session_id: arg[:customer_session_id],
           num_of_hotel: arg[:num_of_hotel] || 0,
           num_of_page: arg[:num_of_page] || 0,
           error_response: {
@@ -44,40 +67,36 @@ module Expedia
 
     def self.list(destination = nil, group = nil)
       unless @current_user.try(:admin?)
-        if @current_user.profile.birth_date.blank? || @current_user.bank_account.blank?
-          @welcome_state = 'no_profile'
-          @error_response = ''
-          response_result(welcome_state: @welcome_state, error_response: @error_response)
-        elsif destination.blank?
+        if destination.blank?
           @welcome_state = 'no_destination'
           @error_response = "You haven’t selected a destination yet."
           response_result(welcome_state: @welcome_state, error_response: @error_response)
         else
           if destination
             custom_params = destination.get_search_params(group)
-            destinationable = destination.destinationable
-            total_credit = destinationable.total_credit / 100.0
 
-            if total_credit > 0
-              url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
-              xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
-              url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
+            url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
+            xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
+            url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
+            
+            begin
+              response = HTTParty.get(url_custom_params)
 
-              begin
-                response = HTTParty.get(url_custom_params)
-
+              if response
                 if response["HotelListResponse"]["EanWsError"]
-                  @hotels_list    = []
                   @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
 
-                  response_result(response: @hotels_list, error_response: @error_response)
+                  response_result(response: [], error_response: @error_response)
                 else
-                  hotels_list = response["HotelListResponse"]["HotelList"]["HotelSummary"].select do |hotel|
-                    hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit
-                  end
+                  hotels_list =
+                    if response["HotelListResponse"]["HotelList"]["@size"].eql? '1'
+                      [response["HotelListResponse"]["HotelList"]["HotelSummary"]]
+                    else
+                      response["HotelListResponse"]["HotelList"]["HotelSummary"]
+                    end
 
                   if hotels_list.empty?
-                    @error_response = "There are no hotels that match your criteria and saving credits"
+                    @error_response = "There is no hotels that match your criteria and saving credits"
                     response_result(error_response: @error_response)
                   else
                     hotels_list =
@@ -88,21 +107,19 @@ module Expedia
                     @num_of_hotel = hotels_list.size
                     @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                     @num_of_page = @hotels_list.size
-
-                    response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page )
+                    
+                    response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page, customer_session_id: response["HotelListResponse"]["customerSessionId"] )
                   end
                 end
-              rescue Exception => e
-                @hotels_list    = []
-                @error_response = e.message
-
-                response_result(response: @hotels_list, error_response: @error_response)
+              else
+                response_result(response: [], error_response: "Unable to get hotel list from Expedia. Please try again later")
               end
-            else
-              @hotels_list    = []
-              @error_response = "You don't have any credits."
-
-              response_result(response: @hotels_list, error_response: @error_response)
+            rescue Exception => e
+              if e.is_a? Errno::ECONNRESET
+                response_result(response: [], error_response: 'Unable to get hotel list from Expedia. Please try again later')
+              else
+                response_result(response: [], error_response: "Some errors occurred. Please contact administrator or try again later.")
+              end
             end
           else
             @hotels_list    = []
@@ -111,6 +128,63 @@ module Expedia
             response_result(response: @hotels_list, error_response: @error_response)
           end
         end
+      end
+    end
+    
+    def self.list_for_guest(destination = nil, group = nil)
+      if destination
+        custom_params = Destination.get_session_search_hashes(destination)
+
+        url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
+        xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
+        url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
+        
+        begin
+          response = HTTParty.get(url_custom_params)
+
+          if response
+            if response["HotelListResponse"]["EanWsError"]
+              @error_response = response["HotelListResponse"]["EanWsError"]["presentationMessage"]
+
+              response_result(response: [], error_response: @error_response)
+            else
+              hotels_list =
+                if response["HotelListResponse"]["HotelList"]["@size"].eql? '1'
+                  [response["HotelListResponse"]["HotelList"]["HotelSummary"]]
+                else
+                  response["HotelListResponse"]["HotelList"]["HotelSummary"]
+                end
+              
+              if hotels_list.empty?
+                @error_response = "There is no hotels that match your criteria and saving credits"
+                response_result(error_response: @error_response)
+              else
+                hotels_list =
+                  hotels_list.sort do |hotel_x, hotel_y|
+                    hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
+                  end
+                @num_of_hotel = hotels_list.size
+                @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
+                @num_of_page = @hotels_list.size
+
+                response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page, customer_session_id: response["HotelListResponse"]["customerSessionId"])
+              end
+            end
+          else
+            response_result(response: [], error_response: "Unable to get hotel list from Expedia. Please try again later")
+          end
+        rescue Exception => e
+          if e.is_a? Errno::ECONNRESET
+            response_result(response: [], error_response: 'Unable to get hotel list from Expedia. Please try again later')
+          else
+            response_result(response: [], error_response: "Some errors occurred. Please contact administrator or try again later.")
+          end
+        end
+      else
+        @hotels_list    = []
+        @error_response = "You haven’t selected a destination yet."
+
+        response_result(response: @hotels_list, error_response: @error_response)
       end
     end
 
@@ -165,7 +239,7 @@ module Expedia
       url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
       url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-
+      
       begin
         response = HTTParty.post(url_custom_params)
 
@@ -206,6 +280,5 @@ module Expedia
         response_result(error_response: @error_response)
       end
     end
-
   end
 end

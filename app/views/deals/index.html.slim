@@ -1,56 +1,89 @@
 - content_for :javascripts
   = javascript_include_tag "deals"
-  = javascript_include_tag "variables"
+  = javascript_include_tag "variables", "profiles"
 
-.row
-  #slide.wrapper-deals
-    .col-xs-12.col-md-12.slide style="padding-bottom: 30px"
-      .text-header-slide
-        h1.text-center
-          - if @destination
-            = link_to @destination.title_destination, "javascript:void(0)", id: 'slideToggleLink'
-          - else
-            = link_to "Where would you like to be?", "javascript:void(0)", id: 'slideToggleLink'
-          br
+/ #slide.wrapper-deals.hide-deals class="#{ 'card-orange' if current_user.total_credit.zero? }"
+/   .wrap-middle
+/     .container
+/       .row
+/         .col-sm-12
+/           .wrapper-top-deals
+/             - if current_user.total_credit.zero?
+/               h1.text-center
+/                 | Your Destination Is Just a Few Clicks Away!
 
-      #slideToggle
-        / .col-md-12
-        .col-md-8.col-md-offset-2
-          .panel.panel-default style="margin-bottom: 0px"
-            .panel-body
-              = simple_form_for :search_deals, method: :post, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
-                .wrapper-search-deal
-                  .col-md-12
-                    .form-group
-                      = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control", placeholder: "Where would you like to be?"
-                      span
-                        a#btnClearText href="javascript:void(0)"
-                          i.icon.delete
-                    .show
-                      = hidden_field_tag :street_number, nil, id: "street_number"
-                      = hidden_field_tag :route, nil, id: "route"
-                      = hidden_field_tag :postal_code, nil, id: "postal_code"
-                      = f.hidden_field :city, id: "locality"
-                      = f.hidden_field :state_province_code, id: "administrative_area_level_1"
-                      = f.hidden_field :country_code, as: :string, id: "country"
-                      = f.hidden_field :latitude, id: "lat", value: @destination.try(:latitude)
-                      = f.hidden_field :longitude, id: "lng", value: @destination.try(:longitude)
+/               br
 
-                  .col-md-6
-                    .form-group
-                      = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control", placeholder: "Arriving when?"
+/               p.text-center
+/                 | From luxury hotels to adventure hostels, cozy getaways to big city living; here, you get to customize your trip to your vision. The deals you’ll view are based on your current savings; this way, you can plan an unforgettable vacation that perfectly fits your budget.
 
-                  .col-md-6
-                    .form-group
-                      = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control", placeholder: "Departing when?"
+.wrap-middle
+  .container
+    .row
+      .col-md-12.pad-left-75.pad-right-75
+        .wrapper-top-deals
+          .slide
+            .text-header-slide
+              h1.text-center
+                span data-toggle="tooltip" data-placement="bottom" data-title="Click here to search other destinations and change dates"
+                  - if current_user.profile.birth_date && current_user.bank_account && current_user.total_credit > 0
+                    = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "#slideToggle", id:'slideToggleLink', class: "arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
+                  - else
+                    = link_to "Where would you like to be?", "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
 
-                  .col-md-12
-                    .form-group.text-center
-                      .col-md-4
-                      = f.submit "Save", class: "btn btn-default btn-md col-md-4 col-offset-4"
+        / #slideToggle
+        #slideToggle.collapse
+          .row
+            .col-md-8.col-md-offset-2.no-pad-left.no-pad-right
+              .panel.panel-default.box-shadow-none
+                .panel-body
+                  = simple_form_for :search_deals, method: :post, url: deals_search_path, remote: true, html: { id: 'searchDealsForm' } do |f|
+                    .wrapper-search-deal
+                      .col-xs-4.no-pad-left.no-pad-right
+                        .form-group
+                          = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control destination", placeholder: "Where would you like to be?"
 
-.row style="border-top: 1px solid #e2e2e2"
-  .wrapper-list-hotel.wrapper-deals
-    #dealsHotelsList
-    br
-    br
+                          span
+                            a#btnClearText href="javascript:void(0)"
+                              i.icon.delete
+
+                        .show
+                          = hidden_field_tag :street_number, nil, id: "street_number"
+                          = hidden_field_tag :route, nil, id: "route"
+                          = hidden_field_tag :postal_code, nil, id: "postal_code"
+                          = f.hidden_field :city, id: "locality"
+                          = f.hidden_field :state_province_code, id: "administrative_area_level_1"
+                          = f.hidden_field :country_code, as: :string, id: "country"
+                          = f.hidden_field :latitude, id: "lat", value: @destination.try(:latitude)
+                          = f.hidden_field :longitude, id: "lng", value: @destination.try(:longitude)
+
+                      .col-xs-2.no-pad-left.no-pad-right
+                        .form-group
+                          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control date-1", placeholder: "Arriving when?"
+
+                      .col-xs-2.no-pad-left.no-pad-right
+                        .form-group
+                          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control date-2", placeholder: "Departing when?"
+
+                      .col-xs-2.no-pad-left.no-pad-right
+                        .form-group
+                          = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult(@destination, @group), id: 'selectGuest', class: "form-control no-border-radius"
+
+                      .col-xs-2.no-pad-left.no-pad-right
+                        .form-group.text-center
+                          = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
+
+.container
+  .row
+  .row
+  .wrapper-list-hotel
+
+  #dealsHotelsList
+  br
+  br
+  .pad-btm-350.hide
+
+  - if user_signed_in?
+   - unless current_user.profile.try(:home_airport)
+      #popUpProfile
+        = render 'profiles/complete_profile'

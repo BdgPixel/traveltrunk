@@ -1,7 +1,3 @@
-# Place all the behaviors and hooks related to the matching controller here.
-# All this logic will automatically be available in application.js.
-# You can use CoffeeScript in this file: http://coffeescript.org/
-
 # = require blueimp-gallery
 # = require blueimp-gallery-indicator
 # = require jquery.lazyload
@@ -12,8 +8,14 @@
 # = require ratyrate
 # = require savings_form_validation
 # = require autoNumeric-min
+# = require moment
+# = require moment-timezone
 
 root = exports ? this
+
+replaceImageInterval = undefined
+imageSizeType = null
+imageLoadedCount = 0
 
 getFormattedDate = (date) ->
   day = date.getDate()
@@ -22,18 +24,6 @@ getFormattedDate = (date) ->
   formattedDate = [month, day, year].join('/')
 
   formattedDate
-
-disableEnterFormSubmit = ->
-  $('#searchDealsForm').on 'keyup keypress', (e) ->
-    code = e.keyCode or e.which
-    if code == 13
-      e.preventDefault()
-
-      return false
-
-    return
-
-  return
 
 validateSearchForm = ->
   $('#searchDealsForm').validate
@@ -46,7 +36,7 @@ validateSearchForm = ->
 
   return
 
-validateFormBook = ->
+root.validateFormBook = ->
   if $('#formBook').length > 0
     $('#formBook').on 'submit', (e) ->
       returnValue = undefined
@@ -92,8 +82,8 @@ root.roomSelected = (selector)->
     roomTypeCode = $(this).data('room-type-code')
     numberOfRoomsRequested = rooms.numberOfRoomsRequested
 
-    $('.bs-example-modal-lg').modal({ backdrop: 'static' })
-    $('.modal .modal-header h3').text(rooms.hotelName)
+    $('#modalBook').modal('show')
+    $('.modal .modal-header h3').not('#myModalLabel').text(rooms.hotelName)
     $('.modal #roomRating').attr('data-rating', rooms.tripAdvisorRating)
 
     if rooms.tripAdvisorRating
@@ -110,6 +100,10 @@ root.roomSelected = (selector)->
       $('.modal .hotel-info-state').html("&nbsp;State:&nbsp; Information not specified")
 
     $('.modal .hotel-info-country').html("&nbsp;Country:&nbsp; #{rooms.hotelCountry}")
+
+    if rooms.specialCheckInInstructions
+      $('.modal .special-checkin-instructions').html(rooms.specialCheckInInstructions)
+      
     $('.modal .checkin-intructions').html(rooms.checkInInstructions)
 
     $('#confirmation_book_hotel_id').val($(this).data('id'))
@@ -150,7 +144,6 @@ root.roomSelected = (selector)->
 
       if room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['@size'] == ('1')
         table.append("<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['NightlyRate']['@rate']}</td></tr>")
-        # change @baseRate to @rate
       else
         listOfDate = "<tr><td>#{month} #{date.getDate()}, #{date.getFullYear()}</td>"
         $.each room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom']['NightlyRate'], (keyRate, rate) ->
@@ -159,7 +152,7 @@ root.roomSelected = (selector)->
             table.append(listOfDate + nightlyRate)
 
     table.append("<tr><td><b>Total taxes and fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
-    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</td></tr>")
+    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4></td></tr>")
 
     taxs = room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']
 
@@ -176,16 +169,25 @@ root.roomSelected = (selector)->
       $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
       $('.form-vote ').show()
 
+    existingRoomImage = $(this).closest('tr').find('.room-image')
 
-    if room[0]['RoomImages']
-      if room[0]["RoomImages"]["@size"] == ("1")
-        $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage']['url'])
+    if existingRoomImage
+      $('#roomImage').attr('src', existingRoomImage.attr('src'))
+
+      if $(this).closest('tr').find('small.image-disclaimer').length is 0
+        $('#imageDisclaimer').hide()
       else
-        $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage'][0]['url'])
-      $('#imageDisclaimer').hide()
+        $('#imageDisclaimer').show()
     else
-      $('#roomImage').attr('src', 'http://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg')
-      $('#imageDisclaimer').show()
+      if room[0]['RoomImages']
+        if room[0]["RoomImages"]["@size"] == ("1")
+          $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage']['url'].replace('http', 'https'))
+        else
+          $('#roomImage').attr('src', room[0]['RoomImages']['RoomImage'][0]['url'].replace('http', 'https'))
+        $('#imageDisclaimer').hide()
+      else
+        $('#roomImage').attr('src', 'https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg')
+        $('#imageDisclaimer').show()
 
     if room[0]['BedTypes']['@size'] == '1'
       $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
@@ -213,29 +215,48 @@ appendCreditform = ->
     $('#update_credit_rate_code').val(rateCode)
     $('#update_credit_total').val($(this).data('total'))
 
-root.replaceImage = ->
+checkImage = (previousSrc, numberOfImages, i)->
+  image = new Image()
+
+  image.onload = ()->
+    imageLoadedCount += 1
+
+  image.onerror = ()->
+    src = $(this).attr('src');
+    targetElement = $("a.slider-images[href='#{src}']")
+
+    newSrc = null
+    extension = src.split('_').slice(-1)[0]
+
+    if extension is 'z.jpg'
+      newSrc = src.replace('_z.jpg', '_y.jpg')
+      imageSizeType = 'y'
+    else if extension is 'y.jpg'
+      newSrc = src.replace('_y.jpg', '_b.jpg')
+      imageSizeType = 'b'
+
+    $(targetElement).attr('href', newSrc)
+
+    if imageSizeType != 'b'
+      checkImage(newSrc, numberOfImages, i)
+    else
+      newImage = new Image()
+
+      newImage.onload = ()->
+        imageLoadedCount += 1
+
+      newImage.src = newSrc
+
+  image.src = previousSrc
+
+root.replaceImage = ()->
   sliderImages = $('a.slider-images')
+  numberOfImages = sliderImages.length
 
   i = 0
-  while i < sliderImages.length
+  while i < numberOfImages
     previousSrc = $(sliderImages[i]).attr('href')
-    image = new Image()
-
-    image.onerror = ()->
-      console.error("Cannot load image")
-      src = $(this).attr('src');
-      targetElement = $("a.slider-images[href='#{src}']")
-
-      newSrc = null
-
-      if src.split('_')[2] is 'z.jpg'
-        newSrc = src.replace('_z.jpg', '_y.jpg')
-      else if src.split('_')[2] is 'y.jpg'
-        newSrc = src.replace('_y.jpg', '_b.jpg')
-
-      $(targetElement).attr('href', newSrc)
-
-    image.src = previousSrc
+    checkImage(previousSrc, numberOfImages, i)
 
     i++
 
@@ -252,19 +273,38 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
       else
         false
 
-$(document).ready ->
-  if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
+appendValueRoomParams = () ->
+  $('#create_credit_arrival_date').val($('#confirmation_book_arrival_date').val())
+  $('#create_credit_departure_date').val($('#confirmation_book_departure_date').val())
+  $('#create_credit_rate_code_room').val($('#confirmation_book_rate_code').val())
+  $('#create_credit_room_type_code').val($('#confirmation_book_room_type_code').val())
+  $('#create_credit_rate_key').val($('#confirmation_book_rate_key').val())
+  $('#create_credit_total_charge').val($('#confirmation_book_total').val())
+  $('#create_credit_bed_type').val($('#confirmation_book_bed_type').val())
+
+ready  = ->
+  controller = $('body').data('controller')
+  action = $('body').data('action')
+
+  # if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
+  if controller == 'deals' && action == 'index'
     disableEnterFormSubmit()
 
     validateSearchForm()
 
-    $.get '/deals'
+    $.ajax
+      url: '/deals.js'
+      cache: false
+      timeout: 30000
 
-    today = getFormattedDate(new Date)
+    moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
+    moment.tz.link('America/Los_Angeles|US/Pacific')
+    today = moment.tz('US/Pacific').format('M/D/Y')
 
     $('input#search_deals_arrival_date').datepicker(
       startDate: today
       autoclose: true).on 'changeDate', (e) ->
+        $(this).valid()
         departureDate = e.date
         departureDate.setDate(departureDate.getDate() + 1)
 
@@ -276,58 +316,52 @@ $(document).ready ->
           $('input#search_deals_departure_date').datepicker('show')
         , 100)
 
-    $('input#search_deals_departure_date').datepicker
+    $('input#search_deals_departure_date').datepicker(
       startDate: today
-      autoclose: true
+      autoclose: true).on 'changeDate', (e) ->
+        $(this).valid()
 
-
-    if $('#slideToggleLink').length > 0
-      $('#slideToggleLink').on 'click', (e) ->
-        $('#slideToggle').slideToggle()
-        return
-
-      $('.slide').on 'click', (e) ->
-        if e.target != this
-          return
-        $('#slideToggle').slideUp()
-        return
-
-      $('.text-header-slide').on 'click', (e) ->
-        if e.target != this
-          return
-        $('#slideToggle').slideUp()
-        return
+    showSearchForm()
 
     if $('#btnClearText').length > 0
-      $('#btnClearText').click ->
-        $('input#autocomplete').val ''
+      clearSearchText '#btnClearText', 'input#autocomplete'
 
-        return
+    showPopUpProfile()
 
-  else
-    initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
+  else if controller == 'deals' && action == 'show'
+    initAutoNumeric('.formatted-amount', '.amount')
 
     params_path_id = window.location.pathname.split('/')[2]
 
     validateFormBook()
 
-    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'left')
+    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'top')
 
-    $.get "/deals/#{ params_path_id }/room_availability", ->
-      roomSelected('.room-selected')
-      appendCreditform()
+    $(document).on 'click', '[data-dismiss="popover"]', (e) ->
+      $(this).closest('div').prev().popover('hide')
 
-      $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
-        $('#formAddToSavings').get(0).reset()
-        $('.payment-errors').html("")
+    $('body').on 'hidden.bs.popover', (e) ->
+      $(e.target).data("bs.popover").inState = { click: false, hover: false, focus: false }
+    
+    $.ajax
+      url: "/deals/#{ params_path_id }/room_availability.js"
+      cache: false
+      timeout: 30000
+      success: (data, textStatus, jqXHR) ->
+        roomSelected('.room-selected')
+        appendCreditform()
 
-      $('.modal-lg').on 'hidden.bs.modal', (e) ->
-        $('#formBook').get(0).reset()
-        $('.form-book').show()
-        # $('#linkVote').attr('href')
-        $('.payment-errors').html("")
+        $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
+          $('#formAddToSavings').get(0).reset()
+          $('.payment-errors').html("")
 
-      return
+        $('.modal-lg').on 'hidden.bs.modal', (e) ->
+          $('#formBook').get(0).reset()
+          $('.form-book').show()
+          $('.payment-errors').html("")
+          # removeBackdropModal '#modalBook'
+
+        return
 
     if $('#hotelRating').length > 0
       rating_count = parseFloat($('#hotelRating').data('rating'))
@@ -344,13 +378,39 @@ $(document).ready ->
     if $('#links').length > 0
       replaceImage() # replace biggest image if not found, with medium image
 
-      setTimeout( ->
-        replaceImage() # replace medium image if not found, with small image
+      replaceImageInterval = setInterval(->
+        if (imageLoadedCount == $('.slider-images').length) || imageSizeType == 'b'
+          clearInterval replaceImageInterval
+
+          setTimeout( ->
+            blueimp.Gallery $('.slider-images'),
+            container: '#blueimp-gallery-carousel'
+            carousel: true
+          , 2000)
       , 1000)
 
-      setTimeout( ->
-        blueimp.Gallery $('.slider-images'),
-          container: '#blueimp-gallery-carousel'
-          carousel: true
-      , 3000)
+    $('#linkBtnYes').on 'click', ->
+      if $('#confirmation_book_policy').is(':checked') == false
+        $('.payment-errors').html 'Cancellation policy must be approved'
+      else
+        # removeBackdropModal '#modalBook'
+        $('#confirmation_book_policy').removeAttr('checked');
+        $('.payment-errors').text('')
+        $('#modalBook').modal 'hide'
+        root.modalDialog = $(this).parents('.modal').find('.modal-dialog')
+        modalDialog.modal 'hide'
+        $('#modalSavingsForm').modal 'show'
+        $('#modalSavingsForm').on 'shown.bs.modal', (e) ->
+          $('#modalSavingsForm').css('overflow-x', 'hidden')
+          $('#modalSavingsForm').css('overflow-y', 'auto')
 
+        totalCharges = $('[dom="total_charges_text"]').text().replace('$', '')
+        $('#totalCharges').attr('data-total-charges', totalCharges)
+        appendValueRoomParams()
+        $('#modalSavingsForm .modal-header > h3').text $('#roomName').text()
+        $('.amount').val parseFloat($('#totalCharges').data('total-charges'))
+
+      return
+
+$(document).ready -> ready()
+$(document).on 'page:load', -> ready()

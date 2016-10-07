@@ -1,20 +1,24 @@
-tr
-  td.activity
-    = link_to activity.owner.profile.first_name.try(:titleize) if activity.owner
-    | &nbsp;
-    | would like you to join his/her trip.
-    | &nbsp;
+.notif-background
+  .description 
+    span
+      = link_to activity.owner.try(:profile).try(:first_name).try(:titleize), user_profile_path(activity.owner) if activity.owner
 
-    - if activity.trackable
-      - if activity.trackable.accepted_at.nil?
-        = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token], group_id: activity.parameters[:group_id]), class: 'btn btn-default btn-sm'
+      | &nbsp;
+
+      | would like you to join #{activity.owner.try(:profile).try(:pronoun, 'possesive') || 'his / her' } trip.
+      
+      | &nbsp;
+
+      - if activity.trackable
+        - if activity.trackable.accepted_at.nil?
+          = link_to 'Accept', accept_invitation_group_url(token: activity.parameters[:token], group_id: activity.parameters[:group_id]), class: 'btn btn-default btn-sm'
+        - else
+          | (already accepted)
       - else
-        | (already accepted)
-    - else
-      | (deleted)
-    | &nbsp;
+        | (deleted)
 
-    small
-      i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
-    | &nbsp;
-
+      | &nbsp;
+      
+  .date 
+    span
+      = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

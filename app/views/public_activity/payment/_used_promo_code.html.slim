@@ -1,6 +1,9 @@
 - if activity.trackable
-  tr
-    td.activity
-      | You have used promo code, your savings plan successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account. Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
-      small
-        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+	.notif-background
+		.description
+			span
+				| You have used promo code. #{number_to_currency(activity.parameters[:amount])} successfully added to your TravelTrunk account. Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
+		
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

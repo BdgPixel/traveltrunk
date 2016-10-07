@@ -5,14 +5,9 @@
         h2 = t "devise.invitations.new.header"
 
         = simple_form_for resource, as: resource_name, url: invitation_path(resource_name), html: { method: :post} do |f|
-          / = devise_error_messages!
-
           - resource.class.invite_key_fields.each do |field|
             .form-group
               = f.input field
 
             .actions.form-group
-              = f.button :submit, t("devise.invitations.new.submit_button"), class: 'btn btn-default'
-
-
-
+              = f.button :submit, t("devise.invitations.new.submit_button"), class: 'btn btn-saving btn-green'

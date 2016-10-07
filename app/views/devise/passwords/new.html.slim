@@ -1,14 +1,18 @@
-.row
-  .col-md-6
-    h2 Forgot your password?
+.container
+  .row
+    .col-md-8.col-md-offset-2
+      .wrapper-forgot-password
+        h1.text-center Forgot your password?
 
-    = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
-      / = devise_error_messages!
+        .forgot-password
+          = simple_form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f|
+            .row
+              .col-md-8
+                .form-group
+                  = f.input :email, label:false, autofocus: true, placeholder: "Email Address", input_html: { class: 'form-control' }
 
-      .form-group
-        = f.input :email, autofocus: true, input_html: { class: 'form-control' }
+              .col-md-4
+                = f.submit "Send", class: 'btn btn-block btn-global'
 
-      .actions.form-group
-        = f.submit "Send me reset password instructions", class: 'btn btn-primary'
-
-= render "devise/shared/links"
+        .text-center
+          / = link_to "Didn't receive confirmation instructions?", new_user_confirmation_path

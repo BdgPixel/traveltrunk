@@ -1,12 +1,20 @@
-ContactMailer#sendMessage
-  col-md-6
-    .form-group
-      | Name: #{full_name(@contact)}
+p#contactUsMailer
+  b Sender name: 
+  = [@contact[:first_name], @contact[:last_name]].join(' ')
 
-  .col-md-12
-    form-group
-      | Email: #{@contact.email} 
+  br
+  br
 
-  .col-md-12
-    form-group
-      p message: #{@contact.message}
+  b Sender email: 
+  = @contact[:email]
+
+  br
+  br
+  br
+  
+  b Message:
+
+  br
+  br
+  
+  = @contact[:message]

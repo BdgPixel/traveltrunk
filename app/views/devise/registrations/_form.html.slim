@@ -1,0 +1,46 @@
+
+= f.simple_fields_for :profile do |profile_form|
+  .row
+    .col-md-6.pad-right-10
+      .form-group
+        = profile_form.input :first_name, label:false, autofocus: true, placeholder: 'First Name',input_html: { class: 'form-control' }
+
+    .col-md-6.pad-left-10
+      .form-group
+        = profile_form.input :last_name, label:false, placeholder: 'Last Name', input_html: { class: 'form-control' }
+
+    .col-md-12
+      .form-group
+        = f.input :email, label:false, placeholder: 'Email Address', input_html: { class: 'form-control' }
+
+    .col-md-6.pad-right-10
+      .form-group
+        = f.input :password, autocomplete: "off", label: false, placeholder: 'Password', input_html: { class: 'form-control' }
+
+    .col-md-6.pad-left-10
+      .form-group
+        = f.input :password_confirmation, label:false, autocomplete: "off", placeholder: 'Re-enter Password', input_html: { class: 'form-control' }
+
+    .wrapper-birthday
+      .col-md-12
+        label Birthday
+        span.tipr data-original-title=("You must be 18 or older to sign up for TravelTrunk. Your birthday will remain private.") data-placement="right" data-toggle="tooltip"
+          span.icon.glyphicon.glyphicon-question-sign
+
+        .row
+          .col-md-4.pad-right-10
+            .form-group
+              = select_month Date.today, { field_name: 'birth_date(2i)', prefix: 'user[profile_attributes]' }, { class: 'form-control' }
+
+          .col-md-4.pad-left-10
+            .form-group
+              = select_day Date.today, { field_name: 'birth_date(3i)', prefix: 'user[profile_attributes]' }, { class: 'form-control' }
+
+          .col-md-4.pad-left-10
+            .form-group
+              = select_year Date.today, { field_name: 'birth_date(1i)', prefix: 'user[profile_attributes]', start_year: 1950, end_year: 1998 }, { class: 'form-control' }
+
+    .col-md-12
+      - if controller_name.eql? 'registrations'
+        .actions
+          = f.submit "Sign up", class: 'btn btn-default btn-block btn-global'

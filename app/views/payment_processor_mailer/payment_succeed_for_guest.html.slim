@@ -1,0 +1,19 @@
+p#oneTimePayment
+  | Congratulations #{@first_name}!
+
+  br
+  br
+
+  | Your card ending in …#{@card_last4} has successfully been charged.
+
+  br
+  br
+
+  | You’re on your way!
+
+  br
+  br
+
+  | Bon voyage,
+  br
+  = render 'partials/footer_mailer'

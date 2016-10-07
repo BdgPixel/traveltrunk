@@ -1,0 +1,16 @@
+#modalUserProfile.modal.fade aria-labelledby="modalUserProfile" data-backdrop="static" role="dialog" tabindex="-1"
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+        h3#myModalLabel.modal-title Complete User Profile
+        hr style="margin-bottom: 0 !important"
+        .modal-body
+          = render 'profiles/form_modal', is_remote: true
+
+        / .modal-footer
+        /   / = f.submit "Sign up", class: 'btn btn-saving btn-green'
+        /   | &nbsp;&nbsp;
+        /   button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
+        /     | Close

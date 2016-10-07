@@ -1,6 +1,9 @@
 - if activity.trackable
-  tr
-    td.activity
-      | You've successfully cancels a customer’s subscription&nbsp;
-      small
-        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+	.notif-background
+		.description
+			span
+				| You've successfully delete your latest savings plan. &nbsp;
+
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

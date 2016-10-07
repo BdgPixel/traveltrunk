@@ -38,12 +38,12 @@ class Admin::RefundsController < Admin::ApplicationController
               amount: @refund.amount, 
               total_credit: @refund.user.total_credit,
               trans_id: @refund.trans_id,
-              refund_trans_id: @refund.refund_trans_id
+              refund_trans_id: refund_trans_id
             }
           )
         end
 
-        PaymentProcessorMailer.refund_approved(@refund, @transaction_type).deliver_now
+        PaymentProcessorMailer.delay.refund_approved(@refund, @transaction_type)
       end
 
       notice = "Successfully refunded a transaction (Transaction ID #{@response_refund_transaction.transactionResponse.transId}"
@@ -62,7 +62,7 @@ class Admin::RefundsController < Admin::ApplicationController
 
       begin
         transaction_detail = transaction_authorize.get_transaction_details(@refund.trans_id)
-        last_card_number = transaction_detail.transaction.payment.creditCard.cardNumber[-4..-1]
+        last_card_number = transaction_detail.transaction.payment.creditCard.cardNumber.try(:last, 4)
         exp_card =  transaction_detail.transaction.payment.creditCard.expirationDate
 
         transaction = Transaction.select(:amount, :ref_id, :trans_id).find_by(trans_id: @refund.trans_id)

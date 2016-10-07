@@ -1,22 +1,22 @@
 - unless @error_response
-  table.table.table-striped.table-hover
-    thead
-      tr
-        th Room type
-        th Amenities
-        th colspan="2" Total booking price
+  .table-responsive
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th Room type
+          th Amenities
+          th colspan="2" Total booking price
 
-      tbody
-        - if @room_availability["@size"].eql? "1"
-          = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"]
-        - else
-          - @room_availability["HotelRoomResponse"].uniq.each do |room|
-
-            = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"]
+        tbody
+          - if @room_availability["@size"].eql? "1"
+            = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
+          - else
+            - @room_availability["HotelRoomResponse"].uniq.each do |room|
+              = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
 
 - if @error_response
-  #error_response.alert.alert-info
-    strong Notice: &nbsp;
+  #error_response.alert.alert-success style="position: relative !important"
+    strong Cannot get room availability informations for this hotel, please try again later. Reason: &nbsp;
     = @error_response
 - else
   #error_response.alert.alert-info.hide

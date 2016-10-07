@@ -1,20 +1,26 @@
 doctype html
 html lang="en"
   head
-    title Traveltrunk
-    = stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true
+    title Travel Trunk
+
+    meta charset="utf-8"
+    meta content="IE=edge" http-equiv="X-UA-Compatible"
+    meta content="width=device-width, initial-scale=1" name="viewport"
+
+    link href=("/favicon.ico") rel=("shortcut icon") type='image/x-icon'
+
+    = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = yield :css
+
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    - if Rails.env.eql? 'production'
-      = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyBQolMUFZOcsbrcYVyg4ypd0RyZvMuKbzY&signed_in=true&libraries=places"
-    - else
-      = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=AIzaSyCAT4MD-BT8TBMYqlhtkaFvth4cRvz-mGE&signed_in=true&libraries=places"
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&signed_in=true&libraries=places"
+    = render 'partials/google_analytic'
+
     = csrf_meta_tags
 
   body class="bg-gradient" data-controller="#{controller_name}" data-action="#{action_name}"
-    = yield
+    / = render 'partials/notice'
 
-    / Please change this footer
-    = render 'partials/footer_no_navbar'
+    = yield
 
     = yield :javascripts

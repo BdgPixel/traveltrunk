@@ -17,28 +17,8 @@ class Admin::PromoCodesController < Admin::ApplicationController
     @promo_code = PromoCode.new(promo_code_params)
     amount_in_cents = (@promo_code.amount.to_f * 100).to_i
 
-    # apc = add_promo_code
-    # invoice_cc = AuthorizeNetLib::Global.generate_random_id('inv_apc')
-
     if @promo_code.save
-      # Transaction.create(
-      #   user_id: @promo_code.user.id,
-      #   amount: amount_in_cents, 
-      #   transaction_type: 'add_promo_code',
-      #   invoice_id: invoice_cc,
-      #   customer_id: @promo_code.user.customer.customer_id
-      # )
-
-      # @promo_code.user.create_activity(
-      #   key: 'add_promo_code', 
-      #   owner: @promo_code.user,
-      #   recipient: @promo_code.user,
-      #   parameters: { 
-      #     amount: @promo_code.amount.to_f / 100.0
-      #   }
-      # )
-
-      PromoCodeMailer.promo_code_created(@promo_code).deliver_now
+      PromoCodeMailer.delay.promo_code_created(@promo_code)
       redirect_to admin_promo_codes_url, notice: 'Promo code was successfully created'
     else
       render :new

@@ -16,7 +16,6 @@ class UsersGroup < ActiveRecord::Base
   end
 
   def accept_invitation
-    # InvitationMailer.information_after_invited(self.member.id).deliver_now
     self.create_activity key: "group.accept_invitation", owner: self.member,
       recipient: self.joined_group.user, parameters: { token: self.invitation_token }
   end
@@ -28,7 +27,6 @@ class UsersGroup < ActiveRecord::Base
 
     def send_invitation_notification
       current_user = self.joined_group.user
-      # InvitationMailer.invite(current_user, self).deliver_now
       self.create_activity key: "group.invitation_sent", owner: current_user,
         recipient: User.find(self.user_id), parameters: { token: self.invitation_token, group_id: current_user.id }
     end

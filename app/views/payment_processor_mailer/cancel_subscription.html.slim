@@ -1,6 +1,19 @@
-SubscriptionMailer#updated
-  p = "Hello #{@profile.first_name} #{@profile.last_name}"
+p#subscriptionCanceled
+  | Hi #{@profile.try(:first_name).try(:titleize)},
 
-  p You've successfully cancels a customer’s subscription
+  br
+  br
 
-  p = render 'partials/footer_mailer'
+  | You've successfully deleted your savings plan.
+
+  br
+  br
+
+  | This means you’ve discontinued your savings plan and we won't charge your credit card every certain period anymore.
+
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

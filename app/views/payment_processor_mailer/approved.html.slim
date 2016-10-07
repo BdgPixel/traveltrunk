@@ -1,6 +1,14 @@
-RefundMailer#approved
-  p = "Hi #{@refund.user.profile.first_name}"
-  p
-    | Your refund request has been approved. 
-    
-  p = render 'partials/footer_mailer'
+p#refundApproved
+  | Hi #{@refund.user.try(:profile).try(:first_name).try(:titleize)},
+
+  br
+  br
+  
+  | Your refund request has been approved by admin. 
+  
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

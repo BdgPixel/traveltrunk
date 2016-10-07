@@ -5,13 +5,13 @@ class InvitationMailer < ApplicationMailer
     @invite = user_invite
     @current_user = current_user
 
-    mail to: user.email, subject: 'TravelTrunk Invitation Group'
+    mail to: user.email, subject: "You’ve been invited to join Travel Trunk"
   end
 
   def information_after_invited(joined_user)
     user = User.select(:email).find(joined_user)
     @user_group = UsersGroup.find_by(user_id: joined_user)
 
-    mail to: user.email, subject: 'TravelTrunk Information'
+    mail to: user.email, subject: "You’ve been invited to join Travel Trunk"
   end
 end

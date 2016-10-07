@@ -1,6 +1,9 @@
 - if activity.trackable
-  tr
-    td.activity
-      | Your savings plan successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account. Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
-      small
-        i = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")
+	.notif-background
+		.description
+			span
+				| Your savings plan successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account with Transaction ID (#{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
+				
+		.date 
+			span
+				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

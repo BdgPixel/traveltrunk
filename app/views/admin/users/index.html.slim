@@ -1,29 +1,79 @@
-h3 List of Users
-br
+.pad-top-97
+.container
+  h3 List of Users
 
-- if @users.empty?
-  .alert.alert-info
-    strong Notice:&nbsp;
-    | No users has been created
+  br
 
-- else
-  table.table.table-striped.table-hover
-    thead
-      tr
-        th Email
-        th Name
-        th Address
-        th Gender
-        th
+  - if @users.empty?
+    .alert.alert-info
+      strong Notice:&nbsp;
+      | No users has been created
 
-    tbody
-      - @users.each do |user|
-        - if user.profile
+  - else
+    table.table.table-striped.table-hover
+      thead
+        tr
+          th #ID
+          th Email
+          th Name
+          th Address
+          th Gender
+          th Total Credit
+          th Register at
+          th
+          th
+          th
+
+      tbody
+        - @users.each do |user|
           tr
+            td = user.id
             td = user.email
-            td = user.profile.full_name
-            td = user.profile.address.titleize rescue 'Information not specified'
-            td = user.profile.gender ? user.profile.gender : 'Information not specified'
+            td = user.profile.try(:full_name)
+            td = user.profile.try(:address).try(:titleize) || 'Information not specified'
+            td = user.profile.try(:gender) || 'Information not specified'
+            td.text-right = currency user.total_credit_in_usd
+            td = user.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
             td
-              = link_to 'Detail', admin_user_path(user), class: 'btn btn-orange'
-  = paginate @users
+              = link_to admin_user_path(user), data: {:confirm => 'Are you sure delete the user?'}, :method => :delete, class: 'btn btn-saving btn-orange-soft'
+                i.glyphicon.glyphicon-trash
+            td = link_to 'Detail', admin_user_path(user), class: 'btn btn-saving btn-orange-soft'
+            td = link_to 'Correct Amount', 'javascript:void(0)', class: 'btn btn-saving btn-yellow btn-correct-amount', data: { id: user.id, current_amount: user.total_credit_in_usd }, style: 'background-color'
+                
+    = paginate @users
+
+
+#modalCorrectAmount.modal.fade aria-labelledby="modalCorrectAmount" data-backdrop="static" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+
+        h4#myModalLabel.modal-title Correct Amount
+
+      = simple_form_for :user, method: :put, html: { id: 'formCorrectAmount' } do |f|
+        .modal-body
+          .alert.alert-danger style="max-width: 95%"
+            | Be carefull, you will change the user amount
+          br
+          br
+          br
+          br
+          = f.label :current_amount, 'Current Amount'
+          .form-group
+            = f.input_field :current_amount, class: "form-control", placeholder: "$0.0", readonly: true
+
+          = f.label :total_credit, 'Amount'
+          .form-group
+            = f.input_field :total_credit, class: "form-control", placeholder: "$0.0", autofocus: true
+            
+            span.error = flash[:error]
+
+        .modal-footer
+          = f.submit "Save", class: "btn btn-saving btn-green"
+
+          | &nbsp;&nbsp;
+
+          button.btn.btn-saving.btn-orange-soft data-dismiss="modal" type="button"
+            | Close

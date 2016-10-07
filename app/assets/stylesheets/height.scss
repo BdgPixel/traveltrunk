@@ -1,0 +1,74 @@
+html {
+  position: relative;
+  height: 100%;
+  overflow: visible;
+}
+
+.footer.footer-custom {
+  position: relative;
+}
+
+body {
+  padding-bottom: 0px;
+  overflow: visible;
+}
+
+#logo-color-white {
+  &.color {
+    background: image-url("logo_white.png") no-repeat;
+  }
+}
+
+.wrapper-navbar-traveltrunk .navbar-default.transparent {
+	background-color: transparent;
+  @media screen and (max-width: 480px) {
+    background: rgba(128, 128, 128, 0.84);
+  }
+}
+
+.wrapper-navbar-traveltrunk .navbar-default.transparent.scrolling {
+	background-color: white;
+}
+
+.wrapper-navbar-traveltrunk .navbar-default ul a {
+	color: white;
+}
+
+.wrapper-navbar-traveltrunk .navbar-default ul a.btn-border {
+  border: 2px solid white;
+  
+  &:hover {
+    border: 2px solid white;
+    background-color: rgba(255, 255, 255, 0.44);
+  }
+}
+
+.link-top-login {
+  a {
+    color: white !important;
+    &:hover {
+      color: white !important;
+    }
+  }
+}
+
+.dropdown-top-active {
+  a {
+    &:hover {
+      color: white !important;
+    }
+  }
+}
+
+.grey-nav-color {
+  a {
+    color: grey !important;
+  }
+}
+
+a.login.show {
+  &:hover {
+    color: white !important;
+    opacity: 0.5;
+  }
+}

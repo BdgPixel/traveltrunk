@@ -1,0 +1,16 @@
+<% if current_user.errors.present? %>
+  <% current_user.errors.each do |errorKey, errorMessage| %>
+    errorKey = "<%= errorKey.to_s.split('.').last %>";
+    $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
+  <% end %>
+<% else %>
+  $.get("<%= edit_profile_path %>", function(data) {
+    $('#showBankAccount').html("<%= j render 'profiles/form_modal_bank_account', is_remote: true %>");
+    $('.error').text('');
+    validationForm();
+    initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer');
+    // $('#showBankAccount').show();
+    $('#modalUserProfile .modal-title').text('Create Your Savings Plan');
+    $('#myCarousel').carousel(1);
+  });
+<% end %>

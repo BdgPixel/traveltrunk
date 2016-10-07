@@ -1,8 +1,3 @@
-/* Place all the styles related to the Deals controller here.
- * They will automatically be included in application.css.
- * You can use Sass (SCSS) here: http://sass-lang.com/
-*/
-
 .col-deals {
   margin-top: 20px;
   padding: 2px !important;
@@ -47,7 +42,35 @@ p.content-deals.text-center {
   display: none;
 }
 
+.mar-btm-60 {
+  margin-bottom: 60px;
+}
+
+.room-wrapper {
+  padding: 40px 0;
+
+  #roomAvailability {
+    -moz-border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -ms-border-radius: 5px;
+    border-radius: 5px;
+    padding: 20px;
+    -webkit-box-shadow: 0px 15px 35px -10px rgba(0, 0, 0, 0.44);
+    -moz-box-shadow: 0px 15px 35px -10px rgba(0, 0, 0, 0.44);
+    box-shadow: 0px 15px 35px -10px rgba(0, 0, 0, 0.44);
+  }
+
+  a {
+    font-size: 16px;
+  }
+
+}
+
 .wrapper-gallery-deals {
+
+  -webkit-box-shadow: 0px 15px 35px -10px rgba(0, 0, 0, 0.44);
+  -moz-box-shadow: 0px 15px 35px -10px rgba(0, 0, 0, 0.44);
+  box-shadow: 0px 15px 35px -10px rgba(0, 0, 0, 0.44);
 
   .blueimp-gallery {
     background-color: #ffffff;
@@ -102,18 +125,26 @@ p#pagination-info{
 }
 
 // Override jquery simple pagination button style
-.light-theme{
-  a{
-    color: #f7941e !important;
-    padding: 5px 10px !important;
+.light-theme {
+
+  a {
+
+    background-color: transparent;
+    color: #36b3af !important;
+    padding: 4px 12px !important;
   }
 
-  .current{
-    color: #f7941e !important;
-    background-color: #edefed !important;
-    border: 1px solid #c4c4c4 !important;
+  .current {
+    color: #ffffff !important;
+    background-color: #36b3af !important;
     box-shadow: 0px 0px 0px;
-    padding: 5px 10px !important;
+    padding: 4px 12px !important;
+
+  }
+
+  .prev {
+    color: #36b3af !important;
+    background-color: transparent !important;
   }
 }
 
@@ -140,4 +171,31 @@ p#pagination-info{
 
 .popover {
   max-width: 100%;
+}
+
+.wrapper-pagination {
+  margin: 0 auto;
+  #pagination {
+    padding: 0;
+    ul {
+      padding: 15px 0;
+      list-style: none;
+      margin: 0;
+      width: 100%;
+      text-align: center;
+      display: block;
+      li {
+        display: inline-block;
+        float: none;
+      }
+    }
+  }
+}
+
+.hotel-voter-list-container .popover.top{
+  right: 0;
+}
+
+.room-wrapper .popover.top{
+  left: 0 !important;
 }

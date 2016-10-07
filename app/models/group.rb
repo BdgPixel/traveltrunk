@@ -8,6 +8,8 @@ class Group < ActiveRecord::Base
 
   friendly_id :name, use: [:slugged, :finders]
 
+  before_destroy :destroy_destination
+
   def should_generate_new_friendly_id?
     slug.blank? || name_changed?
   end
@@ -17,4 +19,8 @@ class Group < ActiveRecord::Base
     members.map(&:total_credit).sum + self.user.total_credit
   end
 
+  private
+    def destroy_destination
+      self.destination.destroy
+    end
 end

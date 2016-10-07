@@ -1,15 +1,4 @@
 /*
- * This is a manifest file that'll be compiled into application.css, which will include all the files
- * listed below.
- *
- * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
- * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
- *
- * You're free to add application-wide styles to this file and they'll appear at the bottom of the
- * compiled file so the styles you add here take precedence over styles defined in any styles
- * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
- * file per style scope.
- *
  *= require twitter/bootstrap
  *= require bootstrap-datepicker
  *= require nprogress
@@ -28,7 +17,6 @@ input[type=number]::-webkit-outer-spin-button {
   -webkit-appearance: none;
   -moz-appearance: textfield;
   margin: 0;
-
 }
 
 #loading {
@@ -39,10 +27,6 @@ input[type=number]::-webkit-outer-spin-button {
   width: 100%;
   height: 100%;
   z-index: 9999;
-  display: none;
-}
-
-#slideToggle {
   display: none;
 }
 
@@ -61,12 +45,33 @@ input[type=number]::-webkit-outer-spin-button {
   color: red;
 }
 
+.registration {
+  span.error {
+    color: #ffffff;
+  }
+}
+
+.forgot-password {
+  span.error {
+    color: #ffffff;
+  }
+}
+
 span.error {
-  color: #ffffff;
   display: block;
   padding: 10px 0px;
 }
 
+.wrapper-edit-profile {
+
+  span.error  {
+    color: red;
+  }
+
+  .thumbnail {
+    padding:15px;
+  }
+}
 .notification-bubble {
   background: rgb(239,62,54); /* Old browsers */
   background: -moz-linear-gradient(top,  rgb(239,62,54) 0%, rgb(247,148,30) 100%); /* FF3.6+ */
@@ -94,4 +99,11 @@ span.error {
 
 .name-saving {
   padding-left:0 !important;
+}
+
+// override bootstrap token-input
+
+li.token-input-token{
+  padding: 2% 1% !important;
+  font-size: 1em !important;
 }

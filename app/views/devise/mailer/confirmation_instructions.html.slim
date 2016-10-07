@@ -1,6 +1,24 @@
-p = "Hi #{@user.profile.first_name},"
 p
-  |Thank you for signing up and welcome to Travel Trunk! Before you can start saving for your next vacation let’s confirm your account. Please click the link below.
-p = link_to "Confirm my new Travel Trunk account", confirmation_url(@resource, confirmation_token: @token)
+  = "Hi #{ @user.profile.try(:first_name).try(:titleize) }," 
 
-p = render "partials/footer_mailer"
+  br
+  br
+
+  | Welcome to Travel Trunk!
+
+  br
+  br
+
+  | Before you can start saving for your next vacation, let’s confirm your account. To do this, simply click the link below. 
+
+  br
+  br
+
+  = link_to "Confirm my new Travel Trunk account", confirmation_url(@resource, confirmation_token: @token)
+
+  br
+  br
+
+  | Happy travels,
+  br
+  = render "partials/footer_mailer"

@@ -1,11 +1,9 @@
 class ApplicationController < ActionController::Base
   hide_action :current_user
   before_action :get_unread_notification_count
-  # before_action :authenticate
   before_action :authenticate_page
+  before_action :set_request_headers
 
-  # Prevent CSRF attacks by raising an exception.
-  # For APIs, you may want to use :null_session instead.
   protect_from_forgery with: :exception
 
   layout :layout_by_resource
@@ -19,11 +17,7 @@ class ApplicationController < ActionController::Base
   protected
     def layout_by_resource
       if devise_controller?
-        if (controller_name.eql?('sessions') && action_name.eql?('new')) || (controller_name.eql?('registrations') && ['new', 'create'].include?(action_name))
-          'bg_gradient_no_navbar'
-        else
-          'application'
-        end
+        'bg_gradient_navbar'
       else
         'application'
       end
@@ -31,9 +25,9 @@ class ApplicationController < ActionController::Base
 
     def after_sign_in_path_for(resource)
       if resource.admin?
-       admin_promo_codes_url
+        admin_promo_codes_url
       else
-        root_url
+        deals_url
       end
     end
 
@@ -51,5 +45,10 @@ class ApplicationController < ActionController::Base
       if user_signed_in? && current_user.try(:admin?) && !devise_controller?
         redirect_to admin_users_url
       end
+    end
+
+    def set_request_headers
+      Expedia::Hotels.set_request_headers =
+        { customer_ip: request.remote_addr, customer_user_agent: request.user_agent }
     end
 end
