@@ -9,7 +9,7 @@
   #myCarousel-1.carousel.slide data-ride="carousel"
     .carousel-inner role="listbox"
       .item.active
-        video#video-background autoplay="" loop="" muted="" 
+        video#video-background autoplay="" loop="" muted=""
           source src="#{video_path('movie.mp4')}" type="video/mp4"
           source src="#{video_path('movie.webm')}"
 
@@ -35,7 +35,7 @@
             .container
               .row
                 .col-md-12
-                  .wrapper-search-deal.wrapper-home-search-deal
+                  .wrapper-search-deal.wrapper-home-search-deal.hidden-xs
                     .home-search-deal
                       .col-xs-4.no-pad-left.no-pad-right
                         .form-group
@@ -75,11 +75,19 @@
                         .form-group
                           = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
 
+                .wrapper-where-search.hidden-sm.hidden-md.hidden-lg
+                  .col-md-12
+                    button.btn.btn-default.btn-block type="button" data-toggle="modal" data-target="#myModal"
+                      span.text
+                        | Where would you like to be?
+                      span.btn-search
                 .col-md-12.video-credit
-                  p 
+                  p
                     span.name TREY F.
                     br
                     span.location IN TURKS & CAICOS
+
+
 
     / .wrap-arrow-down
     /   .arrow-down
@@ -196,5 +204,36 @@ section.couple.parallax-image2
                     | and the world is at your fingertips.
 
                   = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
+
+#myModal.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+        h4#myModalLabel.modal-title Search
+      .modal-body
+        .wrapper-where-serach-form
+          form
+            .form-group
+              .col-md-12
+                input type="text" placeholder="Where would you like to be?"
+            .form-group
+              .col-md-12
+                input type="text" placeholder="Arriving when?"
+            .form-group
+              .col-md-12
+                input type="text" placeholder="Arriving when?"
+            .form-group
+              .col-md-12
+                select.form-control
+                  option 1
+                  option 2
+                  option 3
+                  option 4
+                  option 5
+
+      .modal-footer
+        button.btn.btn-primary.btn-block type="button"  Find
 
 = render 'partials/footer'

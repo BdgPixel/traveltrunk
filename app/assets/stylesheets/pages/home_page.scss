@@ -434,6 +434,8 @@ section.vacation {
 					  margin-top: 50px;
 					  line-height: 60px;
 					  margin-bottom: 84px;
+					  word-spacing: 5px;
+					  letter-spacing: -4px;
 					}
 				}
 
@@ -553,10 +555,26 @@ video {
 	font-size: 16px;
 
 	.name {
-		font-weight: bold;;
+		font-weight: bold;
+		display: block;
 	}
 
 	.location {
 		font-weight: 500;
+	}
+
+	@media (max-width: 768px) {
+  	margin-top: 0px;
+  	line-height: 12px;
+	}
+
+	@media (min-width: 768px) {
+  	margin-top: 8px;
+  	line-height: 12px;
+	}
+
+	@media (min-width: 1200px) {
+  	margin-top: -5px;
+  	line-height: 12px;
 	}
 }
