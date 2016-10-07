@@ -76,14 +76,14 @@ gem 'exception_notification'
 
 gem 'redis-namespace'
 
+gem 'web-console', '~> 3.1', '>= 3.1.1', group: :development
+
 group :development, :test do
   gem 'rspec', '~> 3.4'
 
   gem 'binding_of_caller'
 
   gem 'pry-byebug'
-
-  gem 'web-console', '~> 3.1', '>= 3.1.1'
 
   gem 'spring'
 
