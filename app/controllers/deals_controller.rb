@@ -7,6 +7,7 @@ class DealsController < ApplicationController
     :confirmation_page]
   before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book,
     :update_credit]
+  before_action :redirect_to_root, only: [:search]
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :update_arrival_and_departure_date, only: [:index, :create_book, :room_availability]
   before_action :create_destination, only: [:search]
@@ -26,7 +27,7 @@ class DealsController < ApplicationController
   end
 
   def search
-    session[:customer_session_id] = @hotels_list.first[:customer_session_id] unless session[:customer_session_id]
+    session[:customer_session_id] = @hotels_list.first[:customer_session_id]
 
     respond_to do |format|
       format.html
@@ -533,6 +534,10 @@ class DealsController < ApplicationController
       params.require(:search_deals).permit(:destination_string, :city, :state_province_code,
         :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code,
         :number_of_adult)
+    end
+
+    def redirect_to_root
+      redirect_to root_url unless params[:search_deals]
     end
 
     def payment_params
