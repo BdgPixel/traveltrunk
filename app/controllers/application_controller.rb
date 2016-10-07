@@ -2,6 +2,7 @@ class ApplicationController < ActionController::Base
   hide_action :current_user
   before_action :get_unread_notification_count
   before_action :authenticate_page
+  before_action :set_request_headers
 
   protect_from_forgery with: :exception
 
@@ -44,5 +45,10 @@ class ApplicationController < ActionController::Base
       if user_signed_in? && current_user.try(:admin?) && !devise_controller?
         redirect_to admin_users_url
       end
+    end
+
+    def set_request_headers
+      Expedia::Hotels.set_request_headers =
+        { customer_ip: request.remote_addr, customer_user_agent: request.user_agent }
     end
 end

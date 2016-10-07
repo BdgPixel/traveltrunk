@@ -18,6 +18,16 @@ module Expedia
       @customer_session_id
     end
 
+    def self.set_request_headers=(request)
+      @customer_ip = request[:customer_ip]
+      @customer_user_agent = request[:customer_user_agent]
+    end
+
+    def self.request_headers
+      @customer_ip
+      @customer_user_agent
+    end
+
     def self.global_api_params_hash
       api_key = ENV['EXPEDIA_API_KEY']
       shared_secret = ENV['EXPEDIA_SHARED_SECRET']
@@ -32,7 +42,9 @@ module Expedia
         'sig' => sig,
         'minorRev' => 30,
         'locale' => "en_US",
-        'currencyCode' => "USD"
+        'currencyCode' => "USD",
+        'customerIpAddress' => @customer_ip,
+        'customerUserAgent' => @customer_user_agent
       }
 
       merge_config_hash = config_hash.merge('customerSessionId' => session_customer_id)
@@ -65,7 +77,6 @@ module Expedia
 
             url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
             xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
-
             url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
             
             begin
