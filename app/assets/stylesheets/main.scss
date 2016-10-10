@@ -586,6 +586,10 @@ h2, h3, h4 {
   }
   a {
     font-size: 18px;
+
+    @media (max-width: 768px) {
+      font-size: 15px;
+    }
   }
 }
 
