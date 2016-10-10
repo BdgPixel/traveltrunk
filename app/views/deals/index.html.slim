@@ -25,7 +25,7 @@
           .slide
             .text-header-slide
               h1.text-center
-                span data-toggle="tooltip" data-placement="bottom" data-title="Click here to search other destinations and change dates"
+                span data-toggle="tooltip" data-placement="bottom" data-title="Click the arrow to search for other destinations and or change dates"
                   - if current_user.profile.birth_date && current_user.bank_account && current_user.total_credit > 0
                     = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "#slideToggle", id:'slideToggleLink', class: "arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse', placement: 'bottom', title: 'Click here to search other destinations and change dates' }
                   - else
