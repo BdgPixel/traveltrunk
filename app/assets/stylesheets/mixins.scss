@@ -83,6 +83,7 @@ input[type="text"],input[type="password"], input[type="email"] {
   -ms-transition: all 250ms ease-in-out 0s;
   -o-transition: all 250ms ease-in-out 0s;
   transition: all 250ms ease-in-out 0s;
+
   &:hover {
   	color: white;
   	background-color: #4fc0c0;
@@ -287,12 +288,25 @@ a.round-slide-prev {
 			height: 45px;
 	    left: 25px;
     	margin-top: -7px;
+
+      @media (max-width: 768px) {
+        width: 30px;
+        height: 30px;
+        left: 7px;
+        margin-top: 0px;
+        background-size: cover;
+      }
 		}
 
 		&:hover,
 		&:focus {
 			background-color: #314b96;
 		}
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+      padding-left: 35px;
+    }
   }
 
   &.google-plus {
@@ -306,12 +320,25 @@ a.round-slide-prev {
 			width: 45px;
 			height: 45px;
 	    left: 30px;
+
+      @media (max-width: 768px) {
+        width: 30px;
+        height: 30px;
+        left: 7px;
+        margin-top: 0px;
+        background-size: cover;
+      }
   	}
 
 		&:hover,
 		&:focus {
 			background-color: #f7f5f5;
 		}
+
+    @media (max-width: 768px) {
+      font-size: 16px;
+      padding-left: 35px;
+    }
   }
 
   .mar-bottom {
