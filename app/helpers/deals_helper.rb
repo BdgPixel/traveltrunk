@@ -49,6 +49,34 @@ module DealsHelper
     tags.html_safe
   end
 
+  def surcharge(cost)
+    tags = ""
+
+    if cost['@size'].to_i > 1
+      cost['Surcharge'].each do |surcharge|
+        tags += "<tr><td class='m_2076496084396982010border-right' style='border-right-width:1px;border-right-style:solid'>"
+          tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>"
+            tags += surcharge['@type']
+          tags +="</font>"
+        tags +="</td>"
+        tags += "<td align='center'>"
+          tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>#{surcharge['@amount']}</font>"
+        tags +="</td></tr>"
+      end
+    else
+      tags += "<tr><td class='m_2076496084396982010border-right' style='border-right-width:1px;border-right-style:solid'>"
+        tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px>"
+          tags += cost['Surcharge']['@type']
+        tags +="</font>"
+      tags +="</td>"
+      tags += "<td align='center'>"
+        tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>#{cost['Surcharge']['@amount']}</font>"
+      tags +="</td></tr>"
+    end
+
+    tags.html_safe
+  end
+
   def number_of_adults_collection
     number_of_array = []
     1.upto(8) { |i| number_of_array << [pluralize(i, 'Guest'), i] }

@@ -123,6 +123,7 @@ class DealsController < ApplicationController
         arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
         departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
         reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
+        reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
 
         if @group
           members = @group.members.to_a
@@ -145,6 +146,7 @@ class DealsController < ApplicationController
             reservation.save
 
             @reservation_id = reservation.id
+            ReservationMailer.reservation_created(@reservation, member.id, reservation_info).deliver_now
           end
 
           @group.destroy
@@ -158,8 +160,9 @@ class DealsController < ApplicationController
           reservation = current_user.reservations.new(reservation_params)
           reservation.save
           @reservation_id = reservation.id
+          ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
         end
-
+        
         flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
 
         redirect_to deals_confirmation_page_path(reservation_id: @reservation_id)
