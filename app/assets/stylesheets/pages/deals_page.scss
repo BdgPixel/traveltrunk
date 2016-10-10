@@ -282,6 +282,7 @@
       font-family: 'Avenirregular';
 			color: #ffffff;
 		}
+
 		p {
 			font-size: 20px;
 			max-width: 900px;
@@ -472,6 +473,13 @@
 	  	}
 	  }
 	}
+
+  h1 {
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+    }
+  }
 }
 
 .search-top {
