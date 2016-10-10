@@ -542,8 +542,9 @@ h2, h3, h4 {
 // Saving Page
 
 .wrapper-group-saving {
-
   padding: 150px 0px;
+  max-width: 1000px;
+  margin: 0 auto;
 
   img {
     @media screen and (max-width: 768px) {
@@ -555,13 +556,21 @@ h2, h3, h4 {
   .btn-default {
     @extend .btn-invite-friend;
   }
+
   h1.text-center {
     font-size: 3.0em;
     padding-left: 25px;
+
   }
+
   h1 {
     font-size: 45px;
+
+    @media (max-width: 768px) {
+      font-size: 33px;
+    }
   }
+
   h3 {
     font-size: 32px;
   }
@@ -1154,3 +1163,69 @@ a.login.show {
 // }
 
 // End
+
+.swipe-group-saving {
+
+  img {
+    margin: 0 auto;
+  }
+}
+
+.wrapper-nav-fluid {
+  margin-bottom: 15px;
+
+  nav {
+    background: transparent;
+    border: 1px solid transparent;
+    border-right: none;
+    width: 100%;
+    margin-bottom: 0px;
+  }
+
+  nav ul {
+    margin: 0;
+    padding: 0;
+  }
+
+  nav ul li {
+    list-style: none;
+    text-align: center;
+    border-right: 0px solid transparent;
+
+    &:last-child {
+      border-right: 0px solid transparent;
+    }
+  }
+
+  nav ul li:first-child {
+    border-left: none;
+  }
+
+  nav ul li a {
+    display: block;
+    text-decoration: none;
+    padding: 0px 0;
+  }
+
+  nav {
+    display: table;
+    table-layout: fixed;
+
+    @media (max-width: 768px) {
+      padding: 0px 15px
+    }
+  }
+
+  ul {
+    display: table-row;
+  }
+
+  ul li {
+    display: table-cell;
+
+    @media (min-width: 1200px) {
+      display: inline-flex;
+    }
+  }
+
+}

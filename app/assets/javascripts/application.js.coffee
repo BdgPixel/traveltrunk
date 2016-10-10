@@ -6,6 +6,7 @@
 # = require twitter/bootstrap
 # = require jquery.validate
 # = require jquery.parallax-1.1.3
+# = require slick
 # = require custom
 
 $(document).ajaxSend ->
