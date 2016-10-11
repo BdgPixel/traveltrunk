@@ -146,7 +146,7 @@ class DealsController < ApplicationController
             reservation.save
 
             @reservation_id = reservation.id
-            ReservationMailer.reservation_created(@reservation, member.id, reservation_info).deliver_now
+            ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
           end
 
           @group.destroy
@@ -159,6 +159,7 @@ class DealsController < ApplicationController
           # create reservation for single user instead, if user don't have group
           reservation = current_user.reservations.new(reservation_params)
           reservation.save
+          
           @reservation_id = reservation.id
           ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
         end

@@ -65,7 +65,7 @@ module DealsHelper
       end
     else
       tags += "<tr><td class='m_2076496084396982010border-right' style='border-right-width:1px;border-right-style:solid'>"
-        tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px>"
+        tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>"
           tags += cost['Surcharge']['@type']
         tags +="</font>"
       tags +="</td>"
