@@ -506,6 +506,40 @@ h2, h3, h4 {
 
   .hotel-name {
     line-height: 55px;
+
+    @media (max-width: 768px) {
+      font-size: 26px;
+      margin-top: 37px;
+      margin-bottom: 30px;
+      line-height: 35px;
+    }
+  }
+
+  #hotelRating {
+
+    @media (max-width: 768px) {
+      float: none !important;
+      text-align: center;
+    }
+
+    img {
+
+      @media (max-width: 768px) {
+        width: 20px;
+      }
+    }
+  }
+
+  .rating-text {
+
+    @media (max-width: 768px) {
+      text-align: center;
+      line-height: 43px;
+    }
+
+    @media (min-width: 1200px) {
+      margin-top: 15px;
+    }
   }
 
   .icon-deals {
@@ -1231,5 +1265,4 @@ a.login.show {
       display: inline-flex;
     }
   }
-
 }

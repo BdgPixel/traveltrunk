@@ -199,3 +199,181 @@ p#pagination-info{
 .room-wrapper .popover.top{
   left: 0 !important;
 }
+
+
+#roomAvailability {
+  overflow: hidden;
+}
+
+.room-wrapper {
+
+  .wrapper-head-room {
+    overflow: hidden;
+    padding: 10px 0px;
+
+    .head-room-type, .head-amenities, .head-book-price {
+      float: left;
+      width: 25%;
+      font-weight: bold;
+
+      @media (max-width: 768px) {
+        display: none;
+      }
+
+      @media (min-width: 768px) {
+        display: block;
+      }
+    }
+
+    .head-room-type {
+
+      @media (min-width: 768px) {
+        width: 35%;
+      }
+    }
+
+    .head-amenities {
+
+      @media (min-width: 768px) {
+        width: 20%;
+      }
+    }
+  }
+
+  .wrapper-body-room {
+    padding: 10px 5px;
+    overflow: hidden;
+
+    .room-type,
+    .amenities,
+    .booking-price,
+    .btn-let-go {
+      float: left;
+    }
+
+    .room-type {
+
+      .title-room {
+        font-weight: bold;
+        margin-bottom: 20px;
+      }
+
+      .room-desc {
+        margin: 20px 0px;
+      }
+
+      img {
+        width: 200px;
+      }
+    }
+
+    .amenities {
+
+      .offers {
+        font-size: 15px;
+      }
+    }
+
+    .booking-price {
+
+      .price {
+        font-size: 24px;
+        font-weight: bold;
+      }
+    }
+
+    .btn-let-go {
+      text-align: right;
+
+      a {
+        width: 200px;
+
+        @media (max-width: 768px) {
+          width: 100%;
+        }
+
+       @media (min-width: 768px) {
+          width: 100%;
+        }
+      }
+    }
+
+
+    .room-type {
+      width: 25%;
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+
+      @media (min-width: 768px) {
+        width: 35%;
+      }
+    }
+
+    .amenities {
+      width: 25%;
+
+     @media (max-width: 768px) {
+        width: 100%;
+      }
+
+      @media (min-width: 768px) {
+        width: 20%;
+      }
+    }
+
+    .booking-price {
+      width: 25%;
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+
+      @media (min-width: 768px) {
+        width: 25%;
+      }
+    }
+
+    .btn-let-go {
+      width: 25%;
+
+      @media (max-width: 768px) {
+        width: 100%;
+      }
+
+      @media (min-width: 768px) {
+        width: 20%;
+      }
+    }
+  }
+}
+
+ .wrapper-body-room {
+
+  border-top: 1px solid #dddddd;
+
+  &:nth-of-type(odd) {
+    background-color: #f9f9f9;
+  }
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+ }
+
+.title-mobile, .title-row {
+  font-weight: bold;
+  border-bottom: 2px solid #dddddd;
+  margin: 10px 0px;
+  padding: 10px 0px;
+
+  @media (min-width: 760px) {
+    display: none;
+  }
+
+  @media (min-width: 1200px) {
+    display: none;
+  }
+}
+

@@ -7,12 +7,12 @@
 .wrapper-detail-deals
   .container
     .row
-      .col-md-6
+      .col-xs-5.col-md-6
         h1 = session[:nightly_price]
         br
         = back_link_to_deals_page
-      
-      .col-md-6
+
+      .col-xs-7.col-md-6
         h3.hotel-name.text-right = unescape_expedia_html(@hotel_information["HotelSummary"]["name"])
 
       .col-sm-12
@@ -20,10 +20,10 @@
         .row
           .text-left.col-md-12
             .row
-              .col-md-12
+              .col-xs-6.col-md-12
                 #hotelRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
 
-              .col-xs-12.col-md-6.mar-top-15
+              .col-xs-6.col-md-6
                 .rating-text style="clear:both" = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
               .col-xs-12.col-md-6.hotel-voter-list-container
@@ -134,7 +134,7 @@
 
             #collapseAmenity.collapse
               p.text-justify = @hotel_information["HotelDetails"]["amenitiesDescription"]
-              
+
             br
             br
             br
