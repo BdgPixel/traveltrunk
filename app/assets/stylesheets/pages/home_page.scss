@@ -254,8 +254,13 @@ section.money {
 			font-family: 'Avenirbold';
 			text-align: left;
 		  font-size: 45px;
+
 			@media screen and (max-width: 480px) {
 				font-size: 40px;
+			}
+
+			@media (max-width: 768px) {
+				font-size: 24px;
 			}
 		}
 
@@ -332,8 +337,13 @@ section.couple {
 			h2 {
 				font-family: 'Avenirbold';
 				font-size: 45px;
+
 				@media screen and (max-width: 480px) {
 					font-size: 30px;
+				}
+
+				@media screen and (max-width: 768px) {
+					font-size: 24px;
 				}
 			}
 
