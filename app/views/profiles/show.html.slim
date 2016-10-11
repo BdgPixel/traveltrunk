@@ -34,18 +34,18 @@
 
   .wrapper-profile-content
     .container
-      .row  
+      .row
         .col-md-12.col-lg-12 class="#{ @hide_informations.eql?(true) ? 'hide' : 'show'}"
           .wrapper-personal-information
             .row
               .col-sm-offset-3.col-sm-6
-                h3.color-orange PERSONAL INFORMATION
+                h3 Personal Information
 
                 table.table.table-user-information.table-custom
                   tbody
                     tr
                       td width='50%' Date of Birth
-                      td 
+                      td
                         | : &nbsp;
                         = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
                     tr
@@ -58,7 +58,7 @@
                       td
                         | : &nbsp;
                         = @user.profile.address.try(:titleize) || 'Information not specified'
-                    
+
                     - unless @user.profile.address_1.blank?
                       tr
                         td Address 1:
@@ -96,23 +96,23 @@
 
               .col-sm-offset-3.col-sm-6
                 h3.color-orange SAVINGS PLAN
-                
+
                 - if @user.bank_account
                   table.table.table-user-information.table-custom
                     tbody
                       tr
                         td width='50%' Plan Name
-                        td 
+                        td
                           | : &nbsp;
                           = @user.subscription.plan_name
                       tr
                         td Amount
-                        td 
+                        td
                           | : &nbsp;
                           = number_to_currency(@user.bank_account.amount_transfer)
                       tr
                         td Frequency
-                        td 
+                        td
                           | : &nbsp;
                           = @user.bank_account.transfer_frequency if @user.bank_account
 

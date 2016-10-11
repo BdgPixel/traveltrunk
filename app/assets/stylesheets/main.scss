@@ -404,11 +404,15 @@ h2, h3, h4 {
 .wrapper-personal-information {
   margin-top: 25px;
   margin-bottom: 25px;
+
   h3 {
+    color: #808080;
+
     @media screen and (max-width: 480px) {
       padding: 0 15px;
     }
   }
+
   .table-custom {
     tr {
       td {
