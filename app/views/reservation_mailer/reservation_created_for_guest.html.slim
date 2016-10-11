@@ -60,7 +60,7 @@
                                     b Guest Name:
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    = @profile.try(:first_name).try(:titleize)
+                                    = @user[:first_name].try(:titleize)
                               tr
                                 td valign="top" width="270" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
@@ -68,11 +68,11 @@
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     a href="mailto:teguh@41studio.com" target="_blank"
-                                      = @user.email
+                                      = @user[:email_saving]
                               tr
                                 td valign="top" width="270" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    b Itinerary Number:
+                                    b fourtyonestudio Itinerary Number:
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     = @reservation['itineraryId']
@@ -216,7 +216,7 @@
                                     b Reserved for:
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px"
-                                    = "#{@profile.full_name}, #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']} adult"
+                                    = "#{full_name(@user[:first_name], @user[:last_name])}, #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']} adult"
                                     
                               tr
                                 td valign="top" 
@@ -332,7 +332,8 @@
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Card Holder Name:
                                 td valign="top" 
-                                  font style="font-family:Tahoma,sans-serif;font-size:13px" #{@profile.full_name}
+                                  font style="font-family:Tahoma,sans-serif;font-size:13px"
+                                    = "#{full_name(@user[:first_name], @user[:last_name])}"
                               tr
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
@@ -361,7 +362,7 @@
                             font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal"  Check-in Instructions
                           hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
                           p style="margin-top:0px" 
-                            font style="font-family:Tahoma,sans-serif;font-size:13px;font-weight:normal" 
+                            font style="font-family:Tahoma,sans-serif;font-size:13px;font-weight:normal"
                               = @reservation['specialCheckInInstructions']
                               br
                               br

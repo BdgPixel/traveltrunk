@@ -159,7 +159,7 @@ class DealsController < ApplicationController
           # create reservation for single user instead, if user don't have group
           reservation = current_user.reservations.new(reservation_params)
           reservation.save
-          
+
           @reservation_id = reservation.id
           ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
         end
@@ -231,12 +231,15 @@ class DealsController < ApplicationController
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
       departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
       reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
-
+      
       reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest'))
       reservation.save
       @reservation_id = reservation.id
       @customer_params = customer_params
 
+      reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
+      ReservationMailer.reservation_created_for_guest(@reservation, customer_params, reservation_info).deliver_now
+      is_success = true
       # flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
       # redirect_to deals_confirmation_page_path(
       #   reservation_id: @reservation_id,
@@ -245,6 +248,7 @@ class DealsController < ApplicationController
       #   last_name: customer_params[:last_name],
       # )
     else
+      is_success = false
       # redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
     end
   end
@@ -301,11 +305,12 @@ class DealsController < ApplicationController
       if response_payment.messages.resultCode.eql? 'Ok'
         card_last_4 = response_payment.transactionResponse.accountNumber
         amount_in_cents = (payment_params[:amount].to_f * 100).to_i
+        
+        if create_book_for_guest
+          PaymentProcessorMailer.delay.payment_succeed_for_guest(customer_params[:email_saving],
+            customer_params[:first_name], amount_in_cents, card_last_4)
+        end
 
-        PaymentProcessorMailer.delay.payment_succeed_for_guest(
-          customer_params[:first_name], amount_in_cents, card_last_4)
-
-        create_book_for_guest
         puts customer_params
       end
     rescue AuthorizeNetLib::RescueErrorsResponse => e
@@ -547,7 +552,7 @@ class DealsController < ApplicationController
     def payment_params
       params_require = (params[:create_credit] ? 'create_credit' : 'update_credit').to_sym
       current_params = params.require(params_require).permit(:card_number, :cvv, :exp_month, :exp_year,
-        :amount, :arrival_date, :departure_date, :room_type_code, :rate_key,:bed_type, :rate_code_room)
+        :amount, :arrival_date, :departure_date, :room_type_code, :rate_key,:bed_type, :rate_code_room, :smoking_preferences)
 
       current_params.merge(hotel_id: params[params_require][:id])
     end

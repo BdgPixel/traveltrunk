@@ -43,8 +43,13 @@ root.validateFormBook = ->
       returnValue = undefined
       returnValue = null
 
-      if $('#confirmation_book_policy').is(':checked') == false
-        $('.payment-errors').html 'Cancellation policy must be approved'
+      $('.payment-errors').text('')
+
+      if $('#confirmation_book_bed_type option:first').is(':selected') == true
+        $('.errors-bed-type').html 'Please select one of bed type'
+        returnValue = false
+      else if $('#confirmation_book_policy').is(':checked') == false
+        $('.errors-policy').html 'Cancellation policy must be approved'
         returnValue = false
       returnValue
 
@@ -78,6 +83,8 @@ listOfMonts = (month) ->
 
 root.roomSelected = (selector)->
   $(selector).on 'click', ->
+    $('.payment-errors').text('')
+    $('#confirmation_book_policy').removeAttr('checked');
     rateCode = $(this).data('rate-code')
     roomTypeCode = $(this).data('room-type-code')
     numberOfRoomsRequested = rooms.numberOfRoomsRequested
@@ -163,6 +170,7 @@ root.roomSelected = (selector)->
 
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
+    $('#confirmation_book_smoking_preferences').val(room[0]['smokingPreferences'])
 
     if $(this).data('group')
       $('.form-book').hide()
@@ -189,12 +197,20 @@ root.roomSelected = (selector)->
         $('#roomImage').attr('src', 'https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg')
         $('#imageDisclaimer').show()
 
+    $('#confirmation_book_bed_type option').not(':first').remove()
+
     if room[0]['BedTypes']['@size'] == '1'
-      $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
+      # $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
+      $('#confirmation_book_bed_type').append new Option(room[0]['BedTypes']['BedType']['description'], room[0]['BedTypes']['BedType']['@id'])    
+      $('#confirmation_book_bed_type option:last').prop 'selected', true
     else
-      $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
-        b['@id']
-      )
+      root.yuhuu = room[0]
+      # $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
+      #   b['@id']
+      # )
+      $.each room[0]['BedTypes']['BedType'], (index, item) ->
+        $('#confirmation_book_bed_type').append new Option(item['description'], item['@id'])
+        return
 
     if $('#roomRating').length > 0
       rating_count = parseFloat($('#roomRating').attr('data-rating'))
@@ -281,6 +297,7 @@ appendValueRoomParams = () ->
   $('#create_credit_rate_key').val($('#confirmation_book_rate_key').val())
   $('#create_credit_total_charge').val($('#confirmation_book_total').val())
   $('#create_credit_bed_type').val($('#confirmation_book_bed_type').val())
+  $('#create_credit_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
 ready  = ->
   controller = $('body').data('controller')
@@ -390,15 +407,21 @@ ready  = ->
       , 1000)
 
     $('#linkBtnYes').on 'click', ->
-      if $('#confirmation_book_policy').is(':checked') == false
-        $('.payment-errors').html 'Cancellation policy must be approved'
+      $('.payment-errors').text('')
+
+      if $('#confirmation_book_bed_type option:first').is(':selected') == true
+        $('.errors-bed-type').html 'Please select one of bed type'
+      else if $('#confirmation_book_policy').is(':checked') == false
+        $('.errors-policy').html 'Cancellation policy must be approved'
       else
         # removeBackdropModal '#modalBook'
         $('#confirmation_book_policy').removeAttr('checked');
         $('.payment-errors').text('')
         $('#modalBook').modal 'hide'
+
         root.modalDialog = $(this).parents('.modal').find('.modal-dialog')
         modalDialog.modal 'hide'
+
         $('#modalSavingsForm').modal 'show'
         $('#modalSavingsForm').on 'shown.bs.modal', (e) ->
           $('#modalSavingsForm').css('overflow-x', 'hidden')

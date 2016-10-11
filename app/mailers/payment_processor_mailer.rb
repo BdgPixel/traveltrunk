@@ -42,12 +42,12 @@ class PaymentProcessorMailer < ApplicationMailer
     mail to: @user.email, subject: 'One Time Payment'
   end
 
-  def payment_succeed_for_guest(first_name, amount, card_last4)
+  def payment_succeed_for_guest(email, first_name, amount, card_last4)
     @first_name = first_name
     @amount = amount
     @card_last4 = card_last4
 
-    mail to: @user.email, subject: 'One Time Payment'
+    mail to: email, subject: 'One Time Payment'
   end
 
   def cancel_subscription(user_id)
