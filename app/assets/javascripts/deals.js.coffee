@@ -143,6 +143,12 @@ root.roomSelected = (selector)->
 
     $('.modal #roomName').html(room[0]["rateDescription"])
 
+    numberOfChildren = room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfChildren']
+    childAge = room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['childAges']
+
+    if parseInt(numberOfChildren) > 1
+      $('.modal #childAndAge').html "Children: #{numberOfChildren}, Child Age(s): #{childAge}"
+
     listOfDate  = ''
     nightlyRate = ''
 
@@ -183,7 +189,7 @@ root.roomSelected = (selector)->
         hotelFeeTag = "<p class='mandatory-tax'>+#{hotelFees['HotelFee']['@amount']} due at hotel</p>"
 
     table.append("<tr><td><b>Total Taxes and Fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
-    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td class='total-charges-text' dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4>" + hotelFeeTag + "</td></tr>")
+    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td class='total-charges-text' dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4>#{hotelFeeTag}</td></tr>")
 
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
