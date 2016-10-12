@@ -163,7 +163,6 @@ root.roomSelected = (selector)->
     if taxs["Surcharges"] && parseInt(taxs["Surcharges"]["@size"]) > 1
       $.each taxs["Surcharges"]["Surcharge"], (key, tax) ->
         unless tax["@type"] is "TaxAndServiceFee"
-          root.yuhuu = tax['@type'].capitalize
           table.append("<tr>
             <td>
               <b>#{tax['@type']} </b>
@@ -172,8 +171,19 @@ root.roomSelected = (selector)->
             <td>$#{tax['@amount']}</td>
           </tr>")
 
+    hotelFees = room[0]['RateInfos']['RateInfo']['HotelFees']
+    hotelFeeTag = ''
+
+    if hotelFees
+      if parseInt(hotelFees['@size']) > 1
+        $.each hotelFees['HotelFee'], (key, hotelFee) ->
+          hotelFeeTag += "<p class='mandatory-tax'>+#{hotelFee['@amount']} due at hotel</p>"
+          return
+      else
+        hotelFeeTag = "<p class='mandatory-tax'>+#{hotelFees['HotelFee']['@amount']} due at hotel</p>"
+
     table.append("<tr><td><b>Total Taxes and Fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
-    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4></td></tr>")
+    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td class='total-charges-text' dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4>" + hotelFeeTag + "</td></tr>")
 
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
@@ -211,7 +221,6 @@ root.roomSelected = (selector)->
       $('#confirmation_book_bed_type').append new Option(room[0]['BedTypes']['BedType']['description'], room[0]['BedTypes']['BedType']['@id'])    
       $('#confirmation_book_bed_type option:last').prop 'selected', true
     else
-      root.yuhuu = room[0]
       # $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
       #   b['@id']
       # )
