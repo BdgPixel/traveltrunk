@@ -14,6 +14,8 @@
             - @room_availability["HotelRoomResponse"].uniq.each do |room|
               = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
 
+  / dumy data for mobile design
+  / ============================
   .wrapper-grid-hotel-room
     .grid-hotel-room
       .wrapper-head-room
@@ -72,7 +74,7 @@
         .btn-let-go
           .title-row
           a.btn.btn-saving.btn-green.btn-full-size href="#" Let's Go
-
+  / ============================
 
 - if @error_response
   #error_response.alert.alert-success style="position: relative !important"
