@@ -158,15 +158,22 @@ root.roomSelected = (selector)->
             nightlyRate = "<td>$#{rate['@rate']}</td></tr>"
             table.append(listOfDate + nightlyRate)
 
-    table.append("<tr><td><b>Total taxes and fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
-    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4></td></tr>")
-
     taxs = room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']
 
     if taxs["Surcharges"] && parseInt(taxs["Surcharges"]["@size"]) > 1
       $.each taxs["Surcharges"]["Surcharge"], (key, tax) ->
         unless tax["@type"] is "TaxAndServiceFee"
-          table.append("<tr><td><b>#{tax['@type']}</b></td><td>$#{tax['@amount']}</td></tr>")
+          root.yuhuu = tax['@type'].capitalize
+          table.append("<tr>
+            <td>
+              <b>#{tax['@type']} </b>
+              <small><i>(already included in total price)</i></small>
+            </td>
+            <td>$#{tax['@amount']}</td>
+          </tr>")
+
+    table.append("<tr><td><b>Total Taxes and Fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
+    table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4></td></tr>")
 
     $('#confirmation_book_total').val(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])

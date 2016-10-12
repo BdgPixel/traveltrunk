@@ -433,9 +433,7 @@ class DealsController < ApplicationController
     else
       if request.xhr?
         room_params_hash = expedia_room_hashes(params[:id], session[:destination])
-
         room_response = Expedia::Hotels.room_availability(room_params_hash).first
-
         @room_availability = room_response[:response]
         @first_room_image = get_first_room_image(@room_availability)
 
