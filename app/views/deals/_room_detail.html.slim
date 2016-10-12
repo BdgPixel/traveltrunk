@@ -53,12 +53,17 @@ tr
   td width="280px"
     b.column-price
       = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
-    p
-      - if room["RateInfos"]["RateInfo"]["nonRefundable"]
-        i
-          small None-refundable rate
+    p.mandatory-tax
+      - if room["RateInfos"]["RateInfo"]["HotelFees"]["@size"].eql? "1"
+          = "+#{room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"]["@amount"]} due at hotel"
       - else
-        i
+        - room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"].each do |hotel_fee|
+          = "+#{hotel_fee["@amount"]} due at hotel"
+    p
+      i
+        - if room["RateInfos"]["RateInfo"]["nonRefundable"]
+          small None-refundable rate
+        - else
           small Refundable rate
 
     = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
