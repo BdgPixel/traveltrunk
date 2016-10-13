@@ -63,7 +63,9 @@ module DealsHelper
     tags.html_safe
   end
 
-  def surcharge(cost)
+  def surcharge(reservation)
+    cost = reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['Surcharges']
+    label_country = europe_countries(reservation['hotelCountryCode'])
     tags = ""
 
     if cost['@size'].to_i > 1
@@ -77,7 +79,7 @@ module DealsHelper
             tags += "<font style='font-family:Tahoma,sans-serif;font-size:11px'>(already included in total price)</font>"
             tags += "</p'>"
           else
-            tags += "<b>Tax recovery charges and service fees </b>"
+            tags += "<b>#{label_country.capitalize}</b>"
           end
 
           tags +="</font>"
@@ -96,7 +98,7 @@ module DealsHelper
               tags += "<font style='font-family:Tahoma,sans-serif;font-size:11px'>(already included in total price)</font>"
             tags += "</p'>"
           else
-            tags += "<b>Tax recovery charges and service fees </b>"
+            tags += "<b>#{label_country.capitalize}</b>"
           end
 
         tags +="</font>"
@@ -107,6 +109,19 @@ module DealsHelper
     end
 
     tags.html_safe
+  end
+
+  def europe_countries(country_code)
+    europe_countries = ['BY', 'BG', 'CZ', 'HU', 'MD', 'PL', 'RO', 'RU', 'SK', 'UA', 'AX', 'DK', 'EE', 'FO',
+    'FI', 'GG', 'IS', 'IE', 'JE', 'LV', 'LT', 'IM', 'NO', 'SJ', 'SE', 'GB', 'AL', 'AD', 'BA', 'HR', 'GI',
+    'GR', 'VA', 'IT', 'MK', 'MT', 'ME', 'PT', 'SM', 'RS', 'SI', 'ES', 'AT', 'BE', 'FR', 'DE', 'LI', 'LU',
+    'MC', 'NL', 'CH']
+
+    if europe_countries.include? country_code
+      'Tax Recovery Charges'
+    else
+      'Tax Recovery Charges and Service Fees'
+    end
   end
 
   def get_hotel_fees(hotel_fees)
