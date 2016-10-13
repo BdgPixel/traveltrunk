@@ -82,7 +82,7 @@ module DealsHelper
       tags += "<tr><td class='m_2076496084396982010border-right' style='border-right-width:1px;border-right-style:solid'>"
         tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>"
           
-          if surcharge['@type'].eql? 'SalesTax'
+          if cost['@type'].eql? 'SalesTax'
             tags += "<b>Sales Tax </b>"
             tags += "<p style='margin-top:0'>"
               tags += "<font style='font-family:Tahoma,sans-serif;font-size:11px'>(already included in total price)</font>"
