@@ -225,6 +225,7 @@ class DealsController < ApplicationController
 
     reservation_response = Expedia::Hotels.reservation(reservation_hash).first
     @reservation = reservation_response[:response]
+
     @error_response = reservation_response[:error_response]
 
     if !@error_response
@@ -306,10 +307,11 @@ class DealsController < ApplicationController
         card_last_4 = response_payment.transactionResponse.accountNumber
         amount_in_cents = (payment_params[:amount].to_f * 100).to_i
         
-        if create_book_for_guest
-          PaymentProcessorMailer.delay.payment_succeed_for_guest(customer_params[:email_saving],
-            customer_params[:first_name], amount_in_cents, card_last_4)
-        end
+        create_book_for_guest
+        # if create_book_for_guest
+        #   PaymentProcessorMailer.delay.payment_succeed_for_guest(customer_params[:email_saving],
+        #     customer_params[:first_name], amount_in_cents, card_last_4)
+        # end
 
         puts customer_params
       end

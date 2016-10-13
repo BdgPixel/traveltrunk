@@ -41,15 +41,23 @@ module DealsHelper
     end
   end
 
-  def nightly_rates_per_room(rates, key_date)
+  def nightly_rates_per_room(rates, key_date, in_use_mailer = false)
     tags = ""
     
     if rates["@size"].to_i > 1
        rates["NightlyRate"].each_with_index do |rate, key_rate|
-        tags += "#{number_to_currency rate["@rate"]}" if key_date.eql? key_rate
+        if in_use_mailer
+          tags += "#{number_to_currency rate["@rate"]}" if key_date.eql? key_rate
+        else
+          tags += "<td>#{number_to_currency rate["@rate"]}</td>" if key_date.eql? key_rate
+        end
       end
     else
-      tags += "#{number_to_currency(rates["NightlyRate"]["@rate"].to_f)}"
+      if in_use_mailer
+        tags += "#{number_to_currency(rates["NightlyRate"]["@rate"].to_f)}"
+      else
+        tags += "<td>#{number_to_currency(rates["NightlyRate"]["@rate"].to_f)}</td>"
+      end
     end
 
     tags.html_safe

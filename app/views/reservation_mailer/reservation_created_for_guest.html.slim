@@ -89,7 +89,7 @@
                           h2 style="margin:0;padding:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal" 
                               | Hotel
-                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
+                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
                           table cellpadding="0" cellspacing="0" width="98%" 
                             tbody
                               tr
@@ -136,7 +136,7 @@
                                 /       | Driving Directions
                                 /   br/
                                 /   img alt="" height="95px" width="95px" /
-                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
+                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
                           table cellpadding="0" cellspacing="0" style=("margin:5px 0 15px 0;padding:0") width="98%" 
                             tbody
                               tr
@@ -185,7 +185,7 @@
                         td valign="top" 
                           h2 style="margin:0;padding:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal"  Room Details
-                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
+                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
                           / h3 Room 1
                           table.m_2076496084396982010room-level-details cellpadding="0" cellspacing="0" style=("margin:5px 0 15px 0;padding:0;line-height:1.75em") width="98%" 
                             tbody
@@ -196,13 +196,16 @@
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     = @reservation['roomDescription']
-                              tr
-                                td valign="top" width="120" 
-                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    b Bed Type:
-                                td valign="top" 
-                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    = @reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['bedTypeDescription']
+
+                              - if @reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['bedTypeDescription']
+                                tr
+                                  td valign="top" width="120" 
+                                    font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                      b Bed Type:
+                                  td valign="top" 
+                                    font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                      = @reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['bedTypeDescription']
+                              
                               tr
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
@@ -243,22 +246,22 @@
                         td valign="top" 
                           h2 style="margin:0;padding:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal" Charges
-                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
+                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
                           p style="margin:0px" 
                             font style="font-family:Tahoma,sans-serif;font-size:15px" 
                               b Cost per night per room
                           p style="margin-top:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:11px" 
                               | (excluding tax recovery charges and service fees)
-                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0") 
+                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0; width: 300px; background: #f6f6f6") 
                             tbody
                               tr
                                 td.m_2076496084396982010border-right-bottom style="border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid" width="120" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Date
-                                / td.m_2076496084396982010border-right-bottom align="center" style="border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid" 
-                                /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                /     b Room 1
+                                td.m_2076496084396982010border-right-bottom align="center" style="border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid" 
+                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                    b Room 1
                                 td.m_2076496084396982010border-bottom style="border-bottom-width:1px;border-bottom-style:solid" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Total per night
@@ -269,25 +272,25 @@
                                     font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                       span.aBn data-term="goog_498470398" tabindex="0" 
                                         span.aQJ #{date}
-                                  / td.m_2076496084396982010border-right align="right" style="border-right-width:1px;border-right-style:solid" 
-                                  /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                  /     | $34.22
+                                  td.m_2076496084396982010border-right align="right" style="border-right-width:1px;border-right-style:solid" 
+                                    font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
                                   td align="right" 
                                     font style="font-family:Tahoma,sans-serif;font-size:13px"
-                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key)
+                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
 
                               tr
                                 td.m_2076496084396982010border-right-top style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Total per room
-                                / td.m_2076496084396982010border-right-top align="right" style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid" 
-                                /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                /     b $68.44
+                                td.m_2076496084396982010border-right-top align="right" style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid" 
+                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                    b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
                                 td.m_2076496084396982010border-top align="right" style="border-top-width:1px;border-top-style:solid" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
 
-                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0") 
+                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0; width: 300px; background: #f6f6f6") 
                             tbody
                               = surcharge @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['Surcharges']
                               / tr
@@ -307,10 +310,15 @@
                           table border="0" cellpadding="10" cellspacing="0" style=("margin:5px 0 20px 0") 
                             tbody
                               tr
-                                td.m_2076496084396982010charges-content-container style="border-radius:4px" 
+                                td.m_2076496084396982010charges-content-container style="border-radius:4px;background: #f6f6f6" 
                                   p style="margin:5px" 
                                     font style="font-family:Tahoma,sans-serif;font-size:25px" 
                                       b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']
+                                      
+                                  - if @reservation["RateInfos"]["RateInfo"]["HotelFees"]
+                                    p style="margin:0 0 0 5px;color: #337ab7"
+                                      font style="font-family:Tahoma,sans-serif;font-size:11px"
+                                        = get_hotel_fees @reservation["RateInfos"]["RateInfo"]["HotelFees"]
 
                                 td valign="middle" 
                                   p style="margin:5px" 
@@ -360,21 +368,22 @@
                         td valign="top" 
                           h2 style="margin:0;padding:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal"  Check-in Instructions
-                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
+                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
                           p style="margin-top:0px" 
                             font style="font-family:Tahoma,sans-serif;font-size:13px;font-weight:normal"
-                              = @reservation['specialCheckInInstructions']
-                              br
-                              br
-                              = @reservation['checkInInstructions']
-                              br
+                              - if @reservation['specialCheckInInstructions']
+                                = @reservation['specialCheckInInstructions'].html_safe
+                                br
+                                br
+                              = @reservation['checkInInstructions'].html_safe
+                              
                   table.m_2076496084396982010primary-content-table style="border-width:1px;border-style:solid;border-radius:4px;padding:10px;margin-bottom:10px" width="100%" 
                     tbody
                       tr
                         td valign="top" 
                           h2 style="margin:0;padding:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal"  Cancellation Policy
-                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
+                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
                           font style="font-family:Tahoma,sans-serif;font-size:13px" 
                             / b Room 1
                           / br/

@@ -242,10 +242,10 @@
                                         span.aQJ #{date}
                                   td.m_2076496084396982010border-right align="right" style="border-right-width:1px;border-right-style:solid" 
                                     font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key)
+                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
                                   td align="right" 
                                     font style="font-family:Tahoma,sans-serif;font-size:13px"
-                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key)
+                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
 
                               tr
                                 td.m_2076496084396982010border-right-top style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid" 
@@ -339,12 +339,11 @@
                           p style="margin-top:0px" 
                             font style="font-family:Tahoma,sans-serif;font-size:13px;font-weight:normal"
                               - if @reservation['specialCheckInInstructions']
-                                = @reservation['specialCheckInInstructions']
+                                = @reservation['specialCheckInInstructions'].html_safe
                                 br
                                 br
-                              else
-                                = @reservation['checkInInstructions']
-                                br
+                              = @reservation['checkInInstructions'].html_safe
+                              
                   table.m_2076496084396982010primary-content-table style="border-width:1px;border-style:solid;border-radius:4px;padding:10px;margin-bottom:10px" width="100%" 
                     tbody
                       tr
