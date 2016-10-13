@@ -1,6 +1,12 @@
 module DealsHelper
   include ActionView::Helpers::UrlHelper
 
+  COLLECTION_CARDS = [
+    ['Discover', 'DC'],
+    ['Master Card', 'CA'],
+    ['Visa', 'VI'],
+  ]
+
   def unescape_expedia_html(string)
     raw CGI.unescapeHTML(string)
   end
@@ -40,10 +46,10 @@ module DealsHelper
     
     if rates["@size"].to_i > 1
        rates["NightlyRate"].each_with_index do |rate, key_rate|
-        tags += "<td>#{number_to_currency rate["@rate"]}</td>" if key_date.eql? key_rate
+        tags += "#{number_to_currency rate["@rate"]}" if key_date.eql? key_rate
       end
     else
-      tags += "<td>#{number_to_currency(rates["NightlyRate"]["@rate"].to_f)}</td>"
+      tags += "#{number_to_currency(rates["NightlyRate"]["@rate"].to_f)}"
     end
 
     tags.html_safe
@@ -56,21 +62,39 @@ module DealsHelper
       cost['Surcharge'].each do |surcharge|
         tags += "<tr><td class='m_2076496084396982010border-right' style='border-right-width:1px;border-right-style:solid'>"
           tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>"
-            tags += surcharge['@type']
+
+          if surcharge['@type'].eql? 'SalesTax'
+            tags += "<b>Sales Tax </b>"
+            tags += "<p style='margin-top:0'>"
+            tags += "<font style='font-family:Tahoma,sans-serif;font-size:11px'>(already included in total price)</font>"
+            tags += "</p'>"
+          else
+            tags += "<b>Tax recovery charges and service fees </b>"
+          end
+
           tags +="</font>"
         tags +="</td>"
         tags += "<td align='center'>"
-          tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>#{surcharge['@amount']}</font>"
+          tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>#{number_to_currency(surcharge['@amount'].to_f)}</font>"
         tags +="</td></tr>"
       end
     else
       tags += "<tr><td class='m_2076496084396982010border-right' style='border-right-width:1px;border-right-style:solid'>"
         tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>"
-          tags += cost['Surcharge']['@type']
+          
+          if surcharge['@type'].eql? 'SalesTax'
+            tags += "<b>Sales Tax </b>"
+            tags += "<p style='margin-top:0'>"
+              tags += "<font style='font-family:Tahoma,sans-serif;font-size:11px'>(already included in total price)</font>"
+            tags += "</p'>"
+          else
+            tags += "<b>Tax recovery charges and service fees </b>"
+          end
+
         tags +="</font>"
       tags +="</td>"
       tags += "<td align='center'>"
-        tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>#{cost['Surcharge']['@amount']}</font>"
+        tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>#{number_to_currency(cost['Surcharge']['@amount'].to_f)}</font>"
       tags +="</td></tr>"
     end
 

@@ -36,8 +36,8 @@
           b Reservation Terms and Cancellation Policy
           br
           span.cancellation-policy
-        b
-          small Full payment will be charged to your credit card when you book this hotel.
+        / b
+        /   small Full payment will be charged to your credit card when you book this hotel.
 
       .form-group
         = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>&nbsp; By selecting to complete this booking I acknowledge that I have read and accept the cancellation policy for this room as well as our <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe

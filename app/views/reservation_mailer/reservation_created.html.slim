@@ -111,8 +111,11 @@
                                           img/
                                         td
                                           a data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=http://4&amp;source=gmail&amp;ust=1476148861760000&amp;usg=AFQjCNE7nps-g6MRdA6CH2PiaeZFqdCIsQ" href="http://4" target="_blank" 
-                                            font style="font-family:Tahoma,sans-serif;font-size:12px" 
-                                              = "#{@reservation['tripAdvisorReviewCount']} reviews"
+                                            font style="font-family:Tahoma,sans-serif;font-size:12px"
+                                              - if @reservation['tripAdvisorReviewCount']
+                                                = "#{@reservation['tripAdvisorReviewCount']} reviews"
+                                              - else
+                                                | 0 reviews
                                               
                                   table cellspacing="0" style=("margin:15px 0;padding:0") width="98%" 
                                     tbody
@@ -250,15 +253,15 @@
                           p style="margin-top:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:11px" 
                               | (excluding tax recovery charges and service fees)
-                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0") 
+                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0; width: 300px; background: #f6f6f6") 
                             tbody
                               tr
                                 td.m_2076496084396982010border-right-bottom style="border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid" width="120" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Date
-                                / td.m_2076496084396982010border-right-bottom align="center" style="border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid" 
-                                /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                /     b Room 1
+                                td.m_2076496084396982010border-right-bottom align="center" style="border-right-width:1px;border-right-style:solid;border-bottom-width:1px;border-bottom-style:solid" 
+                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                    b Room 1
                                 td.m_2076496084396982010border-bottom style="border-bottom-width:1px;border-bottom-style:solid" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Total per night
@@ -269,9 +272,9 @@
                                     font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                       span.aBn data-term="goog_498470398" tabindex="0" 
                                         span.aQJ #{date}
-                                  / td.m_2076496084396982010border-right align="right" style="border-right-width:1px;border-right-style:solid" 
-                                  /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                  /     | $34.22
+                                  td.m_2076496084396982010border-right align="right" style="border-right-width:1px;border-right-style:solid" 
+                                    font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key)
                                   td align="right" 
                                     font style="font-family:Tahoma,sans-serif;font-size:13px"
                                       = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key)
@@ -280,14 +283,14 @@
                                 td.m_2076496084396982010border-right-top style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Total per room
-                                / td.m_2076496084396982010border-right-top align="right" style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid" 
-                                /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                /     b $68.44
+                                td.m_2076496084396982010border-right-top align="right" style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid" 
+                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                                    b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
                                 td.m_2076496084396982010border-top align="right" style="border-top-width:1px;border-top-style:solid" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
 
-                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0") 
+                          table.m_2076496084396982010charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0; width: 300px; background: #f6f6f6") 
                             tbody
                               = surcharge @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['Surcharges']
                               / tr
@@ -307,7 +310,7 @@
                           table border="0" cellpadding="10" cellspacing="0" style=("margin:5px 0 20px 0") 
                             tbody
                               tr
-                                td.m_2076496084396982010charges-content-container style="border-radius:4px" 
+                                td.m_2076496084396982010charges-content-container style="border-radius:4px;background: #f6f6f6" 
                                   p style="margin:5px" 
                                     font style="font-family:Tahoma,sans-serif;font-size:25px" 
                                       b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']
@@ -361,12 +364,14 @@
                             font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal"  Check-in Instructions
                           hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0") /
                           p style="margin-top:0px" 
-                            font style="font-family:Tahoma,sans-serif;font-size:13px;font-weight:normal" 
-                              = @reservation['specialCheckInInstructions']
-                              br
-                              br
-                              = @reservation['checkInInstructions']
-                              br
+                            font style="font-family:Tahoma,sans-serif;font-size:13px;font-weight:normal"
+                              - if @reservation['specialCheckInInstructions']
+                                = @reservation['specialCheckInInstructions']
+                                br
+                                br
+                              else
+                                = @reservation['checkInInstructions']
+                                br
                   table.m_2076496084396982010primary-content-table style="border-width:1px;border-style:solid;border-radius:4px;padding:10px;margin-bottom:10px" width="100%" 
                     tbody
                       tr
