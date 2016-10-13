@@ -164,25 +164,25 @@ root.roomSelected = (selector)->
             nightlyRate = "<td>$#{rate['@rate']}</td></tr>"
             table.append(listOfDate + nightlyRate)
 
-    taxs = room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']
-
-    if taxs["Surcharges"] && parseInt(taxs["Surcharges"]["@size"]) > 1
-      $.each taxs["Surcharges"]["Surcharge"], (key, tax) ->
-        if tax["@type"] is "SalesTax"
-          table.append("<tr>
-            <td>
-              <b>Sales Tax</b>
-              <small><i>(already included in total price)</i></small>
-            </td>
-            <td>$#{tax['@amount']}</td>
-          </tr>")
-        else
-          table.append("<tr>
-            <td>
-              <b>Tax and Service Fee</b>
-            </td>
-            <td>$#{tax['@amount']}</td>
-          </tr>")
+    getSurcharge room[0], table
+    # root.taxs = room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']
+    # if taxs["Surcharges"] && parseInt(taxs["Surcharges"]["@size"]) > 1
+    #   $.each taxs["Surcharges"]["Surcharge"], (key, tax) ->
+    #     if tax["@type"] is "SalesTax"
+    #       table.append("<tr>
+    #         <td>
+    #           <b>Sales Tax</b>
+    #           <small><i>(already included in total price)</i></small>
+    #         </td>
+    #         <td>$#{tax['@amount']}</td>
+    #       </tr>")
+    #     else
+    #       table.append("<tr>
+    #         <td>
+    #           <b>Tax and Service Fee</b>
+    #         </td>
+    #         <td>$#{tax['@amount']}</td>
+    #       </tr>")
 
     hotelFees = room[0]['RateInfos']['RateInfo']['HotelFees']
     hotelFeeTag = ''
@@ -269,6 +269,34 @@ getBedType = (room) ->
     $('#confirmation_book_bed_type').append new Option(description, null)
     $('#confirmation_book_bed_type option:last').prop 'selected', true
     $('#confirmation_book_bed_type').hide()
+
+getSurcharge = (room, table) ->
+  taxs = room['RateInfos']['RateInfo']['ChargeableRateInfo']['Surcharges']
+
+  if taxs["Surcharges"] && parseInt(taxs["@size"]) > 1
+    $.each taxs["Surcharge"], (key, tax) ->
+      if tax["@type"] is "SalesTax"
+        table.append("<tr>
+          <td>
+            <b>Sales Tax</b>
+            <small><i>(already included in total price)</i></small>
+          </td>
+          <td>$#{tax['@amount']}</td>
+        </tr>")
+      else
+        table.append("<tr>
+          <td>
+            <b>Tax and Service Fee</b>
+          </td>
+          <td>$#{tax['@amount']}</td>
+        </tr>")
+  else
+    table.append("<tr>
+      <td>
+        <b>Tax and Service Fee</b>
+      </td>
+      <td>$#{taxs['Surcharge']['@amount']}</td>
+    </tr>")
 
 appendCreditform = ->
   $('.append-credit').on 'click', ->
