@@ -37,7 +37,7 @@ class DealsController < ApplicationController
 
   def show
     expedia_params_hash = { hotelId: params[:id] }
-    @terms_and_conditions_url = "http://travel.ian.com/index.jsp?pageName=userAgreement&locale=en_US&cid=5505"
+    @terms_and_conditions_url = "http://developer.ean.com/terms/en/"
 
     @votes = Like.where(hotel_id: params[:id])
     @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
@@ -73,7 +73,7 @@ class DealsController < ApplicationController
 
       smoking_preferences = params[:confirmation_book][:smoking_preferences].nil? ? "" : params[:confirmation_book][:smoking_preferences]
 
-      affiliateConfirmationId = SecureRandom.uuid
+      affiliate_confirmation_id = SecureRandom.uuid
 
       reservation_hash = {
         hotelId: params[:confirmation_book][:hotel_id],
@@ -84,7 +84,7 @@ class DealsController < ApplicationController
         roomTypeCode: params[:confirmation_book][:room_type_code],
         rateCode: params[:confirmation_book][:rate_code],
         chargeableRate: params[:confirmation_book][:total],
-        affiliateConfirmationId: affiliateConfirmationId,
+        affiliateConfirmationId: affiliate_confirmation_id,
         RoomGroup: {
           Room: {
             numberOfAdults: number_of_adults.to_s,
@@ -165,9 +165,9 @@ class DealsController < ApplicationController
         end
         
         flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-
         redirect_to deals_confirmation_page_path(reservation_id: @reservation_id)
       else
+        puts @error_response
         redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
       end
     end
@@ -182,7 +182,7 @@ class DealsController < ApplicationController
 
     smoking_preferences = payment_params[:smoking_preferences].nil? ? "" : payment_params[:smoking_preferences]
 
-    affiliateConfirmationId = SecureRandom.uuid
+    affiliate_confirmation_id = SecureRandom.uuid
     reservation_hash = {
       hotelId: payment_params[:hotel_id],
       arrivalDate: current_destination[:arrivalDate],
@@ -192,7 +192,7 @@ class DealsController < ApplicationController
       roomTypeCode: payment_params[:room_type_code],
       rateCode: payment_params[:rate_code_room],
       chargeableRate: payment_params[:amount],
-      affiliateConfirmationId: affiliateConfirmationId,
+      affiliateConfirmationId: affiliate_confirmation_id,
       RoomGroup: {
         Room: {
           numberOfAdults: number_of_adults.to_s,
