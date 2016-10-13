@@ -24,7 +24,7 @@
 
       .form-group
         / = f.hidden_field :bed_type
-        = f.label :bed_type
+        = f.label :bed_type, class: 'bed-type', required: false
         = f.select :bed_type, [['Select Bed Type', 0]], { selected: 0 }, { class: 'form-control' }
         .payment-errors.errors-bed-type
         
