@@ -273,7 +273,7 @@ getBedType = (room) ->
 getSurcharge = (room, table) ->
   taxs = room['RateInfos']['RateInfo']['ChargeableRateInfo']['Surcharges']
 
-  if taxs["Surcharges"] && parseInt(taxs["@size"]) > 1
+  if taxs && parseInt(taxs["@size"]) > 1
     $.each taxs["Surcharge"], (key, tax) ->
       if tax["@type"] is "SalesTax"
         table.append("<tr>
@@ -283,7 +283,8 @@ getSurcharge = (room, table) ->
           </td>
           <td>$#{tax['@amount']}</td>
         </tr>")
-      else
+
+      if tax["@type"] is "TaxAndServiceFee"
         table.append("<tr>
           <td>
             <b>Tax and Service Fee</b>
