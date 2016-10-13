@@ -229,22 +229,7 @@ root.roomSelected = (selector)->
         $('#imageDisclaimer').show()
 
     $('#confirmation_book_bed_type option').not(':first').remove()
-
-    if room[0]['BedTypes']['@size'] == '1'
-      # $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
-      $('.bed-type').text("Bed type: #{room[0]['BedTypes']['BedType']['description']}")
-      $('#confirmation_book_bed_type').append new Option(room[0]['BedTypes']['BedType']['description'], room[0]['BedTypes']['BedType']['@id'])
-      $('#confirmation_book_bed_type option:last').prop 'selected', true
-      $('#confirmation_book_bed_type').hide()
-    else
-      # $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
-      #   b['@id']
-      # )
-      $('.bed-type').text 'Bed type'
-      $.each room[0]['BedTypes']['BedType'], (index, item) ->
-        $('#confirmation_book_bed_type').append new Option(item['description'], item['@id'])
-        $('#confirmation_book_bed_type').show()
-        return
+    getBedType room[0]
 
     if $('#roomRating').length > 0
       rating_count = parseFloat($('#roomRating').attr('data-rating'))
@@ -257,6 +242,33 @@ root.roomSelected = (selector)->
         starOn: window.star_on_mid_image_path
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
+
+getBedType = (room) ->
+  bedTypes = room['BedTypes']
+
+  if bedTypes
+    if bedTypes['@size'] == '1'
+      # $('#confirmation_book_bed_type').val(room[0]['BedTypes']['BedType']['@id'])
+      $('.bed-type').text("Bed type: #{bedTypes['BedType']['description']}")
+      $('#confirmation_book_bed_type').append new Option(bedTypes['BedType']['description'], bedTypes['BedType']['@id'])
+      $('#confirmation_book_bed_type option:last').prop 'selected', true
+      $('#confirmation_book_bed_type').hide()
+    else
+      # $('#confirmation_book_bed_type').val $.map(room[0]['BedTypes']['BedType'], (b) ->
+      #   b['@id']
+      # )
+      $('.bed-type').text 'Bed type'
+      $.each bedTypes['BedType'], (index, item) ->
+        $('#confirmation_book_bed_type').append new Option(item['description'], item['@id'])
+        $('#confirmation_book_bed_type').show()
+        return
+  else
+    description = room['roomTypeDescription'] || room['rateDescription']
+
+    $('.bed-type').text("Bed type: #{description}")
+    $('#confirmation_book_bed_type').append new Option(description, null)
+    $('#confirmation_book_bed_type option:last').prop 'selected', true
+    $('#confirmation_book_bed_type').hide()
 
 appendCreditform = ->
   $('.append-credit').on 'click', ->
