@@ -101,6 +101,16 @@ module DealsHelper
     tags.html_safe
   end
 
+  def get_hotel_fees(hotel_fees)
+    if hotel_fees["@size"].to_i > 1
+      hotel_fees["HotelFee"].each do |hotel_fee|
+        "+#{hotel_fee["@amount"]} due at hotel"
+      end
+    else
+      "+#{hotel_fees["HotelFee"]["@amount"]} due at hotel"
+    end
+  end
+
   def number_of_adults_collection
     number_of_array = []
     1.upto(8) { |i| number_of_array << [pluralize(i, 'Guest'), i] }

@@ -1,38 +1,3 @@
-/ p#reservationCreatedMailer
-/   | Hi #{@profile.try(:first_name).try(:titleize)},
-
-/   br
-/   br
-
-/   | Your  itinerary #{@reservation['itineraryId']}
-/   br
-/   | Confirmation number: #{@reservation['confirmationNumbers']}
-/   br
-/   | Arrival date #{@reservation['arrivalDate']} and departure date #{@reservation['departureDate']}
-/   br
-/   | Hotel name #{@reservation['hotelName']}
-/   br
-/   | Hotel address #{@reservation['hotelAddress']}
-/   br
-/   | City #{@reservation['hotelCity']}
-/   br
-/   | Country code #{@reservation['countryCode']}
-/   br
-/   | Postal code #{@reservation['hotelPostalCode']}
-/   br 
-/   | Room booked #{@reservation['numberOfRoomsBooked']} and room description #{@reservation['roomDescription']}
-/   br
-/   | Number of adults #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']}
-/   br
-/   | Total rate #{number_to_currency(@reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])}
-  
-/   br
-/   br
-
-/   | Happy travels,
-/   br
-   / = render 'partials/footer_mailer'
-
 #reservationCreatedMailer
   table cellpadding="0" cellspacing="5" width="100%" 
     tbody
@@ -318,6 +283,11 @@
                                     font style="font-family:Tahoma,sans-serif;font-size:25px" 
                                       b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']
 
+                                  - if @reservation["RateInfos"]["RateInfo"]["HotelFees"]
+                                    p style="margin:0 0 0 5px;color: #337ab7"
+                                      font style="font-family:Tahoma,sans-serif;font-size:11px"
+                                        = get_hotel_fees @reservation["RateInfos"]["RateInfo"]["HotelFees"]
+                                       
                                 td valign="middle" 
                                   p style="margin:5px" 
                                     font style="font-family:Tahoma,sans-serif;font-size:18px" 

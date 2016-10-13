@@ -55,12 +55,12 @@ tr
       = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
     - if room["RateInfos"]["RateInfo"]["HotelFees"]
-      p.mandatory-tax
-        - if room["RateInfos"]["RateInfo"]["HotelFees"]["@size"].eql? "1"
-            = "+#{room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"]["@amount"]} due at hotel"
-        - else
-          - room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"].each do |hotel_fee|
-            = "+#{hotel_fee["@amount"]} due at hotel"
+      p.mandatory-tax = get_hotel_fees room["RateInfos"]["RateInfo"]["HotelFees"]
+        / - if room["RateInfos"]["RateInfo"]["HotelFees"]["@size"].eql? "1"
+        /     = "+#{room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"]["@amount"]} due at hotel"
+        / - else
+        /   - room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"].each do |hotel_fee|
+        /     = "+#{hotel_fee["@amount"]} due at hotel"
     p
       i
         - if room["RateInfos"]["RateInfo"]["nonRefundable"]
