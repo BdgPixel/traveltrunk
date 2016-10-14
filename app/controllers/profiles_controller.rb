@@ -65,7 +65,7 @@ class ProfilesController < ApplicationController
         if @bank_account.errors[:authorize_net_error].present?
           @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
         end
-
+        
         format.html { render :edit }
         format.js
       end

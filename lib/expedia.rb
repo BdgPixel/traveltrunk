@@ -247,8 +247,12 @@ module Expedia
           @error_response = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
           @error_response << ". "
           @error_response << response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"]
-
-          response_result(error_response: @error_response)
+          
+          if response["HotelRoomReservationResponse"]["EanWsError"]["category"].eql? "DATA_VALIDATION"
+            response_result(error_response: response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"])
+          else
+            response_result(error_response: @error_response)
+          end
         else
           @reservation = response["HotelRoomReservationResponse"]
           response_result(response: @reservation)

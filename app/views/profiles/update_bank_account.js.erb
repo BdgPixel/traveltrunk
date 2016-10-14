@@ -1,7 +1,7 @@
 <% if @bank_account.errors.present? %>
+  $('.payment-errors, span.error').html('');
   <% @bank_account.errors.each do |errorKey, errorMessage| %>
-    errorKey = "<%= errorKey.to_s.split('.').last %>";
-    $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
+    $('.error-' + '<%= errorKey %>').html("<%= errorMessage.html_safe %>");
   <% end %>
 <% else %>
   window.location = "<%= deals_path %>";

@@ -9,16 +9,6 @@
     .item.active
       div
         = simple_form_for current_user, method: :put, url: profile_url, html: { data: { model: 'user' } }, remote: is_remote do |f|
-          - if @bank_account.errors.any?
-            #error_authorize_net.alert.alert-danger
-              strong Warning! &nbsp;&nbsp;
-              = @bank_account.errors[:authorize_net_error].to_sentence
-
-          - if current_user.errors.any?
-            #error_explanation.alert.alert-danger
-              strong Warning! &nbsp;&nbsp;
-              = "#{pluralize(current_user.errors.count, "error")} prohibited this profile from being saved"
-
           = f.simple_fields_for :profile do |profile_form|
             .wrapper-edit-profile
               .row
@@ -52,10 +42,12 @@
                     .col-md-4
                       .form-group
                         = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
+                        span.error.error-message.error-first_name
 
                     .col-md-4
                       .form-group
                         = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
+                        span.error.error-message.error-last_name
 
                     .col-md-4
                       .form-group
@@ -78,10 +70,6 @@
                     .col-md-4
                       .form-group
                         = select_year profile_form.object.try(:birth_date), { field_name: 'birth_date(1i)', prefix: 'user[profile_attributes]', start_year: 1950, end_year: 1998 }, { class: 'form-control' }
-
-                / .col-md-12
-                /   .form-group
-                /     = profile_form.input :birth_date, wrapper: :horizontal_select_date, start_year: 1950, end_year: 2000, order: [:month, :day, :year], input_html: { class: 'form-control input-custom input-select' }, error_html: { class: 'error-message' }
 
                 .col-md-12
                   .row
@@ -142,5 +130,4 @@
                     = f.button :submit, 'Save', class: 'btn btn-saving btn-green btn-block'
     .item
       #showBankAccount
-        / = render 'profiles/form_modal_bank_account', is_remote: is_remote
 

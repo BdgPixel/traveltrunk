@@ -1,4 +1,6 @@
 <% if current_user.errors.present? %>
+  $('span.error').html('')
+
   <% current_user.errors.each do |errorKey, errorMessage| %>
     errorKey = "<%= errorKey.to_s.split('.').last %>";
     $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
