@@ -1,0 +1,6 @@
+<% if @error_response %>
+  $('.payment-errors').html("<%= @error_response %>");
+  $("#modalSavingsForm").scrollTop(0);
+<% else %>
+  window.location.replace('<%= deals_confirmation_page_url(reservation_id: @reservation_id, email: @customer_params[:email_saving]) %>');
+<% end %>

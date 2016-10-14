@@ -1,9 +1,10 @@
 class DealsController < ApplicationController
   require "htmlentities"
+  require "luhn"
   include ExceptionErrorResponse
 
   before_action :check_like, only: [:like]
-  before_action :authenticate_user!, except: [:search, :show, :room_availability, :create_credit,
+  before_action :authenticate_user!, except: [:search, :show, :room_availability, :guest_booking,
     :confirmation_page]
   before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book,
     :update_credit]
@@ -167,7 +168,6 @@ class DealsController < ApplicationController
         flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
         redirect_to deals_confirmation_page_path(reservation_id: @reservation_id)
       else
-        puts @error_response
         redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
       end
     end
@@ -177,21 +177,22 @@ class DealsController < ApplicationController
     current_destination = Destination.get_session_search_hashes(session[:destination])
     number_of_adults = session[:destination]['number_of_adult']
 
-    bed_type = payment_params[:bed_type].nil? ?
-      "" : payment_params[:bed_type].split(' ').join(',')
+    bed_type = customer_params[:bed_type].nil? ?
+      "" : customer_params[:bed_type].split(' ').join(',')
 
-    smoking_preferences = payment_params[:smoking_preferences].nil? ? "" : payment_params[:smoking_preferences]
+    smoking_preferences = customer_params[:smoking_preferences].nil? ? "" : customer_params[:smoking_preferences]
 
     affiliate_confirmation_id = SecureRandom.uuid
+
     reservation_hash = {
-      hotelId: payment_params[:hotel_id],
+      hotelId: customer_params[:hotel_id],
       arrivalDate: current_destination[:arrivalDate],
       departureDate: current_destination[:departureDate],
       supplierType: "E",
-      rateKey: payment_params[:rate_key],
-      roomTypeCode: payment_params[:room_type_code],
-      rateCode: payment_params[:rate_code_room],
-      chargeableRate: payment_params[:amount],
+      rateKey: customer_params[:rate_key],
+      roomTypeCode: customer_params[:room_type_code],
+      rateCode: customer_params[:rate_code_room],
+      chargeableRate: customer_params[:amount],
       affiliateConfirmationId: affiliate_confirmation_id,
       RoomGroup: {
         Room: {
@@ -206,13 +207,13 @@ class DealsController < ApplicationController
         email: customer_params[:email_saving],
         firstName: customer_params[:first_name],
         lastName: customer_params[:last_name],
-        homePhone: "2145370159",
-        workPhone: "2145370159",
-        creditCardType: "CA",
-        creditCardNumber: "5401999999999999",
-        creditCardIdentifier: "123",
-        creditCardExpirationMonth: "11",
-        creditCardExpirationYear: "2017"
+        homePhone: customer_params[:home_phone],
+        workPhone: customer_params[:home_phone],
+        creditCardType: customer_params[:card_type],
+        creditCardNumber: customer_params[:card_number],
+        creditCardIdentifier: customer_params[:cvv],
+        creditCardExpirationMonth: customer_params[:exp_month],
+        creditCardExpirationYear: customer_params[:exp_year]
       },
       AddressInfo: {
         address1: "travelnow",
@@ -240,17 +241,6 @@ class DealsController < ApplicationController
 
       reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
       ReservationMailer.reservation_created_for_guest(@reservation, customer_params, reservation_info).deliver_now
-      is_success = true
-      # flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-      # redirect_to deals_confirmation_page_path(
-      #   reservation_id: @reservation_id,
-      #   email: customer_params[:email_saving],
-      #   first_name: customer_params[:first_name],
-      #   last_name: customer_params[:last_name],
-      # )
-    else
-      is_success = false
-      # redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
     end
   end
 
@@ -281,44 +271,12 @@ class DealsController < ApplicationController
     end
   end
 
-  # one time payment using authorize.net
-  def create_credit
-    begin
-      exp_month = payment_params[:exp_month].rjust(2, '0')
-      exp_year = payment_params[:exp_year][-2, 2]
-      invoice = AuthorizeNetLib::Global.generate_random_id('inv')
-
-      params_hash = payment_params.merge({ 
-        exp_date: "#{exp_month}#{exp_year}",
-        order: { 
-          invoice: invoice,
-          description: 'Add to Saving'
-        }
-      })
-
-      customer_id = AuthorizeNetLib::Global.generate_random_id('cus')
-      customer_params_hash = customer_params.merge(merchant_customer_id: customer_id)
-      
-      payment = AuthorizeNetLib::PaymentTransactions.new
-
-      response_payment = payment.charge(params_hash, customer_params_hash)
-      
-      if response_payment.messages.resultCode.eql? 'Ok'
-        card_last_4 = response_payment.transactionResponse.accountNumber
-        amount_in_cents = (payment_params[:amount].to_f * 100).to_i
-        
-        create_book_for_guest
-        # if create_book_for_guest
-        #   PaymentProcessorMailer.delay.payment_succeed_for_guest(customer_params[:email_saving],
-        #     customer_params[:first_name], amount_in_cents, card_last_4)
-        # end
-
-        puts customer_params
-      end
-    rescue AuthorizeNetLib::RescueErrorsResponse => e
-      error_message(e)
-      # redirect_to deals_show_url(payment_params[:hotel_id]), alert: @error_response
-    end 
+  def guest_booking
+    if customer_params[:card_number].eql?('5401999999999999') || Luhn.valid?(customer_params[:card_number])
+      create_book_for_guest 
+    else
+      @error_response = 'Invalid credit card number'
+    end
   end
 
   def update_credit
@@ -550,17 +508,20 @@ class DealsController < ApplicationController
     end
 
     def payment_params
-      params_require = (params[:create_credit] ? 'create_credit' : 'update_credit').to_sym
-      current_params = params.require(params_require).permit(:card_number, :cvv, :exp_month, :exp_year,
-        :amount, :arrival_date, :departure_date, :room_type_code, :rate_key,:bed_type, :rate_code_room, :smoking_preferences)
+      params_require = (params[:guest_booking] ? 'guest_booking' : 'update_credit').to_sym
+      current_params = params.require(params_require).permit(:card_number, :cvv, :exp_month, :exp_year, :amount, :arrival_date,
+        :departure_date, :room_type_code, :rate_key, :bed_type, :rate_code_room, :smoking_preferences, :total,
+        :first_name, :last_name, :address, :city, :state, :zip, :country, :email_saving, :hotel_id, :card_type, :formatted_amount)
 
       current_params.merge(hotel_id: params[params_require][:id])
     end
 
     def customer_params
-      params_require = (params[:create_credit] ? 'create_credit' : 'update_credit').to_sym
+      params_require = (params[:guest_booking] ? 'guest_booking' : 'update_credit').to_sym
       params.require(params_require).permit(:email_saving, :first_name, :last_name, :address, :city,
-        :state, :zip, :country)
+        :state, :zip, :country, :total, :hotel_id, :card_type, :formatted_amount, :arrival_date, :departure_date,
+        :departure_date, :room_type_code, :rate_key, :bed_type, :smoking_preferences, :card_number, :cvv, :exp_month, :exp_year,
+        :amount, :rate_code_room, :home_phone)
     end
 
     def get_destination
