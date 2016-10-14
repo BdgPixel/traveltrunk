@@ -365,14 +365,14 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
         false
 
 appendValueRoomParams = () ->
-  $('#create_credit_arrival_date').val($('#confirmation_book_arrival_date').val())
-  $('#create_credit_departure_date').val($('#confirmation_book_departure_date').val())
-  $('#create_credit_rate_code_room').val($('#confirmation_book_rate_code').val())
-  $('#create_credit_room_type_code').val($('#confirmation_book_room_type_code').val())
-  $('#create_credit_rate_key').val($('#confirmation_book_rate_key').val())
-  $('#create_credit_total_charge').val($('#confirmation_book_total').val())
-  $('#create_credit_bed_type').val($('#confirmation_book_bed_type').val())
-  $('#create_credit_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
+  $('#guest_booking_arrival_date').val($('#confirmation_book_arrival_date').val())
+  $('#guest_booking_departure_date').val($('#confirmation_book_departure_date').val())
+  $('#guest_booking_rate_code_room').val($('#confirmation_book_rate_code').val())
+  $('#guest_booking_room_type_code').val($('#confirmation_book_room_type_code').val())
+  $('#guest_booking_rate_key').val($('#confirmation_book_rate_key').val())
+  $('#guest_booking_total_charge').val($('#confirmation_book_total').val())
+  $('#guest_booking_bed_type').val($('#confirmation_book_bed_type').val())
+  $('#guest_booking_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
 ready  = ->
   controller = $('body').data('controller')
