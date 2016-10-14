@@ -302,6 +302,7 @@ GEM
     libv8 (3.16.14.15)
     loofah (2.0.3)
       nokogiri (>= 1.5.9)
+    luhn-ruby (1.0.0)
     mail (2.6.4)
       mime-types (>= 1.16, < 4)
     method_source (0.8.2)
@@ -533,6 +534,7 @@ DEPENDENCIES
   less-rails
   less-rails-bootstrap
   letter_opener
+  luhn-ruby
   mini_magick
   moment_timezone-rails
   momentjs-rails
