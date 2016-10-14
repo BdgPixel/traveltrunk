@@ -13,7 +13,7 @@ class BankAccount < ActiveRecord::Base
 
   validates :amount_transfer, presence: true
   validates :transfer_frequency, presence: { message: 'please select one' }
-  validates :amount_transfer, numericality: { only_integer: false, greater_than: 0.5 }
+  validates :amount_transfer, numericality: { only_integer: false, greater_than_or_equal_to: 25.0 }
 
   def transfer_type
     case  transfer_frequency
@@ -27,6 +27,7 @@ class BankAccount < ActiveRecord::Base
   end
 
   def create_subscription
+    puts 'naon weh'
     customer = Customer.where(user_id: self.user_id).first
     subscription = Subscription.where(user_id: self.user_id).first
 
@@ -88,7 +89,8 @@ class BankAccount < ActiveRecord::Base
     end
   end
 
-  def update_subscription 
+  def update_subscription
+    puts 'update'
     customer = Customer.where(user_id: self.user_id).first
     user_subscription = user.subscription
 

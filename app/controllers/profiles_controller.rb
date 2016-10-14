@@ -44,9 +44,10 @@ class ProfilesController < ApplicationController
         format.html { redirect_to profile_url, notice: 'Savings plan was successfully created.' }
         format.js
       else
-        @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
-        @wew = 'asdf (6)'.html_safe
-        puts @bank_account.errors[:authorize_net_error]
+        if @bank_account.errors[:authorize_net_error].present?
+          @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
+        end
+        
         format.html { render :edit }
         format.js
       end
@@ -61,8 +62,10 @@ class ProfilesController < ApplicationController
         format.html { redirect_to profile_url, notice: 'Savings plan was successfully updated.' }
         format.js
       else
-        @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
-        puts @bank_account.errors[:authorize_net_error]
+        if @bank_account.errors[:authorize_net_error].present?
+          @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
+        end
+
         format.html { render :edit }
         format.js
       end
