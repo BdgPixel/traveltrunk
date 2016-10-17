@@ -28,7 +28,7 @@ tr
         - room["BedTypes"]["BedType"].each do |bed_type|
           li #{bed_type["description"]}
 
-    = link_to "javascript:void(0)", class: 'popover-links', data: { toggle: 'popover' }
+    = link_to "javascript:void(0)", class: 'popover-links', data: { toggle: '' }
       | Show more room information
 
     .content-popover style="display:none"
@@ -64,9 +64,10 @@ tr
     p
       i
         - if room["RateInfos"]["RateInfo"]["nonRefundable"]
-          small None-refundable rate
+          span.refundable-info.glyphicon.glyphicon-info-sign aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="#{room['RateInfos']['RateInfo']['cancellationPolicy'].html_safe}"
+          small &nbsp;None-refundable rate
         - else
-          small Refundable rate
+          small &nbsp;Refundable rate
 
     = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
