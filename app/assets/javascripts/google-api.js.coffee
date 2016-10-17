@@ -8,17 +8,17 @@ componentForm =
   country: 'long_name'
   postal_code: 'short_name'
 
-initAutocomplete = ->
-  autocomplete = new (google.maps.places.Autocomplete)(document.getElementById('autocomplete'), types: [ 'geocode' ])
+initAutocomplete = (selector) ->
+  autocomplete = new (google.maps.places.Autocomplete)(document.getElementById(selector), types: [ 'geocode' ])
   autocomplete.addListener 'place_changed', fillInAddress
   
   return
 
 fillInAddress = ->
   place = autocomplete.getPlace()
-  if $('#lat').length > 0 and $('#lng').length > 0
-    $('#lat').val place.geometry.location.lat()
-    $('#lng').val place.geometry.location.lng()
+  if $('.lat').length > 0 and $('.lng').length > 0
+    $('.lat').val place.geometry.location.lat()
+    $('.lng').val place.geometry.location.lng()
 
   for component of componentForm
     document.getElementById(component).value = ''
@@ -51,7 +51,7 @@ geolocate = ->
 
 initMap = ->
   myLatLng =
-    lat: parseFloat $('#lat').val()
+    lat: parseFloat $('.lat').val()
     lng: parseFloat $('#long').val()
 
   map = new (google.maps.Map)(document.getElementById('map'),
@@ -67,7 +67,10 @@ initMap = ->
 
 $(document).ready ->
   if $('#autocomplete').length > 0
-    initAutocomplete()
+    initAutocomplete('autocomplete')
+
+  if $('#autocompleteMobile').length > 0
+    initAutocomplete('autocompleteMobile')
 
   if $('#map').length > 0
     initMap()

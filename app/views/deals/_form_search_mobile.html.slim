@@ -1,0 +1,79 @@
+= simple_form_for :search_deals, method: :post, url: deals_search_path, html: { class: 'search-deals-form' } do |f|
+  / .col-xs-4.no-pad-left.no-pad-right
+  /   .form-group
+  /     = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
+
+  /     span.wrapper-icon-delete
+  /       a#btnClearText href="javascript:void(0)"
+  /         i.icon.delete
+
+  /   .show
+  /     = hidden_field_tag :street_number, nil, id: "street_number"
+  /     = hidden_field_tag :route, nil, id: "route"
+  /     = hidden_field_tag :postal_code, nil, id: "postal_code"
+  /     = f.hidden_field :city, id: "locality"
+  /     = f.hidden_field :state_province_code, id: "administrative_area_level_1"
+  /     = f.hidden_field :country_code, as: :string, id: "country"
+  /     = f.hidden_field :latitude, id: "lat", value: @destination.try(:latitude)
+  /     = f.hidden_field :longitude, id: "lng", value: @destination.try(:longitude)
+
+  / .col-xs-2.no-pad-left.no-pad-right
+  /   .form-group
+  /     = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Arriving when?"
+
+  / .col-xs-2.no-pad-left.no-pad-right
+  /   .form-group
+  /     = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
+
+  / / .col-xs-2.no-pad-left.no-pad-right
+  / /   .form-group
+  /     / input.form-control.no-border-radius type="text" placeholder="Group"
+
+  / .col-xs-2.no-pad-left.no-pad-right
+  /   .form-group
+  /     = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, class: "form-control no-border-radius"
+
+  / .col-xs-2.no-pad-left.no-pad-right
+  /   .form-group
+  /     = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
+  .modal-body
+    .wrapper-where-serach-form
+      .form-group
+        .col-md-12
+          = f.input_field :destination_string, id: "autocompleteMobile", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
+
+          / span.wrapper-icon-delete
+          /   a#btnClearText href="javascript:void(0)"
+          /     i.icon.delete
+          .show
+            = hidden_field_tag :street_number, nil, id: "street_number", class: 'street_number'
+            = hidden_field_tag :route, nil, id: "route", class: 'route'
+            = hidden_field_tag :postal_code, nil, id: "postal_code", class: 'postal_code'
+            = f.hidden_field :city, id: "locality", class: 'locality'
+            = f.hidden_field :state_province_code, id: "administrative_area_level_1", class: 'administrative_area_level_1'
+            = f.hidden_field :country_code, as: :string, id: "country", class: 'country'
+            = f.hidden_field :latitude, id: "lat", class: 'lat', value: @destination.try(:latitude)
+            = f.hidden_field :longitude, id: "lng", class: 'lng', value: @destination.try(:longitude)
+
+          / input type="text" placeholder="Where would you like to be?"
+      .form-group
+        .col-md-12
+          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Arriving when?"
+          / input type="text" placeholder="Arriving when?"
+      .form-group
+        .col-md-12
+          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
+          / input type="text" placeholder="Arriving when?"
+      .form-group
+        .col-md-12
+          = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, class: "form-control no-border-radius"
+          / select.form-control
+          /   option 1
+          /   option 2
+          /   option 3
+          /   option 4
+          /   option 5
+
+  .modal-footer
+    = f.submit "Search", class: "btn btn-primary btn-block"
+    / button.btn.btn-primary.btn-block type="button"  Find
