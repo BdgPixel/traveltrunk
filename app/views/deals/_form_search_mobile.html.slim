@@ -58,11 +58,11 @@
           / input type="text" placeholder="Where would you like to be?"
       .form-group
         .col-md-12
-          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Arriving when?"
+          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date", placeholder: "Arriving when?"
           / input type="text" placeholder="Arriving when?"
       .form-group
         .col-md-12
-          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius", placeholder: "Departing when?"
+          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_departure_date", placeholder: "Departing when?"
           / input type="text" placeholder="Arriving when?"
       .form-group
         .col-md-12

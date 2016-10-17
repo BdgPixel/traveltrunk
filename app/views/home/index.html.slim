@@ -95,7 +95,7 @@
 
               .wrapper-where-search.hidden-sm.hidden-md.hidden-lg
                 .col-md-12
-                  button.btn.btn-default.btn-block type="button" data-toggle="modal" data-target="#myModal"
+                  button.btn.btn-default.btn-block.search_mobile type="button"
                     span.text
                       | Where would you like to be?
                     span.btn-search
@@ -268,13 +268,13 @@ section.couple.parallax-image2.hidden-xs
 
                   = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
 
-#myModal.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+#searchFormMobile.modal.fade.modal-search.hide aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document"
     .modal-content
       .modal-header
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true"  &times;
         h4#myModalLabel.modal-title Search
-      = render 'deals/form_search_mobile'
+      / = render 'deals/form_search_mobile'
 
 = render 'partials/footer'
