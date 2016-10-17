@@ -588,3 +588,58 @@ video {
   	line-height: 12px;
 	}
 }
+
+.money-mobile {
+
+	@media (max-width: 768px) {
+		background: asset-url("money-mobile-img.jpg") no-repeat;
+    min-height: 284px;
+    background-size: cover;
+	}
+}
+
+.couple-mobile {
+
+	@media (max-width: 768px) {
+		background: asset-url("couple-mobile-img.jpg") no-repeat;
+    min-height: 284px;
+    background-size: cover;
+	}
+}
+
+.mobile {
+
+  @media (max-width: 768px) {
+    background-color: #c5693e;
+
+    h2, p {
+      text-align: left;
+    }
+
+    .inner-item {
+      position: inherit;
+    }
+
+    .couple {
+    	padding-bottom: 20px;
+
+      .btn-default {
+        background-color: transparent !important;
+        border-color: #ffffff;
+        border: solid 3px white !important;
+        font-size: 17px !important;
+        padding: 15px 17px;
+        @media screen and (max-width: 480px) {
+          font-size: 14px !important;
+        }
+        &:hover,
+        &:focus,
+        &:active {
+          box-shadow: none !important;
+          border-color: #ffffff;
+          background-color: rgba(255, 255, 255, 0.44) !important;
+        }
+      }
+    }
+  }
+}
