@@ -164,26 +164,7 @@ root.roomSelected = (selector)->
             nightlyRate = "<td>$#{rate['@rate']}</td></tr>"
             table.append(listOfDate + nightlyRate)
 
-    getSurcharge room[0], table
-    # root.taxs = room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']
-    # if taxs["Surcharges"] && parseInt(taxs["Surcharges"]["@size"]) > 1
-    #   $.each taxs["Surcharges"]["Surcharge"], (key, tax) ->
-    #     if tax["@type"] is "SalesTax"
-    #       table.append("<tr>
-    #         <td>
-    #           <b>Sales Tax</b>
-    #           <small><i>(already included in total price)</i></small>
-    #         </td>
-    #         <td>$#{tax['@amount']}</td>
-    #       </tr>")
-    #     else
-    #       table.append("<tr>
-    #         <td>
-    #           <b>Tax and Service Fee</b>
-    #         </td>
-    #         <td>$#{tax['@amount']}</td>
-    #       </tr>")
-
+    getSurcharge room[0], table, europeCountries, rooms['hotelCountry']
     hotelFees = room[0]['RateInfos']['RateInfo']['HotelFees']
     hotelFeeTag = ''
 
@@ -270,8 +251,15 @@ getBedType = (room) ->
     $('#confirmation_book_bed_type option:last').prop 'selected', true
     $('#confirmation_book_bed_type').hide()
 
-getSurcharge = (room, table) ->
-  taxs = room['RateInfos']['RateInfo']['ChargeableRateInfo']['Surcharges']
+getSurcharge = (room, table, europeCountries, hotelCountry) ->
+  root.taxs = room['RateInfos']['RateInfo']['ChargeableRateInfo']['Surcharges']
+  root.europeCountries
+  labelTax = ''
+
+  if $.inArray(hotelCountry, europeCountries) > -1
+    labelTax = 'Tax Recovery Charges'
+  else
+    labelTax = 'Tax Recovery Charges and Service Fees'
 
   if taxs && parseInt(taxs["@size"]) > 1
     $.each taxs["Surcharge"], (key, tax) ->
@@ -285,16 +273,18 @@ getSurcharge = (room, table) ->
         </tr>")
 
       if tax["@type"] is "TaxAndServiceFee"
-        table.append("<tr>
-          <td>
-            <b>Tax and Service Fee</b>
-          </td>
-          <td>$#{tax['@amount']}</td>
-        </tr>")
+        if $.inArray(hotelCountry, europeCountries)
+          table.append("<tr>
+            <td>
+              <b>#{labelTax}</b>
+            </td>
+            <td>$#{tax['@amount']}</td>
+          </tr>")
+        else
   else
     table.append("<tr>
       <td>
-        <b>Tax and Service Fee</b>
+        <b>#{labelTax}</b>
       </td>
       <td>$#{taxs['Surcharge']['@amount']}</td>
     </tr>")

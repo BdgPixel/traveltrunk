@@ -370,6 +370,10 @@ class DealsController < ApplicationController
 
   def room_availability
     set_session_customer_id = session[:customer_session_id]
+    @europe_countries = ['BY', 'BG', 'CZ', 'HU', 'MD', 'PL', 'RO', 'RU', 'SK', 'UA', 'AX', 'DK', 'EE', 'FO',
+    'FI', 'GG', 'IS', 'IE', 'JE', 'LV', 'LT', 'IM', 'NO', 'SJ', 'SE', 'GB', 'AL', 'AD', 'BA', 'HR', 'GI',
+    'GR', 'VA', 'IT', 'MK', 'MT', 'ME', 'PT', 'SM', 'RS', 'SI', 'ES', 'AT', 'BE', 'FR', 'DE', 'LI', 'LU',
+    'MC', 'NL', 'CH']
 
     if user_signed_in?
       @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
