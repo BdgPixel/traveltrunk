@@ -242,7 +242,6 @@ module Expedia
       
       begin
         response = HTTParty.post(url_custom_params)
-
         if response["HotelRoomReservationResponse"]["EanWsError"]
           @error_response = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
           @error_response << ". "
@@ -270,7 +269,7 @@ module Expedia
 
       begin
         response = HTTParty.get(url_custom_params)
-
+        
         if response["HotelItineraryResponse"]["EanWsError"]
 
           @error_response    = response["HotelItineraryResponse"]["EanWsError"]["presentationMessage"]

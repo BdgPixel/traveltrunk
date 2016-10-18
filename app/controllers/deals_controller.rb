@@ -142,6 +142,7 @@ class DealsController < ApplicationController
             reservation_params[:user_id] = member.id
             reservation_params[:total] = (amount_to_charge * 100).to_i
             reservation_params[:reservation_type] = 'group'
+            reservation_params[:email] = current_user.email
 
             reservation = Reservation.new(reservation_params)
             reservation.save
@@ -228,13 +229,13 @@ class DealsController < ApplicationController
     @reservation = reservation_response[:response]
 
     @error_response = reservation_response[:error_response]
-
+    
     if !@error_response
       arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
       departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
       reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
       
-      reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest'))
+      reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest', email: customer_params[:email_saving]))
       reservation.save
       @reservation_id = reservation.id
       @customer_params = customer_params

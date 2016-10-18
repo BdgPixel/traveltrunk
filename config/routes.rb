@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :reservations, only: [:index] do
+    collection do 
+      post :detail
+    end
+  end
+
   require 'sidekiq/web'
 
   authenticate :user, lambda { |u| u.admin? } do

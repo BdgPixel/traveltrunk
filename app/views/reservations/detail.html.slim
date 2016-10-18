@@ -1,0 +1,173 @@
+.container
+  .row
+    br
+    br
+    br
+    br
+    .col-md-12
+      - if flash[:reservation_message]
+        #notice.alert.alert-info 
+          strong Notice: &nbsp;
+          = flash[:reservation_message]
+
+      #accordion.panel-group aria-multiselectable="true" role="tablist" 
+        .panel.panel-default
+          #headingOne.panel-heading role="tab" 
+            h4.panel-title
+              a aria-controls="collapseOne" aria-expanded="true" data-toggle="collapse" href="#collapseOne" role="button" 
+                | Profile Informations
+          #collapseOne.panel-collapse.collapse.in aria-labelledby="headingOne" role="tabpanel" 
+            .panel-body
+              table.table.table-hover
+                tr
+                  th Card Holder Name
+                  td = expedia_customer_full_name @itinerary["Customer"]
+                tr
+                  th Email
+                  td = @itinerary["Customer"]["email"]
+                tr
+                  th Billing Address
+                  td = expedia_customer_address_format @itinerary["Customer"]['CustomerAddresses']
+                tr
+                  th Phone Number
+                  td = @itinerary["Customer"]['homePhone']
+                tr
+                  th Itinerary Number
+                  td = @itinerary["itineraryId"]
+                tr
+                  th
+                  td
+        br
+        .panel.panel-default
+          #headingTwo.panel-heading role="tab" 
+            h4.panel-title
+              a aria-controls="collapseTwo" aria-expanded="true" data-toggle="collapse" href="#collapseTwo" role="button" 
+                | Hotel And Room Informations
+          #collapseTwo.panel-collapse.collapse.in aria-labelledby="headingTwo" role="tabpanel" 
+            .panel-body
+              h4 = @hotel_confirmation["Hotel"]["name"]
+              p
+                address
+                  = @hotel_confirmation["Hotel"]["address1"]
+                  br
+                  = expedia_hotel_address_format @hotel_confirmation["Hotel"]
+                  br
+                  | Phone Number: #{@hotel_confirmation["Hotel"]["phone"]}
+                  br
+                  | Fax Number: #{@hotel_confirmation["Hotel"]["fax"]}
+
+              table.table
+                tr
+                  th Check-in
+                  th Check-out
+                  th Guest
+                  th Children
+                tr
+                  td = @hotel_confirmation['arrivalDate']
+                  td = @hotel_confirmation['departureDate']
+                  td = @hotel_confirmation['numberOfAdults']
+                  td = @hotel_confirmation['numberOfChildren']
+
+              p
+                h4 Room Detail
+              table.table.table-hover
+                tr
+                  th Room Description
+                  td = @hotel_confirmation["roomDescription"]
+                tr
+                  th Smoking
+                  td = @hotel_confirmation["smokingPreference"]
+                tr
+                  th Reserved For:
+                  td = expedia_reserved_for @hotel_confirmation['ReservationGuest']
+                tr
+                  th Status
+                  td = @hotel_confirmation["status"]
+                tr
+                  th Room Confirmation Number
+                  td = @hotel_confirmation["confirmationNumber"]
+                tr
+                  th
+                  td
+        br
+        .panel.panel-default
+          #headingThree.panel-heading role="tab" 
+            h4.panel-title
+              a aria-controls="collapseThree" aria-expanded="true" data-toggle="collapse" href="#collapseThree" role="button" 
+                | Charges
+          #collapseThree.panel-collapse.collapse.in aria-labelledby="headingThree" role="tabpanel" 
+            .panel-body
+              p style="margin:0px" 
+                font style="font-family:Tahoma,sans-serif;font-size:15px"
+                  b Cost per night per room
+              p style="margin-top:0"
+                font style="font-family:Tahoma,sans-serif;font-size:11px"
+                  | (excluding tax recovery charges and service fees)
+
+              table.table.table-bordered
+                tr
+                  th.text-center Date
+                  th.text-center Room
+                  th.text-center Total per night
+                
+                - @list_of_dates.each_with_index do |date, key|
+                  tr
+                    td = date
+                    font
+                      = expedia_nightly_rates_per_room(@hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key)
+                    font
+                      = expedia_nightly_rates_per_room(@hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key)
+                tr
+                  th Total per room
+                  td.text-right = number_to_currency @hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
+                  td.text-right = number_to_currency @hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
+            
+              table.table
+                tbody
+                  = expedia_surcharge @hotel_confirmation
+
+              p style="margin:0px" 
+                font style="font-family:Tahoma,sans-serif;font-size:15px" 
+                  b Total cost for entire stay
+              p style="margin-top:0"
+                font style="font-family:Tahoma,sans-serif;font-size:11px" 
+                  | (including tax recovery charges and service fees)
+
+              table.table
+                tbody
+                  tr
+                    td style="border-radius:4px;" 
+                      p style="margin:0"  
+                        font style="font-family:Tahoma,sans-serif;font-size:25px"
+                          b = number_to_currency @hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']
+                          b &nbsp;PAID
+
+                      - if @hotel_confirmation["RateInfos"]["RateInfo"]["HotelFees"]
+                        p style="margin-top:0;color: #337ab7"
+                          font style="font-family:Tahoma,sans-serif;font-size:11px"
+                            = get_hotel_fees @hotel_confirmation["RateInfos"]["RateInfo"]["HotelFees"]
+              p 
+                font All prices are displayed in $ USD
+              p style="margin:20px 0 0 0"
+                font
+                  b Payment Information
+              p style="margin-top:0" 
+                font We have charged your credit card for the full payment of this reservation.
+              br
+              p
+                font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                  | The above charges to your credit card were made by Travelscape, LLC. View our full&nbsp;
+                  = link_to "Terms & Conditions", "http://www.travelnow.com/templates/496147/terms-of-use?lang=en&amp;currency=USD" , target: "_blank"
+        br
+        .panel.panel-default
+          #headingFour.panel-heading role="tab" 
+            h4.panel-title
+              a aria-controls="collapseFour" aria-expanded="true" data-toggle="collapse" href="#collapseFour" role="button" 
+                | Cancellation Policy
+          #collapseFour.panel-collapse.collapse.in aria-labelledby="headingFour" role="tabpanel" 
+            .panel-body
+              p = @hotel_confirmation['RateInfos']['RateInfo']['cancellationPolicy']
+      
+      button.btn.btn-orange.btn-lg.btn-block Cancel Booking
+      br
+      br

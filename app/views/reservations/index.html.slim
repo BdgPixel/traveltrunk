@@ -1,0 +1,35 @@
+- content_for :javascripts
+  = javascript_include_tag "reservations"
+
+.container
+  .row
+    br
+    br
+    br
+    br
+    br
+    .col-md-12
+      - if alert.present?
+        #notice.notice.alert.alert-danger.alert-dismissible role="alert"
+          button type="button" class="close" data-dismiss="alert" aria-label="Close"
+            span aria-hidden="true" &times;
+
+          strong &nbsp; Warning! &nbsp;
+          span = alert
+
+      - if @error_response
+        #error_response.alert.alert-info
+          strong Notice: &nbsp;
+          = @error_response
+      - else
+        #error_response.alert.alert-info.hide
+
+    .col-md-12
+      = simple_form_for :reservation, method: :post, url: detail_reservations_url do |f|
+        .form-group
+          = f.label :itinerary
+          = f.input_field :itinerary, required: true
+        .form-group
+          = f.input :email, error_html: { class: 'error-message' }
+        .form-group
+          = f.submit 'Find', class: 'btn btn-orange btn-block'

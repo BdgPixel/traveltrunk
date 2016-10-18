@@ -69,6 +69,9 @@
         - else
           ul.nav.navbar-nav.navbar-right
             li
+              = link_to reservations_path, class: "login show"
+               | Check Reservation
+            li
               = link_to new_user_session_path, class: "login show"
                | Login
             li
