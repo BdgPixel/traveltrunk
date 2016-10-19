@@ -40,7 +40,7 @@
 
               .wrapper-where-search.hidden-sm.hidden-md.hidden-lg
                 .col-md-12
-                  button.btn.btn-default.btn-block.search_mobile type="button"
+                  button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
                     span.text
                       | Where would you like to be?
                     span.btn-search
@@ -216,7 +216,7 @@ section.couple.parallax-image2.hidden-xs
 
                   = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
 
-#searchFormMobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+.search-form-mobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document"
     .modal-content
       .modal-header
