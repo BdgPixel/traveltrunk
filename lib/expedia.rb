@@ -242,6 +242,7 @@ module Expedia
       
       begin
         response = HTTParty.post(url_custom_params)
+
         if response["HotelRoomReservationResponse"]["EanWsError"]
           @error_response = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
           @error_response << ". "
@@ -262,6 +263,27 @@ module Expedia
       end
     end
 
+    def self.cancel_reservation(custom_params)
+      url = "http://api.ean.com/ean-services/rs/hotel/v3/cancel?"
+      xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelRoomCancellationRequest").gsub(" ", "").gsub("\n", "") }
+      url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
+
+      begin
+        response = HTTParty.get(url_custom_params)
+        
+        if response["HotelRoomCancellationResponse"]["EanWsError"]
+          @error_response = response["HotelRoomCancellationResponse"]["EanWsError"]
+          response_result(error_response: @error_response)
+        else
+          cancel_response = response["HotelRoomCancellationResponse"]
+          response_result(response: cancel_response)
+        end
+      rescue Exception => e
+        @error_response = e.message
+        response_result(error_response: @error_response)
+      end
+    end
+
     def self.view_itinerary(custom_params)
       url = "http://api.ean.com/ean-services/rs/hotel/v3/itin?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelItineraryRequest").gsub(" ", "").gsub("\n", "") }
@@ -271,7 +293,6 @@ module Expedia
         response = HTTParty.get(url_custom_params)
         
         if response["HotelItineraryResponse"]["EanWsError"]
-
           @error_response    = response["HotelItineraryResponse"]["EanWsError"]["presentationMessage"]
           response_result(error_response: @error_response)
         else

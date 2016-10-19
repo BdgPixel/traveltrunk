@@ -10,6 +10,8 @@
           strong Notice: &nbsp;
           = flash[:reservation_message]
 
+      #cancelReservationMessage.alert
+
       #accordion.panel-group aria-multiselectable="true" role="tablist" 
         .panel.panel-default
           #headingOne.panel-heading role="tab" 
@@ -168,6 +170,33 @@
             .panel-body
               p = @hotel_confirmation['RateInfos']['RateInfo']['cancellationPolicy']
       
-      button.btn.btn-orange.btn-lg.btn-block Cancel Booking
+      = link_to 'Cancel Reservation', '#', class: 'btn btn-orange btn-lg btn-block', data: { toggle: 'modal', target: '#cancelReservation' }
       br
       br
+
+#cancelReservation.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" data-backdrop="static"
+  .modal-dialog role="document" 
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button" 
+          span aria-hidden="true" &times;
+        h4#cancelReservation.modal-title Cancel Reservation
+
+      = simple_form_for :cancel_reservation, method: :post, url: cancel_reservations_path, remote: true do |f|
+        .modal-body
+          .form-group
+            = f.label :itinerary_id
+            = f.input_field :itinerary_id, value: @itinerary["itineraryId"], readonly: true
+
+          .form-group
+            = f.input :confirmation_number, input_html: { value: @hotel_confirmation["confirmationNumber"], readonly: true }
+
+          .form-group
+            = f.input :email, label: 'Email Reservation'
+
+          .form-group
+            = f.input :reason, as: :select, collection: ReservationsHelper::COLLECTION_REASONS, input_html: { class: "form-control card-type" }, prompt: '- Select Your Reason -'
+
+        .modal-footer
+          = f.submit 'Save', class: 'btn btn-orange'
+          button.btn.btn-default data-dismiss="modal" type="button" Close

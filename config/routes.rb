@@ -2,6 +2,7 @@ Rails.application.routes.draw do
   resources :reservations, only: [:index] do
     collection do 
       post :detail
+      post :cancel
     end
   end
 
@@ -29,6 +30,7 @@ Rails.application.routes.draw do
 
   get  'privacy_policy' => 'policies#privacy'
   get  'refund_policy' => 'policies#refund'
+
   post 'refund_policy' => 'policies#create_contact'
   
   get  'refunds/create'

@@ -1,4 +1,14 @@
 module ReservationsHelper
+  COLLECTION_REASONS = [
+    ['Hotel asked me to cancel', 'HOC'],
+    ['Change of plans', 'COP'],
+    ['Found a better price', 'FBP'],
+    ['Found a better hotel', 'FBH'],
+    ['Decided to cancel my plans', 'CNL'],
+    ['Rather not say', 'NSY'],
+    ['Other', 'OTH']
+  ]
+
   def expedia_customer_full_name(customer)
     "#{customer['firstName']} #{customer['lastName']}".titleize
   end

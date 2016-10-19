@@ -12,7 +12,7 @@ module DealsHelper
     ['Maestro', 'TO'],
     ['Master Card', 'CA'],
     ['Visa', 'VI'],
-    ['Visa Electron', 'E'],
+    ['Visa Electron', 'E']
   ]
 
   def unescape_expedia_html(string)

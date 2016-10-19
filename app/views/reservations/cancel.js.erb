@@ -1,0 +1,10 @@
+$('#cancelReservation').modal('hide');
+$('html, body').animate({ scrollTop: 0 }, 'slow')
+
+<% if @error_response %>
+  $('#cancelReservationMessage').attr('class', 'alert alert-danger');
+  $('#cancelReservationMessage').text("<%= @error_response['presentationMessage'] %>");
+<% else %>
+  $('#cancelReservationMessage').attr('class', 'alert alert-warning');
+  $('#cancelReservationMessage').text("You successfully cancelled your booking. Here is you cancellation number <%= @cancel_reservation['cancellationNumber'] %>");
+<% end %>

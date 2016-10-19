@@ -25,10 +25,10 @@
         #error_response.alert.alert-info.hide
 
     .col-md-12
-      = simple_form_for :reservation, method: :post, url: detail_reservations_url do |f|
+      = simple_form_for :reservation, method: :post, url: detail_reservations_path do |f|
         .form-group
-          = f.label :itinerary
-          = f.input_field :itinerary, required: true
+          = f.label :itinerary_id
+          = f.input_field :itinerary_id, required: true
         .form-group
           = f.input :email, error_html: { class: 'error-message' }
         .form-group
