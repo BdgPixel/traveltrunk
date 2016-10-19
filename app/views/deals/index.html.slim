@@ -17,7 +17,7 @@
 /               p.text-center
 /                 | From luxury hotels to adventure hostels, cozy getaways to big city living; here, you get to customize your trip to your vision. The deals you’ll view are based on your current savings; this way, you can plan an unforgettable vacation that perfectly fits your budget.
 
-.wrap-middle
+.wrap-middle.hidden-xs
   .container
     .row
       .col-md-12.pad-left-75.pad-right-75
@@ -39,7 +39,17 @@
                 .panel-body
                   .wrapper-search-deal
                     = render 'deals/form_search'
-                      
+
+.wrap-middle-mobile.hidden-sm.hidden-md.hidden-lg
+  .container
+    .row
+      .wrapper-where-search.top-deals.hidden-sm.hidden-md.hidden-lg
+        .col-md-12
+          button.btn.btn-default.btn-block.search_mobile type="button"
+            span.text
+              | Where would you like to be?
+            span.btn-search
+
 .container
   .row
   .row
@@ -54,3 +64,12 @@
    - unless current_user.profile.try(:home_airport)
       #popUpProfile
         = render 'profiles/complete_profile'
+
+#searchFormMobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+  .modal-dialog role="document"
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true"  &times;
+        h4#myModalLabel.modal-title Search
+      = render 'deals/form_search_mobile'
