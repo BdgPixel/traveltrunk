@@ -538,7 +538,7 @@ h2, h3, h4 {
 
     @media (max-width: 768px) {
       float: none !important;
-      text-align: center;
+      text-align: left;
     }
 
     img {
@@ -552,7 +552,7 @@ h2, h3, h4 {
   .rating-text {
 
     @media (max-width: 768px) {
-      text-align: center;
+      text-align: right;
       line-height: 43px;
     }
 
