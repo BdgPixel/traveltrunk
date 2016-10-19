@@ -15,23 +15,6 @@ $(document).ajaxSend ->
 $(document).ajaxComplete ->
   $('#loading').fadeOut("slow");
 
-ready = ->
-  setTimeout(->
-    $('#notice').fadeOut()
-    $('#alert').fadeOut()
-  , 5000)
-
-  $('[data-toggle="tooltip"]').tooltip()
-
-  if $('.btn-correct-amount').length > 0
-    displayCorrectAmount('.btn-correct-amount')
-
-  if $('#btnClearText').length > 0
-    clearSearchText '#btnClearText', 'input#autocomplete'
-
-$(document).ready -> ready()
-$(document).on 'page:load', -> ready()
-
 root = exports ? this
 root.initAutoNumeric = (selector, hiddenSelector) ->
   $(selector).autoNumeric 'init'
@@ -126,8 +109,41 @@ root.disableEnterFormSubmit = ->
 
   return
 
-if $('#btnClearText').length > 0
-  $('#btnClearText').click ->
-    $('input#autocomplete').val ''
+root.validateSearchForm = ->
+  $('.search-deals-form').validate
+    ignore: ".ignore"
+    rules:
+      autocomplete: 'required'
 
-    return
+    messages:
+      autocomplete: 'Please enter your destination'
+
+  return
+
+root.validateSearchFormMobile = ->
+  $('.search-deals-form-mobile').validate
+    ignore: ".ignore"
+    rules:
+      autocomplete: 'required'
+
+    messages:
+      autocomplete: 'Please enter your destination'
+
+  return
+
+ready = ->
+  setTimeout(->
+    $('#notice').fadeOut()
+    $('#alert').fadeOut()
+  , 5000)
+
+  $('[data-toggle="tooltip"]').tooltip()
+
+  if $('.btn-correct-amount').length > 0
+    displayCorrectAmount('.btn-correct-amount')
+
+  if $('#btnClearText').length > 0
+    clearSearchText '#btnClearText', 'input#autocomplete'
+
+$(document).ready -> ready()
+$(document).on 'page:load', -> ready()

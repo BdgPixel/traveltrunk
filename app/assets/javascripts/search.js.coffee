@@ -15,17 +15,6 @@ getFormattedDate = (date) ->
 
   formattedDate
 
-validateSearchForm = ->
-  $('.search-deals-form').validate
-    ignore: ".ignore"
-    rules:
-      autocomplete: 'required'
-
-    messages:
-      autocomplete: 'Please enter your destination'
-
-  return
-
 root.initDealsPage = (numOfpages, numOfHotels)->
   if numOfpages && numOfHotels && numOfHotels > 15
     $('#pagination')
@@ -50,17 +39,7 @@ root.initDealsPage = (numOfpages, numOfHotels)->
 
   $('div.lazy').lazyload()
 
-ready = ->
-  disableEnterFormSubmit()
-  validateSearchForm()
-  
-  $('.search_mobile').on 'click', ->
-    $('#searchFormMobile').modal 'show'
-
-  moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
-  moment.tz.link('America/Los_Angeles|US/Pacific')
-  today = moment.tz('US/Pacific').format('M/D/Y')
-
+initDatePicker = (today) ->
   $('input.search_deals_arrival_date').datepicker(
     startDate: today
     autoclose: true).on 'changeDate', (e) ->
@@ -79,8 +58,41 @@ ready = ->
   $('input.search_deals_departure_date').datepicker(
     startDate: today
     autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
 
+initDatePickerForMobile = (today) ->
+  $('input.search_deals_arrival_date_mobile').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+      departureDate = e.date
+      departureDate.setDate(departureDate.getDate() + 1)
+
+      $('input.search_deals_departure_date_mobile').datepicker('remove')
+      $('input.search_deals_departure_date_mobile').datepicker
+        startDate:  getFormattedDate(departureDate)
+        autoclose: true
+      setTimeout(->
+        $('input.search_deals_departure_date_mobile').datepicker('show')
+      , 100)
+
+  $('input.search_deals_departure_date_mobile').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+
+ready = ->
+  disableEnterFormSubmit()
+  validateSearchForm()
+  validateSearchFormMobile()
+  
+  $('.search_mobile').on 'click', ->
+    $('#searchFormMobile').modal 'show'
+
+  moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
+  moment.tz.link('America/Los_Angeles|US/Pacific')
+  today = moment.tz('US/Pacific').format('M/D/Y')
+
+  initDatePicker(today)
+  initDatePickerForMobile(today)
   showSearchForm()
 
   numOfpages = $('#valueOfPagination').data('num-of-pages')

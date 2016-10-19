@@ -1,4 +1,4 @@
-= simple_form_for :search_deals, method: :post, url: deals_search_path, html: { class: 'search-deals-form' } do |f|
+= simple_form_for :search_deals, method: :post, url: deals_search_path, html: { class: 'search-deals-form-mobile' } do |f|
   / .col-xs-4.no-pad-left.no-pad-right
   /   .form-group
   /     = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
@@ -58,11 +58,11 @@
           / input type="text" placeholder="Where would you like to be?"
       .form-group
         .col-md-12
-          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date", placeholder: "Arriving when?"
+          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date_mobile", placeholder: "Arriving when?"
           / input type="text" placeholder="Arriving when?"
       .form-group
         .col-md-12
-          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_departure_date", placeholder: "Departing when?"
+          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_departure_date_mobile", placeholder: "Departing when?"
           / input type="text" placeholder="Arriving when?"
       .form-group
         .col-md-12

@@ -14,6 +14,7 @@ class DealsController < ApplicationController
   before_action :create_destination, only: [:search]
   before_action :check_address, only: [:create_book]
   before_action :set_hotel, only: [:show, :room_availability, :create_book, :confirmation_page, :create_book_for_guest]
+  before_action :set_action_form_search, only: [:index, :show, :search]
 
   skip_before_filter :verify_authenticity_token, only: [:update_credit]
 

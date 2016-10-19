@@ -25,17 +25,6 @@ getFormattedDate = (date) ->
 
   formattedDate
 
-validateSearchForm = ->
-  $('.search-deals-form').validate
-    ignore: ".ignore"
-    rules:
-      autocomplete: 'required'
-
-    messages:
-      autocomplete: 'Please enter your destination'
-
-  return
-
 root.validateFormBook = ->
   if $('#formBook').length > 0
     $('#formBook').on 'submit', (e) ->
@@ -364,6 +353,48 @@ appendValueRoomParams = () ->
   $('#guest_booking_bed_type').val($('#confirmation_book_bed_type').val())
   $('#guest_booking_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
+initDatePicker = (today) ->
+  $('input#search_deals_arrival_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+      departureDate = e.date
+      departureDate.setDate(departureDate.getDate() + 1)
+
+      $('input#search_deals_departure_date').datepicker('remove')
+      $('input#search_deals_departure_date').datepicker
+        startDate:  getFormattedDate(departureDate)
+        autoclose: true
+      setTimeout(->
+        $('input#search_deals_departure_date').datepicker('show')
+      , 100)
+
+  $('input#search_deals_departure_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+
+initDatePickerForMobile = (today) ->
+  $('input#search_deals_arrival_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+      departureDate = e.date
+      departureDate.setDate(departureDate.getDate() + 1)
+
+      $('input#search_deals_departure_date').datepicker('remove')
+      $('input#search_deals_departure_date').datepicker
+        startDate:  getFormattedDate(departureDate)
+        autoclose: true
+      setTimeout(->
+        $('input#search_deals_departure_date').datepicker('show')
+      , 100)
+
+  $('input#search_deals_departure_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+
 ready  = ->
   controller = $('body').data('controller')
   action = $('body').data('action')
@@ -383,30 +414,10 @@ ready  = ->
     moment.tz.link('America/Los_Angeles|US/Pacific')
     today = moment.tz('US/Pacific').format('M/D/Y')
 
-    $('input.search_deals_arrival_date').datepicker(
-      startDate: today
-      autoclose: true).on 'changeDate', (e) ->
-        $(this).valid()
-        departureDate = e.date
-        departureDate.setDate(departureDate.getDate() + 1)
-
-        $('input.search_deals_departure_date').datepicker('remove')
-        $('input.search_deals_departure_date').datepicker
-          startDate:  getFormattedDate(departureDate)
-          autoclose: true
-        setTimeout(->
-          $('input.search_deals_departure_date').datepicker('show')
-        , 100)
-
-    $('input.search_deals_departure_date').datepicker(
-      startDate: today
-      autoclose: true).on 'changeDate', (e) ->
-        $(this).valid()
-
+    initDatePicker(today)
+    initDatePickerForMobile(today)
     showSearchForm()
-
-    if $('#btnClearText').length > 0
-      clearSearchText '#btnClearText', 'input#autocomplete'
+    clearSearchText('#btnClearText', 'input#autocomplete')
 
     showPopUpProfile()
 

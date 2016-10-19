@@ -14,6 +14,15 @@ class ApplicationController < ActionController::Base
     end
   end
 
+  def set_action_form_search
+    @method_name, @is_remote =
+      if user_signed_in?
+        [:post, true]
+      else
+        [:get, false]
+      end
+  end
+
   protected
     def layout_by_resource
       if devise_controller?
