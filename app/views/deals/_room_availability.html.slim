@@ -1,21 +1,19 @@
 - unless @error_response
-  .table-responsive
-    table.table.table-striped.table-hover
-      thead
-        tr
-          th Room type
-          th Amenities
-          th colspan="2" Total booking price
+  / .table-responsive
+  /   table.table.table-striped.table-hover
+  /     thead
+  /       tr
+  /         th Room type
+  /         th Amenities
+  /         th colspan="2" Total booking price
 
-        tbody
-          - if @room_availability["@size"].eql? "1"
-            = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
-          - else
-            - @room_availability["HotelRoomResponse"].uniq.each do |room|
-              = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
+  /       tbody
+  /         - if @room_availability["@size"].eql? "1"
+  /           = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
+  /         - else
+  /           - @room_availability["HotelRoomResponse"].uniq.each do |room|
+  /             = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
 
-  / dumy data for mobile design
-  / ============================
   .wrapper-grid-hotel-room
     .grid-hotel-room
       .wrapper-head-room
@@ -29,51 +27,73 @@
 
       .clearfix
 
-      .wrapper-body-room
-        .room-type
-          .title-mobile Room type
-          .title-room
-            | Gallery Suite
-          .img-room
-            img src="https://media.expedia.com/hotels/1000000/50000/45600/45586/45586_41_z.jpg"
-          .room-desc 1 king bed
-          a href="#" Show more room information
-        .amenities
-          .title-mobile Amenities
-          .offers Breakfast Buffet
-          .offers Free Internet
-        .booking-price
-          .title-mobile Total booking price
-          .price $415.60
-          .price-desc
-            i
-              small None-refundable rate
-        .btn-let-go
-          .title-row
-          a.btn.btn-saving.btn-green.btn-full-size href="#" Let's Go
+      - if @room_availability["@size"].eql? "1"
+        = render "room_detail", room: @room_availability["HotelRoomResponse"],  arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
+      - else
+        - @room_availability["HotelRoomResponse"].uniq.each do |room|
+          = render "room_detail", room: room, arrival_date: @room_availability["arrivalDate"], departure_date: @room_availability["departureDate"], checkin_instructions: @room_availability["checkInInstructions"], special_checkin_instructions: @room_availability["specialCheckInInstructions"], first_room_image: @first_room_image
 
-      .wrapper-body-room
-        .room-type
-          .title-mobile Room type
-          .title-room
-            | Gallery Suite
-          .img-room
-            img src="https://media.expedia.com/hotels/1000000/50000/45600/45586/45586_41_z.jpg"
-          .room-desc 1 king bed
-          a href="#" Show more room information
-        .amenities
-          .title-mobile Amenities
-          .offers Breakfast Buffet
-          .offers Free Internet
-        .booking-price
-          .title-mobile Total booking price
-          .price $415.60
-          .price-desc
-            i
-              small None-refundable rate
-        .btn-let-go
-          .title-row
-          a.btn.btn-saving.btn-green.btn-full-size href="#" Let's Go
+  / dumy data for mobile design
+  / ============================
+  / .wrapper-grid-hotel-room
+  /   .grid-hotel-room
+  /     .wrapper-head-room
+  /       .head-room-type
+  /         | Room type
+  /       .head-amenities
+  /         | Amenities
+  /       .head-book-price
+  /         | Total booking price
+  /       .head-room
+
+  /     .clearfix
+
+  /     .wrapper-body-room
+  /       .room-type
+  /         .title-mobile Room type
+  /         .title-room
+  /           - binding.pry
+  /           = @room_availability["HotelRoomResponse"]["rateDescription"].html_safe
+  /         .img-room
+  /           img src="https://media.expedia.com/hotels/1000000/50000/45600/45586/45586_41_z.jpg"
+  /         .room-desc 1 king bed
+  /         a href="#" Show more room information
+  /       .amenities
+  /         .title-mobile Amenities
+  /         .offers Breakfast Buffet
+  /         .offers Free Internet
+  /       .booking-price
+  /         .title-mobile Total booking price
+  /         .price $415.60
+  /         .price-desc
+  /           i
+  /             small None-refundable rate
+  /       .btn-let-go
+  /         .title-row
+  /         a.btn.btn-saving.btn-green.btn-full-size href="#" Let's Go
+
+  /     .wrapper-body-room
+  /       .room-type
+  /         .title-mobile Room type
+  /         .title-room
+  /           | Gallery Suite
+  /         .img-room
+  /           img src="https://media.expedia.com/hotels/1000000/50000/45600/45586/45586_41_z.jpg"
+  /         .room-desc 1 king bed
+  /         a href="#" Show more room information
+  /       .amenities
+  /         .title-mobile Amenities
+  /         .offers Breakfast Buffet
+  /         .offers Free Internet
+  /       .booking-price
+  /         .title-mobile Total booking price
+  /         .price $415.60
+  /         .price-desc
+  /           i
+  /             small None-refundable rate
+  /       .btn-let-go
+  /         .title-row
+  /         a.btn.btn-saving.btn-green.btn-full-size href="#" Let's Go
   / ============================
 
 - if @error_response

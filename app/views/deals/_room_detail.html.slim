@@ -1,32 +1,110 @@
-tr
-  td
-    strong = room["rateDescription"].html_safe
-    br
-    - if room["RoomImages"]
-      br
-      - if room["RoomImages"]["@size"].eql? "1"
-        = image_tag room["RoomImages"]["RoomImage"]["url"].gsub('http', 'https'), class: 'room-image'
-      - else
-        = image_tag room["RoomImages"]["RoomImage"].first["url"].gsub('http', 'https'), class: 'room-image'
-      br
-      br
-    - else
-      - if first_room_image
-        = image_tag first_room_image, class: 'room-image'
-      - else
-        = image_tag "https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg", class: 'room-image'
-      br
-      small.image-disclaimer
-        | *This image may not be that exact room titled above
-      br
-      br
+/ tr
+/   td
+/     strong = room["rateDescription"].html_safe
+/     br
+/     - if room["RoomImages"]
+/       br
+/       - if room["RoomImages"]["@size"].eql? "1"
+/         = image_tag room["RoomImages"]["RoomImage"]["url"].gsub('http', 'https'), class: 'room-image'
+/       - else
+/         = image_tag room["RoomImages"]["RoomImage"].first["url"].gsub('http', 'https'), class: 'room-image'
+/       br
+/       br
+/     - else
+/       - if first_room_image
+/         = image_tag first_room_image, class: 'room-image'
+/       - else
+/         = image_tag "https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg", class: 'room-image'
+/       br
+/       small.image-disclaimer
+/         | *This image may not be that exact room titled above
+/       br
+/       br
 
-    ul.room-availability
+/     ul.room-availability
+/       - if room["BedTypes"]["@size"].eql? "1"
+/         li #{room["BedTypes"]["BedType"]["description"]}
+/       - else
+/         - room["BedTypes"]["BedType"].each do |bed_type|
+/           li #{bed_type["description"]}
+
+/     = link_to "javascript:void(0)", class: 'popover-links', data: { toggle: '' }
+/       | Show more room information
+
+/     .content-popover style="display:none"
+/       - if special_checkin_instructions
+/         = special_checkin_instructions.html_safe
+/         br
+/         br
+/       = checkin_instructions.html_safe
+
+/   td width="300px"
+/     - if @error_category_room_message
+/       h4 @error_category_room_message
+
+/     ul.room-availability
+/       - unless room["ValueAdds"].nil?
+/         - if room["ValueAdds"]["@size"].eql? "1"
+/           li #{room["ValueAdds"]["ValueAdd"]["description"]}
+/         - else
+/           - room["ValueAdds"]["ValueAdd"].each do |amenity|
+/             li #{amenity["description"]}
+
+/   td width="280px"
+/     b.column-price
+/       = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+
+/     - if room["RateInfos"]["RateInfo"]["HotelFees"]
+/       p.mandatory-tax = get_hotel_fees room["RateInfos"]["RateInfo"]["HotelFees"]
+/         / - if room["RateInfos"]["RateInfo"]["HotelFees"]["@size"].eql? "1"
+/         /     = "+#{room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"]["@amount"]} due at hotel"
+/         / - else
+/         /   - room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"].each do |hotel_fee|
+/         /     = "+#{hotel_fee["@amount"]} due at hotel"
+/     p
+/       i
+/         - if room["RateInfos"]["RateInfo"]["nonRefundable"]
+/           span.refundable-info.glyphicon.glyphicon-info-sign aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="#{room['RateInfos']['RateInfo']['cancellationPolicy'].html_safe}"
+/           small &nbsp;None-refundable rate
+/         - else
+/           small &nbsp;Refundable rate
+
+/     = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+
+/   td width="200px"
+/     = button_actions_in_deals_detail(room)
+
+
+
+.wrapper-body-room
+  .room-type
+    .title-mobile Room type
+    .title-room
+      = room["rateDescription"].html_safe
+    .img-room
+      - if room["RoomImages"]
+        - if room["RoomImages"]["@size"].eql? "1"
+          = image_tag room["RoomImages"]["RoomImage"]["url"].gsub('http', 'https'), class: 'room-image'
+        - else
+          = image_tag room["RoomImages"]["RoomImage"].first["url"].gsub('http', 'https'), class: 'room-image'
+        
+      - else
+        - if first_room_image
+          = image_tag first_room_image, class: 'room-image'
+        - else
+          = image_tag "https://media.expedia.com/hotels/1000000/50000/40400/40338/40338_208_s.jpg", class: 'room-image'
+        br
+        small.image-disclaimer
+          | *This image may not be that exact room titled above
+        br
+        br
+      / img src="https://media.expedia.com/hotels/1000000/50000/45600/45586/45586_41_z.jpg"
+    .room-desc
       - if room["BedTypes"]["@size"].eql? "1"
-        li #{room["BedTypes"]["BedType"]["description"]}
+        = room["BedTypes"]["BedType"]["description"]
       - else
         - room["BedTypes"]["BedType"].each do |bed_type|
-          li #{bed_type["description"]}
+          = bed_type["description"]
 
     = link_to "javascript:void(0)", class: 'popover-links', data: { toggle: '' }
       | Show more room information
@@ -37,31 +115,32 @@ tr
         br
         br
       = checkin_instructions.html_safe
+    / a href="#" Show more room information
 
-  td width="300px"
+  .amenities
+    .title-mobile Amenities
     - if @error_category_room_message
       h4 @error_category_room_message
 
-    ul.room-availability
-      - unless room["ValueAdds"].nil?
-        - if room["ValueAdds"]["@size"].eql? "1"
-          li #{room["ValueAdds"]["ValueAdd"]["description"]}
-        - else
-          - room["ValueAdds"]["ValueAdd"].each do |amenity|
-            li #{amenity["description"]}
+    - if room["ValueAdds"].present?
+      - if room["ValueAdds"]["@size"].eql? "1"
+        .offers = room["ValueAdds"]["ValueAdd"]["description"]
+      - else
+        - room["ValueAdds"]["ValueAdd"].each do |amenity|
+          .offers = amenity["description"]
+    - else
+      .offers -
+    / .offers Breakfast Buffet
+    / .offers Free Internet
+  .booking-price
+    .title-mobile Total booking price
+    .price = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-  td width="280px"
-    b.column-price
-      = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
-
+    p.mandatory-tax $212
     - if room["RateInfos"]["RateInfo"]["HotelFees"]
       p.mandatory-tax = get_hotel_fees room["RateInfos"]["RateInfo"]["HotelFees"]
-        / - if room["RateInfos"]["RateInfo"]["HotelFees"]["@size"].eql? "1"
-        /     = "+#{room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"]["@amount"]} due at hotel"
-        / - else
-        /   - room["RateInfos"]["RateInfo"]["HotelFees"]["HotelFee"].each do |hotel_fee|
-        /     = "+#{hotel_fee["@amount"]} due at hotel"
-    p
+
+    .price-desc
       i
         - if room["RateInfos"]["RateInfo"]["nonRefundable"]
           span.refundable-info.glyphicon.glyphicon-info-sign aria-hidden="true" data-toggle="tooltip" data-placement="bottom" title="#{room['RateInfos']['RateInfo']['cancellationPolicy'].html_safe}"
@@ -71,5 +150,30 @@ tr
 
     = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
-  td width="200px"
+  .btn-let-go
+    .title-row
     = button_actions_in_deals_detail(room)
+    / a.btn.btn-saving.btn-green.btn-full-size href="#" Let's Go
+
+/ .wrapper-body-room
+/   .room-type
+/     .title-mobile Room type
+/     .title-room
+/       | Gallery Suite
+/     .img-room
+/       img src="https://media.expedia.com/hotels/1000000/50000/45600/45586/45586_41_z.jpg"
+/     .room-desc 1 king bed
+/     a href="#" Show more room information
+/   .amenities
+/     .title-mobile Amenities
+/     .offers Breakfast Buffet
+/     .offers Free Internet
+/   .booking-price
+/     .title-mobile Total booking price
+/     .price $415.60
+/     .price-desc
+/       i
+/         small None-refundable rate
+/   .btn-let-go
+/     .title-row
+/     a.btn.btn-saving.btn-green.btn-full-size href="#" Let's Go

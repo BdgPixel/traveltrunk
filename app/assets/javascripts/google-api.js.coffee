@@ -1,5 +1,5 @@
 placeSearch = undefined
-autocomplete = undefined
+# autocomplete = undefined
 componentForm =
   street_number: 'short_name'
   route: 'long_name'
@@ -10,8 +10,26 @@ componentForm =
 
 initAutocomplete = (selector) ->
   autocomplete = new (google.maps.places.Autocomplete)(document.getElementById(selector), types: [ 'geocode' ])
-  autocomplete.addListener 'place_changed', fillInAddress
-  
+  autocomplete.addListener 'place_changed', () ->
+    place = autocomplete.getPlace()
+    if $('.lat').length > 0 and $('.lng').length > 0
+      $('.lat').val place.geometry.location.lat()
+      $('.lng').val place.geometry.location.lng()
+
+    for component of componentForm
+      document.getElementById(component).value = ''
+      document.getElementById(component).disabled = false
+
+    i = 0
+    while i < place.address_components.length
+      addressType = place.address_components[i].types[0]
+      if componentForm[addressType]
+        val = place.address_components[i][componentForm[addressType]]
+        document.getElementById(addressType).value = val
+      i++
+
+    return
+
   return
 
 fillInAddress = ->
