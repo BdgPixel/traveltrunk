@@ -178,8 +178,8 @@ root.roomSelected = (selector)->
       $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
       $('.form-vote ').show()
 
-    existingRoomImage = $(this).closest('tr').find('.room-image')
-
+    existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
+    
     if existingRoomImage
       $('#roomImage').attr('src', existingRoomImage.attr('src'))
 
