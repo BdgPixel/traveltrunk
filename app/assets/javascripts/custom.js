@@ -1,4 +1,4 @@
-$(document).ready(function(){
+var initParalax = function() {
   $('.parallax-image').parallax("50%", 0.1);
   $('.parallax-image2').parallax("50%", 0.1);
   $('.parallax-image3').parallax("50%", 0.1);
@@ -16,9 +16,9 @@ $(document).ready(function(){
         scrollTop: $(this.hash).offset().top-60
     }, 1000);
   });
-});
+};
 
-$(window).scroll(function() {
+var initScrolling = function() {
   var scroll = $(window).scrollTop();
 
   if (scroll >= 10) {
@@ -46,20 +46,9 @@ $(window).scroll(function() {
       $(".btn-orange2").addClass("hide");
       $(".link-top-login").removeClass('grey-nav-color');
   }
-});
+};
 
-/*
-  We can use [body] or the element class/id that wraps the elements with tooltip/popover.
-  Include the data-[] attribute in each element that needs it.
-*/
-$(document).ready(function () {
-  //can also be wrapped with:
-  //1. $(function () {...});
-  //2. $(window).load(function () {...});
-  //3. Or your own custom named function block.
-  //It's better to wrap it.
-
-  //Tooltip, activated by hover event
+var initToolTip = function() {
   $("body").tooltip({
     selector: "[data-toggle='tooltip']",
     container: "body"
@@ -70,11 +59,9 @@ $(document).ready(function () {
     container: "body",
     html: true
   });
-  //They can be chained like the example above (when using the same selector).
+};
 
-});
-
-$(document).on('ready', function() {
+var initSwipeGroupSaving = function() {
   $('.swipe-group-saving').slick({
     dots: false,
     infinite: false,
@@ -127,4 +114,19 @@ $(document).on('ready', function() {
       // instead of a settings object
     ]
   });
+};
+
+var ready = function() {
+  initParalax();
+  initScrolling();
+  initToolTip();
+  initSwipeGroupSaving();
+};
+
+$(document).ready(function() {
+  ready()
+});
+
+$(document).on('page:load', function() {
+  ready();
 });
