@@ -239,9 +239,10 @@ h2, h3, h4 {
   display: inline-block;
 
   &.color {
-    background: image-url("logo_color.png") no-repeat;
+    background: image-url("retina_logo.png") no-repeat;
+    background-size: 170px;
+    top: 3px;
     position: relative;
-    top: 1px;
   }
 }
 
@@ -251,9 +252,10 @@ h2, h3, h4 {
   display: inline-block;
 
   &.color {
-    background: image-url("logo_color.png") no-repeat;
+    background: image-url("retina_logo.png") no-repeat;
+    background-size: 170px;
+    top: 3px;
     position: relative;
-    top: 1px;
   }
 }
 

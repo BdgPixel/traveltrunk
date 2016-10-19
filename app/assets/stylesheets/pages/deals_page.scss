@@ -218,6 +218,13 @@
     display: inline-block;
     margin-left: -17px;
   }
+
+  &.top-deals {
+
+    button {
+      background-color: #e6e6e6;
+    }
+  }
 }
 
 #profile_image {
@@ -533,4 +540,9 @@
     min-height: 100%;
     border-radius: 0;
   }
+}
+
+.wrap-middle-mobile {
+  position: relative;
+  margin-top: 14em;
 }
