@@ -130,7 +130,7 @@ initSwipeGroupSaving = ->
           variableWidth: false
       }
     ]
-    
+
   return
 
 $(document).ready ->
