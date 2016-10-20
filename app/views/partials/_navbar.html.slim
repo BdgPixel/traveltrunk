@@ -61,6 +61,8 @@
                 ul.dropdown-menu.dropdown-top-login
                   li = link_to 'My Profile', profile_path
                   li = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
+                  li
+                    = link_to 'Check Reservation', reservations_path
                   li = link_to 'Help', helps_path
 
                   li.divider role="separator"
