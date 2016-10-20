@@ -9,7 +9,9 @@
   #myCarousel-1.carousel.slide data-ride="carousel"
     .carousel-inner role="listbox"
       .item.active
-        img.img-mobile.hidden-lg src="http://www.shinyshiny.tv/wp-content/uploads/2015/04/DSCF6427.jpg"
+        .overlay-img.hidden-sm.hidden-md.hidden-lg
+        = image_tag ('img-landing-mobile.jpg'), class: 'img-mobile hidden-sm hidden-md hidden-lg'
+        / img.img-mobile.hidden-lg src="img-landing-mobile"
         video.hidden-xs#video-background autoplay="" loop="" muted=""
           source src="#{video_path('movie.mp4')}" type="video/mp4"
           source src="#{video_path('movie.webm')}"
