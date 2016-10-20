@@ -173,10 +173,12 @@
           #collapseFour.panel-collapse.collapse.in aria-labelledby="headingFour" role="tabpanel" 
             .panel-body
               p = @hotel_confirmation['RateInfos']['RateInfo']['cancellationPolicy']
-      
-      = link_to 'Cancel Reservation', '#', class: 'btn btn-orange btn-lg btn-block', data: { toggle: 'modal', target: '#cancelReservation' }
-      br
-      br
+              
+      .row
+        .col-md-2.pull-right
+          = link_to 'Cancel Reservation', '#', class: 'btn btn-orange btn-md btn-block', data: { toggle: 'modal', target: '#cancelReservation' }
+          br
+          br
 
 #cancelReservation.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" data-backdrop="static"
   .modal-dialog role="document" 
