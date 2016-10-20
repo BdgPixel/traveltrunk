@@ -42,6 +42,15 @@ class ReservationsController < ApplicationController
     cancel_reservation_response = Expedia::Hotels.cancel_reservation(request_hash).first
     @cancel_reservation = cancel_reservation_response[:response]
     @error_response = cancel_reservation_response[:error_response]
+
+    unless @error_response
+      itinerary_params = { itineraryId: cancel_params[:itinerary_id], email: cancel_params[:email] }
+      itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
+      status_code = itinerary_response[:response]["Itinerary"]["HotelConfirmation"]["status"]
+
+      reservation = Reservation.find_by(itinerary: cancel_params[:itinerary_id])
+      reservation.update(status_code: status_code)
+    end
     
     respond_to { |format| format.js }
   end
