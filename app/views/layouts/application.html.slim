@@ -13,7 +13,7 @@ html lang="en"
     = yield :css
 
     = javascript_include_tag 'application', 'data-turbolinks-track' => true
-    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&signed_in=true&libraries=places"
+    = javascript_include_tag "https://maps.googleapis.com/maps/api/js?key=#{ENV['GOOGLE_API_KEY']}&libraries=places"
     = render 'partials/google_analytic'
 
     = csrf_meta_tags

@@ -8,6 +8,8 @@ componentForm =
   country: 'long_name'
   postal_code: 'short_name'
 
+root = exports ? this
+
 initAutocomplete = (selector) ->
   autocomplete = new (google.maps.places.Autocomplete)(document.getElementById(selector), types: [ 'geocode' ])
   autocomplete.addListener 'place_changed', () ->
@@ -70,7 +72,7 @@ geolocate = ->
 initMap = ->
   myLatLng =
     lat: parseFloat $('.lat').val()
-    lng: parseFloat $('#long').val()
+    lng: parseFloat $('.lng').val()
 
   map = new (google.maps.Map)(document.getElementById('map'),
     center: myLatLng
