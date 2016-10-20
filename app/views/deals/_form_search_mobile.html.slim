@@ -5,9 +5,10 @@
         .col-md-12
           = f.input_field :destination_string, id: "autocompleteMobile", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
 
-          / span.wrapper-icon-delete
-          /   a#btnClearText href="javascript:void(0)"
-          /     i.icon.delete
+          span.wrapper-icon-delete
+            a#btnClearText href="javascript:void(0)"
+              i.icon.delete
+              
           .show
             = hidden_field_tag :street_number, nil, id: "street_number", class: 'street_number'
             = hidden_field_tag :route, nil, id: "route", class: 'route'
