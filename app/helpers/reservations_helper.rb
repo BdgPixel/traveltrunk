@@ -87,4 +87,17 @@ module ReservationsHelper
 
     tags.html_safe
   end
+
+  def status_reservation(status_code)
+    label =
+      if status_code.eql? 'CF'
+        'Confirmed Reservation'
+      elsif status_code.eql? 'PS'
+        'Pending'
+      elsif status_code.eql? 'CX'
+        'Cancelled'
+      end
+
+    "#{status_code} - #{label}"
+  end
 end
