@@ -3,68 +3,101 @@ validationForm = function() {
     var returnValue;
     returnValue = void 0;
     returnValue = null;
+    $('.bank-account-error').text('');
+    $('.profile-error').text('');
 
     if ($('.card_number').val().length < 13) {
-      $('.payment-errors').html('Credit card number is too short.');
+      $('.credit-card-error').html('Credit card number is too short.');
       returnValue = false;
-    } else if ($('.card_number').val().length > 16) {
-      $('.payment-errors').html('Credit card number is too long.');
+    } 
+
+    if ($('.card_number').val().length > 16) {
+      $('.credit-card-error').html('Credit card number is too long.');
       returnValue = false;
-    } else if ($('.cvc').val().length < 3) {
-      $('.payment-errors').html('Cvv is too short (minimum is 3 characters)');
+    } 
+
+    if ($('.cvc').val().length < 3) {
+      $('.cvc-error').html('Cvv is too short (min 3)');
       returnValue = false;
-    } else if ($('.card-month').val() < (new Date().getMonth() + 1)) {
-      $('.payment-errors').html('Please select present or future month');
+    } 
+
+    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
+      $('.card-month-error').html('Select present or future month');
       returnValue = false;
-    } else if (!$('.amount').val()) {
-      $('.payment-errors').html('Amount cannot be blank');
+    } 
+
+    if (!$('.amount').val()) {
+      $('.amount-error').html('Amount transfer cannot be blank');
       returnValue = false;
-    } else if ($('.amount').val() < 25) {
-      $('.payment-errors').html('Amount must be greater or equal to 25.0');
+    }
+
+    if ($('.amount').val() < 25) {
+      $('.amount-error').html('Amount transfer must be greater than or equal to $25.00');
       returnValue = false;
-    } else if ($('.transfer_frequency').val() == 0) {
-      $('.payment-errors').html('Please select one transfer frequency');
+    } 
+
+    if ($('.transfer_frequency').val() == 0) {
+      $('.transfer-frequency-error').html('Please select one transfer frequency');
       returnValue = false;
     }
 
     if ($('#profile').length > 0) {
       if ($('.first-name').val() == 0) {
-        $('.payment-errors').html('First name cannot be blank or zero');
+        $('.first-name-error').html('First name cannot be blank or zero');
         returnValue = false; 
-      } else if ($('.last-name').val() == 0) {
-        $('.payment-errors').html('Last name cannot be blank or zero');
+      }
+
+      if ($('.last-name').val() == 0) {
+        $('.last-name-error').html('Last name cannot be blank or zero');
         returnValue = false; 
-      } else if ($('.address').val() == 0) {
-        $('.payment-errors').html('Address cannot be blank or zero');
+      }
+
+      if ($('.address').val() == 0) {
+        $('.address-error').html('Address cannot be blank or zero');
         returnValue = false; 
-      } else if ($('.city').val() == 0) {
-        $('.payment-errors').html('City cannot be blank or zero');
+      }
+
+      if ($('.city').val() == 0) {
+        $('.city-error').html('City cannot be blank or zero');
         returnValue = false; 
-      } else if ($('.state').val() == 0) {
-        $('.payment-errors').html('State cannot be blank or zero');
+      }
+
+      if ($('.state').val() == 0) {
+        $('.state-error').html('State cannot be blank or zero');
         returnValue = false; 
-      } else if ($('.home-phone').val() == '') {
-        $('.payment-errors').html('Phone number cannot be blank');
+      }
+
+      if ($('.home-phone').val() == '') {
+        $('.home-phone-error').html('Phone number cannot be blank');
         returnValue = false;
-      } else if ($('.zip').val() == 0) {
-        $('.payment-errors').html('Zip or postal code cannot be blank or zero');
+      }
+
+      if ($('.zip').val() == 0) {
+        $('.zip-error').html('Zip required');
         returnValue = false;
-      } else if ($('.email-saving').val() == 0) {
-        $('.payment-errors').html('Email cannot be blank or zero');
+      }
+
+      if ($('.email-saving').val() == 0) {
+        $('.email-saving-error').html('Email cannot be blank or zero');
         returnValue = false;
-      } else if (validateEmail($('.email-saving').val()) == false) {
-        $('.payment-errors').html('Email not valid format');
+      }
+
+      if (validateEmail($('.email-saving').val()) == false) {
+        $('.email-saving-error').html('Email not valid format');
         returnValue = false;
-      } else if ($('.country').val() == '') {
-        $('.payment-errors').html('Please select one a country code');
+      }
+
+      if ($('.country').val() == '') {
+        $('.country-error').html('Please select one a country code');
         returnValue = false;
-      } else if ($('.card-type').val() == '') {
-        $('.payment-errors').html('Please select your card type');
+      }
+
+      if ($('.card-type').val() == '') {
+        $('.card-type-error').html('Please select your card type');
         returnValue = false;
       }
     }
     
-    $("#modalSavingsForm").scrollTop(0);
     return returnValue;
     e.preventDefault()
   });

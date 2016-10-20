@@ -37,47 +37,56 @@
                   .col-md-6
                     = f.label :first_name, 'Card Holder First Name'
                     = f.input_field :first_name, class: 'first-name', maxlength: 50, autocomplete: 'off'
+                    .first-name-error.profile-error
 
                   .col-md-6
                     = f.label :last_name, 'Card Holder Last Name'
                     = f.input_field :last_name, class: 'last-name', maxlength: 50, autocomplete: 'off'
+                    .last-name-error.profile-error
 
               .form-group
                 .row
                   .col-md-6
                     = f.label :address
                     = f.input_field :address, class: 'address', maxlength: 60, autocomplete: 'off'
+                    .address-error.profile-error
 
                   .col-md-6
                     = f.label :city
                     = f.input_field :city, class: 'city', maxlength: 40
+                    .city-error.profile-error
+
               .form-group
                 .row
                   .col-md-6
                     = f.label :state
                     = f.input_field :state, class: 'state', maxlength: 40
+                    .state-error.profile-error
 
                   .col-md-4
-                    = f.label :home_phone
+                    = f.label :home_phone, 'Phone'
                     = f.input_field :home_phone, as: :string, class: 'home-phone'
                     span
                       i We'll only contact you in an emergency
+                    .home-phone-error.profile-error
+
                   .col-md-2
                     = f.label :zip
                     = f.input_field :zip, class: 'zip', maxlength: 20
+                    .zip-error.profile-error
 
               .form-group
                 .row
                   .col-md-6
                     = f.label :country, 'Country'
                     = f.country_select(:country, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom country' })
-
-                    / - if f.error :country_code
-                    /   span.error.error-message please select one
+                    .country-error.profile-error
 
                   .col-md-6
                     = f.label :email_saving, 'Email'
                     = f.input_field :email_saving, class: 'email-saving'
+                    .email-saving-error.profile-error
+
             #selectedRooms.hide
               .form-group
                 = f.hidden_field :hotel_id, value: params[:id]
@@ -107,6 +116,7 @@
             .row
               .col-md-6
                 = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select Your Card Type'
+                .card-type-error.bank-account-error
                 .wrapper-icon-payment
                   = image_tag asset_path('cards/mastercard.png')
                   |&nbsp;
@@ -116,11 +126,13 @@
                   / |&nbsp;
                   = image_tag asset_path('cards/discover.png')
 
-              .col-md-4
+              .col-md-3
                 = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;', autocomplete: 'off', maxlength: 19 }
+                .credit-card-error.bank-account-error
 
-              .col-md-2
+              .col-md-3
                 = f.input :cvv, as: :password, label: 'Security Code', input_html: { class: "form-control cvc", maxlength: 4 }
+                .cvc-error.bank-account-error
 
           .form-group
             .row
@@ -131,6 +143,7 @@
                   = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
                 - else
                   = select_month Date.today, { use_two_digit_numbers: true }, { name: "guest_booking[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
+                .card-month-error.bank-account-error
 
               .col-md-6
                 = label_tag "Expiration Year (YYYY)"

@@ -92,8 +92,8 @@
 
           #map style="height: 500px; width: 100%;"
 
-          = hidden_field_tag  :lat, @hotel_information["HotelSummary"]["latitude"]
-          = hidden_field_tag  :long, @hotel_information["HotelSummary"]["longitude"]
+          = hidden_field_tag :lat, @hotel_information["HotelSummary"]["latitude"], class: 'lat'
+          = hidden_field_tag :lng, @hotel_information["HotelSummary"]["longitude"], class: 'lng'
 
         .col-md-12
           hr

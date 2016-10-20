@@ -20,7 +20,7 @@
 
       .form-group
         .col-md-12
-          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date_mobile", placeholder: "Arriving when?"
+          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date_mobile", placeholder: "Arriving when?", onfocus: 'blur();'
 
       .form-group
         .col-md-12

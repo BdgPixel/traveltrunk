@@ -13,7 +13,14 @@ class BankAccount < ActiveRecord::Base
 
   validates :amount_transfer, presence: true
   validates :transfer_frequency, presence: { message: 'please select one' }
-  validates :amount_transfer, numericality: { only_integer: false, greater_than_or_equal_to: 25.0 }
+  validates :amount_transfer, numericality: { only_integer: false }
+  validate :validate_amount
+
+  def validate_amount
+    if self.amount_transfer.to_f < 25.0
+      self.errors.add(:amount_transfer, 'Amount transfer must be greater than or equal to $25.00')
+    end
+  end
 
   def transfer_type
     case  transfer_frequency

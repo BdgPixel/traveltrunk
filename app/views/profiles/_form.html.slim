@@ -11,18 +11,6 @@ div
         strong Warning! &nbsp;&nbsp;
         = "#{pluralize(current_user.errors.count, "error")} prohibited this profile from being saved"
 
-    - if @bank_account.errors.any?
-      .alert.alert-danger
-        strong Warning! &nbsp;&nbsp;
-        ul
-          - @bank_account.errors.full_messages.each do |error|
-            li = error
-      / - @bank_account.errors.each do |error|
-        / = error.messages
-      / #error_authorize_net.alert.alert-danger
-      /   strong Warning! &nbsp;&nbsp;
-      /   = @bank_account.errors[:authorize_net_error].to_sentence
-
     = f.simple_fields_for :profile do |profile_form|
       .wrapper-edit-profile
         .row
@@ -165,20 +153,23 @@ div
       .payment-errors
 
       .row
-        .col-md-6
+        .col-md-4
           .form-group
             = f.input :credit_card, input_html: { class: "form-control  input-custom card_number", autocomplete: 'off' }
+            .credit-card-error.bank-account-error
 
         .col-md-2
           .form-group
             = f.input :cvc, as: :password, input_html: { class: "form-control  input-custom input-custom cvc", maxlength: 4 }
+            .cvc-error.bank-account-error
 
-        .col-md-2
+        .col-md-3
           .form-group
             = label_tag "Expiration Month (MM)"
             = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control input-custom card-month', data: { stripe: 'exp-month' } }
+            .card-month-error.bank-account-error
 
-        .col-md-2
+        .col-md-3
           .form-group
             = label_tag "Expiration Year (YYYY)"
             = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "bank_account[exp_year]", id: "card_year", class: 'form-control input-custom card-year', data: { stripe: 'exp-year' } }
@@ -193,8 +184,8 @@ div
               = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
               = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
 
-            = f.error :amount_transfer, class: 'error-message'
-            .amount-error
+            .amount-error.bank-account-error
+              = f.error :amount_transfer
 
         .col-md-6
           .form-group
