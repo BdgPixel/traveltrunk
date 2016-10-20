@@ -1,3 +1,6 @@
+- content_for :javascripts
+  = javascript_include_tag "reservations"
+  
 .container
   .row
     br
@@ -84,7 +87,8 @@
                   td = expedia_reserved_for @hotel_confirmation['ReservationGuest']
                 tr
                   th Status
-                  td = @hotel_confirmation["status"]
+                  td 
+                    b = status_reservation @hotel_confirmation["status"]
                 tr
                   th Room Confirmation Number
                   td = @hotel_confirmation["confirmationNumber"]
@@ -182,7 +186,7 @@
           span aria-hidden="true" &times;
         h4#cancelReservation.modal-title Cancel Reservation
 
-      = simple_form_for :cancel_reservation, method: :post, url: cancel_reservations_path, remote: true do |f|
+      = simple_form_for :cancel_reservation, method: :post, url: cancel_reservations_path, remote: true, html: { class: 'reservation' } do |f|
         .modal-body
           .form-group
             = f.label :itinerary_id

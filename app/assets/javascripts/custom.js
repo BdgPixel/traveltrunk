@@ -19,33 +19,35 @@ var initParalax = function() {
 };
 
 var initScrolling = function() {
-  var scroll = $(window).scrollTop();
+  $(window).scroll(function() {
+    var scroll = $(window).scrollTop();
 
-  if (scroll >= 10) {
-      $(".transparent").addClass("scrolling");
-      $("#logo-color-orange").removeClass("hide");
+    if (scroll >= 10) {
+        $(".transparent").addClass("scrolling");
+        $("#logo-color-orange").removeClass("hide");
 
-      $("#logo-color-white").addClass("hide");
-      $("#logo-color-white").removeClass("");
+        $("#logo-color-white").addClass("hide");
+        $("#logo-color-white").removeClass("");
 
-      $(".btn-border").addClass("hide");
-      $(".btn-border").removeClass("show");
+        $(".btn-border").addClass("hide");
+        $(".btn-border").removeClass("show");
 
-      $(".btn-orange2").removeClass("hide");
-      $(".link-top-login").addClass('grey-nav-color');
-  } else {
-      $(".transparent").removeClass("scrolling");
-      $("#logo-color-white").removeClass("hide");
-      $("#logo-color-white").addClass("");
+        $(".btn-orange2").removeClass("hide");
+        $(".link-top-login").addClass('grey-nav-color');
+    } else {
+        $(".transparent").removeClass("scrolling");
+        $("#logo-color-white").removeClass("hide");
+        $("#logo-color-white").addClass("");
 
-      $("#logo-color-orange").addClass("hide");
+        $("#logo-color-orange").addClass("hide");
 
-      $(".btn-border").removeClass("show");
-      $(".btn-border").addClass("show");
+        $(".btn-border").removeClass("show");
+        $(".btn-border").addClass("show");
 
-      $(".btn-orange2").addClass("hide");
-      $(".link-top-login").removeClass('grey-nav-color');
-  }
+        $(".btn-orange2").addClass("hide");
+        $(".link-top-login").removeClass('grey-nav-color');
+    }
+  });
 };
 
 var initToolTip = function() {
@@ -123,11 +125,10 @@ var ready = function() {
   initParalax();
   initScrolling();
   initToolTip();
-  initSwipeGroupSaving();
 };
 
 $(document).ready(function() {
-  ready()
+  ready();
 });
 
 $(document).on('page:load', function() {

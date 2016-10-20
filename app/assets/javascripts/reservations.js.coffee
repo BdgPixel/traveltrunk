@@ -6,6 +6,7 @@ validateForm = ->
     rules:
       itinerary: 'required'
       email: 'required'
+      reason: 'required'
 
   return
 

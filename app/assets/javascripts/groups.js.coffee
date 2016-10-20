@@ -83,9 +83,57 @@ inviteFriends = (selector) ->
           "<li><p><img src='#{item.image_url}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}&nbsp;<b style='color: red'>#{item.email}</b></p></li>"
     })
 
+initSwipeGroupSaving = ->
+  $('.swipe-group-saving').slick
+    dots: false
+    infinite: false
+    speed: 300
+    slidesToShow: 3
+    slidesToScroll: 3
+    prevArrow: false
+    nextArrow: false
+    variableWidth: true
+    responsive: [
+      {
+        breakpoint: 960
+        settings:
+          slidesToShow: 1
+          slidesToScroll: 1
+          infinite: true
+          variableWidth: false
+          dots: false
+      }
+      {
+        breakpoint: 1024
+        settings:
+          slidesToShow: 3
+          slidesToScroll: 3
+          infinite: true
+          variableWidth: false
+          dots: false
+      }
+      {
+        breakpoint: 600
+        settings:
+          slidesToShow: 1
+          slidesToScroll: 1
+          variableWidth: false
+      }
+      {
+        breakpoint: 480
+        settings:
+          slidesToShow: 1
+          slidesToScroll: 1
+          variableWidth: false
+      }
+    ]
+
+  return
+
 $(document).ready ->
   validateInvitationForm()
   disableEnterFormSubmit()
   initAutoNumeric('#update_credit_formatted_amount', '#update_credit_amount')
   clearForm('.modal', '.promo_code')
   inviteFriends('#invite_user_id')
+  initSwipeGroupSaving()
