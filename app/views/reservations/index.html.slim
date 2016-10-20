@@ -1,3 +1,10 @@
+- content_for :css
+  css:
+    .error {
+      color: #fff !important;
+      font-weight: bold !important;
+    }
+
 - content_for :javascripts
   = javascript_include_tag "reservations"
 
@@ -25,10 +32,10 @@ body.bg-gradient
           .col-md-offset-3.col-md-6.col-sm-12.col-xs-12
             .wrapper-login.wrapper-reservation
               .login.reservation
-                = simple_form_for :reservation, method: :post, url: detail_reservations_path, html: { class: 'reservation' } do |f|
+                = simple_form_for :reservation, method: :post, url: detail_reservations_path, html: { class: 'form-check-reservation' } do |f|
                   .form-group
                     = f.label :itinerary_id
-                    = f.input_field :itinerary_id, required: true, placeholder: 'Itinerary'
+                    = f.input_field :itinerary_id, required: true, placeholder: 'Itinerary Number'
                   .form-group
                     = f.input :email, placeholder: 'Email', error_html: { class: 'error-message' }
                   .form-group

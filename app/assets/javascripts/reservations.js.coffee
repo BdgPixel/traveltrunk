@@ -1,7 +1,7 @@
 root = exports ? this
 
 validateForm = ->
-  $('.reservation').validate
+  $('.form-check-reservation').validate
     ignore: ".ignore"
     rules:
       itinerary: 'required'

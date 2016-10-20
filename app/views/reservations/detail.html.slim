@@ -186,7 +186,7 @@
           span aria-hidden="true" &times;
         h4#cancelReservation.modal-title Cancel Reservation
 
-      = simple_form_for :cancel_reservation, method: :post, url: cancel_reservations_path, remote: true, html: { class: 'reservation' } do |f|
+      = simple_form_for :cancel_reservation, method: :post, url: cancel_reservations_path, remote: true, html: { class: 'form-check-reservation' } do |f|
         .modal-body
           .form-group
             = f.label :itinerary_id
