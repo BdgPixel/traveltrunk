@@ -68,8 +68,7 @@ var initSwipeGroupSaving = function() {
     speed: 300,
     slidesToShow: 3,
     slidesToScroll: 3,
-    prevArrow: false,
-    nextArrow: false,
+    arrows: true,
     variableWidth: true,
     responsive: [
       {
@@ -79,6 +78,7 @@ var initSwipeGroupSaving = function() {
           slidesToScroll: 1,
           infinite: true,
           variableWidth: false,
+          arrows: true,
           dots: false
         }
       },
@@ -89,6 +89,7 @@ var initSwipeGroupSaving = function() {
           slidesToScroll: 3,
           infinite: true,
           variableWidth: false,
+          arrows: true,
           dots: false
         }
       },
@@ -99,6 +100,7 @@ var initSwipeGroupSaving = function() {
           slidesToShow: 1,
           slidesToScroll: 1,
           variableWidth: false,
+          arrows: true,
         }
       },
       {
@@ -106,6 +108,7 @@ var initSwipeGroupSaving = function() {
         settings: {
           slidesToShow: 1,
           slidesToScroll: 1,
+          arrows: true,
           variableWidth: false
         }
       }
