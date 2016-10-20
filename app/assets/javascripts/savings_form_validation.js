@@ -17,13 +17,10 @@ validationForm = function() {
       $('.payment-errors').html('Please select present or future month');
       returnValue = false;
     } else if (!$('.amount').val()) {
-      $('.payment-errors').html('Amount cannot be blank or zero or negative');
+      $('.payment-errors').html('Amount cannot be blank');
       returnValue = false;
-    } else if ($('.amount').val() == 0) {
-      $('.payment-errors').html('Amount cannot be blank or zero or negative');
-      returnValue = false;
-    } else if ($('.amount').val() < 0) {
-      $('.payment-errors').html('Amount cannot be blank or zero or negative');
+    } else if ($('.amount').val() < 25) {
+      $('.payment-errors').html('Amount must be greater or equal to 25.0');
       returnValue = false;
     } else if ($('.transfer_frequency').val() == 0) {
       $('.payment-errors').html('Please select one transfer frequency');
