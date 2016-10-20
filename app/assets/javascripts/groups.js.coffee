@@ -90,8 +90,7 @@ initSwipeGroupSaving = ->
     speed: 300
     slidesToShow: 3
     slidesToScroll: 3
-    prevArrow: false
-    nextArrow: false
+    arrows: true
     variableWidth: true
     responsive: [
       {
@@ -101,6 +100,7 @@ initSwipeGroupSaving = ->
           slidesToScroll: 1
           infinite: true
           variableWidth: false
+          arrows: true
           dots: false
       }
       {
@@ -110,6 +110,7 @@ initSwipeGroupSaving = ->
           slidesToScroll: 3
           infinite: true
           variableWidth: false
+          arrows: true
           dots: false
       }
       {
@@ -118,16 +119,18 @@ initSwipeGroupSaving = ->
           slidesToShow: 1
           slidesToScroll: 1
           variableWidth: false
+          arrows: true
       }
       {
         breakpoint: 480
         settings:
           slidesToShow: 1
           slidesToScroll: 1
+          arrows: true
           variableWidth: false
       }
     ]
-
+    
   return
 
 $(document).ready ->

@@ -63,64 +63,6 @@ var initToolTip = function() {
   });
 };
 
-var initSwipeGroupSaving = function() {
-  $('.swipe-group-saving').slick({
-    dots: false,
-    infinite: false,
-    speed: 300,
-    slidesToShow: 3,
-    slidesToScroll: 3,
-    arrows: true,
-    variableWidth: true,
-    responsive: [
-      {
-        breakpoint: 960,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          infinite: true,
-          variableWidth: false,
-          arrows: true,
-          dots: false
-        }
-      },
-      {
-        breakpoint: 1024,
-        settings: {
-          slidesToShow: 3,
-          slidesToScroll: 3,
-          infinite: true,
-          variableWidth: false,
-          arrows: true,
-          dots: false
-        }
-      },
-
-      {
-        breakpoint: 600,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          variableWidth: false,
-          arrows: true,
-        }
-      },
-      {
-        breakpoint: 480,
-        settings: {
-          slidesToShow: 1,
-          slidesToScroll: 1,
-          arrows: true,
-          variableWidth: false
-        }
-      }
-      // You can unslick at a given breakpoint now by adding:
-      // settings: "unslick"
-      // instead of a settings object
-    ]
-  });
-};
-
 var ready = function() {
   initParalax();
   initScrolling();
