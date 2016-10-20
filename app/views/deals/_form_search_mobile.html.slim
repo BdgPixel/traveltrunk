@@ -8,7 +8,7 @@
           span.wrapper-icon-delete
             a#btnClearText href="javascript:void(0)"
               i.icon.delete
-              
+
           .show
             = hidden_field_tag :street_number, nil, id: "street_number", class: 'street_number'
             = hidden_field_tag :route, nil, id: "route", class: 'route'
@@ -25,7 +25,7 @@
 
       .form-group
         .col-md-12
-          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_departure_date_mobile", placeholder: "Departing when?"
+          = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_departure_date_mobile", placeholder: "Departing when?", onfocus: 'blur();'
 
       .form-group
         .col-md-12
