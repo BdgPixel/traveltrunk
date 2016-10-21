@@ -197,8 +197,13 @@ h2, h3, h4 {
       background-color: white;
       border-color: transparent;
       color: #ffffff;
+
       a.login {
         padding: 16px 25px;
+
+        @media (max-width: 768px) {
+          padding: 16px 30px !important;
+        }
 
         &:hover,
         &:focus,
@@ -1335,7 +1340,7 @@ a.login.show {
 .navbar-collapse {
   @media (max-width: 768px) {
 
-    .btn-orange2 {
+    .btn-orange2, .btn-border {
       margin: 0px 30px !important;
     }
   }
