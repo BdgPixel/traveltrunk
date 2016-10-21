@@ -36,7 +36,11 @@
         = special_checkin_instructions.html_safe
         br
         br
-      = checkin_instructions.html_safe
+
+      - if checkin_instructions.present?
+        = checkin_instructions.html_safe
+      - else
+        | no more information
     / a href="#" Show more room information
 
   .amenities
