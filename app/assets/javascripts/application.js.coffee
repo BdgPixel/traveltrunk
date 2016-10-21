@@ -131,6 +131,81 @@ root.validateSearchFormMobile = ->
 
   return
 
+root.initDatePickerForDesktop = (today) ->
+  $('input.search_deals_arrival_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+      departureDate = e.date
+      departureDate.setDate(departureDate.getDate() + 1)
+
+      $('input.search_deals_departure_date').datepicker('remove')
+      $('input.search_deals_departure_date').datepicker
+        startDate:  getFormattedDate(departureDate)
+        autoclose: true
+      setTimeout(->
+        $('input.search_deals_departure_date').datepicker('show')
+      , 100)
+
+  $('input.search_deals_departure_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+
+root.initDatePickerForMobile = (today) ->
+  $('input.search_deals_arrival_date_mobile').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+      departureDate = e.date
+      departureDate.setDate(departureDate.getDate() + 1)
+
+      $('input.search_deals_departure_date_mobile').datepicker('remove')
+      $('input.search_deals_departure_date_mobile').datepicker
+        startDate:  getFormattedDate(departureDate)
+        autoclose: true
+      setTimeout(->
+        $('input.search_deals_departure_date_mobile').datepicker('show')
+      , 100)
+
+  $('input.search_deals_departure_date_mobile').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+
+getFormattedDate = (date) ->
+  day = date.getDate()
+  month = date.getMonth() + 1
+  year = date.getFullYear()
+  formattedDate = [month, day, year].join('/')
+
+  formattedDate
+
+# toggleNavbarBackground = ->
+#   $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
+#    $(".transparent").addClass("scrolling")
+#    $("#logo-color-orange").removeClass("hide")
+
+#    $("#logo-color-white").addClass("hide")
+#    $("#logo-color-white").removeClass("")
+
+#    $(".btn-border").addClass("hide")
+#    $(".btn-border").removeClass("show")
+
+#    $(".btn-orange2").removeClass("hide")
+#    $(".link-top-login").addClass('grey-nav-color')
+
+#  $("#bs-example-navbar-collapse-1").on 'hide.bs.collapse', () ->
+#    $(".transparent").removeClass("scrolling")
+#    $("#logo-color-white").removeClass("hide")
+#    $("#logo-color-white").addClass("")
+
+#    $("#logo-color-orange").addClass("hide")
+
+#    $(".btn-border").removeClass("show")
+#    $(".btn-border").addClass("show")
+
+#    $(".btn-orange2").addClass("hide")
+#    $(".link-top-login").removeClass('grey-nav-color')
+
 ready = ->
   setTimeout(->
     $('#notice').fadeOut()
@@ -144,6 +219,9 @@ ready = ->
 
   if $('#btnClearText').length > 0
     clearSearchText '#btnClearText', 'input#autocomplete'
+
+  if $('body').data('controller') == 'home'
+    toggleNavbarBackground()
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()

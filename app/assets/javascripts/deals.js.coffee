@@ -17,14 +17,6 @@ replaceImageInterval = undefined
 imageSizeType = null
 imageLoadedCount = 0
 
-getFormattedDate = (date) ->
-  day = date.getDate()
-  month = date.getMonth() + 1
-  year = date.getFullYear()
-  formattedDate = [month, day, year].join('/')
-
-  formattedDate
-
 root.validateFormBook = ->
   if $('#formBook').length > 0
     $('#formBook').on 'submit', (e) ->
@@ -353,48 +345,6 @@ appendValueRoomParams = () ->
   $('#guest_booking_bed_type').val($('#confirmation_book_bed_type').val())
   $('#guest_booking_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
-initDatePicker = (today) ->
-  $('input#search_deals_arrival_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-      departureDate = e.date
-      departureDate.setDate(departureDate.getDate() + 1)
-
-      $('input#search_deals_departure_date').datepicker('remove')
-      $('input#search_deals_departure_date').datepicker
-        startDate:  getFormattedDate(departureDate)
-        autoclose: true
-      setTimeout(->
-        $('input#search_deals_departure_date').datepicker('show')
-      , 100)
-
-  $('input#search_deals_departure_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-
-initDatePickerForMobile = (today) ->
-  $('input#search_deals_arrival_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-      departureDate = e.date
-      departureDate.setDate(departureDate.getDate() + 1)
-
-      $('input#search_deals_departure_date').datepicker('remove')
-      $('input#search_deals_departure_date').datepicker
-        startDate:  getFormattedDate(departureDate)
-        autoclose: true
-      setTimeout(->
-        $('input#search_deals_departure_date').datepicker('show')
-      , 100)
-
-  $('input#search_deals_departure_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-
 ready  = ->
   controller = $('body').data('controller')
   action = $('body').data('action')
@@ -414,7 +364,7 @@ ready  = ->
     moment.tz.link('America/Los_Angeles|US/Pacific')
     today = moment.tz('US/Pacific').format('M/D/Y')
 
-    initDatePicker(today)
+    initDatePickerForDesktop(today)
     initDatePickerForMobile(today)
     showSearchForm()
     clearSearchText('#btnClearText', 'input#autocomplete')
