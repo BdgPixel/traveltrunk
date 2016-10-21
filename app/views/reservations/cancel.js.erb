@@ -7,4 +7,15 @@ $('html, body').animate({ scrollTop: 0 }, 'slow')
 <% else %>
   $('#cancelReservationMessage').attr('class', 'alert alert-warning');
   $('#cancelReservationMessage').text("You successfully cancelled your booking. Here is you cancellation number <%= @cancel_reservation['cancellationNumber'] %>");
+
+  <% status_code = 
+    if @status_code.eql? 'CF'
+      'CF - Confirmed Reservation'
+    elsif @status_code.eql? 'PS'
+      'PS - Pending'
+    elsif @status_code.eql? 'CX'
+      'CX - Cancelled'
+    end
+  %>
+  $('#statusCode').text('<%= status_code %>');
 <% end %>
