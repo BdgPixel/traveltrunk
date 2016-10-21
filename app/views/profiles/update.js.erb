@@ -13,6 +13,8 @@
     initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer');
     // $('#showBankAccount').show();
     $('#modalUserProfile .modal-title').text('Create Your Savings Plan');
-    $('#myCarousel').carousel(1);
+    var activeItem = parseInt('<%= params[:step] %>');
+    console.log(activeItem);
+    $('#myCarousel').carousel(activeItem);
   });
 <% end %>

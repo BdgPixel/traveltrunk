@@ -126,3 +126,5 @@ gem 'omniauth-facebook'
 gem "omniauth-google-oauth2"
 
 gem 'luhn-ruby'
+
+gem 'remotipart', '~> 1.2'

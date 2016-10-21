@@ -17,7 +17,7 @@
         br
         br
 
-  = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account", class: "transaction-form" }, remote: is_remote do |f|
+  = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path(step: 3) : update_bank_account_path(step: 3), html: { id: "profile-payment-account", class: "transaction-form-no-validate" }, remote: is_remote do |f|
     .payment-errors
 
     .row
@@ -49,7 +49,7 @@
 
           .input-group
             .input-group-addon $
-            = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
+            = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom'
             = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
 
           = f.error :amount_transfer, class: 'error-message'
