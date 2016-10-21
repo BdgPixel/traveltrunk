@@ -11,11 +11,15 @@
 
         .wrapper-navbar-brand
           - if user_signed_in?
-            = link_to '', deals_path, id: 'logo-color-white', class: 'color'
-            = link_to '', deals_path, id: 'logo-color-orange', class: 'color hide'
+            = link_to deals_path, id: 'logo-color-white', class: 'color'
+              span TravelTrunk
+            = link_to deals_path, id: 'logo-color-orange', class: 'color hide'
+              span TravelTrunk
           - else
-            = link_to '', '/', id: 'logo-color-white', class: 'color'
-            = link_to '', '/', id: 'logo-color-orange', class: 'color hide'
+            = link_to '/', id: 'logo-color-white', class: 'color'
+              span TravelTrunk
+            = link_to '/', id: 'logo-color-orange', class: 'color hide'
+              span TravelTrunk
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         - if user_signed_in?
@@ -82,4 +86,9 @@
 
               = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide"
                | Sign Up
+
+/ javascript:
+/   $('.navbar-toggle').click(function(){
+/     $('.wrapper-navbar-traveltrunk').toggleClass('grey-on');
+/   });
 
