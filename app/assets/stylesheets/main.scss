@@ -1304,3 +1304,12 @@ a.login.show {
     }
   }
 }
+
+.navbar-collapse {
+  @media (max-width: 768px) {
+
+    .btn-orange2 {
+      margin: 0px 30px !important;
+    }
+  }
+}
