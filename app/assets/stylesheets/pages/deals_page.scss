@@ -537,6 +537,41 @@
 
 .modal-search {
 
+  .icon {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+
+    &.delete {
+      background: image-url("icon_delete_fill_input.png") no-repeat;
+      background-size: cover;
+    }
+  }
+
+  .form-group {
+
+    span.wrapper-icon-delete {
+      position: absolute;
+      top: 12px;
+      right: 26px;
+
+      // @media (max-width: 1200px) {
+      //   top: 12px;
+      //   right: 12px;
+      // }
+
+      // @media (max-width: 1440px) {
+      //   top: 12px;
+      //   right: 12px;
+      // }
+
+      // @media (max-width: 1800px) {
+      //   top: 12px;
+      //   right: 30px;
+      // }
+    }
+  }
+
   .wrapper-where-serach-form {
 
     input {
