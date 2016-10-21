@@ -601,7 +601,7 @@ h2, h3, h4 {
 // Saving Page
 
 .wrapper-group-saving {
-  padding: 95px 0px;
+  padding: 95px 0px 95px 0px;
   max-width: 1000px;
   margin: 0 auto;
 
@@ -632,6 +632,10 @@ h2, h3, h4 {
 
   h3 {
     font-size: 32px;
+  }
+
+  @media(max-width: 768px) {
+    padding: 75px 0px 5px 0px;
   }
 }
 
