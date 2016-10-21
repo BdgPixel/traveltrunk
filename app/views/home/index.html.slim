@@ -9,12 +9,13 @@
   #myCarousel-1.carousel.slide data-ride="carousel"
     .carousel-inner role="listbox"
       .item.active
-        .overlay-img.hidden-sm.hidden-md.hidden-lg
-        = image_tag ('img-landing-mobile.jpg'), class: 'img-mobile hidden-sm hidden-md hidden-lg'
+        .overlay-img
+        .img-landing-page
+        / = image_tag "img-landing.jpg", class: 'img-mobile'
         / img.img-mobile.hidden-lg src="img-landing-mobile"
-        video.hidden-xs#video-background autoplay="" loop="" muted=""
-          source src="#{video_path('movie.mp4')}" type="video/mp4"
-          source src="#{video_path('movie.webm')}"
+        / video.hidden-xs#video-background autoplay="" loop="" muted=""
+        /   source src="#{video_path('movie.mp4')}" type="video/mp4"
+        /   source src="#{video_path('movie.webm')}"
 
         / .carousel-caption.caption-left
         /   .video-caption
@@ -27,9 +28,9 @@
               .container
                 .row
                   .col-sm-12.col-md-12.col-lg-12
-                    h1.normal-font
+                    h1.normal-font.bold
                      | Vacation planning made simple
-                    h2.normal-font.light
+                    h2.normal-font.semibold
                       | Share the experience and the expense with friends.
 
                     / = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
@@ -48,11 +49,11 @@
                       | Where would you like to be?
                     span.btn-search
 
-              .col-md-12.video-credit.hidden-xs
-                p
-                  span.name TREY F.
-                  br
-                  span.location IN TURKS & CAICOS
+              / .col-md-12.video-credit.hidden-xs
+              /   p
+              /     span.name TREY F.
+              /     br
+              /     span.location IN TURKS & CAICOS
 
     / .wrap-arrow-down
     /   .arrow-down

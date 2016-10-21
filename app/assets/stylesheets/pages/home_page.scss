@@ -2,7 +2,17 @@
 @import 'fonts';
 
 .wrap-hero {
-  height: 550px !important;
+  // height: 550px !important;
+  height: 700px !important;
+
+  .bold {
+    font-weight: 700 !important;
+    font-size: 70px !important;
+  }
+
+  .semibold {
+    font-weight: 600 !important;
+  }
 
 	.hero {
 		height: 100%;
@@ -35,6 +45,12 @@
 			}
 		}
 	}
+}
+
+.img-landing-page {
+  background: asset-url("img-landing.jpg") center center no-repeat;
+  height: 100%;
+  background-size: cover;
 }
 
 .inner-item {
@@ -305,7 +321,7 @@ section.information {
 		color: #505050;
 		font-size: 20px;
 		@media screen and (max-width: 480px){
-			font-size: 18px;
+			font-size: 16px;
 		}
 	}
 

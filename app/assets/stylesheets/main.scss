@@ -601,7 +601,7 @@ h2, h3, h4 {
 // Saving Page
 
 .wrapper-group-saving {
-  padding: 150px 0px;
+  padding: 95px 0px 95px 0px;
   max-width: 1000px;
   margin: 0 auto;
 
@@ -632,6 +632,10 @@ h2, h3, h4 {
 
   h3 {
     font-size: 32px;
+  }
+
+  @media(max-width: 768px) {
+    padding: 75px 0px 5px 0px;
   }
 }
 
@@ -811,7 +815,11 @@ h3.hotel-name {
 }
 
 .wrapper-group-saving-img {
-  padding: 90px 0;
+  padding: 90px 0px 90px 0px;
+
+  @media (max-width: 768px) {
+    padding: 35px 0px 50px 0px;
+  }
 
   @media (min-width: 768px) {
 
@@ -1269,6 +1277,10 @@ a.login.show {
     display: block;
     text-decoration: none;
     padding: 0px 0;
+
+    @media (max-width: 768px) {
+      padding: 0px 12px;
+    }
   }
 
   nav {
@@ -1287,8 +1299,21 @@ a.login.show {
   ul li {
     display: table-cell;
 
+    @media (min-width: 768px) {
+      display: inline-flex;
+    }
+
     @media (min-width: 1200px) {
       display: inline-flex;
+    }
+  }
+}
+
+.navbar-collapse {
+  @media (max-width: 768px) {
+
+    .btn-orange2 {
+      margin: 0px 30px !important;
     }
   }
 }
