@@ -224,8 +224,8 @@ ready = ->
   if $('#btnClearText').length > 0
     clearSearchText '#btnClearText', 'input#autocomplete'
 
-  if $('body').data('controller') == 'home'
-    toggleNavbarBackground()
+  # if $('body').data('controller') == 'home'
+  #   toggleNavbarBackground()
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
