@@ -152,10 +152,12 @@ root.roomSelected = (selector)->
     if hotelFees
       if parseInt(hotelFees['@size']) > 1
         $.each hotelFees['HotelFee'], (key, hotelFee) ->
-          hotelFeeTag += "<p class='mandatory-tax'>+#{hotelFee['@amount']} due at hotel</p>"
+          feeDescription = hotelFee['@description'].split(/(?=[A-Z])/).join(" ")
+          hotelFeeTag += "<p class='mandatory-tax'>+#{hotelFee['@amount']} due at hotel (#{feeDescription})</p>"
           return
       else
-        hotelFeeTag = "<p class='mandatory-tax'>+#{hotelFees['HotelFee']['@amount']} due at hotel</p>"
+        feeDescription = hotelFees['HotelFee']['@description'].split(/(?=[A-Z])/).join(" ")
+        hotelFeeTag = "<p class='mandatory-tax'>+#{hotelFees['HotelFee']['@amount']} due at hotel (#{feeDescription})</p>"
 
     # table.append("<tr><td><b>Total Taxes and Fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
     table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td class='total-charges-text' dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4>#{hotelFeeTag}</td></tr>")

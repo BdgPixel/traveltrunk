@@ -133,13 +133,14 @@ module DealsHelper
   end
 
   def get_hotel_fees(hotel_fees)
-    if hotel_fees["@size"].to_i > 1
-      hotel_fees["HotelFee"].each do |hotel_fee|
-        "+#{hotel_fee["@amount"]} due at hotel"
+    fee_content = 
+      if hotel_fees["@size"].to_i > 1
+        hotel_fees["HotelFee"].map { |hotel_fee| "+#{hotel_fee['@amount']} due at hotel (#{hotel_fee['@description'].titleize})" }.join('<br>')
+      else
+        "+#{hotel_fees['HotelFee']['@amount']} due at hotel"
       end
-    else
-      "+#{hotel_fees["HotelFee"]["@amount"]} due at hotel"
-    end
+
+    fee_content.html_safe
   end
 
   def number_of_adults_collection
