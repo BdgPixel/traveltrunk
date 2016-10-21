@@ -110,8 +110,8 @@ h2, h3, h4 {
       font-size: 24px;
       color: #ffffff;
       position: relative;
-      top: 5px;
-      left: 8px;
+      top: 9px;
+      left: 57px;
     }
 
     img {
@@ -192,6 +192,7 @@ h2, h3, h4 {
     }
 
     &.transparent {
+      margin-bottom: 0;
       background-color: white;
       border-color: transparent;
       color: #ffffff;
@@ -239,10 +240,14 @@ h2, h3, h4 {
   display: inline-block;
 
   &.color {
-    background: image-url("retina_logo.png") no-repeat;
-    background-size: 170px;
-    top: 3px;
+    background: image-url("logo1.png") no-repeat;
+    background-size: 50px;
+    top: 0px;
     position: relative;
+
+    span {
+      color: #808080;
+    }
   }
 }
 
@@ -252,10 +257,14 @@ h2, h3, h4 {
   display: inline-block;
 
   &.color {
-    background: image-url("retina_logo.png") no-repeat;
-    background-size: 170px;
-    top: 3px;
+    background: image-url("logo1.png") no-repeat;
+    background-size: 50px;
+    top: 0px;
     position: relative;
+
+    span {
+      color: #808080;
+    }
   }
 }
 
@@ -264,9 +273,9 @@ h2, h3, h4 {
   #logo-color-orange {
 
     &.color {
-      background: image-url("retina_logo.png") no-repeat;
-      background-size: 170px;
-      top: 3px;
+      background: image-url("logo1.png") no-repeat;
+      background-size: 50px;
+      top: 0px;
       position: relative;
     }
   }
@@ -686,6 +695,12 @@ h2, h3, h4 {
     &:hover {
       background-color: #EFEFEF !important;
     }
+  }
+}
+
+.wrapper-navbar-traveltrunk.grey-on {
+  @media(max-width: 768px){
+    background: rgba(70, 70, 70, 0.89);
   }
 }
 
@@ -1298,9 +1313,16 @@ a.login.show {
 
   ul li {
     display: table-cell;
+    vertical-align: top;
+
+    @media (max-width: 768px) {
+      width: 46%;
+      display: inline-block;
+    }
 
     @media (min-width: 768px) {
       display: inline-flex;
+      width: inherit;
     }
 
     @media (min-width: 1200px) {
