@@ -313,8 +313,34 @@
     min-height: 900px;
   }
 }
+#slideToggleMobile {
+
+  .panel {
+    margin-bottom: 0px;
+  }
+
+  .panel-default {
+    border: transparent;
+  }
+
+  .panel-body {
+    // height: 70px;
+    .wrapper-where-search {
+      position: relative;
+      bottom: 0px;
+    }
+
+    .wrap-middle-mobile {
+      margin-top: 0em;
+    }
+  }
+}
 
 #slideToggle {
+
+  .panel {
+    margin-bottom: 0px;
+  }
 
 	.panel-default {
 		border: transparent;
@@ -420,15 +446,20 @@
   }
 }
 
-.arrow-downs {
-  &:before {
-    position: absolute;
-    top: 140px;
-    left: 50%;
-    margin-left: -15px;
+.wrapper-arrow-down {
+  width: 30px;
+  height: 30px;
+  margin: 0px auto;
+
+  .arrow-downs {
+    position: relative;
+    top: -15px;
+    // position: absolute;
+    // top: 140px;
+    // left: 50%;
+    // margin-left: -15px;
     width: 30px;
-    height: 90px;
-    content: '';
+    height: 40px;
     background: image-url("down-chevron-grey.png") no-repeat;
     background-position: 0px 0px;
     -webkit-animation: arrowmove2 2s infinite; /* Chrome, Safari, Opera */
@@ -436,21 +467,21 @@
   }
 }
 
-.arrow-downs-white {
-  &:before {
-    position: absolute;
-    top: 80px;
-    left: 50%;
-    margin-left: -15px;
-    width: 30px;
-    height: 90px;
-    content: '';
-    background: image-url("down-chevron.png") no-repeat;
-    background-position: 0px 0px;
-    -webkit-animation: arrowmove2 2s infinite; /* Chrome, Safari, Opera */
-    animation: arrowmove2 2s infinite;
-  }
-}
+// .arrow-downs-white {
+//   &:before {
+//     position: absolute;
+//     top: 80px;
+//     left: 50%;
+//     margin-left: -15px;
+//     width: 30px;
+//     height: 90px;
+//     content: '';
+//     background: image-url("down-chevron.png") no-repeat;
+//     background-position: 0px 0px;
+//     -webkit-animation: arrowmove2 2s infinite; /* Chrome, Safari, Opera */
+//     animation: arrowmove2 2s infinite;
+//   }
+// }
 
 .text-header-slide {
 	position: relative;
@@ -495,7 +526,7 @@
 /* Chrome, Safari, Opera */
 @-webkit-keyframes arrowmove2 {
     from {background-position: 0px 0px;opacity: 1;}
-    to {background-position: 0px 17px;opacity: 0;}
+    to {background-position: 0px 0px;opacity: 0;}
 }
 
 /* Standard syntax */
@@ -505,6 +536,41 @@
 }
 
 .modal-search {
+
+  .icon {
+    width: 12px;
+    height: 12px;
+    display: inline-block;
+
+    &.delete {
+      background: image-url("icon_delete_fill_input.png") no-repeat;
+      background-size: cover;
+    }
+  }
+
+  .form-group {
+
+    span.wrapper-icon-delete {
+      position: absolute;
+      top: 12px;
+      right: 26px;
+
+      // @media (max-width: 1200px) {
+      //   top: 12px;
+      //   right: 12px;
+      // }
+
+      // @media (max-width: 1440px) {
+      //   top: 12px;
+      //   right: 12px;
+      // }
+
+      // @media (max-width: 1800px) {
+      //   top: 12px;
+      //   right: 30px;
+      // }
+    }
+  }
 
   .wrapper-where-serach-form {
 

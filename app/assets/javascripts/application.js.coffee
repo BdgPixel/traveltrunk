@@ -58,11 +58,11 @@ root.showSearchForm = () ->
     $('#slideToggleLink').on 'click', (e) ->
       $('.tooltip').tooltip('hide')
 
-      if $('.arrow-downs').length
-        $('#slideToggleLink').css 'padding-bottom', 0
+      if $('#slideToggleLink.arrow-downs').length
+        # $('#slideToggleLink').css 'padding-bottom', 0
         $('#slideToggleLink').removeClass 'arrow-downs'
       else
-        $('#slideToggleLink').css 'padding-bottom', '50px'
+        # $('#slideToggleLink').css 'padding-bottom', '50px'
         $('#slideToggleLink').addClass 'arrow-downs'
 
       return
@@ -77,8 +77,39 @@ root.showSearchForm = () ->
       if e.target != this
         return
       $("#slideToggle").collapse('hide')
-      $('#slideToggleLink').css 'padding-bottom', '50px'
+      # $('#slideToggleLink').css 'padding-bottom', '50px'
       $('#slideToggleLink').addClass 'arrow-downs'
+      return
+
+    return
+
+root.showSearchFormMobile = () ->
+  if $('#slideToggleLinkMobile').length > 0
+
+    $('#slideToggleLinkMobile').on 'click', (e) ->
+      $('.tooltip').tooltip('hide')
+
+      if $('#slideToggleLinkMobile.arrow-downs').length
+        # $('#slideToggleLinkMobile').css 'padding-bottom', 0
+        $('#slideToggleLinkMobile').removeClass 'arrow-downs'
+      else
+        # $('#slideToggleLinkMobile').css 'padding-bottom', '50px'
+        $('#slideToggleLinkMobile').addClass 'arrow-downs'
+
+      return
+
+    $('.slide').on 'click', (e) ->
+      if e.target != this
+        return
+      $("#slideToggleMobile").collapse('hide')
+      return
+
+    $('.text-header-slide').on 'click', (e) ->
+      if e.target != this
+        return
+      $("#slideToggleMobile").collapse('hide')
+      # $('#slideToggleLinkMobile').css 'padding-bottom', '50px'
+      $('#slideToggleLinkMobile').addClass 'arrow-downs'
       return
 
     return
@@ -199,31 +230,32 @@ ready = ->
 
   # Change navbar background when menu dropdown visible
 
-  $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
-    $(".transparent").addClass("scrolling")
-    $("#logo-color-orange").removeClass("hide")
+  if $('body').data('controller') is 'home'
+    $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
+      $(".transparent").addClass("scrolling")
+      $("#logo-color-orange").removeClass("hide")
 
-    $("#logo-color-white").addClass("hide")
-    $("#logo-color-white").removeClass("")
+      $("#logo-color-white").addClass("hide")
+      $("#logo-color-white").removeClass("")
 
-    $(".btn-border").addClass("hide")
-    $(".btn-border").removeClass("show")
+      $(".btn-border").addClass("hide")
+      $(".btn-border").removeClass("show")
 
-    $(".btn-orange2").removeClass("hide")
-    $(".link-top-login").addClass('grey-nav-color')
+      $(".btn-orange2").removeClass("hide")
+      $(".link-top-login").addClass('grey-nav-color')
 
-  $("#bs-example-navbar-collapse-1").on 'hidden.bs.collapse', () ->
-    $(".transparent").removeClass("scrolling")
-    $("#logo-color-white").removeClass("hide")
-    $("#logo-color-white").addClass("")
+    $("#bs-example-navbar-collapse-1").on 'hidden.bs.collapse', () ->
+      $(".transparent").removeClass("scrolling")
+      $("#logo-color-white").removeClass("hide")
+      $("#logo-color-white").addClass("")
 
-    $("#logo-color-orange").addClass("hide")
+      $("#logo-color-orange").addClass("hide")
 
-    $(".btn-border").removeClass("show")
-    $(".btn-border").addClass("show")
+      $(".btn-border").removeClass("show")
+      $(".btn-border").addClass("show")
 
-    $(".btn-orange2").addClass("hide")
-    $(".link-top-login").removeClass('grey-nav-color')
+      $(".btn-orange2").addClass("hide")
+      $(".link-top-login").removeClass('grey-nav-color')
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()

@@ -91,7 +91,7 @@ root.roomSelected = (selector)->
 
     if rooms.specialCheckInInstructions
       $('.modal .special-checkin-instructions').html(rooms.specialCheckInInstructions)
-      
+
     $('.modal .checkin-intructions').html(rooms.checkInInstructions)
 
     $('#confirmation_book_hotel_id').val($(this).data('id'))
@@ -173,7 +173,7 @@ root.roomSelected = (selector)->
       $('.form-vote ').show()
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
-    
+
     if existingRoomImage
       $('#roomImage').attr('src', existingRoomImage.attr('src'))
 
@@ -371,6 +371,7 @@ ready  = ->
     initDatePickerForDesktop(today)
     initDatePickerForMobile(today)
     showSearchForm()
+    showSearchFormMobile()
     clearSearchText('#btnClearText', 'input#autocomplete')
 
     showPopUpProfile()
@@ -389,7 +390,7 @@ ready  = ->
 
     $('body').on 'hidden.bs.popover', (e) ->
       $(e.target).data("bs.popover").inState = { click: false, hover: false, focus: false }
-    
+
     $.ajax
       url: "/deals/#{ params_path_id }/room_availability.js"
       cache: false
