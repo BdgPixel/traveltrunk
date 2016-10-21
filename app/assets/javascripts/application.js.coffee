@@ -58,11 +58,11 @@ root.showSearchForm = () ->
     $('#slideToggleLink').on 'click', (e) ->
       $('.tooltip').tooltip('hide')
 
-      if $('.arrow-downs').length
-        $('#slideToggleLink').css 'padding-bottom', 0
+      if $('#slideToggleLink.arrow-downs').length
+        # $('#slideToggleLink').css 'padding-bottom', 0
         $('#slideToggleLink').removeClass 'arrow-downs'
       else
-        $('#slideToggleLink').css 'padding-bottom', '50px'
+        # $('#slideToggleLink').css 'padding-bottom', '50px'
         $('#slideToggleLink').addClass 'arrow-downs'
 
       return
@@ -77,8 +77,39 @@ root.showSearchForm = () ->
       if e.target != this
         return
       $("#slideToggle").collapse('hide')
-      $('#slideToggleLink').css 'padding-bottom', '50px'
+      # $('#slideToggleLink').css 'padding-bottom', '50px'
       $('#slideToggleLink').addClass 'arrow-downs'
+      return
+
+    return
+
+root.showSearchFormMobile = () ->
+  if $('#slideToggleLinkMobile').length > 0
+
+    $('#slideToggleLinkMobile').on 'click', (e) ->
+      $('.tooltip').tooltip('hide')
+
+      if $('#slideToggleLinkMobile.arrow-downs').length
+        # $('#slideToggleLinkMobile').css 'padding-bottom', 0
+        $('#slideToggleLinkMobile').removeClass 'arrow-downs'
+      else
+        # $('#slideToggleLinkMobile').css 'padding-bottom', '50px'
+        $('#slideToggleLinkMobile').addClass 'arrow-downs'
+
+      return
+
+    $('.slide').on 'click', (e) ->
+      if e.target != this
+        return
+      $("#slideToggleMobile").collapse('hide')
+      return
+
+    $('.text-header-slide').on 'click', (e) ->
+      if e.target != this
+        return
+      $("#slideToggleMobile").collapse('hide')
+      # $('#slideToggleLinkMobile').css 'padding-bottom', '50px'
+      $('#slideToggleLinkMobile').addClass 'arrow-downs'
       return
 
     return
