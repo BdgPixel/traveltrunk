@@ -17,14 +17,6 @@ replaceImageInterval = undefined
 imageSizeType = null
 imageLoadedCount = 0
 
-getFormattedDate = (date) ->
-  day = date.getDate()
-  month = date.getMonth() + 1
-  year = date.getFullYear()
-  formattedDate = [month, day, year].join('/')
-
-  formattedDate
-
 root.validateFormBook = ->
   if $('#formBook').length > 0
     $('#formBook').on 'submit', (e) ->
@@ -160,10 +152,12 @@ root.roomSelected = (selector)->
     if hotelFees
       if parseInt(hotelFees['@size']) > 1
         $.each hotelFees['HotelFee'], (key, hotelFee) ->
-          hotelFeeTag += "<p class='mandatory-tax'>+#{hotelFee['@amount']} due at hotel</p>"
+          feeDescription = hotelFee['@description'].split(/(?=[A-Z])/).join(" ")
+          hotelFeeTag += "<p class='mandatory-tax'>+#{hotelFee['@amount']} due at hotel (#{feeDescription})</p>"
           return
       else
-        hotelFeeTag = "<p class='mandatory-tax'>+#{hotelFees['HotelFee']['@amount']} due at hotel</p>"
+        feeDescription = hotelFees['HotelFee']['@description'].split(/(?=[A-Z])/).join(" ")
+        hotelFeeTag = "<p class='mandatory-tax'>+#{hotelFees['HotelFee']['@amount']} due at hotel (#{feeDescription})</p>"
 
     # table.append("<tr><td><b>Total Taxes and Fees</b></td><td>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@surchargeTotal']}</td></td>")
     table.append("<tr><td><b>Total Charges</b><br><small><i>(includes tax recovery charges and service fees)</i></small></td><td class='total-charges-text' dom='total_charges_text'><h4>$#{room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']}</h4>#{hotelFeeTag}</td></tr>")
@@ -280,10 +274,13 @@ getSurcharge = (room, table, europeCountries, hotelCountry) ->
 
 appendCreditform = ->
   $('.append-credit').on 'click', ->
+    $('#modalSavingsForm').modal('toggle')
     rateCode = $(this).data('rate-code')
     $(this).addClass("form-#{rateCode}")
     $('#update_credit_rate_code').val(rateCode)
     $('#update_credit_total').val($(this).data('total'))
+
+    clearValidationMessage()
 
 checkImage = (previousSrc, numberOfImages, i)->
   image = new Image()
@@ -353,48 +350,6 @@ appendValueRoomParams = () ->
   $('#guest_booking_bed_type').val($('#confirmation_book_bed_type').val())
   $('#guest_booking_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
-initDatePicker = (today) ->
-  $('input#search_deals_arrival_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-      departureDate = e.date
-      departureDate.setDate(departureDate.getDate() + 1)
-
-      $('input#search_deals_departure_date').datepicker('remove')
-      $('input#search_deals_departure_date').datepicker
-        startDate:  getFormattedDate(departureDate)
-        autoclose: true
-      setTimeout(->
-        $('input#search_deals_departure_date').datepicker('show')
-      , 100)
-
-  $('input#search_deals_departure_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-
-initDatePickerForMobile = (today) ->
-  $('input#search_deals_arrival_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-      departureDate = e.date
-      departureDate.setDate(departureDate.getDate() + 1)
-
-      $('input#search_deals_departure_date').datepicker('remove')
-      $('input#search_deals_departure_date').datepicker
-        startDate:  getFormattedDate(departureDate)
-        autoclose: true
-      setTimeout(->
-        $('input#search_deals_departure_date').datepicker('show')
-      , 100)
-
-  $('input#search_deals_departure_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-
 ready  = ->
   controller = $('body').data('controller')
   action = $('body').data('action')
@@ -414,7 +369,7 @@ ready  = ->
     moment.tz.link('America/Los_Angeles|US/Pacific')
     today = moment.tz('US/Pacific').format('M/D/Y')
 
-    initDatePicker(today)
+    initDatePickerForDesktop(today)
     initDatePickerForMobile(today)
     showSearchForm()
     clearSearchText('#btnClearText', 'input#autocomplete')
@@ -423,11 +378,11 @@ ready  = ->
 
   else if controller == 'deals' && action == 'show'
     initAutoNumeric('.formatted-amount', '.amount')
+    initAutoNumeric('.formatted-amount', '.amount-saving')
 
     params_path_id = window.location.pathname.split('/')[2]
 
     validateFormBook()
-
     popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'top')
 
     $(document).on 'click', '[data-dismiss="popover"]', (e) ->

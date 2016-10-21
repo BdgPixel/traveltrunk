@@ -7,14 +7,6 @@
 
 root = exports ? this
 
-getFormattedDate = (date) ->
-  day = date.getDate()
-  month = date.getMonth() + 1
-  year = date.getFullYear()
-  formattedDate = [month, day, year].join('/')
-
-  formattedDate
-
 root.initDealsPage = (numOfpages, numOfHotels)->
   if numOfpages && numOfHotels && numOfHotels > 15
     $('#pagination')
@@ -39,46 +31,6 @@ root.initDealsPage = (numOfpages, numOfHotels)->
 
   $('div.lazy').lazyload()
 
-initDatePicker = (today) ->
-  $('input.search_deals_arrival_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-      departureDate = e.date
-      departureDate.setDate(departureDate.getDate() + 1)
-
-      $('input.search_deals_departure_date').datepicker('remove')
-      $('input.search_deals_departure_date').datepicker
-        startDate:  getFormattedDate(departureDate)
-        autoclose: true
-      setTimeout(->
-        $('input.search_deals_departure_date').datepicker('show')
-      , 100)
-
-  $('input.search_deals_departure_date').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-
-initDatePickerForMobile = (today) ->
-  $('input.search_deals_arrival_date_mobile').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-      $(this).valid()
-      departureDate = e.date
-      departureDate.setDate(departureDate.getDate() + 1)
-
-      $('input.search_deals_departure_date_mobile').datepicker('remove')
-      $('input.search_deals_departure_date_mobile').datepicker
-        startDate:  getFormattedDate(departureDate)
-        autoclose: true
-      setTimeout(->
-        $('input.search_deals_departure_date_mobile').datepicker('show')
-      , 100)
-
-  $('input.search_deals_departure_date_mobile').datepicker(
-    startDate: today
-    autoclose: true).on 'changeDate', (e) ->
-
 ready = ->
   disableEnterFormSubmit()
   validateSearchForm()
@@ -88,7 +40,7 @@ ready = ->
   moment.tz.link('America/Los_Angeles|US/Pacific')
   today = moment.tz('US/Pacific').format('M/D/Y')
 
-  initDatePicker(today)
+  initDatePickerForDesktop(today)
   initDatePickerForMobile(today)
   showSearchForm()
 

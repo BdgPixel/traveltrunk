@@ -26,7 +26,7 @@ validationForm = function() {
       returnValue = false;
     } 
 
-    if (!$('.amount').val()) {
+    if ($('.amount').val()) {
       $('.amount-error').html('Amount transfer cannot be blank');
       returnValue = false;
     }
@@ -34,10 +34,20 @@ validationForm = function() {
     if ($('.amount').val() < 25) {
       $('.amount-error').html('Amount transfer must be greater than or equal to $25.00');
       returnValue = false;
-    } 
+    }
+
+    if (!$('.formatted-amount').val()) {
+      $('.amount-error').html('Amount cannot be blank');
+      returnValue = false;
+    }
 
     if ($('.transfer_frequency').val() == 0) {
       $('.transfer-frequency-error').html('Please select one transfer frequency');
+      returnValue = false;
+    }
+
+    if ($('.card-type').val() == '') {
+      $('.card-type-error').html('Please select your card type');
       returnValue = false;
     }
 
@@ -89,11 +99,6 @@ validationForm = function() {
 
       if ($('.country').val() == '') {
         $('.country-error').html('Please select one a country code');
-        returnValue = false;
-      }
-
-      if ($('.card-type').val() == '') {
-        $('.card-type-error').html('Please select your card type');
         returnValue = false;
       }
     }
@@ -150,6 +155,7 @@ $(document).ready(function() {
   $('#modalSavingsForm').on('hidden.bs.modal', function(e) {
     $('#formAddToSavings').get(0).reset();
     $('.payment-errors').html("");
+    clearValidationMessage();
   });
 
   numericalDigits();

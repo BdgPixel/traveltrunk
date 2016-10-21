@@ -28,7 +28,7 @@
         - room["BedTypes"]["BedType"].each do |bed_type|
           = bed_type["description"]
 
-    = link_to "javascript:void(0)", class: 'popover-links', data: { toggle: '' }
+    = link_to "javascript:void(0)", class: 'popover-links'
       | Show more room information
 
     .content-popover style="display:none"
@@ -59,7 +59,8 @@
     .price = number_to_currency(room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
     - if room["RateInfos"]["RateInfo"]["HotelFees"]
-      p.mandatory-tax = get_hotel_fees room["RateInfos"]["RateInfo"]["HotelFees"]
+      p.mandatory-tax
+        = get_hotel_fees room["RateInfos"]["RateInfo"]["HotelFees"]
 
     .price-desc
       i

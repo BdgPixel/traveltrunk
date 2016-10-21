@@ -156,13 +156,13 @@
           .form-group class="#{'hide' unless user_signed_in?}"
             .row
               .col-md-6
-                  = f.label :amount
-
-                  .input-group
-                    .input-group-addon $
-                    = f.input_field :formatted_amount, class: "form-control update_credit_amount formatted-amount"
-                    = f.hidden_field :amount, class: "form-control update_credit_amount amount "
-                    #totalCharges
+                = f.label :amount
+                .input-group
+                  .input-group-addon $
+                  = f.input_field :formatted_amount, class: "form-control update_credit_amount formatted-amount"
+                  = f.hidden_field :amount, class: "form-control update_credit_amount amount-saving"
+                  #totalCharges
+                .amount-error.bank-account-error
 
           - unless user_signed_in?
             .form-group
