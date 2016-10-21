@@ -272,10 +272,13 @@ getSurcharge = (room, table, europeCountries, hotelCountry) ->
 
 appendCreditform = ->
   $('.append-credit').on 'click', ->
+    $('#modalSavingsForm').modal('toggle')
     rateCode = $(this).data('rate-code')
     $(this).addClass("form-#{rateCode}")
     $('#update_credit_rate_code').val(rateCode)
     $('#update_credit_total').val($(this).data('total'))
+
+    clearValidationMessage()
 
 checkImage = (previousSrc, numberOfImages, i)->
   image = new Image()
@@ -377,7 +380,6 @@ ready  = ->
     params_path_id = window.location.pathname.split('/')[2]
 
     validateFormBook()
-
     popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'top')
 
     $(document).on 'click', '[data-dismiss="popover"]', (e) ->

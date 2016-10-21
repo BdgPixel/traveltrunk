@@ -171,6 +171,10 @@ root.initDatePickerForMobile = (today) ->
     startDate: today
     autoclose: true).on 'changeDate', (e) ->
 
+root.clearValidationMessage = ->
+  $('.bank-account-error').text('');
+  $('.profile-error').text('');
+
 getFormattedDate = (date) ->
   day = date.getDate()
   month = date.getMonth() + 1

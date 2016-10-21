@@ -150,6 +150,7 @@ $(document).ready(function() {
   $('#modalSavingsForm').on('hidden.bs.modal', function(e) {
     $('#formAddToSavings').get(0).reset();
     $('.payment-errors').html("");
+    clearValidationMessage();
   });
 
   numericalDigits();
