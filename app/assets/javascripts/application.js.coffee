@@ -272,5 +272,8 @@ ready = ->
       $(".btn-orange2").addClass("hide")
       $(".link-top-login").removeClass('grey-nav-color')
 
+  $(document).on "click", ".popover .close" , ()->
+    $(this).parents(".popover").popover('hide');
+
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
