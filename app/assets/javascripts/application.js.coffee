@@ -214,33 +214,6 @@ getFormattedDate = (date) ->
 
   formattedDate
 
-# toggleNavbarBackground = ->
-#   $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
-#    $(".transparent").addClass("scrolling")
-#    $("#logo-color-orange").removeClass("hide")
-
-#    $("#logo-color-white").addClass("hide")
-#    $("#logo-color-white").removeClass("")
-
-#    $(".btn-border").addClass("hide")
-#    $(".btn-border").removeClass("show")
-
-#    $(".btn-orange2").removeClass("hide")
-#    $(".link-top-login").addClass('grey-nav-color')
-
-#  $("#bs-example-navbar-collapse-1").on 'hide.bs.collapse', () ->
-#    $(".transparent").removeClass("scrolling")
-#    $("#logo-color-white").removeClass("hide")
-#    $("#logo-color-white").addClass("")
-
-#    $("#logo-color-orange").addClass("hide")
-
-#    $(".btn-border").removeClass("show")
-#    $(".btn-border").addClass("show")
-
-#    $(".btn-orange2").addClass("hide")
-#    $(".link-top-login").removeClass('grey-nav-color')
-
 ready = ->
   setTimeout(->
     $('#notice').fadeOut()
@@ -255,8 +228,33 @@ ready = ->
   if $('#btnClearText').length > 0
     clearSearchText '#btnClearText', 'input#autocomplete'
 
-  # if $('body').data('controller') == 'home'
-  #   toggleNavbarBackground()
+  # Change navbar background when menu dropdown visible
+
+  $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
+    $(".transparent").addClass("scrolling")
+    $("#logo-color-orange").removeClass("hide")
+
+    $("#logo-color-white").addClass("hide")
+    $("#logo-color-white").removeClass("")
+
+    $(".btn-border").addClass("hide")
+    $(".btn-border").removeClass("show")
+
+    $(".btn-orange2").removeClass("hide")
+    $(".link-top-login").addClass('grey-nav-color')
+
+  $("#bs-example-navbar-collapse-1").on 'hidden.bs.collapse', () ->
+    $(".transparent").removeClass("scrolling")
+    $("#logo-color-white").removeClass("hide")
+    $("#logo-color-white").addClass("")
+
+    $("#logo-color-orange").addClass("hide")
+
+    $(".btn-border").removeClass("show")
+    $(".btn-border").addClass("show")
+
+    $(".btn-orange2").addClass("hide")
+    $(".link-top-login").removeClass('grey-nav-color')
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()

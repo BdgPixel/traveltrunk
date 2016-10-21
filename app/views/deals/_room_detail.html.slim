@@ -28,7 +28,7 @@
         - room["BedTypes"]["BedType"].each do |bed_type|
           = bed_type["description"]
 
-    = link_to "javascript:void(0)", class: 'popover-links'
+    = link_to "javascript:void(0);", class: 'popover-links', tabindex: '0'
       | Show more room information
 
     .content-popover style="display:none"
