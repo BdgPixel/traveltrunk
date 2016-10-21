@@ -1277,6 +1277,10 @@ a.login.show {
     display: block;
     text-decoration: none;
     padding: 0px 0;
+
+    @media (max-width: 768px) {
+      padding: 0px 12px;
+    }
   }
 
   nav {
