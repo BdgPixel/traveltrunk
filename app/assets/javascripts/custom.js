@@ -35,7 +35,6 @@ var initScrolling = function() {
       $(".btn-orange2").removeClass("hide");
       $(".link-top-login").addClass('grey-nav-color');
     } else {
-      console.log($("#bs-example-navbar-collapse-1").hasClass('in') === false);
       if ($("#bs-example-navbar-collapse-1").hasClass('in') === false) {
         $(".transparent").removeClass("scrolling");
         $("#logo-color-white").removeClass("hide");
