@@ -1,6 +1,10 @@
 /* Slider */
-.slick-slider
-{
+
+.slick-prev, .slick-next {
+    z-index: 1;
+}
+
+.slick-slider {
     position: relative;
 
     display: block;
