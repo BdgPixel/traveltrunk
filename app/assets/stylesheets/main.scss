@@ -202,7 +202,7 @@ h2, h3, h4 {
         padding: 16px 25px;
 
         @media (max-width: 768px) {
-          padding: 16px 30px !important;
+          // padding: 16px 30px !important;
         }
 
         &:hover,
@@ -222,6 +222,10 @@ h2, h3, h4 {
 
     a.login {
       padding: 16px 25px;
+
+      @media (max-width: 768px) {
+        padding: 16px 19px;
+      }
     }
 
     a {
@@ -1341,7 +1345,8 @@ a.login.show {
   @media (max-width: 768px) {
 
     .btn-orange2, .btn-border {
-      margin: 0px 30px !important;
+      width: 92px;
+      margin-left: 16px;
     }
   }
 }

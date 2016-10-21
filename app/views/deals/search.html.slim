@@ -11,7 +11,7 @@
             .text-header-slide
               h1.text-center
                 span data-toggle="tooltip" data-placement="bottom" data-title="Click the arrow to search for other destinations and or change dates"
-                  = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "#slideToggle", id: 'slideToggleLink', class:"white-tooltip", data: { toggle: 'collapse' }
+                  = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "#slideToggle", id: 'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
 
         / #slideToggle
         #slideToggle.collapse
@@ -21,8 +21,8 @@
                 .panel-body
                   .wrapper-search-deal
                     = render 'deals/form_search'
-              .wrapper-arrow-down
-                span.arrow-downs
+        .wrapper-arrow-down
+          .arrow-downs
 
 .wrap-middle.hidden-sm.hidden-md.hidden-lg
   .container
@@ -45,12 +45,14 @@
                     .wrap-middle-mobile
                       .container
                         .row
-                          .wrapper-where-search.top-deals.hidden-sm.hidden-md.hidden-lg
+                          .wrapper-where-search.top-deals
                             .col-md-12
                               button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
                                 span.text
                                   | Where would you like to be?
                                 span.btn-search
+        .wrapper-arrow-down
+          .arrow-downs
 
 .container
   .row
