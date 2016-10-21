@@ -1,7 +1,16 @@
+
 .wrap-nav-color
   | &nbsp;
   
 .wrapper-group-saving-img
+  - if notice.present?
+    .col-md-6.col-xs-6.col-sm-offset-3
+      #notice.alert.alert-info.alert-dismissible.text-left role="alert"
+        button type="button" class="close" data-dismiss="alert" aria-label="Close"
+          span aria-hidden="true" &times;
+        strong &nbsp; Notice: &nbsp;
+        span = notice
+
   .container
     .col-md-12
       h1.text-center.name-saving = add_apostrophe(current_user.profile.first_name)

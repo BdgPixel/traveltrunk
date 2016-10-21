@@ -5,8 +5,6 @@
   = javascript_include_tag 'groups', 'variables'
 
 .row
-  = render 'partials/notice'
-  
   - if current_user.profile.home_airport
     / && current_user.bank_account
     - if @group

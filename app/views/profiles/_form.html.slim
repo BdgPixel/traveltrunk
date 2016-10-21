@@ -5,6 +5,22 @@
   = javascript_include_tag 'variables', 'profiles'
 
 div
+  - if params[:no_profile].present?
+    #notice.alert.alert-info.alert-dismissible role="alert"
+      button type="button" class="close" data-dismiss="alert" aria-label="Close"
+        span aria-hidden="true" &times;
+
+      strong &nbsp; Notice: &nbsp;
+      span You should complete the profile before add to saving
+
+  - if notice.present?
+    #notice.alert.alert-info.alert-dismissible role="alert"
+      button type="button" class="close" data-dismiss="alert" aria-label="Close"
+        span aria-hidden="true" &times;
+
+      strong &nbsp; Notice: &nbsp;
+      span You should complete the profile before add to saving
+
   = simple_form_for current_user, method: :put, url: profile_url, html: { data: { model: 'user' } } do |f|
     - if current_user.errors.any?
       #error_explanation.alert.alert-danger

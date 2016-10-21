@@ -274,7 +274,6 @@ getSurcharge = (room, table, europeCountries, hotelCountry) ->
 
 appendCreditform = ->
   $('.append-credit').on 'click', ->
-    $('#modalSavingsForm').modal('toggle')
     rateCode = $(this).data('rate-code')
     $(this).addClass("form-#{rateCode}")
     $('#update_credit_rate_code').val(rateCode)
