@@ -19,7 +19,7 @@ div
         span aria-hidden="true" &times;
 
       strong &nbsp; Notice: &nbsp;
-      span You should complete the profile before add to saving
+      span = notice
 
   = simple_form_for current_user, method: :put, url: profile_url, html: { data: { model: 'user' } } do |f|
     - if current_user.errors.any?
