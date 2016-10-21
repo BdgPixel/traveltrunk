@@ -21,7 +21,8 @@ html lang="en"
   body data-controller="#{controller_name}" data-action="#{action_name}"
     = yield :css_body
 
-    / = render 'partials/notice'
+    .hide
+        = render 'partials/notice'
 
     = yield
     

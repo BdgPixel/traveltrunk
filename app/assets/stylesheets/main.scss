@@ -35,9 +35,10 @@ h2, h3, h4 {
 
 .grey-link-arrows {
   padding-top: 80px;
-  padding-bottom: 50px;
+  // padding-bottom: 50px;
   color: grey;
   display: block;
+
   &:hover, &:focus, &:active {
     color: grey;
     text-decoration: none;

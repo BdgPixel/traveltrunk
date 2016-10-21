@@ -43,6 +43,7 @@ ready = ->
   initDatePickerForDesktop(today)
   initDatePickerForMobile(today)
   showSearchForm()
+  showSearchFormMobile()
 
   numOfpages = $('#valueOfPagination').data('num-of-pages')
   numOfHotels = $('#valueOfPagination').data('num-of-hotels')
