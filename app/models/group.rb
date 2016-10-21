@@ -21,6 +21,6 @@ class Group < ActiveRecord::Base
 
   private
     def destroy_destination
-      self.destination.destroy
+      self.destination.destroy if self.destination
     end
 end
