@@ -91,7 +91,7 @@ initSwipeGroupSaving = ->
     slidesToShow: 3
     slidesToScroll: 3
     arrows: true
-    variableWidth: true
+    variableWidth: true,
     responsive: [
       {
         breakpoint: 960
@@ -102,6 +102,8 @@ initSwipeGroupSaving = ->
           variableWidth: false
           arrows: true
           dots: false
+          nextArrow: '<button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next" role="button" style="display: block;" aria-disabled="false">Next</button>'
+          prevArrow: '<button type="button" data-role="none" class="slick-prev slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true" style="display: block;">Previous</button>'
       }
       {
         breakpoint: 1024
@@ -112,6 +114,8 @@ initSwipeGroupSaving = ->
           variableWidth: false
           arrows: true
           dots: false
+          nextArrow: '<button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next" role="button" style="display: block;" aria-disabled="false">Next</button>'
+          prevArrow: '<button type="button" data-role="none" class="slick-prev slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true" style="display: block;">Previous</button>'
       }
       {
         breakpoint: 600
@@ -120,6 +124,8 @@ initSwipeGroupSaving = ->
           slidesToScroll: 1
           variableWidth: false
           arrows: true
+          nextArrow: '<button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next" role="button" style="display: block;" aria-disabled="false">Next</button>'
+          prevArrow: '<button type="button" data-role="none" class="slick-prev slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true" style="display: block;">Previous</button>'
       }
       {
         breakpoint: 480
@@ -128,6 +134,8 @@ initSwipeGroupSaving = ->
           slidesToScroll: 1
           arrows: true
           variableWidth: false
+          nextArrow: '<button type="button" data-role="none" class="slick-next slick-arrow" aria-label="Next" role="button" style="display: block;" aria-disabled="false">Next</button>'
+          prevArrow: '<button type="button" data-role="none" class="slick-prev slick-arrow slick-disabled" aria-label="Previous" role="button" aria-disabled="true" style="display: block;">Previous</button>'
       }
     ]
 
