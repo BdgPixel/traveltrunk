@@ -33,7 +33,7 @@
                 li
                   = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
 
-                  - if current_user.group
+                  - if current_user.group && current_user.group.members.present?
                     |&emsp;&emsp;&emsp;
 
                     li
