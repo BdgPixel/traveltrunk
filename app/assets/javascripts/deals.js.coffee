@@ -376,6 +376,7 @@ ready  = ->
 
   else if controller == 'deals' && action == 'show'
     initAutoNumeric('.formatted-amount', '.amount')
+    initAutoNumeric('.formatted-amount', '.amount-saving')
 
     params_path_id = window.location.pathname.split('/')[2]
 
