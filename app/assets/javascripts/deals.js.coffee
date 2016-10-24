@@ -458,7 +458,8 @@ ready  = ->
           $('#modalSavingsForm').css('overflow-x', 'hidden')
           $('#modalSavingsForm').css('overflow-y', 'auto')
 
-        totalCharges = $('[dom="total_charges_text"]').text().replace('$', '')
+        # totalCharges = $('[dom="total_charges_text"]').text().replace('$', '')
+        totalCharges = $('#confirmation_book_total').val()
         $('#totalCharges').attr('data-total-charges', totalCharges)
         appendValueRoomParams()
         $('#modalSavingsForm .modal-header > h3').text $('#roomName').text()
