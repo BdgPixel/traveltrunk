@@ -143,6 +143,11 @@
             i
               small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
-= render partial: 'book'
-= render partial: 'savings/form_add_saving'
+= render partial: 'bookings/book'
+
+- if user_signed_in?
+  = render partial: 'savings/form_add_saving'
+- else
+  = render partial: 'bookings/form_book_for_guest'
+
 = render partial: 'savings/transfer_success'

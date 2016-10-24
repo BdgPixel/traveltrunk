@@ -1,0 +1,65 @@
+= simple_form_for :confirmation_book, url: deals_create_book_path, html: { id: "formBook" } do |f|
+  .row
+    .col-md-12
+      .form-group
+        = f.hidden_field :hotel_id
+
+      .form-group
+        = f.hidden_field :arrival_date
+
+      .form-group
+        = f.hidden_field :departure_date
+
+      .form-group
+        = f.hidden_field :rate_code
+
+      .form-group
+        = f.hidden_field :room_type_code
+
+      .form-group
+        = f.hidden_field :rate_key
+
+      .form-group
+        = f.hidden_field :total
+
+      .form-group
+        / = f.hidden_field :bed_type
+        = f.label :bed_type, class: 'bed-type', required: false
+        = f.select :bed_type, [['- Select Bed Type -', 0]], { selected: 0 }, { class: 'form-control' }
+        .payment-errors.errors-bed-type
+        
+      .form-group
+        = f.hidden_field :smoking_preferences
+
+      .form-group
+        p
+          b Reservation Terms and Cancellation Policy
+          br
+          span.cancellation-policy
+        / b
+        /   small Full payment will be charged to your credit card when you book this hotel.
+
+      .form-group
+        = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>&nbsp; By selecting to complete this booking I acknowledge that I have read and accept the cancellation policy for this room as well as our <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe
+        
+        .payment-errors.errors-policy
+
+      .row
+        .col-md-8
+          .form-group
+            | Would you still like to book this hotel ?
+            br
+            br
+
+            - if user_signed_in?
+              = f.button :submit, "Yes", class: 'btn btn-saving btn-green'
+              | &nbsp;&nbsp;
+            - else
+              = link_to 'Yes', 'javascript:void(0)', id: 'linkBtnYes', class: 'btn btn-saving btn-green'
+              / , data: { toggle: 'modal', target: '#modalSavingsForm' }
+              | &nbsp;&nbsp;
+            
+            = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
+            / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
+            /   | I want to keep looking
+

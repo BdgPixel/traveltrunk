@@ -1,0 +1,68 @@
+#modalBook.modal.fade aria-labelledby="modalBook" data-backdrop="static" role="dialog" tabindex="-1"
+  .modal-dialog.modal-lg
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+
+        h3 Title
+
+      .modal-body
+        .row
+          - if @error_response
+            #error_response.alert.alert-info
+              strong Notice: &nbsp;
+              = @error_response
+          - else
+            .col-md-12
+              .col-md-12
+                p
+                  h4#roomName
+                  span#childAndAge
+                p
+                  img#roomImage.img-responsive
+
+                small#imageDisclaimer style="display: none"
+                  i
+                    | *This image may not be that exact room titled above
+                    br
+                
+                i
+                  small 
+                    | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
+
+                p
+                  #roomRating
+                  .rating-text
+
+                p.hotel-info-addr
+                p.hotel-info-city
+                p.hotel-info-state
+                p.hotel-info-country
+                #policy
+                  b Policies
+                  .col-md-12
+                    p.special-checkin-instructions
+                    p.checkin-intructions
+                p.hotel-checkin-checkout
+
+              .col-md-12
+                br
+                table.table
+                  tr
+                    td.number-of-rooms
+                    td.list-of-dates
+                hr
+                .form-book
+                  = render "bookings/form_selected_room"
+                  
+                .form-vote
+                  | Are you sure you want to choose this hotel ?
+                  br
+                  br
+                  = link_to "Yes", deals_like_path(params[:id], hotel_name: '538664'), id: 'linkVote', class: "btn btn-saving btn-green"
+                  | &nbsp;&nbsp;
+                  
+                  = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
+                  / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
+                  /   | No
