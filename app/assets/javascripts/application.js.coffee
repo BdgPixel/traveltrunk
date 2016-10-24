@@ -33,6 +33,7 @@ root.initAutoNumeric = (selector, hiddenSelector) ->
     clearTimeout typingTimer
     typingTimer = setTimeout(doneTyping, doneTypingInterval)
     return
+
   $input.on 'keydown', ->
     clearTimeout typingTimer
     return
@@ -55,46 +56,38 @@ displayCorrectAmount = (selector) ->
 
 root.showSearchForm = () ->
   if $('#slideToggleLink').length > 0
-    $('#slideToggleLink').on 'click', (e) ->
+    $('.js-close-searchbox').on 'click', (e) ->
+      if e.target != this
+        return
+
+      $("#slideToggle").collapse('hide')
+      $('.js-arrow-desktop').css('visibility', 'visible');
+
+      return
+
+    $('#slideToggle').on 'show.bs.collapse', ()->
       $('.tooltip').tooltip('hide')
+      $('.js-arrow-desktop').css('visibility', 'hidden');
 
-      if $('#slideToggleLink.arrow-downs').length
-        # $('#slideToggleLink').css 'padding-bottom', 0
-        $('#slideToggleLink').removeClass 'arrow-downs'
-      else
-        # $('#slideToggleLink').css 'padding-bottom', '50px'
-        $('#slideToggleLink').addClass 'arrow-downs'
-
-      return
-
-    $('.slide').on 'click', (e) ->
-      if e.target != this
-        return
-      $("#slideToggle").collapse('hide')
-      return
-
-    $('.text-header-slide').on 'click', (e) ->
-      if e.target != this
-        return
-      $("#slideToggle").collapse('hide')
-      # $('#slideToggleLink').css 'padding-bottom', '50px'
-      $('#slideToggleLink').addClass 'arrow-downs'
-      return
+    $('#slideToggle').on 'hide.bs.collapse', ()->
+      $('.tooltip').tooltip('hide')
+      $('.js-arrow-desktop').css('visibility', 'visible');
 
     return
+
 
 root.showSearchFormMobile = () ->
   if $('#slideToggleLinkMobile').length > 0
 
-    $('#slideToggleLinkMobile').on 'click', (e) ->
+    $('#slideToggleLinkMobile, .js-arrow-mobile').on 'click', (e) ->
       $('.tooltip').tooltip('hide')
 
       if $('#slideToggleLinkMobile.arrow-downs').length
-        # $('#slideToggleLinkMobile').css 'padding-bottom', 0
         $('#slideToggleLinkMobile').removeClass 'arrow-downs'
+        $('.js-arrow-mobile').css('visibility', 'hidden');
       else
-        # $('#slideToggleLinkMobile').css 'padding-bottom', '50px'
         $('#slideToggleLinkMobile').addClass 'arrow-downs'
+        $('.js-arrow-mobile').css('visibility', 'visible');
 
       return
 
@@ -102,14 +95,16 @@ root.showSearchFormMobile = () ->
       if e.target != this
         return
       $("#slideToggleMobile").collapse('hide')
+      $('.js-arrow-mobile').css('visibility', 'visible');
       return
 
     $('.text-header-slide').on 'click', (e) ->
       if e.target != this
         return
+
       $("#slideToggleMobile").collapse('hide')
-      # $('#slideToggleLinkMobile').css 'padding-bottom', '50px'
-      $('#slideToggleLinkMobile').addClass 'arrow-downs'
+      $('.js-arrow-mobile').css('visibility', 'visible');
+
       return
 
     return
@@ -245,6 +240,9 @@ ready = ->
   if $('#btnClearText').length > 0
     clearSearchText '#btnClearText', 'input#autocomplete'
 
+  if $('#btnClearTextMobile').length > 0
+    clearSearchText '#btnClearTextMobile', 'input#autocompleteMobile'
+
   # Change navbar background when menu dropdown visible
 
   if $('body').data('controller') is 'home'
@@ -273,6 +271,9 @@ ready = ->
 
       $(".btn-orange2").addClass("hide")
       $(".link-top-login").removeClass('grey-nav-color')
+
+  $(document).on "click", ".popover .close" , ()->
+    $(this).parents(".popover").popover('hide');
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
