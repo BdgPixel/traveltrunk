@@ -26,7 +26,7 @@ class ProfilesController < ApplicationController
           format.html { redirect_to edit_profile_url(anchor: 'bank_account'),
             notice: 'Profile was successfully updated.' }
         else
-          format.html { redirect_to profile_url, alert: 'Profile was unsuccessfully updated.' }
+          format.html { redirect_to profile_url, notice: 'Profile was successfully updated.' }
         end
       else
         format.html { render :edit }
@@ -44,7 +44,7 @@ class ProfilesController < ApplicationController
         format.js
       else
         if @bank_account.errors[:authorize_net_error].present?
-          @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
+          @error_card_number = @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
         end
         
         format.html { render :edit }

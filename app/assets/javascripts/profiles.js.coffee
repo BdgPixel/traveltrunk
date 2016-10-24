@@ -5,9 +5,23 @@
 
 root = exports ? this
 
-$(document).ready ->
+ready = ->
   initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer')
   uploadImage()
+
+  # if $('form#paymentAccountProfile').length > 0
+  #   paymentAccountFormValidation()
+
+$(document).ready -> ready()
+$(document).on 'page:load', -> ready()
+
+# $(document).ready ->
+#   initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer')
+#   uploadImage()
+
+#   if $('form#paymentAccountProfile').length > 0
+#     paymentAccountFormValidation()
+
   # $('#profile_image').on 'click',(e) ->
   #   e.preventDefault()
   #   $('#choose_profile_image')[0].click()

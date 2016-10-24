@@ -108,7 +108,7 @@ validationForm = function() {
   });
 };
 
-validationSavingForm = function() {
+savingFormValidation = function() {
   $('form#formAddToSavings').on('submit', function(e) {
     var returnValue;
     returnValue = void 0;
@@ -148,6 +148,57 @@ validationSavingForm = function() {
 
     if ($('.amount').val() < 25) {
       $('.amount-error').html('Minimum $25.00');
+      returnValue = false;
+    }
+    
+    return returnValue;
+    e.preventDefault()
+  });
+}
+
+paymentAccountFormValidation = function() {
+  $('form#paymentAccountProfile').on('submit', function(e) {
+    console.log('wew');
+    var returnValue;
+    returnValue = void 0;
+    returnValue = null;
+    
+    $('.payment-account-error').text('');
+    $('.error').text('');
+
+    if ($('.card_number').val().length < 13) {
+      $('.credit-card-error').html('Credit card number is too short.');
+      returnValue = false;
+    } 
+
+    if ($('.card_number').val().length > 16) {
+      $('.credit-card-error').html('Credit card number is too long.');
+      returnValue = false;
+    } 
+
+    if ($('.cvc').val().length < 3) {
+      $('.cvc-error').html('Cvv (min 3)');
+      returnValue = false;
+    } 
+
+    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
+      $('.card-month-error').html('Select present or future month');
+      returnValue = false;
+    } 
+
+    if ($('.amount').val() == '') {
+      $('.amount-error').html('Minimum $25.00');
+      // $('.amount-error').html('Amount transfer must be greater than or equal to $25.00');
+      returnValue = false;
+    }
+
+    if ($('.amount').val() < 25) {
+      $('.amount-error').html('Minimum $25.00');
+      returnValue = false;
+    }
+
+    if ($('.transfer_frequency').val() == 0) {
+      $('.transfer-frequency-error').html('Please select one transfer frequency');
       returnValue = false;
     }
     
@@ -200,7 +251,10 @@ numericalDigits = function() {
 
 $(document).ready(function() {
   // validationForm();
-  validationSavingForm()
+  savingFormValidation();
+
+  if ($('form#paymentAccountProfile').length > 0)
+    paymentAccountFormValidation();
 
   $('#modalSavingsForm').on('hidden.bs.modal', function(e) {
     $('#formAddToSavings').get(0).reset();

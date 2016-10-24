@@ -220,7 +220,7 @@ root.initDatePickerForMobile = (today) ->
     autoclose: true).on 'changeDate', (e) ->
 
 root.clearValidationMessage = ->
-  $('.bank-account-error').text('');
+  $('.payment-account-error').text('');
   $('.profile-error').text('');
 
 getFormattedDate = (date) ->
