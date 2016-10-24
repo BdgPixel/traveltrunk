@@ -120,6 +120,9 @@ class DealsController < ApplicationController
       reservation_response = Expedia::Hotels.reservation(reservation_hash).first
       @reservation = reservation_response[:response]
       @error_response = reservation_response[:error_response]
+      @is_error_response = reservation_response[:is_error]
+      arrival_date = Date.strptime(current_destination[:arrivalDate], "%m/%d/%Y")
+      departure_date = Date.strptime(current_destination[:departureDate], "%m/%d/%Y")
 
       if !@error_response
         arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
@@ -219,7 +222,7 @@ class DealsController < ApplicationController
         creditCardExpirationYear: customer_params[:exp_year]
       },
       AddressInfo: {
-        address1: "travelnow",
+        address1: "travelnowpending",
         city: (customer_params[:city] || ""),
         stateProvinceCode: (customer_params[:state] || ""),
         countryCode: (customer_params[:country] || ""),
@@ -229,15 +232,32 @@ class DealsController < ApplicationController
 
     reservation_response = Expedia::Hotels.reservation(reservation_hash).first
     @reservation = reservation_response[:response]
-
     @error_response = reservation_response[:error_response]
-    
-    if !@error_response
-      arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
-      departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
-      reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
+    @is_error_response = reservation_response[:is_error]
+    arrival_date = Date.strptime(current_destination[:arrivalDate], "%m/%d/%Y")
+    departure_date = Date.strptime(current_destination[:departureDate], "%m/%d/%Y")
+
+    if @is_error_response
+      itinerary_id = @reservation['EanWsError']['itineraryId'].to_s
+
+      itinerary_params = { itineraryId: itinerary_id, email: customer_params[:email_saving] }
+      itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
+      room_reservation = itinerary_response[:response]["Itinerary"]
+      reservation_params = set_reservation_params(room_reservation, arrival_date, departure_date, true)
       
+      reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest'))
+      reservation.save
+
+      @reservation_id = reservation.id
+      @customer_params = customer_params
+      reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
+      status_code = room_reservation['HotelConfirmation']['status']
+      ReservationMailer.reservation_created_for_guest_based_status(room_reservation, customer_params, reservation_info, status_code).deliver_now
+    else
+      reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
+     
       reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest', email: customer_params[:email_saving], status_code: @reservation['reservationStatusCode']))
+
       reservation.save
       @reservation_id = reservation.id
       @customer_params = customer_params
@@ -576,22 +596,41 @@ class DealsController < ApplicationController
       end
     end
 
-    def set_reservation_params(reservation, arrival_date, departure_date)
-      reservation_params = {
-        itinerary:            reservation["itineraryId"],
-        confirmation_number:  reservation["confirmationNumbers"],
-        hotel_name:           reservation["hotelName"],
-        hotel_address:        reservation["hotelAddress"],
-        city:                 reservation["hotelCity"],
-        country_code:         reservation["hotelCountryCode"],
-        postal_code:          reservation["hotelPostalCode"],
-        number_of_room:       reservation["numberOfRoomsBooked"],
-        room_description:     reservation["roomDescription"],
-        number_of_adult:      reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
-        total:                (reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
-        arrival_date:         arrival_date,
-        departure_date:       departure_date
-      }
+    def set_reservation_params(reservation, arrival_date, departure_date, is_error = false)
+      if is_error
+        {
+          itinerary:            reservation["itineraryId"],
+          hotel_name:           reservation['HotelConfirmation']['Hotel']['name'],
+          hotel_address:        reservation['HotelConfirmation']['Hotel']['address1'],
+          city:                 reservation['HotelConfirmation']['Hotel']['city'],
+          country_code:         reservation['HotelConfirmation']['Hotel']['countryCode'],
+          postal_code:          reservation['HotelConfirmation']['Hotel']['postalCode'],
+          room_description:     reservation['HotelConfirmation']['roomDescription'],
+          number_of_adult:      reservation['HotelConfirmation']['numberOfAdults'],
+          total:                (reservation['HotelConfirmation']['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100.0).round,
+          arrival_date:         arrival_date,
+          departure_date:       departure_date,
+          status: 'error_book',
+          status_code: reservation['HotelConfirmation']['status'],
+          email: reservation['Customer']['email']
+        }
+      else
+        {
+          itinerary:            reservation["itineraryId"],
+          confirmation_number:  reservation["confirmationNumbers"],
+          hotel_name:           reservation["hotelName"],
+          hotel_address:        reservation["hotelAddress"],
+          city:                 reservation["hotelCity"],
+          country_code:         reservation["hotelCountryCode"],
+          postal_code:          reservation["hotelPostalCode"],
+          number_of_room:       reservation["numberOfRoomsBooked"],
+          room_description:     reservation["roomDescription"],
+          number_of_adult:      reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
+          total:                (reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
+          arrival_date:         arrival_date,
+          departure_date:       departure_date
+        }
+      end
     end
 
     def set_destination_to_session(destination)

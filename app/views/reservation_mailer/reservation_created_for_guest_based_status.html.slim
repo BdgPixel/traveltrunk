@@ -41,12 +41,7 @@
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     = @reservation['itineraryId']
-                          / p style="margin-top:0" 
-                          /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                          /     | Please include the itinerary number in the subject line for all correspondence with fourtyonestudio
-                          / a data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=http://www.travelnow.com/templates/496147/selfService?itineraryInfo.itineraryNumber%3D273512669%26itineraryInfo.itineraryEmail%3Dteguh@41studio.com%26linkId%3DTrans:All:AfterCare:Cancel%26lang%3Den&amp;source=gmail&amp;ust=1476148861760000&amp;usg=AFQjCNHl1iH42NdGMzeJmmXb-TSRHLJQ2A" href="http://www.travelnow.com/templates/496147/selfService?itineraryInfo.itineraryNumber=273512669&amp;itineraryInfo.itineraryEmail=teguh@41studio.com&amp;linkId=Trans:All:AfterCare:Cancel&amp;lang=en" style=("border:0;margin:0;padding:4px 14px;border-radius:4px;width:auto;text-decoration:none;background:#48a3e9;color:#ffffff") target="_blank" 
-                          /   font style="font-family:Verdana,Arial,Helvetica,sans-serif;font-size:13px" 
-                          /     | Manage your booking online
+                          
                   table.primary-content-table style="border-width:1px;border-style:solid;border-radius:4px;padding:10px;margin-bottom:10px" width="100%" 
                     tbody
                       tr
@@ -60,11 +55,11 @@
                               tr
                                 td valign="top" width="85" 
                                   .thumb style="border-style:solid;border-width:2px;float:none;height:68px;overflow:hidden;width:68px" 
-                                    img.CToWUd alt="#{@reservation['hotelName']}" src="https://ci4.googleusercontent.com/proxy/4fepokrSqgzv45BmzAnFHS_ld11TnPecRbA6_3lyXUIfiUjsGVIXWiKNY6-nasJzKS-XTSeewV7h1YcEliZj2ePta_LF7CvfmrASGjOc1q3ULtp-I-7efeISPT2bcc7OEuDOmaKs=s0-d-e1-ft#http://media.expedia.com/hotels/8000000/7840000/7835500/7835485/7835485_23_t.jpg" style="padding:0" /
+                                    img.CToWUd alt="#{@hotel_confirmation_hash['Hotel']['name']}" src="https://ci4.googleusercontent.com/proxy/4fepokrSqgzv45BmzAnFHS_ld11TnPecRbA6_3lyXUIfiUjsGVIXWiKNY6-nasJzKS-XTSeewV7h1YcEliZj2ePta_LF7CvfmrASGjOc1q3ULtp-I-7efeISPT2bcc7OEuDOmaKs=s0-d-e1-ft#http://media.expedia.com/hotels/8000000/7840000/7835500/7835485/7835485_23_t.jpg" style="padding:0" /
                                 td valign="top" 
                                   p style="margin:0;padding:0" 
                                     font style="font-family:Tahoma,sans-serif;font-size:18px" 
-                                      = @reservation['hotelName']
+                                      = @hotel_confirmation_hash['Hotel']['name']
                                   table cellpadding="0" cellspacing="0" 
                                     tbody
                                       tr
@@ -77,7 +72,7 @@
                                         td
                                           a data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=http://4&amp;source=gmail&amp;ust=1476148861760000&amp;usg=AFQjCNE7nps-g6MRdA6CH2PiaeZFqdCIsQ" href="http://4" target="_blank" 
                                             font style="font-family:Tahoma,sans-serif;font-size:12px" 
-                                              = "#{@reservation['tripAdvisorReviewCount']} reviews"
+                                              = "#{@hotel_confirmation_hash['Hotel']['tripAdvisorRating']} reviews"
                                               
                                   table cellspacing="0" style=("margin:15px 0;padding:0") width="98%" 
                                     tbody
@@ -88,7 +83,7 @@
                                         td
                                           font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                             / | 2556 Lemon Road, Honolulu, HI 96815 US
-                                            = "#{@reservation['hotelAddress']}, #{@reservation['hotelCity']}, #{@reservation['hotelStateProvinceCode']} #{@reservation['hotelPostalCode']} #{@reservation['hotelCountryCode']}"
+                                            = "#{@hotel_confirmation_hash['Hotel']['address1']}, #{@hotel_confirmation_hash['Hotel']['city']},  #{@hotel_confirmation_hash['Hotel']['postalCode']} #{@hotel_confirmation_hash['Hotel']['countryCode']}"
                                       / tr
                                         / td
                                         /   font style="font-family:Tahoma,sans-serif;font-size:13px" 
@@ -125,31 +120,23 @@
                                   p style=("margin:10px 0") 
                                     font style="font-family:Tahoma,sans-serif;font-size:14px" 
                                       span.aBn data-term="goog_498470396" tabindex="0" 
-                                        span.aQJ #{@reservation['arrivalDate']}
+                                        span.aQJ #{@arrival_date}
                                 td
                                   p style=("margin:10px 0") 
                                     font style="font-family:Tahoma,sans-serif;font-size:14px" 
                                       span.aBn data-term="goog_498470397" tabindex="0" 
-                                        span.aQJ #{@reservation['departureDate']}
+                                        span.aQJ #{@departure_date}
                                 td
                                   p style=("margin:10px 0") 
                                     font style="font-family:Tahoma,sans-serif;font-size:14px" 
-                                      = @reservation['numberOfRoomsBooked']
-                                / td
-                                /   p style=("margin:10px 0") 
-                                /     font style="font-family:Tahoma,sans-serif;font-size:14px" 
-                                /       | 2
-                                td
-                                  p style=("margin:10px 0") 
-                                    font style="font-family:Tahoma,sans-serif;font-size:14px" 
-                                      = "#{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']} adult"
+                                      = "#{@hotel_confirmation_hash['numberOfAdults']} adult"
 
                   table.primary-content-table style="border-width:1px;border-style:solid;border-radius:4px;padding:10px;margin-bottom:10px" width="100%" 
                     tbody
                       tr
                         td valign="top" 
                           h2 style="margin:0;padding:0" 
-                            font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal"  Room Details
+                            font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal" Room Details
                           hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
                           / h3 Room 1
                           table.room-level-details cellpadding="0" cellspacing="0" style=("margin:5px 0 15px 0;padding:0;line-height:1.75em") width="98%" 
@@ -160,31 +147,15 @@
                                     b Room Type:
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    = @reservation['roomDescription']
-
-                              - if @reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['bedTypeDescription']
-                                tr
-                                  td valign="top" width="120" 
-                                    font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                      b Bed Type:
-                                  td valign="top" 
-                                    font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                      = @reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['bedTypeDescription']
+                                    = @hotel_confirmation_hash['roomDescription']
                               
-                              tr
-                                td valign="top" 
-                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    b Smoking:
-                                td valign="top" 
-                                  font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    = @reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['smokingPreference']
                               tr
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Reserved for:
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px"
-                                    = "#{full_name(@user[:first_name], @user[:last_name])}, #{@reservation['RateInfos']['RateInfo']['RoomGroup']['Room']['numberOfAdults']} adult"
+                                    = "#{full_name(@user[:first_name], @user[:last_name])}, #{@hotel_confirmation_hash['numberOfAdults']} adult"
                                     
                               tr
                                 td valign="top" 
@@ -192,14 +163,14 @@
                                     b Status:
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px"
-                                    = "#{@reservation['reservationStatusCode']}, #{@reservation['confirmationNumbers']}"
+                                    = status_reservation @hotel_confirmation_hash['status']
                               tr
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
                                     b Refundable:
                                 td valign="top" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    = @reservation['RateInfos']['RateInfo']['nonRefundable'] ? 'Yes' : 'No'
+                                    = @hotel_confirmation_hash['RateInfos']['RateInfo']['nonRefundable'] ? 'Yes' : 'No'
                           p style="margin-top:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:11px" 
                               b
@@ -239,10 +210,10 @@
                                         span.aQJ #{date}
                                   td.border-right align="right" style="border-right-width:1px;border-right-style:solid;border-color: #e2e2e2" 
                                     font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
+                                      = nightly_rates_per_room(@hotel_confirmation_hash['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
                                   td align="right" 
                                     font style="font-family:Tahoma,sans-serif;font-size:13px"
-                                      = nightly_rates_per_room(@reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
+                                      = nightly_rates_per_room(@hotel_confirmation_hash['RateInfos']['RateInfo']['ChargeableRateInfo']['NightlyRatesPerRoom'], key, true)
 
                               tr
                                 td.border-right-top style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid;border-color: #e2e2e2" 
@@ -250,14 +221,14 @@
                                     b Total per room
                                 td.border-right-top align="right" style="border-right-width:1px;border-right-style:solid;border-top-width:1px;border-top-style:solid;border-color: #e2e2e2" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
+                                    b = number_to_currency @hotel_confirmation_hash['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
                                 td.border-top align="right" style="border-top-width:1px;border-top-style:solid;border-color: #e2e2e2" 
                                   font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                                    b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
+                                    b = number_to_currency @hotel_confirmation_hash['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
 
                           table.charges-content-container border="0" cellpadding="10" cellspacing="0" style=("border-radius:4px;margin:5px 0 20px 0; width: 100%; background: #f6f6f6") 
                             tbody
-                              = surcharge @reservation
+                              = surcharge @hotel_confirmation_hash
                           p style="margin:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:15px" 
                               b Total cost for entire stay
@@ -270,12 +241,12 @@
                                 td.charges-content-container style="border-radius:4px;background: #f6f6f6" 
                                   p style="margin:5px" 
                                     font style="font-family:Tahoma,sans-serif;font-size:25px" 
-                                      b = number_to_currency @reservation['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']
+                                      b = number_to_currency @hotel_confirmation_hash['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']
                                       
-                                  - if @reservation["RateInfos"]["RateInfo"]["HotelFees"]
+                                  - if @hotel_confirmation_hash["RateInfos"]["RateInfo"]["HotelFees"]
                                     p style="margin:0 0 0 5px;color: #337ab7"
                                       font style="font-family:Tahoma,sans-serif;font-size:11px"
-                                        = get_hotel_fees @reservation["RateInfos"]["RateInfo"]["HotelFees"]
+                                        = get_hotel_fees @hotel_confirmation_hash["RateInfos"]["RateInfo"]["HotelFees"]
 
                                 td valign="middle" 
                                   p style="margin:5px" 
@@ -319,20 +290,6 @@
                             font style="font-family:Tahoma,sans-serif;font-size:13px" 
                               | The above charges to your credit card were made by Travelscape, LLC. View our full
                               a data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=http://www.travelnow.com/templates/496147/terms-of-use?lang%3Den%26currency%3DUSD&amp;source=gmail&amp;ust=1476148861760000&amp;usg=AFQjCNGxUmgYiE2R5rLXC9YoEBAHivc2jg" href="http://www.travelnow.com/templates/496147/terms-of-use?lang=en&amp;currency=USD" target="_blank"  Terms &amp; Conditions
-                  table.primary-content-table style="border-width:1px;border-style:solid;border-radius:4px;padding:10px;margin-bottom:10px" width="100%" 
-                    tbody
-                      tr
-                        td valign="top" 
-                          h2 style="margin:0;padding:0" 
-                            font style="font-family:Tahoma,sans-serif;font-size:16px;font-weight:normal"  Check-in Instructions
-                          hr style=("height:1px;border:0;margin:5px 0 10px 0;padding:0;background: #d1d1d1;") /
-                          p style="margin-top:0px" 
-                            font style="font-family:Tahoma,sans-serif;font-size:13px;font-weight:normal"
-                              - if @reservation['specialCheckInInstructions']
-                                = @reservation['specialCheckInInstructions'].html_safe
-                                br
-                                br
-                              = @reservation['checkInInstructions'].html_safe
                               
                   table.primary-content-table style="border-width:1px;border-style:solid;border-radius:4px;padding:10px;margin-bottom:10px" width="100%" 
                     tbody
@@ -346,12 +303,7 @@
                           / br/
                           p style="margin-top:0" 
                             font style="font-family:Tahoma,sans-serif;font-size:13px" 
-                              = @reservation['RateInfos']['RateInfo']['cancellationPolicy']
-                      / tr
-                      /   td
-                      /     a data-saferedirecturl="https://www.google.com/url?hl=en&amp;q=http://www.travelnow.com/templates/496147/selfService?itineraryInfo.itineraryNumber%3D273512669%26itineraryInfo.itineraryEmail%3Dteguh@41studio.com%26linkId%3DTrans:All:AfterCare:Cancel%26lang%3Den&amp;source=gmail&amp;ust=1476148861760000&amp;usg=AFQjCNHl1iH42NdGMzeJmmXb-TSRHLJQ2A" href="http://www.travelnow.com/templates/496147/selfService?itineraryInfo.itineraryNumber=273512669&amp;itineraryInfo.itineraryEmail=teguh@41studio.com&amp;linkId=Trans:All:AfterCare:Cancel&amp;lang=en" style=("border:0;margin:0;padding:4px 14px;border-radius:4px;width:auto;text-decoration:none;background:#48a3e9;color:#ffffff") target="_blank" 
-                      /       font style="font-family:Verdana,Arial,Helvetica,sans-serif;font-size:13px" 
-                      /         | Manage your booking online
+                              = @hotel_confirmation_hash['RateInfos']['RateInfo']['cancellationPolicy']
   br
   br                      
   | Happy travels,

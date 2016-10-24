@@ -170,12 +170,8 @@ module DealsHelper
   end
 
   def button_actions_in_deals_detail(room)
-    is_bank_account = 
-      if user_signed_in?
-        current_user.bank_account ? true : false
-      end
-
     link = ''
+    
     if @group
       if @group.user_id.eql? current_user.id
         if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
