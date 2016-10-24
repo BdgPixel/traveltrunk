@@ -51,62 +51,158 @@ validationForm = function() {
       returnValue = false;
     }
 
-    if ($('#profile').length > 0) {
-      if ($('.first-name').val() == 0) {
-        $('.first-name-error').html('First name cannot be blank or zero');
-        returnValue = false; 
-      }
+    // if ($('#profile').length > 0) {
+    //   validationBookForguest();
+    // }
+    // if ($('#profile').length > 0) {
+    //   if ($('.first-name').val() == 0) {
+    //     $('.first-name-error').html('First name cannot be blank or zero');
+    //     returnValue = false; 
+    //   }
 
-      if ($('.last-name').val() == 0) {
-        $('.last-name-error').html('Last name cannot be blank or zero');
-        returnValue = false; 
-      }
+    //   if ($('.last-name').val() == 0) {
+    //     $('.last-name-error').html('Last name cannot be blank or zero');
+    //     returnValue = false; 
+    //   }
 
-      if ($('.address').val() == 0) {
-        $('.address-error').html('Address cannot be blank or zero');
-        returnValue = false; 
-      }
+    //   if ($('.address').val() == 0) {
+    //     $('.address-error').html('Address cannot be blank or zero');
+    //     returnValue = false; 
+    //   }
 
-      if ($('.city').val() == 0) {
-        $('.city-error').html('City cannot be blank or zero');
-        returnValue = false; 
-      }
+    //   if ($('.city').val() == 0) {
+    //     $('.city-error').html('City cannot be blank or zero');
+    //     returnValue = false; 
+    //   }
 
-      if ($('.state').val() == 0) {
-        $('.state-error').html('State cannot be blank or zero');
-        returnValue = false; 
-      }
+    //   if ($('.state').val() == 0) {
+    //     $('.state-error').html('State cannot be blank or zero');
+    //     returnValue = false; 
+    //   }
 
-      if ($('.home-phone').val() == '') {
-        $('.home-phone-error').html('Phone number cannot be blank');
-        returnValue = false;
-      }
+    //   if ($('.home-phone').val() == '') {
+    //     $('.home-phone-error').html('Phone number cannot be blank');
+    //     returnValue = false;
+    //   }
 
-      if ($('.zip').val() == 0) {
-        $('.zip-error').html('Zip required');
-        returnValue = false;
-      }
+    //   if ($('.zip').val() == 0) {
+    //     $('.zip-error').html('Zip required');
+    //     returnValue = false;
+    //   }
 
-      if ($('.email-saving').val() == 0) {
-        $('.email-saving-error').html('Email cannot be blank or zero');
-        returnValue = false;
-      }
+    //   if ($('.email-saving').val() == 0) {
+    //     $('.email-saving-error').html('Email cannot be blank or zero');
+    //     returnValue = false;
+    //   }
 
-      if (validateEmail($('.email-saving').val()) == false) {
-        $('.email-saving-error').html('Email not valid format');
-        returnValue = false;
-      }
+    //   if (validateEmail($('.email-saving').val()) == false) {
+    //     $('.email-saving-error').html('Email not valid format');
+    //     returnValue = false;
+    //   }
 
-      if ($('.country').val() == '') {
-        $('.country-error').html('Please select one a country code');
-        returnValue = false;
-      }
-    }
+    //   if ($('.country').val() == '') {
+    //     $('.country-error').html('Please select one a country code');
+    //     returnValue = false;
+    //   }
+    // }
     
     return returnValue;
     e.preventDefault()
   });
 };
+
+validationBookForGuest = function() {
+  $('form.form-book-guest').on('submit', function(e) {
+    var returnValue;
+    returnValue = void 0;
+    returnValue = null;
+    $('.guest-book-error').text('');
+
+    if ($('.card_number').val().length < 13) {
+      $('.credit-card-error').html('Credit card number is too short.');
+      returnValue = false;
+    } 
+
+    if ($('.card_number').val().length > 16) {
+      $('.credit-card-error').html('Credit card number is too long.');
+      returnValue = false;
+    } 
+
+    if ($('.cvc').val().length < 3) {
+      $('.cvc-error').html('Cvv is too short (min 3)');
+      returnValue = false;
+    } 
+
+    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
+      $('.card-month-error').html('Select present or future month');
+      returnValue = false;
+    } 
+
+    if ($('.transfer_frequency').val() == 0) {
+      $('.transfer-frequency-error').html('Please select one transfer frequency');
+      returnValue = false;
+    }
+
+    if ($('.card-type').val() == '') {
+      $('.card-type-error').html('Please select your card type');
+      returnValue = false;
+    }
+
+    if ($('.first-name').val() == 0) {
+      $('.first-name-error').html('First name cannot be blank or zero');
+      returnValue = false; 
+    }
+
+    if ($('.last-name').val() == 0) {
+      $('.last-name-error').html('Last name cannot be blank or zero');
+      returnValue = false; 
+    }
+
+    if ($('.address').val() == 0) {
+      $('.address-error').html('Address cannot be blank or zero');
+      returnValue = false; 
+    }
+
+    if ($('.city').val() == 0) {
+      $('.city-error').html('City cannot be blank or zero');
+      returnValue = false; 
+    }
+
+    if ($('.state').val() == 0) {
+      $('.state-error').html('State cannot be blank or zero');
+      returnValue = false; 
+    }
+
+    if ($('.home-phone').val() == '') {
+      $('.home-phone-error').html('Phone number cannot be blank');
+      returnValue = false;
+    }
+
+    if ($('.zip').val() == 0) {
+      $('.zip-error').html('Zip required');
+      returnValue = false;
+    }
+
+    if ($('.email-saving').val() == 0) {
+      $('.email-saving-error').html('Email cannot be blank or zero');
+      returnValue = false;
+    }
+
+    if (validateEmail($('.email-saving').val()) == false) {
+      $('.email-saving-error').html('Email not valid format');
+      returnValue = false;
+    }
+
+    if ($('.country').val() == '') {
+      $('.country-error').html('Please select one a country code');
+      returnValue = false;
+    }
+
+    return returnValue;
+    e.preventDefault()
+  });
+
+}
 
 validateEmail = function(email) {
   var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
@@ -152,9 +248,12 @@ numericalDigits = function() {
 
 $(document).ready(function() {
   validationForm();
+  validationBookForGuest();
+
   $('#modalSavingsForm').on('hidden.bs.modal', function(e) {
     $('#formAddToSavings').get(0).reset();
     $('.payment-errors').html("");
+    $('.guest-book-error').text('');
     clearValidationMessage();
   });
 
