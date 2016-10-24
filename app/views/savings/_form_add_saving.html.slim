@@ -114,8 +114,8 @@
 
           .form-group
             .row
-              .col-md-6
-                = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select Your Card Type'
+              .col-md-4
+                = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select Card Type'
                 .card-type-error.bank-account-error
                 .wrapper-icon-payment
                   = image_tag asset_path('cards/mastercard.png')
@@ -126,7 +126,7 @@
                   / |&nbsp;
                   = image_tag asset_path('cards/discover.png')
 
-              .col-md-3
+              .col-md-5
                 = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;', autocomplete: 'off', maxlength: 19 }
                 .credit-card-error.bank-account-error
 
