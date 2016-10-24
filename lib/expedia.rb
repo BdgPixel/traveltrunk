@@ -59,6 +59,7 @@ module Expedia
           num_of_hotel: arg[:num_of_hotel] || 0,
           num_of_page: arg[:num_of_page] || 0,
           error_response: {
+            is_error: arg[:is_error],
             message:  arg[:error_response]
           }
         }
@@ -249,9 +250,9 @@ module Expedia
           @error_response << response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"]
           
           if response["HotelRoomReservationResponse"]["EanWsError"]["category"].eql? "DATA_VALIDATION"
-            response_result(error_response: response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"])
+            response_result(error_response: response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"], response: response["HotelRoomReservationResponse"], is_error: true)
           else
-            response_result(error_response: @error_response)
+            response_result(error_response: @error_response, response: response["HotelRoomReservationResponse"], is_error: true)
           end
         else
           @reservation = response["HotelRoomReservationResponse"]
@@ -288,7 +289,7 @@ module Expedia
       url = "http://api.ean.com/ean-services/rs/hotel/v3/itin?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelItineraryRequest").gsub(" ", "").gsub("\n", "") }
       url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-
+      
       begin
         response = HTTParty.get(url_custom_params)
         
