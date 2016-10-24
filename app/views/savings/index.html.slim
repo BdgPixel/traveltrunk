@@ -100,6 +100,9 @@
       .col-md-4.col-offset-4
         = render partial: 'savings/form_invite_friend'
 
-    = render 'savings/form_add_saving'
+    - if user_signed_in?
+      = render 'savings/form_add_saving'
+    - else
+    
     = render 'savings/transfer_success'
     = render 'promo_codes/form_modal_activation_promo_code'

@@ -108,6 +108,54 @@ validationForm = function() {
   });
 };
 
+validationSavingForm = function() {
+  $('form#formAddToSavings').on('submit', function(e) {
+    var returnValue;
+    returnValue = void 0;
+    returnValue = null;
+    
+    $('.saving-error').text('');
+
+    if ($('.card-type').val() == '') {
+      $('.card-type-error').html('Please select your card type');
+      returnValue = false;
+    }
+
+    if ($('.card_number').val().length < 13) {
+      $('.credit-card-error').html('Credit card number is too short.');
+      returnValue = false;
+    } 
+
+    if ($('.card_number').val().length > 16) {
+      $('.credit-card-error').html('Credit card number is too long.');
+      returnValue = false;
+    } 
+
+    if ($('.cvc').val().length < 3) {
+      $('.cvc-error').html('Cvv (min 3)');
+      returnValue = false;
+    } 
+
+    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
+      $('.card-month-error').html('Select present or future month');
+      returnValue = false;
+    } 
+
+    if ($('.amount').val() == '') {
+      $('.amount-error').html('Minimum $25.00');
+      returnValue = false;
+    }
+
+    if ($('.amount').val() < 25) {
+      $('.amount-error').html('Minimum $25.00');
+      returnValue = false;
+    }
+    
+    return returnValue;
+    e.preventDefault()
+  });
+}
+
 validateEmail = function(email) {
   var emailReg = /^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/;
   return emailReg.test(email);
@@ -151,10 +199,13 @@ numericalDigits = function() {
 };
 
 $(document).ready(function() {
-  validationForm();
+  // validationForm();
+  validationSavingForm()
+
   $('#modalSavingsForm').on('hidden.bs.modal', function(e) {
     $('#formAddToSavings').get(0).reset();
     $('.payment-errors').html("");
+    $('.saving-error').text('');
     clearValidationMessage();
   });
 
