@@ -10,7 +10,15 @@
               = flash[:reservation_message]
 
           .col-md-6 style="margin-bottom: 20px"
-            h4 Your reservation is confirmed and your card has been charged
+            - if @is_pending || @reservation.status_code.eql?('PS')
+              h4 Your reservation is pending.
+              br
+              p
+                i 
+                  | *It will take up to 3 days for us to confirm or cancel your reservation. We will send you email when your reservation status changes.
+            - else
+              h4
+                | Your reservation is confirmed and your card has been charged
 
             br
 
@@ -26,9 +34,14 @@
               b Itinerary Number:&nbsp;
               = "#{@reservation.itinerary}"
 
+            - if @reservation.confirmation_number.present?
+              p
+                b Room Confirmation number:&nbsp;
+                = @reservation.confirmation_number
+
             p
-              b Room Confirmation number:&nbsp;
-              = @reservation.confirmation_number
+              b Status:&nbsp;
+              = status_reservation(@reservation.status_code)
             br
 
             

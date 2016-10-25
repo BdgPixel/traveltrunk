@@ -10,7 +10,7 @@ class ReservationsController < ApplicationController
         itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
         
         if itinerary_response[:error_response]
-          @error_response = "Your reservation with Itinerary ID #{@reservation.itinerary} and Email #{@reservation.email} not found on Expedia"
+          @error_response = "Your reservation with Itinerary ID #{@reservation.itinerary} and Email #{params[:reservation][:email]} not found on Expedia"
           redirect_to reservations_url, alert: @error_response
         else
           @itinerary = itinerary_response[:response]["Itinerary"]

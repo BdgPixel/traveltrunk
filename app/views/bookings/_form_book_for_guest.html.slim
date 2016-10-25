@@ -14,7 +14,6 @@
       .modal-body
         = simple_form_for :guest_booking, method: :post, url: deals_guest_booking_path, remote: true, html: { id: 'formAddToSavings', class: 'form-book-guest' } do |f|
 
-          = f.hidden_field :rate_code
           = f.hidden_field :total
           
           i

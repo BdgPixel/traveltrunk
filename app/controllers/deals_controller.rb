@@ -117,65 +117,92 @@ class DealsController < ApplicationController
         },
       }
 
-      reservation_response = Expedia::Hotels.reservation(reservation_hash).first
-      @reservation = reservation_response[:response]
-      @error_response = reservation_response[:error_response]
-      @is_error_response = reservation_response[:is_error]
+      reservation_responses = Expedia::Hotels.reservation(reservation_hash).first
+      reservation_response = reservation_responses[:response]
+      error_response = reservation_responses[:error_response].try(:split, '..').try(:first)
+      is_error_response = reservation_responses[:is_error]
+
       arrival_date = Date.strptime(current_destination[:arrivalDate], "%m/%d/%Y")
       departure_date = Date.strptime(current_destination[:departureDate], "%m/%d/%Y")
 
-      if !@error_response
-        arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
-        departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
-        reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
-        reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
+      if is_error_response
+        if reservation_response['EanWsError']['handling'].eql?('AGENT_ATTENTION') &&
+          reservation_response['EanWsError']['category'].eql?('PROCESS_FAIL') &&
+          !reservation_response['EanWsError']['itineraryId'].eql?(-1)
 
-        if @group
-          members = @group.members.to_a
-          members << current_user
-          price_per_member = hotel_price.to_f / members.size
+          itinerary_id = reservation_response['EanWsError']['itineraryId'].to_s
 
-          price_per_member_hash = calculate_price_per_member({}, members, price_per_member, hotel_price)
+          itinerary_params = { itineraryId: itinerary_id, email: current_user.email }
+          itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
+          room_reservation = itinerary_response[:response]["Itinerary"]
+          reservation_params = set_reservation_params(room_reservation, arrival_date, departure_date, true)
 
-          price_per_member_hash.each do |member, amount_to_charge|
-            total_credit = member.total_credit - (amount_to_charge * 100).to_i
-            member.total_credit = total_credit
-            member.save(validate: false)
+          create_reservation(reservation_hash, room_reservation, reservation_params, hotel_price, true)
 
-            # create reservation for each member (so it can be refunded for each member too later)
-            reservation_params[:user_id] = member.id
-            reservation_params[:total] = (amount_to_charge * 100).to_i
-            reservation_params[:reservation_type] = 'group'
-            reservation_params[:email] = current_user.email
-            reservation_params[:status_code] = @reservation['reservationStatusCode']
-
-            reservation = Reservation.new(reservation_params)
-            reservation.save
-
-            @reservation_id = reservation.id
-            ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
-          end
-
-          @group.destroy
+          redirect_to deals_confirmation_page_path(reservation_id: @reservation.id)
         else
-          total_credit = current_user.total_credit - (hotel_price * 100).to_i
-          user = User.find current_user.id
-          user.total_credit = total_credit
-          user.save(validate: false)
-
-          # create reservation for single user instead, if user don't have group
-          reservation = current_user.reservations.new(reservation_params)
-          reservation.save
-
-          @reservation_id = reservation.id
-          ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
+          redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
         end
-        
-        flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-        redirect_to deals_confirmation_page_path(reservation_id: @reservation_id)
       else
-        redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
+        reservation_params = set_reservation_params(reservation_response, arrival_date, departure_date)
+        create_reservation(reservation_hash, reservation_response, reservation_params, hotel_price)
+
+        flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
+        redirect_to deals_confirmation_page_path(reservation_id: @reservation.id)
       end
+
+      # if !@error_response
+      #   arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
+      #   departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
+      #   reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
+      #   reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
+
+      #   if @group
+      #     members = @group.members.to_a
+      #     members << current_user
+      #     price_per_member = hotel_price.to_f / members.size
+
+      #     price_per_member_hash = calculate_price_per_member({}, members, price_per_member, hotel_price)
+
+      #     price_per_member_hash.each do |member, amount_to_charge|
+      #       total_credit = member.total_credit - (amount_to_charge * 100).to_i
+      #       member.total_credit = total_credit
+      #       member.save(validate: false)
+
+      #       # create reservation for each member (so it can be refunded for each member too later)
+      #       reservation_params[:user_id] = member.id
+      #       reservation_params[:total] = (amount_to_charge * 100).to_i
+      #       reservation_params[:reservation_type] = 'group'
+      #       reservation_params[:email] = current_user.email
+      #       reservation_params[:status_code] = @reservation['reservationStatusCode']
+
+      #       reservation = Reservation.new(reservation_params)
+      #       reservation.save
+
+      #       @reservation_id = reservation.id
+      #       ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
+      #     end
+
+      #     @group.destroy
+      #   else
+      #     total_credit = current_user.total_credit - (hotel_price * 100).to_i
+      #     user = User.find current_user.id
+      #     user.total_credit = total_credit
+      #     user.save(validate: false)
+
+      #     # create reservation for single user instead, if user don't have group
+      #     reservation = current_user.reservations.new(reservation_params)
+      #     reservation.save
+
+      #     @reservation_id = reservation.id
+      #     ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
+      #   end
+        
+      #   flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
+      #   redirect_to deals_confirmation_page_path(reservation_id: @reservation_id)
+      # else
+      #   redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
+      # end
     end
   end
 
@@ -203,8 +230,8 @@ class DealsController < ApplicationController
       RoomGroup: {
         Room: {
           numberOfAdults: number_of_adults.to_s,
-          firstName: "test",
-          lastName: "tester",
+          firstName: customer_params[:first_name],
+          lastName: customer_params[:last_name],
           bedTypeId: bed_type,
           smokingPreference: smoking_preferences
         }
@@ -222,7 +249,7 @@ class DealsController < ApplicationController
         creditCardExpirationYear: customer_params[:exp_year]
       },
       AddressInfo: {
-        address1: "travelnowpending",
+        address1: "travelnoworderdeclined",
         city: (customer_params[:city] || ""),
         stateProvinceCode: (customer_params[:state] || ""),
         countryCode: (customer_params[:country] || ""),
@@ -232,27 +259,34 @@ class DealsController < ApplicationController
 
     reservation_response = Expedia::Hotels.reservation(reservation_hash).first
     @reservation = reservation_response[:response]
-    @error_response = reservation_response[:error_response]
+    @error_response = reservation_response[:error_response].try(:split, '..').try(:first)
     @is_error_response = reservation_response[:is_error]
     arrival_date = Date.strptime(current_destination[:arrivalDate], "%m/%d/%Y")
     departure_date = Date.strptime(current_destination[:departureDate], "%m/%d/%Y")
 
     if @is_error_response
-      itinerary_id = @reservation['EanWsError']['itineraryId'].to_s
+      if @reservation['EanWsError']['handling'].eql?('AGENT_ATTENTION') &&
+        @reservation['EanWsError']['category'].eql?('PROCESS_FAIL') &&
+        !@reservation['EanWsError']['itineraryId'].eql?(-1)
 
-      itinerary_params = { itineraryId: itinerary_id, email: customer_params[:email_saving] }
-      itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
-      room_reservation = itinerary_response[:response]["Itinerary"]
-      reservation_params = set_reservation_params(room_reservation, arrival_date, departure_date, true)
-      
-      reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest'))
-      reservation.save
+        @is_pending = true
 
-      @reservation_id = reservation.id
-      @customer_params = customer_params
-      reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
-      status_code = room_reservation['HotelConfirmation']['status']
-      ReservationMailer.reservation_created_for_guest_based_status(room_reservation, customer_params, reservation_info, status_code).deliver_now
+        itinerary_id = @reservation['EanWsError']['itineraryId'].to_s
+
+        itinerary_params = { itineraryId: itinerary_id, email: customer_params[:email_saving] }
+        itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
+        room_reservation = itinerary_response[:response]["Itinerary"]
+        reservation_params = set_reservation_params(room_reservation, arrival_date, departure_date, true)
+        
+        reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest'))
+        reservation.save
+
+        @reservation_id = reservation.id
+        @customer_params = customer_params
+        reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
+        status_code = room_reservation['HotelConfirmation']['status']
+        ReservationMailer.pending_reservation_guest(room_reservation, customer_params, reservation_info, status_code).deliver_now
+      end
     else
       reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
      
@@ -263,7 +297,7 @@ class DealsController < ApplicationController
       @customer_params = customer_params
 
       reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
-      ReservationMailer.reservation_created_for_guest(@reservation, customer_params, reservation_info).deliver_now
+      ReservationMailer.reservation_created_guest(@reservation, customer_params, reservation_info).deliver_now
     end
   end
 
@@ -544,8 +578,16 @@ class DealsController < ApplicationController
     end
 
     def customer_params
-      params_require = (params[:guest_booking] ? 'guest_booking' : 'update_credit').to_sym
-      params.require(params_require).permit(:email_saving, :first_name, :last_name, :address, :city,
+      params_require = 
+        if params[:guest_booking]
+          'guest_booking'
+        elsif params[:update_credit]
+          'update_credit'
+        else
+          'confirmation_book'
+        end
+      
+      params.require(params_require.to_sym).permit(:email_saving, :first_name, :last_name, :address, :city,
         :state, :zip, :country, :total, :hotel_id, :card_type, :formatted_amount, :arrival_date, :departure_date,
         :departure_date, :room_type_code, :rate_key, :bed_type, :smoking_preferences, :card_number, :cvv, :exp_month, :exp_year,
         :amount, :rate_code_room, :home_phone)
@@ -598,6 +640,7 @@ class DealsController < ApplicationController
 
     def set_reservation_params(reservation, arrival_date, departure_date, is_error = false)
       if is_error
+        # if there is an error get reservation info from view itinerary API response
         {
           itinerary:            reservation["itineraryId"],
           hotel_name:           reservation['HotelConfirmation']['Hotel']['name'],
@@ -615,6 +658,7 @@ class DealsController < ApplicationController
           email: reservation['Customer']['email']
         }
       else
+        # if reservation success, get reservation info directly from the response
         {
           itinerary:            reservation["itineraryId"],
           confirmation_number:  reservation["confirmationNumbers"],
@@ -628,7 +672,9 @@ class DealsController < ApplicationController
           number_of_adult:      reservation["RateInfos"]["RateInfo"]["RoomGroup"]["Room"]["numberOfAdults"],
           total:                (reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
           arrival_date:         arrival_date,
-          departure_date:       departure_date
+          departure_date:       departure_date,
+          status_code:          reservation['reservationStatusCode'],
+          email:                current_user.email
         }
       end
     end
@@ -674,5 +720,55 @@ class DealsController < ApplicationController
       end
       
       room_hash
+    end
+
+    def create_reservation(expedia_params, reservation_response, reservation_params, hotel_price, is_pending = false)
+      reservation_info = expedia_params[:ReservationInfo].merge(AddressInfo: expedia_params[:AddressInfo])
+
+      if @group
+        members = @group.members.to_a
+        members << current_user
+        price_per_member = hotel_price.to_f / members.size
+
+        price_per_member_hash = calculate_price_per_member({}, members, price_per_member, hotel_price)
+
+        price_per_member_hash.each do |member, amount_to_charge|
+          total_credit = member.total_credit - (amount_to_charge * 100).to_i
+          member.total_credit = total_credit
+          member.save(validate: false)
+
+          # create reservation for each member (so it can be refunded for each member too later)
+          reservation_params[:user_id] = member.id
+          reservation_params[:total] = (amount_to_charge * 100).to_i
+          reservation_params[:reservation_type] = 'group'
+          reservation_params[:email] = current_user.email
+
+          @reservation = Reservation.new(reservation_params)
+          @reservation.save
+
+          if is_pending
+            ReservationMailer.pending_reservation(reservation_response, current_user, reservation_info).deliver_now
+          else
+            ReservationMailer.reservation_created(reservation_response, current_user, reservation_info).deliver_now
+          end
+        end
+
+        @group.destroy
+      else
+        total_credit = current_user.total_credit - (hotel_price * 100).to_i
+        user = User.find current_user.id
+        user.total_credit = total_credit
+        user.save(validate: false)
+
+        # create reservation for single user instead, if user don't have group
+        @reservation = current_user.reservations.new(reservation_params)
+        @reservation.save
+
+        if is_pending
+          ReservationMailer.pending_reservation(reservation_response, current_user, reservation_info).deliver_now
+        else
+          ReservationMailer.reservation_created(reservation_response, current_user, reservation_info).deliver_now
+        end
+      end
     end
 end

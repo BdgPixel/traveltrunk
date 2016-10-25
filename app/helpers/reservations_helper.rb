@@ -90,14 +90,13 @@ module ReservationsHelper
 
   def status_reservation(status_code)
     label =
-      if status_code.eql? 'CF'
-        'Confirmed Reservation'
-      elsif status_code.eql? 'PS'
-        'Pending'
-      elsif status_code.eql? 'CX'
-        'Cancelled'
+      case status_code
+      when 'CF' then 'Confirmed'
+      when 'PS' then 'Pending'
+      when 'ER' then 'Permanently failed'
+      when 'CX' then 'Cancelled'
       end
 
-    "#{status_code} - #{label}"
+    "#{label} (#{status_code})"
   end
 end

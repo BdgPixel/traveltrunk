@@ -1,6 +1,10 @@
 <% if @error_response %>
-  $('.payment-errors').html("<%= @error_response %>");
-  $("#modalSavingsForm").scrollTop(0);
+  <% if @is_pending %>
+    window.location.replace('<%= deals_confirmation_page_url(reservation_id: @reservation_id, email: @customer_params[:email_saving], first_name: @customer_params[:first_name], last_name: @customer_params[:last_name]) %>');
+  <% else %>
+    $('.payment-errors').html("<%= @error_response %>");
+    $("#modalSavingsForm").scrollTop(0);
+  <% end %>
 <% else %>
-  window.location.replace('<%= deals_confirmation_page_url(reservation_id: @reservation_id, email: @customer_params[:email_saving]) %>');
+  window.location.replace('<%= deals_confirmation_page_url(reservation_id: @reservation_id, email: @customer_params[:email_saving], first_name: @customer_params[:first_name], last_name: @customer_params[:last_name]) %>');
 <% end %>
