@@ -123,23 +123,6 @@ root.showPopUpProfile = () ->
 
   return
 
-root.uploadImage = ->
-  $('#profile_image').on 'click',(e) ->
-    e.preventDefault()
-    $('#choose_profile_image')[0].click()
-
-    return
-
-  $('input[type=file]').bootstrapFileInput();
-  $('.file-inputs').bootstrapFileInput();
-
-  $('#choose_profile_image').on 'change', ->
-    $('#profile_image').attr('width', 226)
-    $('#profile_image').attr('height', 226)
-    $('#profile_image')[0].src = window.URL.createObjectURL(@files[0])
-    
-    return
-
 root.disableEnterFormSubmit = ->
   $('.search-deals-form').on 'keyup keypress', (e) ->
     code = e.keyCode or e.which
@@ -215,8 +198,11 @@ root.initDatePickerForMobile = (today) ->
     autoclose: true).on 'changeDate', (e) ->
 
 root.clearValidationMessage = ->
-  $('.payment-account-error').text('');
-  $('.profile-error').text('');
+  $('.payment-account-error').text('')
+  $('.profile-error').text('')
+  $('.guest-book-error').text('')
+  $('.payment-errors').html('')
+  $('.saving-error').text('')
 
 getFormattedDate = (date) ->
   day = date.getDate()

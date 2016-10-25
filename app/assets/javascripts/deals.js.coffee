@@ -349,11 +349,10 @@ appendValueRoomParams = () ->
   $('#guest_booking_bed_type').val($('#confirmation_book_bed_type').val())
   $('#guest_booking_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
-ready  = ->
+$(document).ready ->
   controller = $('body').data('controller')
   action = $('body').data('action')
 
-  # if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
   if controller == 'deals' && action == 'index'
     disableEnterFormSubmit()
 
@@ -398,10 +397,6 @@ ready  = ->
       success: (data, textStatus, jqXHR) ->
         roomSelected('.room-selected')
         appendCreditform()
-
-        $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
-          $('#formAddToSavings').get(0).reset()
-          $('.payment-errors').html("")
 
         $('.modal-lg').on 'hidden.bs.modal', (e) ->
           $('#formBook').get(0).reset()
@@ -465,6 +460,3 @@ ready  = ->
         $('.amount').val parseFloat($('#totalCharges').data('total-charges'))
 
       return
-
-$(document).ready -> ready()
-$(document).on 'page:load', -> ready()

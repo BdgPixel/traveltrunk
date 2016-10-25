@@ -9,12 +9,11 @@
   $.get("<%= edit_profile_path %>", function(data) {
     $('#showBankAccount').html("<%= j render 'profiles/form_modal_bank_account', is_remote: true %>");
     $('.error').text('');
-    // validationForm();
+    
     if ($('form#paymentAccountProfile').length > 0)
       paymentAccountFormValidation();
 
     initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer');
-    // $('#showBankAccount').show();
     $('#modalUserProfile .modal-title').text('Create Your Savings Plan');
     var activeItem = parseInt('<%= params[:step] %>');
     $('#myCarousel').carousel(activeItem);

@@ -136,11 +136,11 @@
                 = label_tag "Expiration Year (YYYY)"
                 = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "guest_booking[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
 
-          .form-group class="show"
+          .form-group class="hide"
             .row
               .col-md-6
                 = f.label :amount
-                = f.input_field :amount, class: "form-control update_credit_amount amount"
+                = f.hidden_field :amount, class: "form-control update_credit_amount amount"
                 #totalCharges
                 .amount-error.guest-book-error
 
