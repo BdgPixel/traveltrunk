@@ -69,8 +69,8 @@
         center
           .form-group
             = f.button :submit, 'Save', class: 'btn btn-saving btn-green'
-            | &nbsp;
-            button aria-label="Close" class="btn btn-saving btn-orange-soft" data-dismiss="modal"type="button" Skip for now
+            | &nbsp;&nbsp;
+            = link_to 'Skip for now', '#', data: { dismiss: 'modal' }, 'aria-label' => 'close'
         br
         br
 
