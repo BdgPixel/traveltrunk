@@ -335,9 +335,9 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
       $(selectorContent).html()
     title: ->
       if selectorTitle
-        selectorTitle + '<span class="close">&times;</span>';
+        selectorTitle + '<span class="close popover-close">&times;</span>';
       else
-        '<span class="close">&times;</span>';
+        '<span class="close popover-close">&times;</span>';
 
 appendValueRoomParams = () ->
   $('#guest_booking_arrival_date').val($('#confirmation_book_arrival_date').val())
