@@ -382,7 +382,8 @@ $(document).ready ->
     params_path_id = window.location.pathname.split('/')[2]
 
     validateFormBook()
-    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'top')
+    popoverVoteTitle = $('#titlePopover').text()
+    popOver('#linkPopover', popoverVoteTitle, '#contentPopover', 'click', 'top')
 
     $(document).on 'click', '[data-dismiss="popover"]', (e) ->
       $(this).closest('div').prev().popover('hide')

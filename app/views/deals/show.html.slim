@@ -40,10 +40,10 @@
                     - else
                       - @votes.each do |vote|
                         .col-md-12.popover-list-users
-                          = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
+                          = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
                             = image_tag vote.user.profile.image.url, width: '70px'
-                          = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
-                            = vote.user.id.eql?(current_user.id) ? "You" : full_name(vote.user.profile)
+                          = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
+                            = vote.user.id.eql?(current_user.id) ? "You" : vote.user.try(:profile).try(:full_name)
 
       br
 
