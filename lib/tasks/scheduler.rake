@@ -10,5 +10,11 @@ namespace :scheduler do
   task :sync_per_day => :environment do
     transaction = Transaction.sync_per_day
     puts transaction.inspect
+  end
+
+  desc "This task is called for check pending reservations"
+  task :check_pending_reservations => :environment do
+    reservations = Reservation.check_pending_reservations
+    puts reservations.inspect
   end 
 end

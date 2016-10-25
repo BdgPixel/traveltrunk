@@ -109,7 +109,7 @@ class DealsController < ApplicationController
           creditCardExpirationYear: "2017"
         },
         AddressInfo: {
-          address1: "travelnow",
+          address1: "travelnowsoldout",
           city: (current_user.profile.city || ""),
           stateProvinceCode: (current_user.profile.state || ""),
           countryCode: (current_user.profile.country_code || ""),
@@ -141,7 +141,7 @@ class DealsController < ApplicationController
 
           redirect_to deals_confirmation_page_path(reservation_id: @reservation.id)
         else
-          redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
+          redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: error_response
         end
       else
         reservation_params = set_reservation_params(reservation_response, arrival_date, departure_date)
@@ -653,7 +653,7 @@ class DealsController < ApplicationController
           total:                (reservation['HotelConfirmation']['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100.0).round,
           arrival_date:         arrival_date,
           departure_date:       departure_date,
-          status: 'error_book',
+          status: 'pending',
           status_code: reservation['HotelConfirmation']['status'],
           email: reservation['Customer']['email']
         }

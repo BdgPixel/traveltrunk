@@ -4,9 +4,18 @@
 .wrap-nav-color
   | &nbsp;
 
+
 .wrapper-detail-deals
   .container
     .row
+      - if alert.present?
+        .col-md-12
+          #notice.alert.alert-info.alert-dismissible.text-left role="alert"
+            button type="button" class="close" data-dismiss="alert" aria-label="Close"
+              span aria-hidden="true" &times;
+            strong &nbsp; Notice: &nbsp; 
+            = alert
+
       .col-xs-5.col-md-6 style="z-index: 1"
         h1 = session[:nightly_price]
         br

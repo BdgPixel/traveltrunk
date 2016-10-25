@@ -55,4 +55,11 @@ class ReservationMailer < ApplicationMailer
     
     mail to: @user[:email_saving], subject: 'Reservation is Pending'
   end
+
+  def status_changes_notification(recipient, reservation, status_code)
+    @reservation = reservation
+    @status_code = status_code
+
+    mail to: recipient, subject: 'Reservation Status Notification'
+  end
 end

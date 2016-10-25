@@ -1,0 +1,17 @@
+p#reservationStatusNotification
+  - if @reservation.user
+    | Hi #{@reservation.user.try(:profile).try(:first_name).try(:titleize)},
+  - else
+    | Hi Guest,
+
+  br
+  br
+  
+  | Your reservation status with Itinerary ID #{@reservation.itinerary} has been changed from #{status_reservation(@reservation.status_code)} to #{status_reservation(@status_code)}. You can check your reservation in #{link_to 'Check Reservation', reservations_url, target: '_blank' } page.
+  
+  br
+  br
+
+  | Sincerely,
+  br
+  = render 'partials/footer_mailer'

@@ -15,6 +15,7 @@
         tr
           th Reservation Date
           th Customer
+          th Reserved by (email)
           th Hotel Name
           th City
           th Total Cost
@@ -30,6 +31,7 @@
                 = reservation.reservation_type.titleize
               - else
                 = reservation.user.full_name
+            td = reservation.email
             td = reservation.hotel_name
             td = reservation.city
             td = currency_in_usd(reservation.total)
@@ -38,7 +40,7 @@
               span class="#{status_label(reservation.status)}" 
                 = reservation.status.titleize
             td
-              - if reservation.status.eql? 'reserved'
+              - if reservation.status.eql?('reserved') && reservation.user_id.present?
                 = link_to 'Refund', admin_reservation_path(reservation), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure refund this reservation ?'}, :method => :put
              
     = paginate @reservations

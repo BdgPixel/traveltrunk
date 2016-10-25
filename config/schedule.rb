@@ -22,3 +22,7 @@
 every :hour do
   rake "scheduler:sync_per_day"
 end
+
+every 6.hours do
+  rake "scheduler:check_pending_reservations"
+end
