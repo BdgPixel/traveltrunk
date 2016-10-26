@@ -109,7 +109,7 @@ class DealsController < ApplicationController
           creditCardExpirationYear: "2017"
         },
         AddressInfo: {
-          address1: "travelnowsoldout",
+          address1: "travelnow",
           city: (current_user.profile.city || ""),
           stateProvinceCode: (current_user.profile.state || ""),
           countryCode: (current_user.profile.country_code || ""),
@@ -150,59 +150,6 @@ class DealsController < ApplicationController
         flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
         redirect_to deals_confirmation_page_path(reservation_id: @reservation.id)
       end
-
-      # if !@error_response
-      #   arrival_date = Date.strptime(@reservation["arrivalDate"], "%m/%d/%Y")
-      #   departure_date = Date.strptime(@reservation["departureDate"], "%m/%d/%Y")
-      #   reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
-      #   reservation_info = reservation_hash[:ReservationInfo].merge(AddressInfo: reservation_hash[:AddressInfo])
-
-      #   if @group
-      #     members = @group.members.to_a
-      #     members << current_user
-      #     price_per_member = hotel_price.to_f / members.size
-
-      #     price_per_member_hash = calculate_price_per_member({}, members, price_per_member, hotel_price)
-
-      #     price_per_member_hash.each do |member, amount_to_charge|
-      #       total_credit = member.total_credit - (amount_to_charge * 100).to_i
-      #       member.total_credit = total_credit
-      #       member.save(validate: false)
-
-      #       # create reservation for each member (so it can be refunded for each member too later)
-      #       reservation_params[:user_id] = member.id
-      #       reservation_params[:total] = (amount_to_charge * 100).to_i
-      #       reservation_params[:reservation_type] = 'group'
-      #       reservation_params[:email] = current_user.email
-      #       reservation_params[:status_code] = @reservation['reservationStatusCode']
-
-      #       reservation = Reservation.new(reservation_params)
-      #       reservation.save
-
-      #       @reservation_id = reservation.id
-      #       ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
-      #     end
-
-      #     @group.destroy
-      #   else
-      #     total_credit = current_user.total_credit - (hotel_price * 100).to_i
-      #     user = User.find current_user.id
-      #     user.total_credit = total_credit
-      #     user.save(validate: false)
-
-      #     # create reservation for single user instead, if user don't have group
-      #     reservation = current_user.reservations.new(reservation_params)
-      #     reservation.save
-
-      #     @reservation_id = reservation.id
-      #     ReservationMailer.reservation_created(@reservation, current_user.id, reservation_info).deliver_now
-      #   end
-        
-      #   flash[:reservation_message] = "You will receive an email containing the confirmation and reservation details. Please refer to your itinerary number and room confirmation number"
-      #   redirect_to deals_confirmation_page_path(reservation_id: @reservation_id)
-      # else
-      #   redirect_to deals_show_url(params[:confirmation_book][:hotel_id]), alert: @error_response
-      # end
     end
   end
 
@@ -249,7 +196,7 @@ class DealsController < ApplicationController
         creditCardExpirationYear: customer_params[:exp_year]
       },
       AddressInfo: {
-        address1: "travelnoworderdeclined",
+        address1: customer_params[:address],
         city: (customer_params[:city] || ""),
         stateProvinceCode: (customer_params[:state] || ""),
         countryCode: (customer_params[:country] || ""),
@@ -673,8 +620,7 @@ class DealsController < ApplicationController
           total:                (reservation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f * 100.0).round,
           arrival_date:         arrival_date,
           departure_date:       departure_date,
-          status_code:          reservation['reservationStatusCode'],
-          email:                current_user.email
+          status_code:          reservation['reservationStatusCode']
         }
       end
     end
@@ -761,7 +707,7 @@ class DealsController < ApplicationController
         user.save(validate: false)
 
         # create reservation for single user instead, if user don't have group
-        @reservation = current_user.reservations.new(reservation_params)
+        @reservation = current_user.reservations.new(reservation_params.merge(email: current_user.email))
         @reservation.save
 
         if is_pending
