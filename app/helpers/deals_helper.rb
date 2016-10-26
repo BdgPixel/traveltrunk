@@ -142,12 +142,12 @@ module DealsHelper
     number_of_array
   end
 
-  def selected_number_of_adult(destination = nil, group = nil)
+  def selected_number_of_adult
     if user_signed_in?
-      if destination
-        group ? (group.members.size + 1) : destination.number_of_adult
+      if current_user.destination
+        @group ? (@group.members.size + 1) : current_user.destination.number_of_adult
       else
-        group ? (group.members.size + 1) : 1
+        @group ? (@group.members.size + 1) : 1
       end
     else
       session[:destination].nil? ? nil : session[:destination]['number_of_adult'].to_i
