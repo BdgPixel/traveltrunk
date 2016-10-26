@@ -18,7 +18,6 @@ class Reservation < ActiveRecord::Base
       if itinerary_response[:error_response]
         puts itinerary_response[:error_response]
       else
-        # binding.pry
         room_reservation = itinerary_response[:response]["Itinerary"]
         status_code = room_reservation['HotelConfirmation']['status']
 
