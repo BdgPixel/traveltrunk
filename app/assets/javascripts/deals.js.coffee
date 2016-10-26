@@ -405,6 +405,11 @@ $(document).ready ->
           $('.payment-errors').html("")
           # removeBackdropModal '#modalBook'
 
+        if $('.refundable-info').length > 0
+            $('body').tooltip
+             selector: '.refundable-info'
+             container: 'body'
+
         return
 
     if $('#hotelRating').length > 0
