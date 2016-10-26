@@ -14,8 +14,13 @@
       paymentAccountFormValidation();
 
     initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer');
-    $('#modalUserProfile .modal-title').text('Create Your Savings Plan');
     var activeItem = parseInt('<%= params[:step] %>');
+    
+    if (activeItem == 1)
+      $('#modalUserProfile .modal-title').text('Upload your profile image');
+    else
+      $('#modalUserProfile .modal-title').text('Create Your Savings Plan');
+
     $('#myCarousel').carousel(activeItem);
   });
 <% end %>
