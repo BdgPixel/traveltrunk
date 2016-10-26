@@ -18,6 +18,8 @@ class ReservationsController < ApplicationController
           @charge_able_rate_info = @hotel_confirmation["RateInfos"]["RateInfo"]["ChargeableRateInfo"]
           @list_of_dates = (@reservation.arrival_date..@reservation.departure_date).to_a
           @list_of_dates.pop
+
+          @reservation.update(status_code: @hotel_confirmation["status"])
         end
       else
         redirect_to reservations_url, alert: 'Your reservation not found on our database'
@@ -42,7 +44,7 @@ class ReservationsController < ApplicationController
     cancel_reservation_response = Expedia::Hotels.cancel_reservation(request_hash).first
     @cancel_reservation = cancel_reservation_response[:response]
     @error_response = cancel_reservation_response[:error_response]
-
+    binding.pry
     unless @error_response
       itinerary_params = { itineraryId: cancel_params[:itinerary_id], email: cancel_params[:email] }
       itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first

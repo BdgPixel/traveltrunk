@@ -181,7 +181,7 @@
         .col-md-2.pull-right
           - if @hotel_confirmation["status"].eql? 'PS'
             = link_to 'Pending Reservation', 'javascript:void(0)', class: 'btn btn-orange btn-md btn-block', disabled: true
-          - else
+          - elsif @hotel_confirmation["status"].eql? 'CF'
             = link_to 'Cancel Reservation', '#', class: 'btn btn-orange btn-md btn-block', data: { toggle: 'modal', target: '#cancelReservation' }
           br
           br
