@@ -335,9 +335,9 @@ root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, pl
       $(selectorContent).html()
     title: ->
       if selectorTitle
-        selectorTitle + '<span class="close">&times;</span>';
+        selectorTitle + '<span class="close popover-close">&times;</span>';
       else
-        '<span class="close">&times;</span>';
+        '<span class="close popover-close">&times;</span>';
 
 appendValueRoomParams = () ->
   $('#guest_booking_arrival_date').val($('#confirmation_book_arrival_date').val())
@@ -349,11 +349,10 @@ appendValueRoomParams = () ->
   $('#guest_booking_bed_type').val($('#confirmation_book_bed_type').val())
   $('#guest_booking_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
-ready  = ->
+$(document).ready ->
   controller = $('body').data('controller')
   action = $('body').data('action')
 
-  # if window.location.pathname == '/' or window.location.pathname == '/deals' or window.location.pathname == '/deals/'
   if controller == 'deals' && action == 'index'
     disableEnterFormSubmit()
 
@@ -383,7 +382,8 @@ ready  = ->
     params_path_id = window.location.pathname.split('/')[2]
 
     validateFormBook()
-    popOver('#linkPopover', '#titlePopover', '#contentPopover', 'click', 'top')
+    popoverVoteTitle = $('#titlePopover').text()
+    popOver('#linkPopover', popoverVoteTitle, '#contentPopover', 'click', 'top')
 
     $(document).on 'click', '[data-dismiss="popover"]', (e) ->
       $(this).closest('div').prev().popover('hide')
@@ -398,10 +398,6 @@ ready  = ->
       success: (data, textStatus, jqXHR) ->
         roomSelected('.room-selected')
         appendCreditform()
-
-        $('#modalSavingsForm').on 'hidden.bs.modal', (e) ->
-          $('#formAddToSavings').get(0).reset()
-          $('.payment-errors').html("")
 
         $('.modal-lg').on 'hidden.bs.modal', (e) ->
           $('#formBook').get(0).reset()
@@ -466,6 +462,3 @@ ready  = ->
         $('.amount').val parseFloat($('#totalCharges').data('total-charges'))
 
       return
-
-$(document).ready -> ready()
-$(document).on 'page:load', -> ready()

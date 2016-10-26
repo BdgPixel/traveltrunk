@@ -43,7 +43,8 @@ input[type=number]::-webkit-outer-spin-button {
 }
 
 // Stripe error message
-.payment-errors, .bank-account-error, .profile-error, .guest-book-error {
+.payment-errors, .payment-account-error, .profile-error, .saving-error,
+  .guest-book-error {
   color: red;
 }
 
@@ -109,4 +110,8 @@ span.error {
 li.token-input-token{
   padding: 2% 1% !important;
   font-size: 1em !important;
+}
+
+.popover-close { 
+  cursor: pointer;
 }

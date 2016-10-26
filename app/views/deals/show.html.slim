@@ -49,10 +49,10 @@
                     - else
                       - @votes.each do |vote|
                         .col-md-12.popover-list-users
-                          = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
+                          = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
                             = image_tag vote.user.profile.image.url, width: '70px'
-                          = link_to user_profile_path(vote.user), title: full_name(vote.user.profile)
-                            = vote.user.id.eql?(current_user.id) ? "You" : full_name(vote.user.profile)
+                          = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
+                            = vote.user.id.eql?(current_user.id) ? "You" : vote.user.try(:profile).try(:full_name)
 
       br
 
@@ -152,7 +152,7 @@
             i
               small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
-= render partial: 'book'
+= render partial: 'bookings/book'
 
 - if user_signed_in?
   = render partial: 'savings/form_add_saving'

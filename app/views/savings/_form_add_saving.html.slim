@@ -1,15 +1,11 @@
 #modalSavingsForm.modal.fade aria-labelledby="myLargeModalLabel" data-backdrop="static" role="dialog" tabindex="-1"
-  .modal-dialog class="#{user_signed_in? ? '' : 'modal-lg'}"
+  .modal-dialog
     .modal-content
       .modal-header
         button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true" &times;
-
         h3 Add to savings
-
-        - if user_signed_in?
-          i
-            small &ldquo;minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below.)&rdquo;
+        small &ldquo;minimum $25.00 (Will be withdrawn IMMEDIATELY from the funding source you specify below.)&rdquo;
 
       - if @error_response
         #error_authorize_net.alert.alert-danger
@@ -17,122 +13,33 @@
           = @error_response
 
       .modal-body
-        = simple_form_for user_signed_in? ? :update_credit : :guest_booking, method: :post, url: user_signed_in? ? deals_update_credit_path : deals_guest_booking_path, remote: true, html: { id: 'formAddToSavings', class: 'transaction-form' } do |f|
+        = simple_form_for :update_credit, method: :post, url: deals_update_credit_path, remote: true, html: { id: 'formAddToSavings' } do |f|
 
           = f.hidden_field :rate_code
           = f.hidden_field :total
-          
-          - unless user_signed_in?
-            i
-              b
-                | *Address must match credit card information*
 
           .form-group
             .payment-errors
 
-          - unless user_signed_in?
-            #profile.
-              .form-group
-                .row
-                  .col-md-6
-                    = f.label :first_name, 'Card Holder First Name'
-                    = f.input_field :first_name, class: 'first-name', maxlength: 50, autocomplete: 'off'
-                    .first-name-error.profile-error
-
-                  .col-md-6
-                    = f.label :last_name, 'Card Holder Last Name'
-                    = f.input_field :last_name, class: 'last-name', maxlength: 50, autocomplete: 'off'
-                    .last-name-error.profile-error
-
-              .form-group
-                .row
-                  .col-md-6
-                    = f.label :address
-                    = f.input_field :address, class: 'address', maxlength: 60, autocomplete: 'off'
-                    .address-error.profile-error
-
-                  .col-md-6
-                    = f.label :city
-                    = f.input_field :city, class: 'city', maxlength: 40
-                    .city-error.profile-error
-
-              .form-group
-                .row
-                  .col-md-6
-                    = f.label :state
-                    = f.input_field :state, class: 'state', maxlength: 40
-                    .state-error.profile-error
-
-                  .col-md-4
-                    = f.label :home_phone, 'Phone'
-                    = f.input_field :home_phone, as: :string, class: 'home-phone'
-                    span
-                      i We'll only contact you in an emergency
-                    .home-phone-error.profile-error
-
-                  .col-md-2
-                    = f.label :zip
-                    = f.input_field :zip, class: 'zip', maxlength: 20
-                    .zip-error.profile-error
-
-              .form-group
-                .row
-                  .col-md-6
-                    = f.label :country, 'Country'
-                    = f.country_select(:country, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom country' })
-                    .country-error.profile-error
-
-                  .col-md-6
-                    = f.label :email_saving, 'Email'
-                    = f.input_field :email_saving, class: 'email-saving'
-                    .email-saving-error.profile-error
-
-            #selectedRooms.hide
-              .form-group
-                = f.hidden_field :hotel_id, value: params[:id]
-
-              .form-group
-                = f.hidden_field :arrival_date
-
-              .form-group
-                = f.hidden_field :departure_date
-
-              .form-group
-                = f.hidden_field :rate_code_room
-
-              .form-group
-                = f.hidden_field :room_type_code
-
-              .form-group
-                = f.hidden_field :rate_key
-
-              .form-group
-                = f.hidden_field :bed_type
-
-              .form-group
-                = f.hidden_field :smoking_preferences
-
           .form-group
             .row
-              .col-md-6
-                = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select Your Card Type'
-                .card-type-error.bank-account-error
+              .col-md-4
+                = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select Card Type'
+                .card-type-error.saving-error
                 .wrapper-icon-payment
                   = image_tag asset_path('cards/mastercard.png')
                   |&nbsp;
                   = image_tag asset_path('cards/visa.png')
                   |&nbsp;
-                  / = image_tag asset_path('cards/amex.png')
-                  / |&nbsp;
                   = image_tag asset_path('cards/discover.png')
 
-              .col-md-3
-                = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;', autocomplete: 'off', maxlength: 19 }
-                .credit-card-error.bank-account-error
+              .col-md-5
+                = f.input :card_number, input_html: { class: "form-control card_number", autocomplete: 'off', maxlength: 19 }
+                .credit-card-error.saving-error
 
               .col-md-3
                 = f.input :cvv, as: :password, label: 'Security Code', input_html: { class: "form-control cvc", maxlength: 4 }
-                .cvc-error.bank-account-error
+                .cvc-error.saving-error
 
           .form-group
             .row
@@ -143,26 +50,24 @@
                   = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
                 - else
                   = select_month Date.today, { use_two_digit_numbers: true }, { name: "guest_booking[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
-                .card-month-error.bank-account-error
+                .card-month-error.saving-error
 
               .col-md-6
                 = label_tag "Expiration Year (YYYY)"
 
                 - if user_signed_in?
                   = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
-                - else
-                  = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "guest_booking[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
-
-          .form-group class="#{'hide' unless user_signed_in?}"
+                
+          .form-group
             .row
               .col-md-6
                 = f.label :amount
                 .input-group
                   .input-group-addon $
                   = f.input_field :formatted_amount, class: "form-control update_credit_amount formatted-amount"
-                  = f.hidden_field :amount, class: "form-control update_credit_amount amount-saving"
+                  = f.hidden_field :amount, class: "form-control update_credit_amount amount"
                   #totalCharges
-                .amount-error.bank-account-error
+                .amount-error.saving-error
 
           - unless user_signed_in?
             .form-group

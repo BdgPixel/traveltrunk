@@ -2,17 +2,10 @@ module DealsHelper
   include ActionView::Helpers::UrlHelper
 
   COLLECTION_CARDS = [
-    ['American Express', 'AX'],
-    ['BC Card', 'BC'],
-    ['Carta Si', 'T'],
-    ['Carte Bleue', 'R'],
     ['Diners Club', 'DC'],
     ['Discover', 'DS'],
-    ['Japan Credit Bureau', 'JC'],
-    ['Maestro', 'TO'],
     ['Master Card', 'CA'],
-    ['Visa', 'VI'],
-    ['Visa Electron', 'E']
+    ['Visa', 'VI']
   ]
 
   def unescape_expedia_html(string)

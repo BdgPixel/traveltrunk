@@ -6,8 +6,7 @@
 }
 
 /* Icons */
-@font-face
-{
+@font-face {
     font-family: 'slick';
     font-weight: normal;
     font-style: normal;
@@ -15,20 +14,15 @@
     src: font-url('slick.eot');
     src: font-url('slick.eot?#iefix') format('embedded-opentype'), font-url('slick.woff') format('woff'), font-url('slick.ttf') format('truetype'), font-url('slick.svg#slick') format('svg');
 }
+
 /* Arrows */
 .slick-prev,
-.slick-next
-{
+.slick-next {
     font-size: 0;
     line-height: 0;
-
     position: absolute;
     top: 30%;
-
     display: block;
-
-    width: 20px;
-    height: 20px;
     padding: 0;
     -webkit-transform: translate(0, -50%);
     -ms-transform: translate(0, -50%);

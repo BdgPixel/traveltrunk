@@ -6,9 +6,9 @@
 
 #myCarousel.carousel.slide data-ride="carousel" data-interval="false"
   .carousel-inner role="listbox"
-    .item
+    .item.active
       div
-        = simple_form_for current_user, method: :put, url: profile_url(step: 1), html: { data: { model: 'user' } }, remote: is_remote do |f|
+        = simple_form_for current_user, method: :put, url: profile_url(step: 1), html: { class: 'profile-form', data: { model: 'user' } }, remote: is_remote do |f|
           = f.simple_fields_for :profile do |profile_form|
             .wrapper-edit-profile
               .row
@@ -42,17 +42,17 @@
                     .col-md-4
                       .form-group
                         = profile_form.input :first_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-first_name
+                        span.error.error-message.error-first_name.profile-error
 
                     .col-md-4
                       .form-group
                         = profile_form.input :last_name, input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-last_name
+                        span.error.error-message.error-last_name.profile-error
 
                     .col-md-4
                       .form-group
                         = profile_form.input :gender, collection: ['Male', 'Female'], prompt: "- Select a gender -", input_html: { class: 'form-control text-capitalize input-custom' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-gender
+                        span.error.error-message.error-gender.profile-error
 
                 .col-md-12.wrapper-birth-date
                   .row
@@ -76,12 +76,12 @@
                     .col-md-6
                       .form-group
                         = profile_form.input :home_airport, label: 'Your home airport ?', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-home_airport
+                        span.error.error-message.error-home_airport.profile-error
 
                     .col-md-6
                       .form-group
                         = profile_form.input :place_to_visit, label: 'Name place you’d like to visit someday', input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-place_to_visit
+                        span.error.error-message.error-place_to_visit.profile-error
 
                 .col-md-12
                   .row
@@ -92,7 +92,7 @@
                     .col-md-6
                       .form-group
                         = profile_form.input :address, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-address
+                        span.error.error-message.error-address.profile-error
 
                     .col-md-6
                       .form-group
@@ -103,32 +103,32 @@
                     .col-md-6
                       .form-group
                         = profile_form.input :city, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-city
+                        span.error.error-message.error-city.profile-error
 
                     .col-md-6
                       .form-group
                         = profile_form.input :state, input_html: { class: 'form-control input-custom text-capitalize' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-state
+                        span.error.error-message.error-state.profile-error
 
                     .col-md-6
                       .form-group
                         = profile_form.input :postal_code, input_html: { class: 'form-control input-custom' }, error_html: { class: 'error-message' }
-                        span.error.error-message.error-postal_code
+                        span.error.error-message.error-postal_code.profile-error
 
                     .col-md-6
                       .form-group
                         = profile_form.label :country_code
                         = profile_form.country_select(:country_code, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom' })
-                        span.error.error-message.error-postal_code
+                        span.error.error-message.error-country_code.profile-error
 
                         - if profile_form.error :country_code
-                          span.error.error-message please select one
+                          span.error.error-message.profile-error please select one
 
               .row
                 .col-md-4.col-md-offset-4
                   .bank_account.text-center
                     = f.button :submit, 'Save', class: 'btn btn-saving btn-green btn-block'
-    .item.active
+    .item
       div
         = simple_form_for current_user, method: :put, url: profile_url(step: 2), html: { data: { model: 'user' }, multipart: true }, remote: is_remote do |f|
           = f.simple_fields_for :profile do |profile_form|

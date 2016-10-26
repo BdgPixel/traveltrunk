@@ -52,23 +52,9 @@ var initScrolling = function() {
   });
 };
 
-var initToolTip = function() {
-  $("body").tooltip({
-    selector: "[data-toggle='tooltip']",
-    container: "body"
-  })
-    //Popover, activated by clicking
-    .popover({
-    selector: "[data-toggle='popover']",
-    container: "body",
-    html: true
-  });
-};
-
 var ready = function() {
   initParalax();
   initScrolling();
-  initToolTip();
 };
 
 $(document).ready(function() {

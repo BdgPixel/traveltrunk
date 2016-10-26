@@ -167,25 +167,25 @@ div
           br
           br
 
-    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "profile-payment-account", class: "transaction-form" } do |f|
-      .payment-errors
+    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "paymentAccountProfile" } do |f|
+      / .authorizenet-payment-errors #{@error_card_number}
 
       .row
         .col-md-4
           .form-group
             = f.input :credit_card, input_html: { class: "form-control  input-custom card_number", autocomplete: 'off' }
-            .credit-card-error.bank-account-error
+            .credit-card-error.payment-account-error #{@error_card_number}
 
         .col-md-2
           .form-group
             = f.input :cvc, as: :password, input_html: { class: "form-control  input-custom input-custom cvc", maxlength: 4 }
-            .cvc-error.bank-account-error
+            .cvc-error.payment-account-error
 
         .col-md-3
           .form-group
             = label_tag "Expiration Month (MM)"
             = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control input-custom card-month', data: { stripe: 'exp-month' } }
-            .card-month-error.bank-account-error
+            .card-month-error.payment-account-error
 
         .col-md-3
           .form-group
@@ -202,13 +202,13 @@ div
               = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
               = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
 
-            .amount-error.bank-account-error
+            .amount-error.payment-account-error
               = f.error :amount_transfer
 
         .col-md-6
           .form-group
-            = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control input-custom transfer_frequency' }, error_html: { class: 'error-message' }
-            .transfer-frequency-error
+            = f.input :transfer_frequency, collection: ['Weekly', 'Bi Weekly', 'Monthly'], prompt: "- Select a frequency -", input_html: { class: 'form-control input-custom transfer_frequency' }
+            .transfer-frequency-error.payment-account-error
 
       .row
         .col-md-12

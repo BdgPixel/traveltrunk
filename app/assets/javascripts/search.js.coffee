@@ -31,7 +31,7 @@ root.initDealsPage = (numOfpages, numOfHotels)->
 
   $('div.lazy').lazyload()
 
-ready = ->
+$(document).ready ->
   disableEnterFormSubmit()
   validateSearchForm()
   validateSearchFormMobile()
@@ -52,6 +52,3 @@ ready = ->
 
   $('.price-deals').tooltip()
   $('#slideToggleLink').tooltip()
-
-$(document).ready -> ready()
-$(document).on 'page:load', -> ready()

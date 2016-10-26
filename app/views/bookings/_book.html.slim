@@ -54,13 +54,13 @@
                     td.list-of-dates
                 hr
                 .form-book
-                  = render "form_book"
+                  = render "bookings/form_selected_room"
                   
                 .form-vote
                   | Are you sure you want to choose this hotel ?
                   br
                   br
-                  = link_to "Yes", deals_like_path(params[:id], hotel_name: '538664'), id: 'linkVote', class: "btn btn-saving btn-green"
+                  = link_to "Yes", deals_like_path(params[:id], hotel_name: '538664'), id: 'linkVote', class: "btn btn-saving btn-green", data: { no_turbolink: true }
                   | &nbsp;&nbsp;
                   
                   = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }

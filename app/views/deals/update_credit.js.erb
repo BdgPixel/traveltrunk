@@ -31,6 +31,7 @@
   $('#formAddToSavings').get(0).reset();
   $('.payment-errors').html("");
 
+  $('.alert').show();
   $('#transferSuccessMessage').text("You've successfully transferred <%= number_to_currency(@transaction_amount, precision: 2) %> to your TravelTrunk account. Your total credit is <%= number_to_currency(@user_total_credit, precision: 2) %>");
   
   $('#modalTransferSuccess').modal('show');
