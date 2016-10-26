@@ -13,9 +13,9 @@
             = hidden_field_tag :street_number, nil, id: "street_number", class: 'street_number'
             = hidden_field_tag :route, nil, id: "route", class: 'route'
             = hidden_field_tag :postal_code, nil, id: "postal_code", class: 'postal_code'
-            = f.hidden_field :city, id: "locality", class: 'locality'
-            = f.hidden_field :state_province_code, id: "administrative_area_level_1", class: 'administrative_area_level_1'
-            = f.hidden_field :country_code, as: :string, id: "country", class: 'country'
+            = f.hidden_field :city, id: "locality", class: 'locality', required: false
+            = f.hidden_field :state_province_code, id: "administrative_area_level_1", class: 'administrative_area_level_1', required: false
+            = f.hidden_field :country_code, as: :string, id: "country", class: 'country', required: false
             = f.hidden_field :latitude, id: "lat", class: 'lat', value: @destination.try(:latitude)
             = f.hidden_field :longitude, id: "lng", class: 'lng', value: @destination.try(:longitude)
 

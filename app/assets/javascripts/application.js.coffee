@@ -75,7 +75,6 @@ root.showSearchForm = () ->
 
     return
 
-
 root.showSearchFormMobile = () ->
   if $('#slideToggleLinkMobile').length > 0
 
@@ -124,7 +123,7 @@ root.showPopUpProfile = () ->
   return
 
 root.disableEnterFormSubmit = ->
-  $('.search-deals-form').on 'keyup keypress', (e) ->
+  $('.search-deals-form, .search-deals-form-mobile').on 'keyup keypress', (e) ->
     code = e.keyCode or e.which
     if code == 13
       e.preventDefault()
