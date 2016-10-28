@@ -7,17 +7,17 @@ savingFormValidation = function() {
     $('.saving-error').text('');
 
     if ($('.card-type').val() == '') {
-      $('.card-type-error').html('Please select your card type');
+      $('.card-type-error').html('Select card type');
       returnValue = false;
     }
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number is too short.');
+      $('.credit-card-error').html('Credit card number too short');
       returnValue = false;
     } 
 
     if ($('.card_number').val().length > 16) {
-      $('.credit-card-error').html('Credit card number is too long.');
+      $('.credit-card-error').html('Credit card number too long');
       returnValue = false;
     } 
 
@@ -61,12 +61,12 @@ paymentAccountFormValidation = function() {
     $('.error').text('');
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number is too short.');
+      $('.credit-card-error').html('Credit card number too short');
       returnValue = false;
     } 
 
     if ($('.card_number').val().length > 16) {
-      $('.credit-card-error').html('Credit card number is too long.');
+      $('.credit-card-error').html('Credit card number too long');
       returnValue = false;
     } 
 
@@ -97,7 +97,7 @@ paymentAccountFormValidation = function() {
     }
 
     if ($('.transfer_frequency').val() == 0) {
-      $('.transfer-frequency-error').html('Please select one transfer frequency');
+      $('.transfer-frequency-error').html('Select transfer frequency');
       returnValue = false;
     }
     
@@ -115,32 +115,32 @@ guestBookingFormValidation = function() {
     $('.guest-book-error').text('');
 
     if ($('.first-name').val() == 0) {
-      $('.first-name-error').html('First name cannot be blank or zero');
+      $('.first-name-error').html('First name can\'t be blank');
       returnValue = false; 
     }
 
     if ($('.last-name').val() == 0) {
-      $('.last-name-error').html('Last name cannot be blank or zero');
+      $('.last-name-error').html('Last name can\'t be blank');
       returnValue = false; 
     }
 
     if ($('.address').val() == 0) {
-      $('.address-error').html('Address cannot be blank or zero');
+      $('.address-error').html('Address can\'t be blank');
       returnValue = false; 
     }
 
     if ($('.city').val() == 0) {
-      $('.city-error').html('City cannot be blank or zero');
+      $('.city-error').html('City can\'t be blank');
       returnValue = false; 
     }
 
     if ($('.state').val() == 0) {
-      $('.state-error').html('State cannot be blank or zero');
+      $('.state-error').html('State can\'t be blank');
       returnValue = false; 
     }
 
     if ($('.home-phone').val() == '') {
-      $('.home-phone-error').html('Phone number cannot be blank');
+      $('.home-phone-error').html('Phone number can\'t be blank');
       returnValue = false;
     }
 
@@ -150,37 +150,37 @@ guestBookingFormValidation = function() {
     }
 
     if ($('.email-saving').val() == 0) {
-      $('.email-saving-error').html('Email cannot be blank or zero');
+      $('.email-saving-error').html('Email can\'t be blank');
       returnValue = false;
     }
 
     if (validateEmail($('.email-saving').val()) == false) {
-      $('.email-saving-error').html('Email not valid format');
+      $('.email-saving-error').html('Email not valid');
       returnValue = false;
     }
 
     if ($('.country').val() == '') {
-      $('.country-error').html('Please select one a country code');
+      $('.country-error').html('Select country code');
       returnValue = false;
     }
 
     if ($('.card-type').val() == '') {
-      $('.card-type-error').html('Please select your card type');
+      $('.card-type-error').html('Select card type');
       returnValue = false;
     }
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number is too short.');
+      $('.credit-card-error').html('Credit card number too short');
       returnValue = false;
     } 
 
     if ($('.card_number').val().length > 16) {
-      $('.credit-card-error').html('Credit card number is too long.');
+      $('.credit-card-error').html('Credit card number too long.');
       returnValue = false;
     } 
 
     if ($('.cvc').val().length < 3) {
-      $('.cvc-error').html('Cvv is too short (min 3)');
+      $('.cvc-error').html('Cvv (min 3)');
       returnValue = false;
     } 
 
@@ -207,17 +207,17 @@ validationBookForGuest = function() {
     $('.guest-book-error').text('');
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number is too short.');
+      $('.credit-card-error').html('Credit card number too short');
       returnValue = false;
     } 
 
     if ($('.card_number').val().length > 16) {
-      $('.credit-card-error').html('Credit card number is too long.');
+      $('.credit-card-error').html('Credit card number too long');
       returnValue = false;
     } 
 
     if ($('.cvc').val().length < 3) {
-      $('.cvc-error').html('Cvv is too short (min 3)');
+      $('.cvc-error').html('Cvv (min 3)');
       returnValue = false;
     } 
 
@@ -232,42 +232,42 @@ validationBookForGuest = function() {
     }
 
     if ($('.transfer_frequency').val() == 0) {
-      $('.transfer-frequency-error').html('Please select one transfer frequency');
+      $('.transfer-frequency-error').html('Select transfer frequency');
       returnValue = false;
     }
 
     if ($('.card-type').val() == '') {
-      $('.card-type-error').html('Please select your card type');
+      $('.card-type-error').html('Select your card type');
       returnValue = false;
     }
 
     if ($('.first-name').val() == 0) {
-      $('.first-name-error').html('First name cannot be blank or zero');
+      $('.first-name-error').html('First name can\'t be blank or zero');
       returnValue = false; 
     }
 
     if ($('.last-name').val() == 0) {
-      $('.last-name-error').html('Last name cannot be blank or zero');
+      $('.last-name-error').html('Last name can\'t be blank or zero');
       returnValue = false; 
     }
 
     if ($('.address').val() == 0) {
-      $('.address-error').html('Address cannot be blank or zero');
+      $('.address-error').html('Address can\'t be blank or zero');
       returnValue = false; 
     }
 
     if ($('.city').val() == 0) {
-      $('.city-error').html('City cannot be blank or zero');
+      $('.city-error').html('City can\'t be blank or zero');
       returnValue = false; 
     }
 
     if ($('.state').val() == 0) {
-      $('.state-error').html('State cannot be blank or zero');
+      $('.state-error').html('State can\'t be blank or zero');
       returnValue = false; 
     }
 
     if ($('.home-phone').val() == '') {
-      $('.home-phone-error').html('Phone number cannot be blank');
+      $('.home-phone-error').html('Phone number can\'t be blank');
       returnValue = false;
     }
 
@@ -277,17 +277,17 @@ validationBookForGuest = function() {
     }
 
     if ($('.email-saving').val() == 0) {
-      $('.email-saving-error').html('Email cannot be blank or zero');
+      $('.email-saving-error').html('Email can\'t be blank or zero');
       returnValue = false;
     }
 
     if (validateEmail($('.email-saving').val()) == false) {
-      $('.email-saving-error').html('Email not valid format');
+      $('.email-saving-error').html('Email not valid');
       returnValue = false;
     }
 
     if ($('.country').val() == '') {
-      $('.country-error').html('Please select one a country code');
+      $('.country-error').html('Select country code');
       returnValue = false;
     }
 
