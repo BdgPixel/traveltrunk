@@ -26,10 +26,15 @@ savingFormValidation = function() {
       returnValue = false;
     } 
 
-    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
-      $('.card-month-error').html('Select present or future month');
-      returnValue = false;
-    } 
+    var currentMonth = new Date().getMonth() + 1;
+    var currentYear = new Date().getFullYear();
+
+    if ($('.card-year').val() <= currentYear) {
+      if ($('.card-month').val() < currentMonth) {
+        $('.card-month-error').html('Select present or future month');
+        returnValue = false;
+      }
+    }
 
     if ($('.amount').val() == '') {
       $('.amount-error').html('Minimum $25.00');
@@ -48,7 +53,6 @@ savingFormValidation = function() {
 
 paymentAccountFormValidation = function() {
   $('form#paymentAccountProfile').on('submit', function(e) {
-    console.log('wew');
     var returnValue;
     returnValue = void 0;
     returnValue = null;
@@ -69,12 +73,17 @@ paymentAccountFormValidation = function() {
     if ($('.cvc').val().length < 3) {
       $('.cvc-error').html('Cvv (min 3)');
       returnValue = false;
-    } 
+    }
 
-    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
-      $('.card-month-error').html('Select present or future month');
-      returnValue = false;
-    } 
+    var currentMonth = new Date().getMonth() + 1;
+    var currentYear = new Date().getFullYear();
+
+    if ($('.card-year').val() <= currentYear) {
+      if ($('.card-month').val() < currentMonth) {
+        $('.card-month-error').html('Select present or future month');
+        returnValue = false;
+      }
+    }
 
     if ($('.amount').val() == '') {
       $('.amount-error').html('Minimum $25.00');
@@ -99,7 +108,6 @@ paymentAccountFormValidation = function() {
 
 guestBookingFormValidation = function() {
   $('form#formBookGuest').on('submit', function(e) {
-    console.log('yuhuu');
     var returnValue;
     returnValue = void 0;
     returnValue = null;
@@ -176,10 +184,15 @@ guestBookingFormValidation = function() {
       returnValue = false;
     } 
 
-    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
-      $('.card-month-error').html('Select present or future month');
-      returnValue = false;
-    } 
+    var currentMonth = new Date().getMonth() + 1;
+    var currentYear = new Date().getFullYear();
+
+    if ($('.card-year').val() <= currentYear) {
+      if ($('.card-month').val() < currentMonth) {
+        $('.card-month-error').html('Select present or future month');
+        returnValue = false;
+      }
+    }
     
     return returnValue;
     e.preventDefault()
@@ -208,10 +221,15 @@ validationBookForGuest = function() {
       returnValue = false;
     } 
 
-    if ($('.card-month').val() < (new Date().getMonth() + 1)) {
-      $('.card-month-error').html('Select present or future month');
-      returnValue = false;
-    } 
+    var currentMonth = new Date().getMonth() + 1;
+    var currentYear = new Date().getFullYear();
+
+    if ($('.card-year').val() <= currentYear) {
+      if ($('.card-month').val() < currentMonth) {
+        $('.card-month-error').html('Select present or future month');
+        returnValue = false;
+      }
+    }
 
     if ($('.transfer_frequency').val() == 0) {
       $('.transfer-frequency-error').html('Please select one transfer frequency');
