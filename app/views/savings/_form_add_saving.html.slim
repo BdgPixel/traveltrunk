@@ -48,9 +48,7 @@
 
                 - if user_signed_in?
                   = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
-                - else
-                  = select_month Date.today, { use_two_digit_numbers: true }, { name: "guest_booking[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
-                .card-month-error.saving-error
+                  .card-month-error.saving-error
 
               .col-md-6
                 = label_tag "Expiration Year (YYYY)"
@@ -84,8 +82,3 @@
             .row
               .col-md-8.col-md-offset-4
                 = f.submit "Submit", class: "btn btn-saving btn-green"
-
-                | &nbsp;&nbsp;
-                
-                button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
-                  | Cancel

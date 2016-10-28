@@ -23,7 +23,7 @@ div
 
   = simple_form_for current_user, method: :put, url: profile_url, html: { data: { model: 'user' } } do |f|
     - if current_user.errors.any?
-      #error_explanation.alert.alert-danger
+      #error_explanation.alert.alert-danger.alert-dismissible
         button type="button" class="close" data-dismiss="alert" aria-label="Close"
           span aria-hidden="true" &times;
         strong Warning! &nbsp;&nbsp;
@@ -219,9 +219,7 @@ div
               = f.button :submit, 'Update Savings', class: 'btn btn-saving btn-green'
               - unless current_user.bank_account.new_record?
                 | &nbsp;&nbsp;
-                button.btn.btn-saving.btn-orange-soft data-target=".unsubscript" data-toggle="modal" type="button"
-                  | Delete Bank Account
-
+                = link_to 'Delete Bank Account', '#', data: { target: '.unsubscript', toggle: 'modal' }
           br
           br
 
@@ -237,6 +235,6 @@ div
                   p Are you sure you want to stop reoccurring transaction on this account?
 
                 .modal-footer
-                  button.button.btn.btn-saving.btn-green data-dismiss="modal" type="button" No, keep my savings plan.
+                  = link_to 'Yes, discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-saving btn-green"
                   | &nbsp;&nbsp;
-                  = link_to 'Yes, discontinue my savings plan.', unsubscript_path, method: :delete, class: "btn btn-saving btn-orange-soft"
+                  = link_to 'No, keep my savings plan', '#', data: { dismiss: 'modal' }

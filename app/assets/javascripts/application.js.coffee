@@ -213,7 +213,7 @@ getFormattedDate = (date) ->
 
 ready = ->
   setTimeout(->
-    $('#notice, .alert').fadeOut()
+    $('#notice, .alert-dismissible').fadeOut()
     $('#alert').fadeOut()
   , 5000)
 
