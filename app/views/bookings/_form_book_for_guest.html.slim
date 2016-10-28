@@ -22,58 +22,63 @@
           .form-group
             .payment-errors
 
-          #profile.
-            .form-group
-              .row
-                .col-md-6
+          #profile
+            .row
+              .col-md-6
+                .form-group
                   = f.label :first_name, 'Card Holder First Name'
                   = f.input_field :first_name, class: 'first-name', maxlength: 50, autocomplete: 'off'
                   .first-name-error.guest-book-error
 
-                .col-md-6
+              .col-md-6
+                .form-group
                   = f.label :last_name, 'Card Holder Last Name'
                   = f.input_field :last_name, class: 'last-name', maxlength: 50, autocomplete: 'off'
                   .last-name-error.guest-book-error
 
-            .form-group
-              .row
-                .col-md-6
+            .row
+              .col-md-6
+                .form-group
                   = f.label :address
                   = f.input_field :address, class: 'address', maxlength: 60, autocomplete: 'off'
                   .address-error.guest-book-error
 
-                .col-md-6
+              .col-md-6
+                .form-group
                   = f.label :city
                   = f.input_field :city, class: 'city', maxlength: 40
                   .city-error.guest-book-error
 
-            .form-group
-              .row
-                .col-md-6
+            .row
+              .col-md-6
+                .form-group
                   = f.label :state
                   = f.input_field :state, class: 'state', maxlength: 40
                   .state-error.guest-book-error
 
-                .col-md-4
+              .col-md-4
+                .form-group
                   = f.label :home_phone, 'Phone'
                   = f.input_field :home_phone, as: :string, class: 'home-phone'
                   span
                     i We'll only contact you in an emergency
                   .home-phone-error.guest-book-error
 
-                .col-md-2
+              .col-md-2
+                .form-group
                   = f.label :zip
                   = f.input_field :zip, class: 'zip', maxlength: 20
                   .zip-error.guest-book-error
 
-            .form-group
-              .row
-                .col-md-6
+            .row
+              .col-md-6
+                .form-group
                   = f.label :country, 'Country'
                   = f.country_select(:country, { priority_countries: ["US", "GB"], prompt: '- Select a Country -' }, { class: 'form-control input-custom country' })
                   .country-error.guest-book-error
 
-                .col-md-6
+              .col-md-6
+                .form-group
                   = f.label :email_saving, 'Email'
                   = f.input_field :email_saving, class: 'email-saving'
                   .email-saving-error.guest-book-error
@@ -103,36 +108,44 @@
             .form-group
               = f.hidden_field :smoking_preferences
 
-          .form-group
-            .row
-              .col-md-6
-                = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select Your Card Type'
-                .card-type-error.guest-book-error
-                .wrapper-icon-payment
-                  = image_tag asset_path('cards/mastercard.png')
-                  |&nbsp;
-                  = image_tag asset_path('cards/visa.png')
-                  |&nbsp;
-                  = image_tag asset_path('cards/discover.png')
+          .row
+            .col-md-6
+              .row
+                .col-md-4
+                  .form-group
+                    = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select One'
+                    .card-type-error.guest-book-error
 
-              .col-md-3
-                = f.input :card_number, input_html: { class: "form-control card_number", style: 'margin-bottom: 5px;', autocomplete: 'off', maxlength: 19 }
-                .credit-card-error.guest-book-error
+                  .wrapper-icon-payment
+                    = image_tag asset_path('cards/mastercard.png')
+                    |&nbsp;
+                    = image_tag asset_path('cards/visa.png')
+                    |&nbsp;
+                    = image_tag asset_path('cards/discover.png')
 
-              .col-md-3
-                = f.input :cvv, as: :password, label: 'Security Code', input_html: { class: "form-control cvc", maxlength: 4 }
-                .cvc-error.guest-book-error
+                .col-md-8
+                  .form-group
+                    = f.input :card_number, input_html: { class: "form-control card_number", autocomplete: 'off', maxlength: 19 }
+                    .credit-card-error.guest-book-error
 
-          .form-group
-            .row
-              .col-md-6
-                = label_tag "Expiration Month (MM)"
-                = select_month Date.today, { use_two_digit_numbers: true }, { name: "guest_booking[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
-                .card-month-error.guest-book-error
 
-              .col-md-6
-                = label_tag "Expiration Year (YYYY)"
-                = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "guest_booking[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
+            .col-md-6
+              .row
+                .col-md-4
+                  .form-group
+                    = f.input :cvv, as: :password, label: 'CVC', input_html: { class: "form-control cvc", maxlength: 4 }
+                    .cvc-error.guest-book-error
+
+                .col-md-4
+                  .form-group
+                    = label_tag "Exp Month"
+                    = select_month Date.today, { use_two_digit_numbers: true }, { name: "guest_booking[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
+                    .card-month-error.guest-book-error
+
+                .col-md-4
+                  .form-group
+                    = label_tag "Exp Year"
+                    = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "guest_booking[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
 
           .form-group class="hide"
             .row

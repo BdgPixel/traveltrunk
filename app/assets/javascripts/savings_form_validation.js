@@ -12,7 +12,7 @@ savingFormValidation = function() {
     }
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number too short');
+      $('.credit-card-error').html('Card number too short');
       returnValue = false;
     } 
 
@@ -22,7 +22,7 @@ savingFormValidation = function() {
     } 
 
     if ($('.cvc').val().length < 3) {
-      $('.cvc-error').html('Cvv (min 3)');
+      $('.cvc-error').html('CVC (min 3)');
       returnValue = false;
     } 
 
@@ -31,7 +31,7 @@ savingFormValidation = function() {
 
     if ($('.card-year').val() <= currentYear) {
       if ($('.card-month').val() < currentMonth) {
-        $('.card-month-error').html('Select present or future month');
+        $('.card-month-error').html('Card expired');
         returnValue = false;
       }
     }
@@ -61,7 +61,7 @@ paymentAccountFormValidation = function() {
     $('.error').text('');
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number too short');
+      $('.credit-card-error').html('Card number too short');
       returnValue = false;
     } 
 
@@ -71,7 +71,7 @@ paymentAccountFormValidation = function() {
     } 
 
     if ($('.cvc').val().length < 3) {
-      $('.cvc-error').html('Cvv (min 3)');
+      $('.cvc-error').html('CVC (min 3)');
       returnValue = false;
     }
 
@@ -80,7 +80,7 @@ paymentAccountFormValidation = function() {
 
     if ($('.card-year').val() <= currentYear) {
       if ($('.card-month').val() < currentMonth) {
-        $('.card-month-error').html('Select present or future month');
+        $('.card-month-error').html('Card expired');
         returnValue = false;
       }
     }
@@ -170,7 +170,7 @@ guestBookingFormValidation = function() {
     }
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number too short');
+      $('.credit-card-error').html('Card number too short');
       returnValue = false;
     } 
 
@@ -180,7 +180,7 @@ guestBookingFormValidation = function() {
     } 
 
     if ($('.cvc').val().length < 3) {
-      $('.cvc-error').html('Cvv (min 3)');
+      $('.cvc-error').html('CVC (min 3)');
       returnValue = false;
     } 
 
@@ -189,7 +189,7 @@ guestBookingFormValidation = function() {
 
     if ($('.card-year').val() <= currentYear) {
       if ($('.card-month').val() < currentMonth) {
-        $('.card-month-error').html('Select present or future month');
+        $('.card-month-error').html('Card expired');
         returnValue = false;
       }
     }
@@ -207,7 +207,7 @@ validationBookForGuest = function() {
     $('.guest-book-error').text('');
 
     if ($('.card_number').val().length < 13) {
-      $('.credit-card-error').html('Credit card number too short');
+      $('.credit-card-error').html('Card number too short');
       returnValue = false;
     } 
 
@@ -217,7 +217,7 @@ validationBookForGuest = function() {
     } 
 
     if ($('.cvc').val().length < 3) {
-      $('.cvc-error').html('Cvv (min 3)');
+      $('.cvc-error').html('CVC (min 3)');
       returnValue = false;
     } 
 
@@ -226,7 +226,7 @@ validationBookForGuest = function() {
 
     if ($('.card-year').val() <= currentYear) {
       if ($('.card-month').val() < currentMonth) {
-        $('.card-month-error').html('Select present or future month');
+        $('.card-month-error').html('Card expired');
         returnValue = false;
       }
     }

@@ -23,8 +23,8 @@
 
           .form-group
             .row
-              .col-md-4
-                = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select Card Type'
+              .col-md-3
+                = f.input :card_type, label: 'Card Type', as: :select, collection: DealsHelper::COLLECTION_CARDS, input_html: { class: "form-control card-type" }, prompt: 'Select One'
                 .card-type-error.saving-error
                 .wrapper-icon-payment
                   = image_tag asset_path('cards/mastercard.png')
@@ -33,31 +33,29 @@
                   |&nbsp;
                   = image_tag asset_path('cards/discover.png')
 
-              .col-md-5
+              .col-md-6
                 = f.input :card_number, input_html: { class: "form-control card_number", autocomplete: 'off', maxlength: 19 }
                 .credit-card-error.saving-error
 
               .col-md-3
-                = f.input :cvv, as: :password, label: 'Security Code', input_html: { class: "form-control cvc", maxlength: 4 }
+                = f.input :cvv, as: :password, label: 'CVC', input_html: { class: "form-control cvc", maxlength: 4 }
                 .cvc-error.saving-error
 
           .form-group
             .row
-              .col-md-6
-                = label_tag "Expiration Month (MM)"
+              .col-md-3
+                = label_tag "Exp Month"
 
                 - if user_signed_in?
                   = select_month Date.today, { use_two_digit_numbers: true }, { name: "update_credit[exp_month]", id: "card_month", class: 'form-control card-month', data: { stripe: 'exp-month' } }
                   .card-month-error.saving-error
 
-              .col-md-6
-                = label_tag "Expiration Year (YYYY)"
+              .col-md-3
+                = label_tag "Exp Year"
 
                 - if user_signed_in?
                   = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
                 
-          .form-group
-            .row
               .col-md-6
                 = f.label :amount
                 .input-group
@@ -66,6 +64,9 @@
                   = f.hidden_field :amount, class: "form-control update_credit_amount amount"
                   #totalCharges
                 .amount-error.saving-error
+
+          .form-group
+            .row
 
           - unless user_signed_in?
             .form-group

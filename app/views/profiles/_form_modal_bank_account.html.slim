@@ -21,24 +21,23 @@
     .payment-errors.error-authorize_net_error
 
     .row
-      .col-md-6
+      .col-md-4
         .form-group
           = f.input :credit_card, input_html: { class: "form-control  input-custom card_number", autocomplete: 'off' }
           .credit-card-error.payment-account-error #{@error_card_number}
 
-      .col-md-6
+      .col-md-2
         .form-group
-          = f.input :cvc, as: :password, input_html: { class: "form-control  input-custom input-custom cvc", maxlength: 4 }
+          = f.input :cvc, label: 'CVC', as: :password, input_html: { class: "form-control  input-custom input-custom cvc", maxlength: 4 }
           .cvc-error.payment-account-error
 
-    .row
-      .col-md-6
+      .col-md-3
         .form-group
           = label_tag "Expiration Month (MM)"
           = select_month Date.today, { use_two_digit_numbers: true }, { name: "bank_account[exp_month]", id: "card_month", class: 'form-control input-custom card-month', data: { stripe: 'exp-month' } }
           .card-month-error.payment-account-error
 
-      .col-md-6
+      .col-md-3
         .form-group
           = label_tag "Expiration Year (YYYY)"
           = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "bank_account[exp_year]", id: "card_year", class: 'form-control input-custom card-year', data: { stripe: 'exp-year' } }
