@@ -71,8 +71,8 @@
 
   - if user_signed_in?
     - unless current_user.profile.try(:home_airport)
-      #popUpProfile
-        = render 'profiles/complete_profile'
+    #popUpProfile
+      = render 'profiles/complete_profile'
 
 .search-form-mobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
   .modal-dialog role="document"

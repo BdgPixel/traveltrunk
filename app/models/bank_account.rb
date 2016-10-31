@@ -15,11 +15,36 @@ class BankAccount < ActiveRecord::Base
   validates :transfer_frequency, presence: { message: 'please select one' }
   validates :amount_transfer, numericality: { only_integer: false }
   validate :validate_amount
+  validate :auth_credit_card
 
   def validate_amount
     if self.amount_transfer.to_f < 25.0
       self.errors.add(:amount_transfer, 'Amount transfer must be greater than or equal to $25.00')
     end
+  end
+
+  def auth_credit_card
+    payment_transaction = AuthorizeNetLib::PaymentTransactions.new
+
+    begin
+      response = payment_transaction.auth_credit_card(self.user.profile, self.credit_card,
+        self.cvc, self.exp_card)
+      
+      unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
+        self.errors.add(:authorize_net_error, response.messages.messages.first.text)
+      end
+    rescue => e
+      if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
+        self.errors.add(:authorize_net_error, e.error_message[:response_error_text])
+      else
+        logger.error e.message
+        e.backtrace.each { |line| logger.error line }
+      end
+    end
+  end
+
+  def exp_card
+    "#{self.exp_month.rjust(2, '0')}#{self.exp_year[-2, 2]}"
   end
 
   def transfer_type
@@ -34,7 +59,6 @@ class BankAccount < ActiveRecord::Base
   end
 
   def create_subscription
-    puts 'naon weh'
     customer = Customer.where(user_id: self.user_id).first
     subscription = Subscription.where(user_id: self.user_id).first
 
@@ -97,7 +121,6 @@ class BankAccount < ActiveRecord::Base
   end
 
   def update_subscription
-    puts 'update'
     customer = Customer.where(user_id: self.user_id).first
     user_subscription = user.subscription
 

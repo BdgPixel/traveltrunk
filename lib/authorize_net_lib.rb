@@ -364,6 +364,104 @@ module AuthorizeNetLib
 
       response
     end
+
+    def auth_credit_card(profile, credit_card, cvc, exp_card)
+      request = AuthorizeNet::API::CreateTransactionRequest.new
+      request.refId = AuthorizeNetLib::Global.generate_random_id('ref')
+
+      request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new()
+      request.transactionRequest.amount = 0.01
+
+      request.transactionRequest.payment = AuthorizeNet::API::PaymentType.new
+      request.transactionRequest.payment.creditCard = AuthorizeNet::API::CreditCardType.new(credit_card,
+        exp_card, cvc)
+      request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthOnlyTransaction
+
+      request.transactionRequest.billTo = AuthorizeNet::API::CustomerAddressType.new
+      request.transactionRequest.billTo.firstName = profile.first_name
+      request.transactionRequest.billTo.lastName = profile.last_name
+      request.transactionRequest.billTo.address = profile.address
+      request.transactionRequest.billTo.city = profile.city
+      request.transactionRequest.billTo.state = profile.state
+      request.transactionRequest.billTo.zip = profile.postal_code
+
+      response = @transaction.create_transaction(request)
+      
+      if response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
+        response_message = response.messages.messages.first.text
+
+        if response.transactionResponse.responseCode.eql? '1'
+          self.void_transaction({ trans_id: response.transactionResponse.transId })
+        else
+          response_status = 
+            case response.transactionResponse.responseCode
+            when '2'
+              'Declined'
+            when '3'
+              'Error'
+            when '4'
+              'Held for Review'
+            end
+
+          errors = []
+
+          address_verification = 
+            case response.transactionResponse.avsResultCode
+            when 'A'
+              'Address (Street) matches, ZIP does not'
+            when 'B'
+              'Address information not provided for AVS check'
+            when 'E'
+              'AVS error'
+            when 'G'
+              'Non-U.S. Card Issuing Bank'
+            when 'N'
+              'No Match on Address (Street) or ZIP'
+            when 'P'
+              'AVS not applicable for this transaction'
+            when 'R'
+              'Retry—System unavailable or timed out'
+            when 'S'
+              'Service not supported by issuer'
+            when 'U'
+              'Address information is unavailable'
+            when 'W'
+              'Nine digit ZIP matches, Address (Street) does not'
+            when 'Z'
+              'Five digit ZIP matches, Address (Street) does not'
+            end
+
+          errors << address_verification if address_verification
+
+          cvv_verification = 
+            case response.transactionResponse.cvvResultCode
+            when 'N'
+              'No Match'
+            when 'P'
+              'Not Processed'
+            when 'S'
+              'Should have been present'
+            when 'U'
+              'Issuer unable to process request'
+            end
+
+          errors << "CVV #{cvv_verification}" if cvv_verification
+
+          if errors.present?
+            response_error_text = "The transaction is #{response_status}. Reasons: #{errors.join('. ')}"
+
+            error_messages = { 
+              response_message: response_message,
+              response_error_text: response_error_text
+            }
+
+            raise RescueErrorsResponse.new(error_messages), response_error_text
+          end
+        end
+      end
+
+      response
+    end
   end
 
   class TransactionReporting < Global

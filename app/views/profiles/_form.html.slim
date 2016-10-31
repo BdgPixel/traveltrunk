@@ -167,14 +167,13 @@ div
           br
           br
 
-    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path, html: { id: "paymentAccountProfile" } do |f|
-      / .authorizenet-payment-errors #{@error_card_number}
+    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path(anchor: :bank_account), html: { id: "paymentAccountProfile" } do |f|
 
       .row
         .col-md-4
           .form-group
             = f.input :credit_card, input_html: { class: "form-control  input-custom card_number", autocomplete: 'off' }
-            .credit-card-error.payment-account-error #{@error_card_number}
+            .credit-card-error.payment-account-error = @error_card_number
 
         .col-md-2
           .form-group

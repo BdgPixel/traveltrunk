@@ -55,7 +55,7 @@ class ProfilesController < ApplicationController
 
   def update_bank_account
     @bank_account = current_user.bank_account
-
+      
     respond_to do |format|
       if @bank_account.update_attributes(bank_account_params)
         format.html { redirect_to profile_url, notice: 'Savings plan was successfully updated.' }
