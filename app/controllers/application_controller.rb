@@ -25,7 +25,7 @@ class ApplicationController < ActionController::Base
   end
 
   def get_messages
-    @messages = current_user.messages.conversations if user_signed_in
+    @messages = current_user.messages.conversations if user_signed_in?
   end
 
   protected
