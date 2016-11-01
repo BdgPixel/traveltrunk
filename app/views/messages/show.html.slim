@@ -1,0 +1,36 @@
+br
+br
+br
+br
+.container
+  .col-md-6.col-md-offset-3
+    table.table.table-bordered
+      - @conversations.each do |conversation|
+        tr
+          - if conversation.sent_messageable_id.eql? current_user.id
+            td
+              .pull-right
+                = conversation.body
+                br
+                i
+                  small You #{time_ago_in_words(conversation.created_at)} ago
+          - else
+            td
+              .pull-left
+                = conversation.body
+                br
+                i
+                  small #{conversation.sent_messageable.full_name} #{time_ago_in_words(conversation.created_at)} ago
+      tr
+        td
+          = simple_form_for :new_message, method: :post, url: reply_message_path(@message) do |f|
+            .form-group
+              .row
+                .col-md-12
+                  = f.label :body, 'Message'
+                  = f.input_field :body, as: :text, class: 'form-control', placeholder: 'Enter your message here...', rows: 7
+
+            .form-group
+              .row
+                .col-md-12
+                  = f.submit "Send", class: "btn btn-saving btn-green pull-right"

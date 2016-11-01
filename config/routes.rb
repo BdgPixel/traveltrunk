@@ -1,4 +1,14 @@
 Rails.application.routes.draw do
+  resources :messages, only: [:index, :show, :create], path: 'conversations' do
+    collection do
+      get 'users_collection'
+    end
+
+    member do
+      post 'reply'
+    end
+  end
+
   resources :reservations, only: [:index] do
     collection do 
       post :detail

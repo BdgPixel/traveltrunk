@@ -1,6 +1,9 @@
 class User < ActiveRecord::Base
   include PublicActivity::Model
 
+  acts_as_messageable :required   => :body,
+                      :dependent  => :destroy
+
   paginates_per 10
 
   scope :non_admin, -> { where(admin: false).order(created_at: :desc) }

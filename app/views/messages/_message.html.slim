@@ -1,0 +1,27 @@
+= link_to message_path(message.id), id: "message-#{message.id}", class: 'content'
+  .message-item.col-md-12 class="#{open_message(message)}"
+    .col-md-8
+      .row
+        p.message-title
+          - if message.conversation.first.received_messageable_id.eql? current_user.id
+            - unless message.opened
+              | New&nbsp;
+
+            | Message from&nbsp;
+          - else
+            | Message to&nbsp;
+
+          = message.received_messageable.full_name
+
+    .col-md-4
+      .row.pull-right 
+        small #{time_ago_in_words(message.created_at)} ago
+
+    .col-md-12
+      .row
+        p.message-info 
+          = truncate(message.body, length: 60, omission: '...')
+
+  .col-md-12
+    .row
+      hr.message-separator

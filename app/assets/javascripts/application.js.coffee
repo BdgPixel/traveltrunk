@@ -8,6 +8,7 @@
 # = require jquery.parallax-1.1.3
 # = require slick
 # = require custom
+# = require jquery.tokeninput
 
 $(document).ajaxSend ->
   $('#loading').show()
@@ -211,7 +212,31 @@ getFormattedDate = (date) ->
 
   formattedDate
 
+initUsersCollection = ->
+  selector = '#user_collection'
+
+  $(selector).tokenInput( '/conversations/users_collection.json', {
+    allowFreeTagging: true
+    preventDuplicates: true
+    zindex: 9999
+    onAdd: (item)->
+      $(selector).tokenInput("clear")
+      
+      if item.email
+        $('form.new_message').get(0).reset();
+        $('#newMessage').modal backdrop: 'static'
+        $('#new_message_to').val(item.name)
+        $('.user_id').val(item.id)
+
+    prePopulate: $('#invite_user_id').data('load')
+    resultsFormatter: (item) ->
+      "<li><img src='#{item.image_url}' title='#{item.name}' height='50px' width='50px' /><div style='display: inline-block; padding-left: 10px;'><div class='full_name'>#{item.name}</div><div class='email'>#{item.email}</div></div></li>"
+  })
+
+  $('#token-input-user_collection').attr('placeholder', 'Send a new message to..')
+
 ready = ->
+  initUsersCollection()
   setTimeout(->
     $('#notice, .alert-dismissible').fadeOut()
     $('#alert').fadeOut()

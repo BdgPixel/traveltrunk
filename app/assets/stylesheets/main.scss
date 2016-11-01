@@ -1367,3 +1367,57 @@ a.login.show {
   border-bottom-right-radius: 50%;
   border-bottom-left-radius: 50%;
 }
+
+.messages {
+  min-width: 420px; 
+
+  .messages-wrapper {
+    overflow: auto;
+    max-height: 250px;
+  } 
+     
+  .message-heading, .message-footer  {
+    padding: 2px 10px;
+  }
+
+  .message-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #656464;
+  }
+
+  .messages a.content {
+    text-decoration: none;
+    background: #ccc;
+  }
+      
+  .message-item {
+    text-transform: none !important;
+    padding: 10px;
+  }
+
+  .read {
+    background: #fff;
+  }
+
+  .unread {
+    background: #e8e8e8;
+  }
+
+  hr.message-separator {
+    margin: 0;
+  }
+}
+
+// Override token input
+
+ul.token-input-list
+{
+  li.token-input-input-token {
+    width:100%;
+
+    input {
+      width: 100% !important;
+    }
+  }
+}

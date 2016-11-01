@@ -3,6 +3,7 @@ class ApplicationController < ActionController::Base
   before_action :get_unread_notification_count
   before_action :authenticate_page
   before_action :set_request_headers
+  before_action :get_messages
 
   protect_from_forgery with: :exception
 
@@ -21,6 +22,10 @@ class ApplicationController < ActionController::Base
       else
         [:get, false]
       end
+  end
+
+  def get_messages
+    @messages = current_user.messages.conversations
   end
 
   protected

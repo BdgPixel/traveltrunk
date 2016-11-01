@@ -1,0 +1,26 @@
+#newMessage.modal.fade data-backdrop="static" role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+        h3 New message
+      .modal-body
+        = simple_form_for :new_message, method: :post, url: messages_path, remote: true do |f|
+          = f.input_field :user_id, as: :hidden, class: 'user_id'
+          .form-group
+            .row
+              .col-md-12
+                = f.label :to, required: false
+                = f.input_field :to, class: 'form-control', readonly: true
+
+          .form-group
+            .row
+              .col-md-12
+                = f.label :body, 'Message'
+                = f.input_field :body, as: :text, class: 'form-control', placeholder: 'Enter your message here...', rows: 7
+
+          .modal-footer
+            .row
+              .col-md-8.col-md-offset-4
+                = f.submit "Send", class: "btn btn-saving btn-green"

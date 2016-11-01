@@ -128,3 +128,5 @@ gem "omniauth-google-oauth2"
 gem 'luhn-ruby'
 
 gem 'remotipart', '~> 1.2'
+
+gem 'acts-as-messageable'

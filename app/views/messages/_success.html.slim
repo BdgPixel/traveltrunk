@@ -1,0 +1,16 @@
+#messageSuccess.modal.fade role="dialog" tabindex="-1"
+  .modal-dialog
+    .modal-content
+      .modal-header
+        button.close aria-label="Close" data-dismiss="modal" type="button"
+          span aria-hidden="true" &times;
+
+        h3 Transfer Success
+
+      .modal-body
+        .alert.alert-info
+          strong Notice:&nbsp;
+          p = "Your message successfully sent to #{@message.received_messageable.full_name}"
+        
+      .modal-footer
+        button.btn.btn-default data-dismiss="modal" type="button" Close

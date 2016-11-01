@@ -34,4 +34,10 @@ module ApplicationHelper
       end
     end
   end
+
+  def open_message(message)
+    if message.conversation.first.received_messageable_id.eql? current_user.id
+      message.opened ? 'read' : 'unread'
+    end
+  end
 end
