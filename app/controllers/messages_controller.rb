@@ -13,7 +13,8 @@ class MessagesController < ApplicationController
   end
 
   def users_collection
-    users_list = User.get_autocomplete_data(params[:q], current_user.id)
+    # users_list = User.get_autocomplete_data(params[:q], current_user.id)
+    users_list = User.get_user_collection(params[:q], current_user.id)
 
     respond_to do |format|
       format.json { render json: users_list }

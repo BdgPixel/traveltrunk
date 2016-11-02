@@ -96,6 +96,16 @@ class User < ActiveRecord::Base
       .map {|u| { id: u.id, name: "#{u.profile.try(:first_name) || 'No Name'}", email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png' } }
   end
 
+  def self.get_user_collection(email, current_user)
+    # binding.pry
+    self.joins(:profile)
+      .select("users.id, users.email, users.admin, profiles.first_name, profiles.image")
+      .where("(LOWER(profiles.first_name) LIKE LOWER(:keyword) OR users.email LIKE :keyword)
+        AND users.id NOT IN (:ids)", { keyword: "%#{email}%", ids: [current_user]} )
+      .where("users.admin = ?", false)
+      .map {|u| { id: u.id, name: "#{u.profile.try(:first_name) || 'No Name'}", email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png' } }
+  end
+
   def self.list_of_user_collections
     user_collections = []
     self.includes(:profile).select(:id).where(admin: false).map do |user|
