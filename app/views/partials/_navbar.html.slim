@@ -43,8 +43,8 @@
             ul.nav.navbar-nav.navbar-right
               li = link_to 'Check Reservation', reservations_path
 
-              li.dropdown.dropdown-top-active
-                a.dropdown-toggle.message-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+              li#messageDropdown.dropdown.dropdown-top-active
+                a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                   | Messages
                   span.caret
 
