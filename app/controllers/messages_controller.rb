@@ -2,10 +2,6 @@ class MessagesController < ApplicationController
   skip_before_action :get_messages, only: :show
   before_action :set_message, only: [:show, :reply]
 
-  def index
-    @messages = current_user.messages.conversations
-  end
-
   def show
     @message.open
     @conversations = @message.conversation.reverse
@@ -13,7 +9,6 @@ class MessagesController < ApplicationController
   end
 
   def users_collection
-    # users_list = User.get_autocomplete_data(params[:q], current_user.id)
     users_list = User.get_user_collection(params[:q], current_user.id)
 
     respond_to do |format|
@@ -36,8 +31,12 @@ class MessagesController < ApplicationController
   end
 
   def reply
-    current_user.reply_to(@message, message_params[:body])
-    redirect_to message_url(@message)
+    @reply_message = current_user.reply_to(@message, message_params[:body])
+    @current_conversation = @reply_message.conversation.second
+    
+    respond_to do |format|
+      format.js
+    end
   end
 
   private

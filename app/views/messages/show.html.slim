@@ -6,16 +6,16 @@ br
   .col-md-6.col-md-offset-3
     table.table.table-bordered
       - @conversations.each do |conversation|
-        tr
+        tr.content-conversation
           - if conversation.sent_messageable_id.eql? current_user.id
-            td
+            td.current-user
               .pull-right
                 = conversation.body
                 br
                 i
                   small You #{time_ago_in_words(conversation.created_at)} ago
           - else
-            td
+            td.current-recipient
               .pull-left
                 = conversation.body
                 br
@@ -23,7 +23,7 @@ br
                   small #{conversation.sent_messageable.full_name} #{time_ago_in_words(conversation.created_at)} ago
       tr
         td
-          = simple_form_for :new_message, method: :post, url: reply_message_path(@message) do |f|
+          = simple_form_for :new_message, method: :post, url: reply_message_path(@message), remote: true do |f|
             .form-group
               .row
                 .col-md-12

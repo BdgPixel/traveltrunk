@@ -25,7 +25,9 @@ class ApplicationController < ActionController::Base
   end
 
   def get_messages
-    @messages = current_user.messages.conversations if user_signed_in?
+    unless request.xhr?
+      @messages = current_user.messages.conversations if user_signed_in?
+    end
   end
 
   protected

@@ -2,4 +2,4 @@ $('#messageSuccessfullySent').html("<%= j render 'success' %>");
 $('#newMessage').modal('hide');
 $('#messageSuccess').modal({ backdrop: 'static' });
 $('#message-<%= @current_conversation.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', message: @message %>")
+$('.messages-wrapper').prepend("<%= j render 'message', message: @message %>");

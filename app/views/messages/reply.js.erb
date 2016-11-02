@@ -1,0 +1,6 @@
+$('#message-<%= @current_conversation.try(:id) %>').remove();
+$('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message %>");
+
+$('.content-conversation:last').after('<tr class="content-converstion"><td><div class="pull-right"><%= @reply_message.body %><br><i><small><%= "You #{time_ago_in_words(@reply_message.created_at)} ago" %></small></i></div></td></tr>');
+
+$('form.new_message').get(0).reset();
