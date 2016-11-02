@@ -1,20 +1,12 @@
 $('#message-<%= @current_conversation.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message %>");
-$('.content-conversation:last').after('<tr class="content-conversation"><td><div class="pull-right"><%= @reply_message.body %><br><i><small><%= "You #{time_ago_in_words(@reply_message.created_at)} ago" %></small></i></div></td></tr>');
+$('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, is_recipient: false %>");
+$('.content-conversation:last').after("<%= j render 'reply_message', sender_name: 'You', is_current_user: true, message: @reply_message %>");
 $('form.new_message').get(0).reset();
 
 <% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
   $('#message-<%= @current_conversation.try(:id) %>').remove();
-  $('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message %>");
-
-  var tags = '';
-
-  <% if @reply_message.sent_messageable_id.eql? current_user %>
-    tags = '<tr class="content-conversation"><td><div class="pull-right"><%= @reply_message.body %><br><i><small><%= "You #{time_ago_in_words(@reply_message.created_at)} ago" %></small></i></div></td></tr>';
-  <% else %>
-    tags = '<tr class="content-conversation"><td><div class="pull-left"><%= @reply_message.body %><br><i><small><%= "#{@reply_message.sent_messageable.full_name} #{time_ago_in_words(@reply_message.created_at)} ago" %></small></i></div></td></tr>';
-  <% end %>
-
-  $('.content-conversation:last').after(tags);
+  $('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, is_recipient: true %>");
+  $('.content-conversation:last').after("<%= j render 'reply_message', sender_name: @reply_message.sent_messageable.full_name, is_current_user: false, message: @reply_message %>");
+  $('#message-<%= @message.try(:id) %> .message-item').addClass('unread');
   $('form.new_message').get(0).reset();
 <% end %>

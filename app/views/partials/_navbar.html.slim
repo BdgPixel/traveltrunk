@@ -45,7 +45,7 @@
 
               li#messageDropdown.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                  span.notification-bubble class="#{'hide' if @message_count.zero?}" = @message_count
+                  span.notification-bubble class="#{'hide' if @message_count.nil? || @message_count.zero?}" = @message_count
                   | &nbsp;Messages
                   span.caret
 
@@ -56,7 +56,7 @@
                     br
                   .messages-wrapper
                     - @messages.each do |message|
-                      = render 'messages/message', message: message
+                      = render 'messages/message', message: message, is_recipient: message.conversation.first.received_messageable_id.eql?(current_user.id)
 
 
               li.link-top-login = link_to 'DEALS', deals_path

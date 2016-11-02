@@ -1,9 +1,9 @@
-= link_to message_path(message.id), id: "message-#{message.id}", class: 'content'
+= link_to message_path(message.try(:ancestry) || message.id), id: "message-#{message.try(:ancestry) || message.id}", class: 'content'
   .message-item.col-md-12 class="#{open_message(message)}"
     .col-md-8
       .row
         p.message-title
-          - if message.conversation.first.received_messageable_id.eql? current_user.id
+          - if is_recipient
             - unless message.opened
               | New&nbsp;
 

@@ -1,0 +1,7 @@
+tr.content-conversation
+  td.current-recipient
+    div class="#{is_current_user ? 'pull-right' : 'pull-left' }" style="white-space: pre-line"
+      = message.body
+      br
+      i
+        small #{sender_name} #{time_ago_in_words(message.created_at)} ago

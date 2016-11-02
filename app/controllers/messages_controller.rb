@@ -3,8 +3,8 @@ class MessagesController < ApplicationController
   before_action :set_message, only: [:show, :reply]
 
   def show
-    @message.open
     @conversations = @message.conversation.reverse
+    @conversations.last.open
     get_messages
   end
 
@@ -18,11 +18,11 @@ class MessagesController < ApplicationController
 
   def create
     @recipient = User.find message_params[:user_id]
-    current_message = current_user.messages.are_to(@recipient).first
+    current_message = current_user.messages.between(current_user.id ,@recipient.id).last
 
     if current_message
       @current_conversation = current_message.conversation.first
-      @message = current_user.reply_to(@current_conversation, message_params[:body])
+      @message = current_user.reply_to(current_message, message_params[:body])
     else
       @message = current_user.send_message(@recipient, message_params[:body])
     end
@@ -32,7 +32,9 @@ class MessagesController < ApplicationController
 
   def reply
     @reply_message = current_user.reply_to(@message, message_params[:body])
-    @current_conversation = @reply_message.conversation.second
+
+    # binding.pry
+    @current_conversation = @reply_message.conversation.last
     
     respond_to do |format|
       format.js
