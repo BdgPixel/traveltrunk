@@ -17,14 +17,14 @@ class MessagesController < ApplicationController
   end
 
   def create
-    recipient = User.find message_params[:user_id]
-    current_message = current_user.messages.are_to(recipient).first
+    @recipient = User.find message_params[:user_id]
+    current_message = current_user.messages.are_to(@recipient).first
 
     if current_message
       @current_conversation = current_message.conversation.first
       @message = current_user.reply_to(@current_conversation, message_params[:body])
     else
-      @message = current_user.send_message(recipient, message_params[:body])
+      @message = current_user.send_message(@recipient, message_params[:body])
     end
 
     respond_to { |format| format.js }

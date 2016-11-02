@@ -3,3 +3,9 @@ $('#newMessage').modal('hide');
 $('#messageSuccess').modal({ backdrop: 'static' });
 $('#message-<%= @current_conversation.try(:id) %>').remove();
 $('.messages-wrapper').prepend("<%= j render 'message', message: @message %>");
+
+<% publish_to "/private_messages/#{@recipient.id}" do %>
+  $('#message-<%= @current_conversation.try(:id) %>').remove();
+  $('.messages-wrapper').prepend("<%= j render 'message', message: @message, force_unread: true %>");
+  $('#message-<%= @message.try(:id) %> .message-item').addClass('unread');
+<% end %>

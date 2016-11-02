@@ -20,6 +20,9 @@ html lang="en"
     = csrf_meta_tags
 
   body data-controller="#{controller_name}" data-action="#{action_name}"
+    - if user_signed_in?
+        = subscribe_to "/private_messages/#{current_user.id}"
+
     = yield :css_body
 
     .hide

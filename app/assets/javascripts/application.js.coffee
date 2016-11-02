@@ -9,6 +9,7 @@
 # = require slick
 # = require custom
 # = require jquery.tokeninput
+# = require private_pub
 
 $(document).ajaxSend ->
   $('#loading').show()

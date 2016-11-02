@@ -130,3 +130,5 @@ gem 'luhn-ruby'
 gem 'remotipart', '~> 1.2'
 
 gem 'acts-as-messageable'
+
+gem 'private_pub'
