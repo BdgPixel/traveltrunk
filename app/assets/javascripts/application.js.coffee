@@ -233,6 +233,11 @@ initUsersCollection = ->
       "<li><img src='#{item.image_url}' title='#{item.name}' height='50px' width='50px' /><div style='display: inline-block; padding-left: 10px;'><div class='full_name'>#{item.name}</div><div class='email'>#{item.email}</div></div></li>"
   })
 
+  $('.message-toggle').on 'show.bs.dropdown', ->
+    console.log 'wew'
+    $('#token-input-user_collection').attr 'placeholder', 'Send a new message to..'
+    return
+    
   $('#token-input-user_collection').attr('placeholder', 'Send a new message to..')
 
 ready = ->
