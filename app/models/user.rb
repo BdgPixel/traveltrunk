@@ -2,6 +2,7 @@ class User < ActiveRecord::Base
   include PublicActivity::Model
 
   acts_as_messageable :required   => :body,
+                      :class_name => "CustomMessage",
                       :dependent  => :destroy
 
   paginates_per 10

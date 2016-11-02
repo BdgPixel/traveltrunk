@@ -5,7 +5,7 @@ class MessagesController < ApplicationController
   def show
     @message.open
     @conversations = @message.conversation.reverse
-    @messages = current_user.messages.conversations
+    get_messages
   end
 
   def users_collection
@@ -41,7 +41,7 @@ class MessagesController < ApplicationController
 
   private
     def set_message
-      @message = ActsAsMessageable::Message.find params[:id]
+      @message = CustomMessage.find params[:id]
     end
 
     def message_params

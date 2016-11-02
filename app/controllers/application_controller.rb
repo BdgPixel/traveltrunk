@@ -26,7 +26,10 @@ class ApplicationController < ActionController::Base
 
   def get_messages
     unless request.xhr?
-      @messages = current_user.messages.conversations if user_signed_in?
+      if user_signed_in?
+        @messages = current_user.messages.conversations
+        @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
+      end
     end
   end
 
