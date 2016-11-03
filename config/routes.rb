@@ -2,10 +2,12 @@ Rails.application.routes.draw do
   resources :messages, only: [:index, :show, :create], path: 'conversations' do
     collection do
       get 'users_collection'
+      post 'send_group'
     end
 
     member do
       post 'reply'
+      post 'reply_group'
     end
   end
 

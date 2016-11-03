@@ -34,6 +34,10 @@ class MessagesController < ApplicationController
     respond_to { |format| format.js }
   end
 
+  def send_group
+    
+  end
+
   def reply
     @reply_message = current_user.reply_to(@message, message_params[:body])
     @first_message = @reply_message.conversation.last
@@ -44,6 +48,10 @@ class MessagesController < ApplicationController
     respond_to do |format|
       format.js
     end
+  end
+
+  def reply_group
+    
   end
 
   private

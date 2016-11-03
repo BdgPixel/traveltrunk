@@ -3,7 +3,8 @@ class User < ActiveRecord::Base
 
   acts_as_messageable :required   => :body,
                       :class_name => "CustomMessage",
-                      :dependent  => :destroy
+                      :dependent  => :destroy,
+                      :group_messages => true
 
   paginates_per 10
 

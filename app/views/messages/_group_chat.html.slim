@@ -9,7 +9,7 @@
         .panel-body
           .pull-right.message-body
             p Lorem ipsum set dollor set ammet Lorem ipsum set dollor set ammet
-            .text-right.sender
+            .text-right.message-info
               i
                 small You bout 2 hours ago
           br
@@ -26,7 +26,7 @@
           
           .row
             .col-md-12
-              = simple_form_for :new_message, method: :post, url: reply_message_path(1), html: { id: 'newMessage' }, remote: true do |f|
+              = simple_form_for :new_message, method: :post, url: send_group_messages_path, html: { id: 'newMessage' }, remote: true do |f|
                 .form-group
                   .row
                     .col-md-12
