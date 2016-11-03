@@ -11,25 +11,9 @@ br
         - else
           = render 'reply_message', sender_name: conversation.sent_messageable.full_name,
             is_current_user: false, message: conversation
-            
-        / tr.content-conversation
-        /   - if conversation.sent_messageable_id.eql? current_user.id
-        /     td.current-user
-        /       .pull-right style="white-space: pre-line"
-        /         = conversation.body
-        /         br
-        /         i
-        /           small You #{time_ago_in_words(conversation.created_at)} ago
-        /   - else
-        /     td.current-recipient
-        /       .pull-left style="white-space: pre-line"
-        /         = conversation.body
-        /         br
-        /         i
-        /           small #{conversation.sent_messageable.full_name} #{time_ago_in_words(conversation.created_at)} ago
       tr
         td
-          = simple_form_for :new_message, method: :post, url: reply_message_path(@message), remote: true do |f|
+          = simple_form_for :new_message, method: :post, url: reply_message_path(@message), html: { id: 'newMessage' }, remote: true do |f|
             .form-group
               .row
                 .col-md-12
