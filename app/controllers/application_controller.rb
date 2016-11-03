@@ -29,9 +29,9 @@ class ApplicationController < ActionController::Base
       if user_signed_in?
         @messages = current_user.messages.conversations
         
-        # unless @messages.first.sent_messageable_id.eql? current_user.id
-        @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
-        # end
+        if @messages.present? && @messages.first.received_messageable_id.eql?(current_user.id)
+          @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
+        end
       end
     end
   end

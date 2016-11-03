@@ -45,7 +45,7 @@
 
               li#messageDropdown.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                  span.notification-bubble class="#{'hide' if @message_count.nil? || @message_count.zero?}" = @message_count
+                  span#messageCount.notification-bubble class="#{'hide' if @message_count.nil? || @message_count.zero?}" = @message_count
                   | &nbsp;Messages
                   span.caret
 

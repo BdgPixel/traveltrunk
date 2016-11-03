@@ -7,6 +7,8 @@ $('form.new_message').get(0).reset();
   $('#message-<%= @first_message.try(:id) %>').remove();
   $('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, is_recipient: true %>");
   $('.content-conversation:last').after("<%= j render 'reply_message', sender_name: @reply_message.sent_messageable.full_name, is_current_user: false, message: @reply_message %>");
-  $('#message-<%= @first_message.try(:id) %> .message-item').addClass('unread');
+  $('#message-<%= @first_message.try(:id) || @message.try(:id) %> .message-item').addClass('unread');
+  $('#messageCount').text("<%= @message_count %>");
+  $('#messageCount').removeClass('hide');
   $('form.new_message').get(0).reset();
 <% end %>

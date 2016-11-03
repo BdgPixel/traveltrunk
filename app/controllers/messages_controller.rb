@@ -4,7 +4,11 @@ class MessagesController < ApplicationController
 
   def show
     @conversations = @message.conversation.reverse
-    @conversations.last.open
+
+    if @conversations.last.received_messageable_id.eql? current_user.id
+      @conversations.last.open
+    end
+      
     get_messages
   end
 
@@ -25,13 +29,17 @@ class MessagesController < ApplicationController
     else
       @message = current_user.send_message(@recipient, message_params[:body])
     end
-    
+
+    @message_count = @message.received_messageable.messages.conversations.select { |c| !c.opened }.count
     respond_to { |format| format.js }
   end
 
   def reply
     @reply_message = current_user.reply_to(@message, message_params[:body])
     @first_message = @reply_message.conversation.last
+
+    @message_count = @first_message.received_messageable.messages
+      .conversations.select { |c| !c.opened }.count
     
     respond_to do |format|
       format.js
