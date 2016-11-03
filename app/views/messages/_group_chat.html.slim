@@ -1,0 +1,39 @@
+#collapseGroupChat.collapse
+  .container
+    .col-md-6.col-md-offset-3
+      .panel.panel-default
+        .panel-heading
+          button.close data-target="#collapseGroupChat" data-toggle="collapse" type="button"
+            span aria-hidden="true" &times;
+          br
+        .panel-body
+          .pull-right.message-body
+            p Lorem ipsum set dollor set ammet Lorem ipsum set dollor set ammet
+            .text-right.sender
+              i
+                small You bout 2 hours ago
+          br
+          br
+          hr
+          .pull-left.message-body
+            p  Lorem ipsum set dollor set ammet Lorem ipsum set dollor set ammet
+            .text-left
+              i
+                small Wiro sableng bout 2 hours ago
+          br
+          br
+          hr
+          
+          .row
+            .col-md-12
+              = simple_form_for :new_message, method: :post, url: reply_message_path(1), html: { id: 'newMessage' }, remote: true do |f|
+                .form-group
+                  .row
+                    .col-md-12
+                      = f.label :body, 'Message'
+                      = f.input_field :body, as: :text, class: 'form-control', placeholder: 'Enter your message here...', rows: 7
+
+                .form-group
+                  .row
+                    .col-md-12
+                      = f.submit "Send", class: "btn btn-saving btn-green pull-right"

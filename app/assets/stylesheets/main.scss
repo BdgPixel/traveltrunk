@@ -1420,3 +1420,16 @@ ul.token-input-list {
     }
   }
 }
+
+#collapseGroupChat {
+  .message-body {
+    p {
+      margin: 0;
+    }
+  }
+
+  .panel-body {
+    height: 500px;
+    overflow-y: scroll;
+  }
+}

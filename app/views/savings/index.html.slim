@@ -28,7 +28,7 @@
 
                 - if current_user.group && current_user.group.members.present?
                   li
-                    = link_to "Group Chat", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
+                    = link_to "Group Chat", "#collapseGroupChat", class: "", data: { toggle: "collapse" }, aria: { expanded: false, controls: 'collapseGroupChat' }
                     |&emsp;&emsp;&emsp;
 
                 li
@@ -44,8 +44,6 @@
                     = link_to "Dismiss group", leave_group_path, id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'Are you sure you want to leave this group ?'}, :method => :delete
 
                 - elsif current_user.joined_groups.any?
-                  |&emsp;&emsp;&emsp;
-
                   li
                     = link_to "Leave group", leave_group_path(id: current_user.joined_groups.first.id), id:'slideToggleLink', class: "invite-friend-link", data: { confirm: 'Are you sure you want to leave this group ?'}, :method => :delete
 
@@ -56,6 +54,9 @@
     = render 'savings/form_add_saving'
     = render 'savings/transfer_success'
     = render 'promo_codes/form_modal_activation_promo_code'
+
+    - if current_user.group && current_user.group.members.present?
+      = render 'messages/group_chat'
 
   - else
     = render 'single_person'
