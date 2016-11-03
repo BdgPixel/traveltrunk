@@ -28,7 +28,7 @@
 
                 - if current_user.group && current_user.group.members.present?
                   li
-                    = link_to "Group Chat", "#collapseGroupChat", class: "", data: { toggle: "collapse" }, aria: { expanded: false, controls: 'collapseGroupChat' }
+                    = link_to "Group Chat", "#collapseGroupChat", id: 'groupChatLink', data: { toggle: "collapse" }, aria: { expanded: false, controls: 'collapseGroupChat' }
                     |&emsp;&emsp;&emsp;
 
                 li
@@ -57,7 +57,7 @@
 
     - if current_user.group && current_user.group.members.present?
       = render 'messages/group_chat'
-
+      
   - else
     = render 'single_person'
     / .wrapper-header-saving.card-orange
