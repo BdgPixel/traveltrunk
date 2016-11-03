@@ -5,10 +5,10 @@ test:
   server: "http://localhost:9292/faye"
   secret_token: "secret"
 staging:
-  server: "http://staging.traveltrunk.us:8443/faye"
+  server: "https://staging.traveltrunk.us:8443/faye"
   secret_token: "7a0c353e0288dc34dfab3d36bd8fad2c90674b601dd4ddb5f667b83e37234ce2"
   signature_expiration: 3600 # one hour
 production:
-  server: "http://www.traveltrunk.us:8443/faye"
+  server: "https://www.traveltrunk.us:8443/faye"
   secret_token: "f34a8937b6488ee1a2b09352a8e0933bc502f9a202252ea21f06247c821a4aca"
   signature_expiration: 3600 # one hour
