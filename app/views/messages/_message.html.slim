@@ -8,10 +8,10 @@
               | New&nbsp;
 
             | Message from&nbsp;
+            = message.sent_messageable.full_name
           - else
             | Message to&nbsp;
-
-          = message.received_messageable.full_name
+            = message.received_messageable.full_name
 
     .col-md-4
       .row.pull-right 

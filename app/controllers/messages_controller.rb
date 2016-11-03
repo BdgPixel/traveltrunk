@@ -18,23 +18,20 @@ class MessagesController < ApplicationController
 
   def create
     @recipient = User.find message_params[:user_id]
-    current_message = current_user.messages.between(current_user.id ,@recipient.id).last
-
-    if current_message
-      @current_conversation = current_message.conversation.first
-      @message = current_user.reply_to(current_message, message_params[:body])
+    @first_message = current_user.messages.between(current_user.id ,@recipient.id).last
+    
+    if @first_message
+      @message = current_user.reply_to(@first_message, message_params[:body])
     else
       @message = current_user.send_message(@recipient, message_params[:body])
     end
-
+    
     respond_to { |format| format.js }
   end
 
   def reply
     @reply_message = current_user.reply_to(@message, message_params[:body])
-
-    # binding.pry
-    @current_conversation = @reply_message.conversation.last
+    @first_message = @reply_message.conversation.last
     
     respond_to do |format|
       format.js

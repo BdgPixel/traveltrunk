@@ -1,12 +1,12 @@
-$('#message-<%= @current_conversation.try(:id) %>').remove();
+$('#message-<%= @first_message.try(:id) %>').remove();
 $('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, is_recipient: false %>");
 $('.content-conversation:last').after("<%= j render 'reply_message', sender_name: 'You', is_current_user: true, message: @reply_message %>");
 $('form.new_message').get(0).reset();
 
 <% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
-  $('#message-<%= @current_conversation.try(:id) %>').remove();
+  $('#message-<%= @first_message.try(:id) %>').remove();
   $('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, is_recipient: true %>");
   $('.content-conversation:last').after("<%= j render 'reply_message', sender_name: @reply_message.sent_messageable.full_name, is_current_user: false, message: @reply_message %>");
-  $('#message-<%= @message.try(:id) %> .message-item').addClass('unread');
+  $('#message-<%= @first_message.try(:id) %> .message-item').addClass('unread');
   $('form.new_message').get(0).reset();
 <% end %>
