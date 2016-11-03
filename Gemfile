@@ -95,8 +95,6 @@ group :development, :test do
 
   gem 'quiet_assets'
 
-  gem 'thin'
-
   gem 'capistrano',         require: false
   
   gem 'capistrano-rvm',     require: false
@@ -132,3 +130,5 @@ gem 'remotipart', '~> 1.2'
 gem 'acts-as-messageable'
 
 gem 'private_pub'
+
+gem 'thin'
