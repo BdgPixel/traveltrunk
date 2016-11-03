@@ -1,17 +1,20 @@
 = link_to message_path(message.try(:ancestry) || message.id, anchor: 'newMessage'), id: "message-#{message.try(:ancestry) || message.id}", class: 'content'
-  .message-item.col-md-12 class="#{open_message(message)}"
+  .message-item.col-md-12 class="#{message_type(message, is_group)}"
     .col-md-8
       .row
         p.message-title
-          - if is_recipient
-            - unless message.opened
-              | New&nbsp;
-
-            | Message from&nbsp;
-            = message.sent_messageable.full_name
+          - if is_group
+            | Group Message
           - else
-            | Message to&nbsp;
-            = message.received_messageable.full_name
+            - if is_recipient
+              - unless message.opened
+                | New&nbsp;
+
+              | Message from&nbsp;
+              = message.sent_messageable.full_name
+            - else
+              | Message to&nbsp;
+              = message.received_messageable.full_name
 
     .col-md-4
       .row.pull-right 
@@ -21,6 +24,15 @@
       .row
         p.message-info 
           = truncate(message.body, length: 60, omission: '...')
+
+        - if is_group
+          .text-left
+            i
+              small
+                - if is_recipient_group
+                  | You
+                - else
+                  = message.sent_messageable.full_name
 
   .col-md-12
     .row

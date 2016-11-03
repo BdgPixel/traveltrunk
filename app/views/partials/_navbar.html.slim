@@ -56,7 +56,8 @@
                     br
                   .messages-wrapper
                     - @messages.each do |message|
-                      = render 'messages/message', message: message, is_recipient: message.conversation.first.received_messageable_id.eql?(current_user.id)
+                      / - binding.pry
+                      = render 'messages/message', message: message, is_recipient: message.conversation.first.received_messageable_id.eql?(current_user.id), is_recipient_group: message.conversation.first.sent_messageable_id.eql?(current_user.id), is_group: (message.topic ? true : false)
 
 
               li.link-top-login = link_to 'DEALS', deals_path

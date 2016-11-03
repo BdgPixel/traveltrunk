@@ -35,9 +35,15 @@ module ApplicationHelper
     end
   end
 
-  def open_message(message)
-    if message.conversation.first.received_messageable_id.eql? current_user.id
-      message.opened ? 'read' : 'unread'
+  def message_type(message, is_group)
+    if is_group
+      unless message.conversation.first.sent_messageable_id.eql? current_user.id
+        message.opened ? 'read' : 'unread'
+      end
+    else
+      if message.conversation.first.received_messageable_id.eql? current_user.id
+        message.opened ? 'read' : 'unread'
+      end
     end
   end
 end
