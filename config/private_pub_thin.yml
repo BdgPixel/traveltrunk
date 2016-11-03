@@ -1,3 +1,6 @@
-port: 9292
+port: 8443
 environment: staging
 rackup: private_pub.ru
+ssl: true
+ssl_key_file: /var/cpanel/ssl/installed/keys/localhost-faye.key
+ssl_cert_file: /var/cpanel/ssl/installed/certs/localhost-faye.crt
