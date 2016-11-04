@@ -10,7 +10,12 @@
       .modal-body
         .alert.alert-info
           strong Notice:&nbsp;
-          p = "Your message successfully sent to #{@message.received_messageable.full_name}"
+          p 
+            | Your message successfully sent to&nbsp;
+            - if @message.topic
+              | Group's
+            - else
+              = @message.received_messageable.full_name
         
       .modal-footer
         button.btn.btn-default data-dismiss="modal" type="button" Close
