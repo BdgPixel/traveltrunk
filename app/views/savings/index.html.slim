@@ -56,7 +56,7 @@
     = render 'promo_codes/form_modal_activation_promo_code'
 
     - if current_user.group || current_user.joined_groups.present?
-      = render 'messages/group_chat'
+      = render file: 'messages/group_message'
       
   - else
     = render 'single_person'
