@@ -34,14 +34,4 @@
           
           .row
             .col-md-12
-              = simple_form_for :new_message, method: :post, url: send_group_messages_path, html: { id: 'newMessage' }, remote: true do |f|
-                .form-group
-                  .row
-                    .col-md-12
-                      = f.label :body, 'Message'
-                      = f.input_field :body, as: :text, class: 'form-control', placeholder: 'Enter your message here...', rows: 7
-
-                .form-group
-                  .row
-                    .col-md-12
-                      = f.submit "Send", class: "btn btn-saving btn-green pull-right"
+              = render 'messages/form', url: send_group_messages_path

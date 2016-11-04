@@ -99,7 +99,6 @@ class User < ActiveRecord::Base
   end
 
   def self.get_user_collection(email, current_user)
-    # binding.pry
     self.joins(:profile)
       .select("users.id, users.email, users.admin, profiles.first_name, profiles.image")
       .where("(LOWER(profiles.first_name) LIKE LOWER(:keyword) OR users.email LIKE :keyword)

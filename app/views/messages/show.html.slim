@@ -13,14 +13,4 @@ br
             is_current_user: false, message: conversation
       tr
         td
-          = simple_form_for :new_message, method: :post, url: reply_message_path(@message), html: { id: 'newMessage' }, remote: true do |f|
-            .form-group
-              .row
-                .col-md-12
-                  = f.label :body, 'Message'
-                  = f.input_field :body, as: :text, class: 'form-control', placeholder: 'Enter your message here...', rows: 7
-
-            .form-group
-              .row
-                .col-md-12
-                  = f.submit "Send", class: "btn btn-saving btn-green pull-right"
+          = render 'messages/form', url: reply_message_path(@message)
