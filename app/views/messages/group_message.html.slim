@@ -8,7 +8,7 @@
           br
         .panel-body
           - if @group_messages.present?
-            - @group_messages.last.conversation.reverse.each do |conversation|
+            - @group_messages.conversation.reverse.each do |conversation|
               - if conversation.sent_messageable_id.eql? current_user.id
                 = render 'messages/reply_group_message', sender_name: 'You', is_current_user: true, message: conversation
               - else

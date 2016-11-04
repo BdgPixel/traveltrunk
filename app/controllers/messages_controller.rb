@@ -39,17 +39,16 @@ class MessagesController < ApplicationController
     is_owner = current_user.group.present?
 
     member = group.members.select { |m| m unless m.id.eql? current_user.id }.last
-    @first_message = group.user.messages.select { |m| m if m.topic }.last
-
     @recipient = is_owner ? (member || current_user) : group.user
     message_hash = { topic: 'Group Message', body: message_params[:body] }
 
-    @message = 
-      if is_owner
-        send_or_reply_message(@first_message, @recipient, message_hash)
-      else
-        send_or_reply_message(@first_message, @recipient, message_hash)
-      end
+    if group.message_id
+      @first_message = group.message
+      @message = current_user.reply_to(@first_message, message_hash)
+    else
+      @message = current_user.send_message(@recipient, message_hash)
+      group.update(message_id: @message.id)
+    end
     
     @message_count = @message.received_messageable.messages.conversations.select { |c| !c.opened }.count
     respond_to { |format| format.js }
@@ -78,13 +77,5 @@ class MessagesController < ApplicationController
 
     def message_params
       params.require(:new_message).permit(:user_id, :to, :body)
-    end
-
-    def send_or_reply_message(first_message, recipient, message_hash)
-      if first_message && first_message.topic
-        current_user.reply_to(first_message, message_hash)
-      else
-        current_user.send_message(recipient, message_hash)
-      end
     end
 end

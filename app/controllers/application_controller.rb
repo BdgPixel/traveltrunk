@@ -40,10 +40,14 @@ class ApplicationController < ActionController::Base
   def get_group_messages
     unless request.xhr?
       if user_signed_in?
-        @group_messages = current_user.messages.select { |m| m if m.topic}
+        group = current_user.group || current_user.joined_groups.first
 
-        if @group_messages.present? && @group_messages.first.received_messageable_id.eql?(current_user.id)
-          @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
+        if group
+          @group_messages = group.message
+
+          if @group_messages.present? && @group_messages.received_messageable_id.eql?(current_user.id)
+            @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
+          end
         end
       end
     end
