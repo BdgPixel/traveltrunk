@@ -5,6 +5,7 @@ class Group < ActiveRecord::Base
   has_many :users_groups, dependent: :destroy
   has_one :destination, as: :destinationable
   belongs_to :user
+  belongs_to :message, class_name: 'CustomMessage'
 
   friendly_id :name, use: [:slugged, :finders]
 
