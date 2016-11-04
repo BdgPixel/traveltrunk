@@ -1,6 +1,7 @@
 class MessagesController < ApplicationController
   skip_before_action :get_messages, only: :show
   before_action :set_message, only: [:show, :reply]
+  before_action :get_group, only: [:users_collection]
 
   def show
     @conversations = @message.conversation.reverse
@@ -14,9 +15,14 @@ class MessagesController < ApplicationController
 
   def users_collection
     users_list = User.get_user_collection(params[:q], current_user.id)
-
+    
+    if @group
+      users_list << { id: @group.id, name: @group.name, email: '', image_url: '/assets/default_user.png' }
+    end
+    
+    # binding.pry
     respond_to do |format|
-      format.json { render json: users_list }
+      format.json { render json: users_list.reverse }
     end
   end
 
