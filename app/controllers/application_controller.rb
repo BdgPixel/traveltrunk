@@ -4,6 +4,7 @@ class ApplicationController < ActionController::Base
   before_action :authenticate_page
   before_action :set_request_headers
   before_action :get_messages
+  before_action :get_group_messages
 
   protect_from_forgery with: :exception
 
@@ -30,6 +31,18 @@ class ApplicationController < ActionController::Base
         @messages = current_user.messages.conversations
         
         if @messages.present? && @messages.first.received_messageable_id.eql?(current_user.id)
+          @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
+        end
+      end
+    end
+  end
+
+  def get_group_messages
+    unless request.xhr?
+      if user_signed_in?
+        @group_messages = current_user.messages.select { |m| m if m.topic}
+
+        if @group_messages.present? && @group_messages.first.received_messageable_id.eql?(current_user.id)
           @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
         end
       end
