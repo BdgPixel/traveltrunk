@@ -22,7 +22,7 @@ class MessagesController < ApplicationController
 
   def create
     @recipient = User.find message_params[:user_id]
-    @first_message = current_user.messages.between(current_user.id ,@recipient.id).last
+    @first_message = current_user.messages.between(current_user.id, @recipient.id).last
     
     if @first_message
       @message = current_user.reply_to(@first_message, message_params[:body])
@@ -35,7 +35,24 @@ class MessagesController < ApplicationController
   end
 
   def send_group
+    group = current_user.group || current_user.joined_groups.first
+    is_owner = current_user.group.present?
+
+    member = group.members.select { |m| m unless m.id.eql? current_user.id }.last
+    @first_message = group.user.messages.select { |m| m if m.topic }.last
+
+    @recipient = is_owner ? (member || current_user) : group.user
+    message_hash = { topic: 'Group Message', body: message_params[:body] }
+
+    @message = 
+      if is_owner
+        send_or_reply_message(@first_message, @recipient, message_hash)
+      else
+        send_or_reply_message(@first_message, @recipient, message_hash)
+      end
     
+    @message_count = @message.received_messageable.messages.conversations.select { |c| !c.opened }.count
+    respond_to { |format| format.js }
   end
 
   def reply
@@ -61,5 +78,13 @@ class MessagesController < ApplicationController
 
     def message_params
       params.require(:new_message).permit(:user_id, :to, :body)
+    end
+
+    def send_or_reply_message(first_message, recipient, message_hash)
+      if first_message && first_message.topic
+        current_user.reply_to(first_message, message_hash)
+      else
+        current_user.send_message(recipient, message_hash)
+      end
     end
 end
