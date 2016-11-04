@@ -225,7 +225,7 @@ initUsersCollection = ->
       
       if item.email
         $('form.new_message').get(0).reset();
-        $('#newMessage').modal backdrop: 'static'
+        $('#newMessageModal').modal backdrop: 'static'
         $('#new_message_to').val(item.name)
         $('.user_id').val(item.id)
 
