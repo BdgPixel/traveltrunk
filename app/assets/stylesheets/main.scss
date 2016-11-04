@@ -1431,5 +1431,11 @@ ul.token-input-list {
   .panel-body {
     height: 500px;
     overflow-y: scroll;
+
+    .group-body-message {
+      p.text-right, p.text-left {
+        margin: 0;
+      }
+    }
   }
 }
