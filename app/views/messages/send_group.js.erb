@@ -1,55 +1,7 @@
 $('#messageSuccessfullySent').html("<%= j render 'success' %>");
-$('#newMessage').modal('hide');
+$('#newMessageModal').modal('hide');
 $('#messageSuccess').modal({ backdrop: 'static' });
 $('#message-<%= @first_message.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', message: @message, is_recipient: false, is_recipient_group: false, is_group: (@message.topic ? true : false) %>");
-
-var newColumn = '';
-
-if ($('.new-column-message:last').length > 0) {
-  $('.new-column-message:last').remove();
-  newColumn = '<br><br><hr>';
-}
-
-if ($('.group-body-message').length > 0) {
-  $('.group-body-message:last').after(newColumn + "<%= j render 'reply_group_message', sender_name: @message.sent_messageable.full_name, is_current_user: true, message: @message %>");
-} else {
-  $('.panel-body').prepend('<div class="group-body-message"></div>');
-  $('.group-body-message').after(newColumn + "<%= j render 'reply_group_message', sender_name: @message.sent_messageable.full_name, is_current_user: true, message: @message %>");
-}
-
+$('.messages-wrapper').prepend("<%= j render 'message', notification: @notification, message: @notification.trackable, is_recipient: !@notification.trackable.sent_messageable_id.eql?(current_user.id) %>");
+$('#groupMessages').append("<%= j render 'reply_group_message', sender_name: 'You', is_current_user: true, message: @message %>");
 $('form.new_message').get(0).reset();
-
-<% publish_to "/private_messages/#{@recipient.id}" do %>
-  $('#message-<%= @first_message.try(:id) %>').remove();
-  $('.messages-wrapper').prepend("<%= j render 'message', message: @message, is_recipient: true, is_recipient_group: true, is_group: (@message.topic ? true : false) %>");
-  $('#message-<%= @first_message.try(:id) || @message.try(:id) %> .message-item').addClass('unread');
-  $('#messageCount').text("<%= @message_count %>");
-  $('#messageCount').removeClass('hide');
-  $('form.new_message').get(0).reset();
-<% end %>
-
-
-<% publish_to "/group_messages/#{@recipient.id}" do %>
-  $('#message-<%= @first_message.try(:id) %>').remove();
-  $('.messages-wrapper').prepend("<%= j render 'message', message: @message, is_recipient: true, is_recipient_group: true, is_group: (@message.topic ? true : false) %>");
-
-  var newColumn = '';
-
-  if ($('.new-column-message:last').length > 0) {
-    $('.new-column-message:last').remove();
-    newColumn = '<br><br><hr>';
-  }
-
-  if ($('.group-body-message').length > 0) {
-    $('.group-body-message:last').after(newColumn + "<%= j render 'reply_group_message', sender_name: @message.sent_messageable.full_name, is_current_user: false, message: @message %>");
-  } else {
-    $('.panel-body').prepend('<div class="group-body-message"></div>');
-    $('.group-body-message').after(newColumn + "<%= j render 'reply_group_message', sender_name: @message.sent_messageable.full_name, is_current_user: false, message: @message %>");
-  }
-
-  $('#message-<%= @first_message.try(:id) || @message.try(:id) %> .message-item').addClass('unread');
-  $('#messageCount').text("<%= @message_count %>");
-  $('#messageCount').removeClass('hide');
-  $('form.new_message').get(0).reset();
-<% end %>

@@ -1,12 +1,21 @@
-.group-body-message class="#{is_current_user ? 'pull-right' : 'pull-left' }"
-  p class="#{is_current_user ? 'text-right' : 'text-left' }" = message.body
-  .message-info class="#{is_current_user ? 'pull-right' : 'pull-left' }"
-  i
-    small #{sender_name} #{time_ago_in_words(message.created_at)} ago
-.new-column-message
-  br
-  br
+.col-md-12.group-body-message style="#{ 'text-align: right ' if is_current_user}"
+  p = message.body
+  p
+    i 
+      small #{sender_name} #{time_ago_in_words(message.created_at)} ago
   hr
+
+
+/ .group-body-message class="#{is_current_user ? 'pull-right' : 'pull-left' }"
+/   p class="#{is_current_user ? 'text-right' : 'text-left' }"
+/     = message.body
+/   .message-info class="#{is_current_user ? 'pull-right' : 'pull-left' }"
+/   i
+/     small #{sender_name} #{time_ago_in_words(message.created_at)} ago
+/   hr
+/ .new-column-message
+/   br
+/   br
 
 / .pull-right.message-body
 /   p Lorem ipsum set dollor set ammet Lorem ipsum set dollor set ammet

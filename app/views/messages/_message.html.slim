@@ -1,20 +1,21 @@
-= link_to link_message(message), id: "message-#{message.try(:ancestry) || message.id}", class: 'content link-message'
-  .message-item.col-md-12 class="#{message_type(message, is_group)}"
+= link_to link_message(message), id: "message-#{ message.try(:ancestry) || message.id }", class: 'content link-message'
+
+  .message-item.col-md-12 class="#{message_type(message, notification)}"
     .col-md-8
       .row
         p.message-title
-          - if is_group
+          - if is_recipient
+            - unless notification.is_read
+              | New&nbsp;
+
+            | Message from&nbsp;
+          - else
+            | Message to&nbsp;
+
+          - if message.topic
             | Group Message
           - else
-            - if is_recipient
-              - unless message.opened
-                | New&nbsp;
-
-              | Message from&nbsp;
-              = message.sent_messageable.full_name
-            - else
-              | Message to&nbsp;
-              = message.received_messageable.full_name
+            = is_recipient ? message.sent_messageable.full_name : message.received_messageable.full_name
 
     .col-md-4
       .row.pull-right 
@@ -25,14 +26,11 @@
         p.message-info 
           = truncate(message.body, length: 60, omission: '...')
 
-        - if is_group
+        - if message.topic
           .text-left
             i
               small
-                - if is_recipient_group
-                  | You
-                - else
-                  = message.sent_messageable.full_name
+                = is_recipient ? message.sent_messageable.full_name : 'You'
 
   .col-md-12
     .row

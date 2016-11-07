@@ -53,6 +53,21 @@ class User < ActiveRecord::Base
   def get_notification(is_read = true)
     PublicActivity::Activity.order("created_at desc")
       .where(recipient_id: self.id, recipient_type: "User", is_read: is_read)
+      .where.not(key: ['messages.group', 'messages.private'])
+  end
+
+  def get_message_notifications
+    activity_ids = PublicActivity::Activity
+      .where(key: ['messages.private', 'messages.group'])
+      .where("owner_id = :current_user_id OR recipient_id = :current_user_id", {  current_user_id: self.id })
+      .select("max(id) as id, CASE WHEN key = 'messages.group' THEN 0 ELSE (CASE WHEN owner_id = #{self.id} THEN recipient_id ELSE owner_id END) END
+        AS group_identifier")
+      .group("group_identifier").map(&:id)
+
+    latest_conversation_activities = PublicActivity::Activity.where(id: activity_ids).order(created_at: :desc)
+    unread_message_count = PublicActivity::Activity.where(id: activity_ids, is_read: false,
+      recipient_id: self).where.not(owner_id: self).count
+    [latest_conversation_activities, unread_message_count]
   end
 
   def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)

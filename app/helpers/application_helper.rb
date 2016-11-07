@@ -35,23 +35,28 @@ module ApplicationHelper
     end
   end
 
-  def message_type(message, is_group)
-    if is_group
-      unless message.conversation.first.sent_messageable_id.eql? current_user.id
-        message.opened ? 'read' : 'unread'
-      end
+  def message_type(message, notification)
+    if message.sent_messageable_id.eql? current_user.id
+      'read'
     else
-      if message.conversation.first.received_messageable_id.eql? current_user.id
-        message.opened ? 'read' : 'unread'
-      end
+      notification.is_read ? 'read' : 'unread'
     end
+    # if is_group
+    #   unless message.sent_messageable_id.eql? current_user.id
+    #     message.opened ? 'read' : 'unread'
+    #   end
+    # else
+    #   if message.received_messageable_id.eql? current_user.id
+    #     message.opened ? 'read' : 'unread'
+    #   end
+    # end
   end
 
   def link_message(message)
     if message.topic
-      savings_path(anchor: 'collapseGroupChat')
+      savings_path(anchor: 'collapseGroupChat', open_group_chat: true)
     else
-      message_path(message.try(:ancestry) || message.id, anchor: 'newMessage')
+      message_path(message.id, anchor: 'newMessage')
     end
   end
 end

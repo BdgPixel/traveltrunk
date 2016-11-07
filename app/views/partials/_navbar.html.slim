@@ -45,7 +45,7 @@
 
               li#messageDropdown.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                  span#messageCount.notification-bubble class="#{'hide' if @message_count.nil? || @message_count.zero?}" = @message_count
+                  span#messageCount.notification-bubble class="#{'hide' if @message_notification_count.zero?}" = @message_notification_count
                   | &nbsp;Messages
                   span.caret
 
@@ -55,9 +55,9 @@
                       = text_field_tag :user_collection, nil, placeholder: 'Send a new message to..'
                     br
                   .messages-wrapper
-                    - @messages.each do |message|
-                      = render 'messages/message', message: message, is_recipient: message.conversation.first.received_messageable_id.eql?(current_user.id), is_recipient_group: message.conversation.first.sent_messageable_id.eql?(current_user.id), is_group: (message.topic ? true : false)
-
+                    - @message_notifications.each do |notification|
+                      - if notification.trackable
+                        = render 'messages/message', notification: notification, message: notification.trackable, is_recipient: !notification.trackable.sent_messageable_id.eql?(current_user.id)
 
               li.link-top-login = link_to 'DEALS', deals_path
               li.link-top-login = link_to 'SAVINGS', savings_path

@@ -20,6 +20,10 @@ class Group < ActiveRecord::Base
     members.map(&:total_credit).sum + self.user.total_credit
   end
 
+  def all_members
+    self.members.to_a << self.user
+  end
+
   private
     def destroy_destination
       self.destination.destroy if self.destination

@@ -5,6 +5,7 @@ class ApplicationController < ActionController::Base
   before_action :set_request_headers
   before_action :get_messages
   before_action :get_group_messages
+  before_action :get_message_notifications
 
   protect_from_forgery with: :exception
 
@@ -30,9 +31,8 @@ class ApplicationController < ActionController::Base
       if user_signed_in?
         @messages = current_user.messages.conversations
         
-        if @messages.present? && @messages.first.received_messageable_id.eql?(current_user.id)
-          @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
-        end
+        @message_count = current_user.messages.conversations
+          .select{ |c| !c.opened && !c.sent_messageable_id.eql?(current_user.id) }.count
       end
     end
   end
@@ -45,9 +45,11 @@ class ApplicationController < ActionController::Base
         if group
           @group_messages = group.message
 
-          if @group_messages.present? && @group_messages.received_messageable_id.eql?(current_user.id)
-            @message_count = current_user.received_messages.conversations.select{ |c| !c.opened }.count
-          end
+          # if @group_messages.present? && @group_messages.received_messageable_id.eql?(current_user.id)
+            # binding.pry
+          # @message_count += current_user.messages.conversations
+          #   .select{ |c| !c.opened && !c.sent_messageable_id.eql?(current_user.id) }.count
+          # end
         end
       end
     end
@@ -72,6 +74,12 @@ class ApplicationController < ActionController::Base
 
     def get_unread_notification_count
       @notification_count = current_user.get_notification(false).count if user_signed_in?
+    end
+
+    def get_message_notifications
+      if user_signed_in?
+        @message_notifications, @message_notification_count = current_user.get_message_notifications
+      end
     end
 
     def authenticate

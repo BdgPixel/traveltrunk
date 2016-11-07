@@ -224,6 +224,11 @@ initUsersCollection = ->
       $(selector).tokenInput("clear")
       
       if item.email
+        if item.email is 'group'
+          $('form.new_message').attr('action', '/conversations/send_group')
+        else
+          $('form.new_message').attr('action', '/conversations')
+
         $('form.new_message').get(0).reset();
         $('#newMessageModal').modal backdrop: 'static'
         $('#new_message_to').val(item.name)
@@ -238,23 +243,25 @@ initUsersCollection = ->
     $('#token-input-user_collection').attr 'placeholder', 'Send a new message to..'
 
 showHideCollapseGroupChat = ->
-  $('.link-message').on 'click', ->
-    if $(this).attr('href') == '/savings#collapseGroupChat'
-      id = $('.link-message:first').attr('id').split('-')[1]
+  id = $('.link-message:first').attr('id').split('-')[1]
 
-      $.post '/conversations/' + id + '/update', (message_count)->
-        $('#messageCount').text "#{message_count}"
-        $('#messageCount').removeClass 'hide'
+  $('#collapseGroupChat').collapse 'show'
+  n = $(document).height()
+  $('html, body').animate { scrollTop: n }, 250
+  $('.panel-body').animate { scrollTop: n }, 100
+  return
 
-      $('#collapseGroupChat').collapse 'toggle'
-      n = $(document).height()
-      $('html, body').animate { scrollTop: n }, 250
-      $('.panel-body').animate { scrollTop: n }, 100
-      return
+    
 
 ready = ->
   initUsersCollection()
-  showHideCollapseGroupChat()
+  
+  $('.link-message').on 'click', ->
+    if $(this).attr('href').indexOf("#collapseGroupChat") != -1
+      showHideCollapseGroupChat()
+      
+  if window.location.href.indexOf("#collapseGroupChat") != -1
+    showHideCollapseGroupChat()
 
   if $('#groupChatLink').length > 0
     $('#groupChatLink').on 'click', ->
