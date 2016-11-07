@@ -105,6 +105,12 @@ module Expedia
                         hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                       end
 
+                    hotel_filter    = hotels_list.group_by {|el| el["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= current_user.total_credit_in_usd ? :affordable : :notaffordable} 
+
+                    affordable      = hotel_filter[:affordable].each {|k, v| k["is_notaffordable"] = false}
+                    notaffordable   = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}
+                    hotels_list     = (affordable || []) + (notaffordable || [])
+                    
                     @num_of_hotel = hotels_list.size
                     @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                     @num_of_page = @hotels_list.size
