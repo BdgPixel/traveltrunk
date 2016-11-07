@@ -22,7 +22,8 @@ class MessagesController < ApplicationController
     users_list = User.get_user_collection(params[:q], current_user.id)
     
     if @group
-      users_list << { id: @group.id, name: @group.name, email: 'group', image_url: '/assets/default_user.png' }
+      default_user_img = ActionController::Base.new.view_context.asset_path "default_user.png"
+      users_list << { id: @group.id, name: @group.name, email: 'group', image_url: default_user_img }
     end
     
     respond_to do |format|
