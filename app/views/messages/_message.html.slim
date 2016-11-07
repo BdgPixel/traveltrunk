@@ -1,4 +1,4 @@
-= link_to message_path(message.try(:ancestry) || message.id, anchor: 'newMessage'), id: "message-#{message.try(:ancestry) || message.id}", class: 'content'
+= link_to link_message(message), id: "message-#{message.try(:ancestry) || message.id}", class: 'content link-message'
   .message-item.col-md-12 class="#{message_type(message, is_group)}"
     .col-md-8
       .row

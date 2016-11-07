@@ -237,8 +237,32 @@ initUsersCollection = ->
   $('#messageDropdown').on 'shown.bs.dropdown', ->
     $('#token-input-user_collection').attr 'placeholder', 'Send a new message to..'
 
+showHideCollapseGroupChat = ->
+  $('.link-message').on 'click', ->
+    if $(this).attr('href') == '/savings#collapseGroupChat'
+      id = $('.link-message:first').attr('id').split('-')[1]
+
+      $.post '/conversations/' + id + '/update', (message_count)->
+        $('#messageCount').text "#{message_count}"
+        $('#messageCount').removeClass 'hide'
+
+      $('#collapseGroupChat').collapse 'toggle'
+      n = $(document).height()
+      $('html, body').animate { scrollTop: n }, 250
+      $('.panel-body').animate { scrollTop: n }, 100
+      return
+
 ready = ->
   initUsersCollection()
+  showHideCollapseGroupChat()
+
+  if $('#groupChatLink').length > 0
+    $('#groupChatLink').on 'click', ->
+      $('#collapseGroupChat').collapse 'toggle'
+      n = $(document).height()
+      $('html, body').animate { scrollTop: n }, 250
+      $('.panel-body').animate { scrollTop: n }, 100
+
   setTimeout(->
     $('#notice, .alert-dismissible').fadeOut()
     $('#alert').fadeOut()

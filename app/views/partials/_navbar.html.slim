@@ -56,7 +56,6 @@
                     br
                   .messages-wrapper
                     - @messages.each do |message|
-                      / - binding.pry
                       = render 'messages/message', message: message, is_recipient: message.conversation.first.received_messageable_id.eql?(current_user.id), is_recipient_group: message.conversation.first.sent_messageable_id.eql?(current_user.id), is_group: (message.topic ? true : false)
 
 

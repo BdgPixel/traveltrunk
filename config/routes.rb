@@ -8,6 +8,7 @@ Rails.application.routes.draw do
     member do
       post 'reply'
       post 'reply_group'
+      post 'update'
     end
   end
 

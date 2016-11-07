@@ -46,4 +46,12 @@ module ApplicationHelper
       end
     end
   end
+
+  def link_message(message)
+    if message.topic
+      savings_path(anchor: 'collapseGroupChat')
+    else
+      message_path(message.try(:ancestry) || message.id, anchor: 'newMessage')
+    end
+  end
 end
