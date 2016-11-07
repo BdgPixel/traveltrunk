@@ -23,6 +23,15 @@ module DealsHelper
     end
   end
 
+  def notaffordable(hotel_image)
+    if hotel_image
+      content_tag(:div, nil, class: 'lazy deals-image', data: { original: "https://images.trvl-media.com#{ hotel_image.gsub('_t.', '_y.') }" },
+        style: "background:url('https://images.trvl-media.com#{ hotel_image.gsub('_t.', '_b.') }'), url('https://images.trvl-media.com#{ hotel_image.gsub('_t.', '_l.') }') no-repeat grey; background-size: 100% 100%; height: 300px;") do
+        content_tag(:div, nil, class: 'overlay', data: { content: "Currently outside your budget"})
+      end
+    end
+  end
+
   def welcome_user_first_sign_in
     link = link_to "<u>Create a profile</u>".html_safe, edit_profile_path
     "Welcome <b>“#{titleize_text(current_user.profile.first_name)}”</b>, Thank you for signing up to Travel Trunk. To begin please #{link} and start saving for your next getaway. As you continue to save we will display hotels you can afford based on your destination getaway and savings. It’s that simple!.".html_safe
