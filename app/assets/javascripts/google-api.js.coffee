@@ -13,7 +13,12 @@ root = exports ? this
 initAutocomplete = (selector) ->
   autocomplete = new (google.maps.places.Autocomplete)(document.getElementById(selector), types: [ 'geocode' ])
   autocomplete.addListener 'place_changed', () ->
+    length = 47
+    value_field  = document.getElementById(selector).value
+    myTruncatedString = value_field.substring(0, length)
     place = autocomplete.getPlace()
+    $('#autocomplete').val myTruncatedString
+
     if $('.lat').length > 0 and $('.lng').length > 0
       $('.lat').val place.geometry.location.lat()
       $('.lng').val place.geometry.location.lng()
