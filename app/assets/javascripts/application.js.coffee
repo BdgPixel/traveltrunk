@@ -198,6 +198,12 @@ root.initDatePickerForMobile = (today) ->
     startDate: today
     autoclose: true).on 'changeDate', (e) ->
 
+root.truncateString = (selector) ->
+  length = 50
+  myString = $(selector).val()
+  myTruncatedString = myString.substring(0, length)
+  $(selector).val myTruncatedString
+
 root.clearValidationMessage = ->
   $('.payment-account-error').text('')
   $('.profile-error').text('')

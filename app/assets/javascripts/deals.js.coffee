@@ -427,6 +427,7 @@ $(document).ready ->
     initDatePickerForMobile(today)
     showSearchForm()
     showSearchFormMobile()
+    truncateString('input#autocomplete')
     clearSearchText('#btnClearText', 'input#autocomplete')
 
     showPopUpProfile()
