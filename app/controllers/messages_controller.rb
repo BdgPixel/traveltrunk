@@ -6,6 +6,7 @@ class MessagesController < ApplicationController
   def show
     if @message.is_last?
       @conversations = @message.conversation.reverse
+      # binding.pry
       @message.read_notification!(current_user.id)
 
       # if @conversations.last.received_messageable_id.eql? current_user.id
@@ -32,13 +33,21 @@ class MessagesController < ApplicationController
   end
 
   def create
+    body_message = 
+      if message_params[:share_image]
+        tmp_body = "[shared: #{message_params[:share_image]}|#{message_params[:hotel_name]}|#{message_params[:hotel_link]}]"
+        tmp_body << message_params[:body] if message_params[:body]
+      else
+        message_params[:body]
+      end
+
     @recipient = User.find message_params[:user_id]
     @first_message = current_user.messages.between(current_user.id, @recipient.id).last
     
     if @first_message
-      @message = current_user.reply_to(@first_message, message_params[:body])
+      @message = current_user.reply_to(@first_message, body_message)
     else
-      @message = current_user.send_message(@recipient, message_params[:body])
+      @message = current_user.send_message(@recipient, body_message)
     end
 
     @notification = @message.create_activity key: "messages.private", owner: current_user,
@@ -110,6 +119,7 @@ class MessagesController < ApplicationController
     end
 
     def message_params
-      params.require(:new_message).permit(:user_id, :to, :body)
+      params.require(:new_message).permit(:user_id, :to, :body, :share_image, :hotel_name, :user_id,
+        :hotel_link)
     end
 end

@@ -38,11 +38,18 @@ class DealsController < ApplicationController
   end
 
   def show
+    @recent_contacts = current_user.get_recent_contacts
+
     expedia_params_hash = { hotelId: params[:id] }
     @terms_and_conditions_url = "http://developer.ean.com/terms/en/"
 
     @votes = Like.where(hotel_id: params[:id])
     @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
+    @title = @hotel_information['HotelSummary']['name']
+
+    @featured_image = @hotel_information['HotelImages']['HotelImage']
+      .detect { |h| h['name'].include?'Featured Image' }
+
     redirect_to deals_url, notice: 'A problem occured when request hotel details information to expedia.
       Please try again later' unless @hotel_information.present?
   end

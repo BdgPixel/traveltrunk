@@ -1409,6 +1409,24 @@ a.login.show {
   }
 }
 
+.message-item-small {
+  width: 300px;
+  cursor: pointer;
+
+  hr {
+    margin-top: 0;
+    margin-bottom: 8px;
+  }
+
+  a:hover {
+    text-decoration: none;
+  }
+
+  img.img-circle {
+    margin-right: 5px;
+  }
+}
+
 // Override token input
 
 ul.token-input-list {
@@ -1455,6 +1473,31 @@ ul.token-input-list {
 
     span {
       font-size: 14px;
+      color: #fff;
+    }
+  }
+
+  .thumbnail {
+    border-color: transparent;
+    border: none;
+    padding: 0px;
+  }
+}
+
+.wrapper-message-conversation {
+  position: relative;
+
+  .title-hotel {
+    background-color: rgba(0, 0, 0, 0.73);
+    position: absolute;
+    width: 100%;
+    min-height: 26px;
+    padding: 5px;
+    bottom: 0;
+    line-height: 10px;
+
+    span {
+      font-size: 10px;
       color: #fff;
     }
   }

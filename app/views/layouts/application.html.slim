@@ -1,11 +1,14 @@
 doctype html
 html lang="en"
   head
-    title Travel Trunk
+    title = @title.present? ? @title : 'Travel Trunk'
 
     meta charset="utf-8"
     meta content="IE=edge" http-equiv="X-UA-Compatible"
     meta content="width=device-width, initial-scale=1" name="viewport"
+
+    - if @featured_image
+        meta property="og:image" itemprop="image primaryImageOfPage" content="#{@featured_image['url']}"
 
     link href=("/favicon.ico") rel=("shortcut icon") type='image/x-icon'
     

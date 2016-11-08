@@ -1,7 +1,19 @@
 tr.content-conversation
-  td.current-recipient
-    div class="#{is_current_user ? 'pull-right' : 'pull-left' }" style="white-space: pre-line"
-      = message.body
-      br
-      i
-        small #{sender_name} #{time_ago_in_words(message.created_at)} ago
+  td.current-recipient style="#{ 'text-align: right' if is_current_user }"
+    = generate_deal_thumbnail(message.body, is_current_user)
+    / .col-xs-6.col-md-3 class="#{is_current_user ? 'pull-right' : 'pull-left' }"
+    /   .wrapper-message-conversation
+    /     .title-hotel
+    /       span The Residences at...
+    /     a class="thumbnail" href="http://localhost:3000/conversations/282#newMessage"
+    /       = image_tag 'http://media.expedia.com/hotels/2000000/2000000/1990400/1990390/1990390_101_b.jpg'
+
+    / br
+    / br
+    / br
+    / div class="#{is_current_user ? 'pull-right' : 'pull-left' }" style="white-space: pre-line"
+    /   = generate_deal_thumbnail message.body
+    /   / = message.body
+    br
+    i
+      small #{sender_name} #{time_ago_in_words(message.created_at)} ago

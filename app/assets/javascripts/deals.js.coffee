@@ -58,10 +58,6 @@ root.initDealsPage = (numOfpages, numOfHotels)->
 
   $('div.lazy').lazyload()
 
-listOfMonts = (month) ->
-  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
-  months[month]
-
 root.roomSelected = (selector)->
   $(selector).on 'click', ->
     $('.payment-errors').text('')
@@ -207,6 +203,34 @@ root.roomSelected = (selector)->
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
 
+root.replaceImage = ()->
+  sliderImages = $('a.slider-images')
+  numberOfImages = sliderImages.length
+
+  i = 0
+  while i < numberOfImages
+    previousSrc = $(sliderImages[i]).attr('href')
+    checkImage(previousSrc, numberOfImages, i)
+
+    i++
+
+root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, placement) ->
+  $(selectorLink).popover
+    html: true
+    placement: placement
+    trigger: trigger
+    content: ->
+      $(selectorContent).html()
+    title: ->
+      if selectorTitle
+        selectorTitle + '<span class="close popover-close">&times;</span>';
+      else
+        '<span class="close popover-close">&times;</span>';
+
+listOfMonts = (month) ->
+  months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
+  months[month]
+
 getBedType = (room) ->
   bedTypes = room['BedTypes']
 
@@ -315,30 +339,6 @@ checkImage = (previousSrc, numberOfImages, i)->
 
   image.src = previousSrc
 
-root.replaceImage = ()->
-  sliderImages = $('a.slider-images')
-  numberOfImages = sliderImages.length
-
-  i = 0
-  while i < numberOfImages
-    previousSrc = $(sliderImages[i]).attr('href')
-    checkImage(previousSrc, numberOfImages, i)
-
-    i++
-
-root.popOver = (selectorLink, selectorTitle = null, selectorContent, trigger, placement) ->
-  $(selectorLink).popover
-    html: true
-    placement: placement
-    trigger: trigger
-    content: ->
-      $(selectorContent).html()
-    title: ->
-      if selectorTitle
-        selectorTitle + '<span class="close popover-close">&times;</span>';
-      else
-        '<span class="close popover-close">&times;</span>';
-
 appendValueRoomParams = () ->
   $('#guest_booking_arrival_date').val($('#confirmation_book_arrival_date').val())
   $('#guest_booking_departure_date').val($('#confirmation_book_departure_date').val())
@@ -349,9 +349,65 @@ appendValueRoomParams = () ->
   $('#guest_booking_bed_type').val($('#confirmation_book_bed_type').val())
   $('#guest_booking_smoking_preferences').val($('#confirmation_book_smoking_preferences').val())
 
+truncateHotelName = (hotelName) ->
+  $.trim(hotelName).substring(0, 40).split(' ')
+    .slice(0, -1).join(" ") + "...";
+
+shareHotel = () ->
+  $('.share-hotel-link').on 'click', ->
+    $('.user_id').val $(this).data('recipient-id')
+    $('#shareHotelModal .modal-header h3').text('You will share this hotel with ' + $(this).data('recipient-name'))
+
+    hotelName = truncateHotelName($('.hotel-name:first').text())
+
+    $('.message-image span').text hotelName
+    $('.hotel_link').val window.location.href
+
+    if $(this).data('type') is 'private_message'
+      $('form.new_message').attr('action', '/conversations')
+    else
+      $('form.new_message').attr('action', '/conversations/send_group')
+
+shareRecipientAutocomplete = ->
+  selector = '#user_group_collection'
+
+  $(selector).tokenInput( '/conversations/users_collection.json', {
+    allowFreeTagging: true
+    preventDuplicates: true
+    zindex: 9999
+    onAdd: (item)->
+      $(selector).tokenInput("clear")
+      
+      if item.email
+        if item.email is 'group'
+          $('form.new_message').attr('action', '/conversations/send_group')
+        else
+          $('form.new_message').attr('action', '/conversations')
+
+        $('form.new_message').get(0).reset();
+        $('#shareHotelModal').modal backdrop: 'static'
+        $('.user_id').val(item.id)
+
+        hotelName = truncateHotelName($('.hotel-name:first').text())
+
+        $('.message-image span').text hotelName
+        $('#shareHotelModal .modal-header h3').text('You will share this hotel with ' + item.name)
+
+    prePopulate: $('#invite_user_id').data('load')
+    resultsFormatter: (item) ->
+      "<li><img src='#{item.image_url}' title='#{item.name}' height='50px' width='50px' /><div style='display: inline-block; padding-left: 10px;'><div class='full_name'>#{item.name}</div><div class='email'>#{item.email}</div></div></li>"
+  })
+
+  $('#messageDropdown').on 'shown.bs.dropdown', ->
+    $('#token-input-user_collection').attr 'placeholder', 'Send a new message to..'
+
+
 $(document).ready ->
   controller = $('body').data('controller')
   action = $('body').data('action')
+
+  if $('.share-hotel-link').length > 0
+    shareHotel()
 
   if controller == 'deals' && action == 'index'
     disableEnterFormSubmit()
@@ -378,6 +434,7 @@ $(document).ready ->
   else if controller == 'deals' && action == 'show'
     initAutoNumeric('.formatted-amount', '.amount')
     initAutoNumeric('.formatted-amount', '.amount-saving')
+    shareRecipientAutocomplete()
 
     params_path_id = window.location.pathname.split('/')[2]
 

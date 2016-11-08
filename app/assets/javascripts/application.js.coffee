@@ -213,7 +213,7 @@ getFormattedDate = (date) ->
 
   formattedDate
 
-initUsersCollection = ->
+initUsersCollection = ()->
   selector = '#user_collection'
 
   $(selector).tokenInput( '/conversations/users_collection.json', {
@@ -251,8 +251,6 @@ showHideCollapseGroupChat = ->
   $('.panel-body').animate { scrollTop: n }, 100
   return
 
-    
-
 ready = ->
   initUsersCollection()
   
@@ -265,10 +263,9 @@ ready = ->
 
   if $('#groupChatLink').length > 0
     $('#groupChatLink').on 'click', ->
-      $('#collapseGroupChat').collapse 'toggle'
-      n = $(document).height()
-      $('html, body').animate { scrollTop: n }, 250
-      $('.panel-body').animate { scrollTop: n }, 100
+      $('#collapseGroupChat').on 'show.bs.collapse', ->
+        $('html, body').animate { scrollTop: $(document).height() }, 100
+        $('#groupMessages').animate { scrollTop: $('#groupMessages').height() }, 100
 
   setTimeout(->
     $('#notice, .alert-dismissible').fadeOut()

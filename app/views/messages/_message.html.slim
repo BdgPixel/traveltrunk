@@ -24,7 +24,7 @@
     .col-md-12
       .row
         p.message-info 
-          = truncate(message.body, length: 60, omission: '...')
+          = generate_deal_thumbnail(message.body, true, true)
 
         - if message.topic
           .text-left

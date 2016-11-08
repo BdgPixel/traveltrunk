@@ -77,6 +77,14 @@ class User < ActiveRecord::Base
       .order(id: :desc).limit(3)
   end
 
+  def get_recent_contacts
+    recent_contact_ids = PublicActivity::Activity
+      .select('DISTINCT(activities.recipient_id), activities.recipient_id')
+      .where(owner_id: self.id, key: 'messages.private')
+      .map(&:recipient_id)
+    User.includes(:profile).where(id: recent_contact_ids)
+  end
+
   def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
     room_hash = {}
     

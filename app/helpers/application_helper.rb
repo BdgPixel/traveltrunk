@@ -59,4 +59,36 @@ module ApplicationHelper
       message_path(message.id, anchor: 'newMessage')
     end
   end
+
+  def generate_deal_thumbnail(deal_string, is_current_user, is_notification = false)
+    deal_string_info = deal_string.scan(/\[shared: (.*?)\]/)
+
+    if deal_string_info.present?
+      image, title, url = deal_string_info.last.first.split('|')
+
+      if is_notification
+        deal_string.gsub!(/\[shared: (.*?)\]/, "Shared #{title}")
+        deal_string = truncate(deal_string, length: 60, omission: '...')
+      else
+        deal_thumbnail_html =
+          content_tag :div, class: "col-xs-12 col-md-12" do
+            content_tag :div, class: "col-xs-6 col-md-3 #{is_current_user ? 'pull-right' : 'pull-left' }" do
+              content_tag :div, class: 'wrapper-message-conversation' do
+                concat(content_tag(:div, class: 'title-hotel') {
+                  content_tag(:span, truncate(title, length: 17, omission: '...'))
+                })
+
+                concat(link_to(url, class: 'thumbnail') {
+                  image_tag image, class: 'show-hotel-image' 
+                })
+              end
+            end
+          end
+
+        deal_string.gsub!(/\[shared: (.*?)\]/, deal_thumbnail_html)
+      end
+    end
+
+    deal_string.html_safe
+  end
 end
