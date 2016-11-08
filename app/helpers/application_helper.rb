@@ -72,7 +72,7 @@ module ApplicationHelper
       else
         deal_thumbnail_html =
           content_tag :div, class: "col-xs-12 col-md-12" do
-            content_tag :div, class: "col-xs-6 col-md-3 #{is_current_user ? 'pull-right' : 'pull-left' }" do
+            content_tag :div, class: "col-xs-6 col-md-4 #{is_current_user ? 'pull-right' : 'pull-left' }" do
               content_tag :div, class: 'wrapper-message-conversation' do
                 concat(content_tag(:div, class: 'title-hotel') {
                   content_tag(:span, truncate(title, length: 17, omission: '...'))
