@@ -410,6 +410,7 @@ $(document).ready ->
     shareHotel()
 
   if controller == 'deals' && action == 'index'
+    Turbolinks.pagesCached 0
     disableEnterFormSubmit()
 
     validateSearchForm()
