@@ -60,11 +60,19 @@ class MessagesController < ApplicationController
   end
 
   def send_group
+    body_message = 
+      if message_params[:share_image]
+        tmp_body = "[shared: #{message_params[:share_image]}|#{message_params[:hotel_name]}|#{message_params[:hotel_link]}]"
+        tmp_body << message_params[:body] if message_params[:body]
+      else
+        message_params[:body]
+      end
+
     is_owner = current_user.group.present?
 
     members = @group.all_members
     # @recipient = is_owner ? (member || current_user) : @group.user
-    message_hash = { topic: 'Group Message', body: message_params[:body] }
+    message_hash = { topic: 'Group Message', body: body_message }
 
     if @group.message
       @first_message = @group.message

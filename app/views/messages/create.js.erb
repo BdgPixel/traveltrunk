@@ -1,5 +1,6 @@
 $('#messageSuccessfullySent').html("<%= j render 'success' %>");
 $('#newMessageModal').modal('hide');
+$('#shareHotelModal').modal('hide');
 $('#messageSuccess').modal({ backdrop: 'static' });
 $('#message-<%= @first_message.try(:id) %>').remove();
 $('.messages-wrapper').prepend("<%= j render 'message', notification: @notification, message: @notification.trackable, is_recipient: !@notification.trackable.sent_messageable_id.eql?(current_user.id) %>");
