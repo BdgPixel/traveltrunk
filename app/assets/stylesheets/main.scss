@@ -1429,13 +1429,39 @@ ul.token-input-list {
   }
 
   .panel-body {
-    height: 500px;
-    overflow-y: scroll;
+    #groupMessages {
+      height: 500px;
+      overflow-y: scroll;
+    }
 
     .group-body-message {
-      p.text-right, p.text-left {
+      p {
         margin: 0;
       }
     }
+  }
+}
+
+.wrapper-message-image {
+  position: relative;
+
+  .message-image {
+    background-color: rgba(0, 0, 0, 0.73);
+    position: absolute;
+    width: 100%;
+    min-height: 40px;
+    padding: 10px;
+    bottom: 0;
+
+    span {
+      font-size: 14px;
+      color: #fff;
+    }
+  }
+
+  .thumbnail {
+    border-color: transparent;
+    border: none;
+    padding: 0px;
   }
 }
