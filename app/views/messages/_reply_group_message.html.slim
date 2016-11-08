@@ -1,5 +1,6 @@
 .col-md-12.group-body-message style="#{ 'text-align: right ' if is_current_user}"
-  p = message.body
+  = generate_deal_thumbnail(message.body, is_current_user)
+  / p = message.body
   p
     i 
       small #{sender_name} #{time_ago_in_words(message.created_at)} ago
