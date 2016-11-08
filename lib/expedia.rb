@@ -79,7 +79,6 @@ module Expedia
             url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
             xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
             url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-            
             begin
               response = HTTParty.get(url_custom_params)
 
@@ -107,9 +106,12 @@ module Expedia
 
                     hotel_filter    = hotels_list.group_by {|el| el["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= current_user.total_credit_in_usd ? :affordable : :notaffordable} 
 
-                    affordable      = hotel_filter[:affordable].each {|k, v| k["is_notaffordable"] = false}
-                    notaffordable   = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}
-                    hotels_list     = (affordable || []) + (notaffordable || [])
+                    if hotel_filter[:affordable]
+                      affordable = hotel_filter[:affordable].each {|k, v| k["is_notaffordable"] = false }
+                    end
+
+                    notaffordable = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}
+                    hotels_list   = (affordable || []) + (notaffordable || [])
                     
                     @num_of_hotel = hotels_list.size
                     @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
