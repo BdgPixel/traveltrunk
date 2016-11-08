@@ -70,6 +70,13 @@ class User < ActiveRecord::Base
     [latest_conversation_activities, unread_message_count]
   end
 
+  def get_three_notifications
+    PublicActivity::Activity
+      .where(owner_id: self.id, key: 'messages.private')
+      .where.not(recipient_id: self.id)
+      .order(id: :desc).limit(3)
+  end
+
   def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
     room_hash = {}
     
