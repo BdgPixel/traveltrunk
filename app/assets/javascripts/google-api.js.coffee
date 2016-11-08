@@ -18,6 +18,7 @@ initAutocomplete = (selector) ->
     myTruncatedString = value_field.substring(0, length)
     place = autocomplete.getPlace()
     $('#autocomplete').val myTruncatedString
+    $('#hide_autocomplete').val value_field
 
     if $('.lat').length > 0 and $('.lng').length > 0
       $('.lat').val place.geometry.location.lat()

@@ -2,7 +2,7 @@
   .col-xs-4.no-pad-left.no-pad-right
     .form-group
       = f.input_field :destination_string, id: "autocomplete", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
-      = f.input_field :destination_string_hide, id: "hide_autocomplete"
+      = f.input_field :destination_string_hide, as: :hidden, id: "hide_autocomplete"
 
       - if controller_name.eql? 'deals'
         span
