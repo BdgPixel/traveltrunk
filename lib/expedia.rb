@@ -109,8 +109,10 @@ module Expedia
                     if hotel_filter[:affordable]
                       affordable = hotel_filter[:affordable].each {|k, v| k["is_notaffordable"] = false }
                     end
-
-                    notaffordable = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}
+                    
+                    if hotel_filter[:notaffordable]
+                      notaffordable = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}  
+                    end
                     hotels_list   = (affordable || []) + (notaffordable || [])
                     
                     @num_of_hotel = hotels_list.size

@@ -622,18 +622,24 @@
 }
 .overlay:after {
   content:'\A';
-  width:96%; height:74%;
+  width:96%; height:300px;
   top:0; left:7px;
   background:rgba(0,0,0,0.6);
+  @media screen and (max-width: 480px) {
+    width:93%;
+    left: 14px;
+  }
 }
 .overlay:before {
   content: attr(data-content);
   width:100%;
   color:#fff;
   z-index:1;
-  bottom:150px;
+  bottom:55%;
   padding:4px 10px;
   text-align:center;
+  display: block;
+  font-size: 20px;
 }
 .overlay:hover:after, .overlay:hover:before {
   opacity:1;

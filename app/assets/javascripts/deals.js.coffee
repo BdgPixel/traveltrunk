@@ -354,6 +354,7 @@ $(document).ready ->
   action = $('body').data('action')
 
   if controller == 'deals' && action == 'index'
+    Turbolinks.pagesCached 0
     disableEnterFormSubmit()
 
     validateSearchForm()
