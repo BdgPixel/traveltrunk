@@ -106,6 +106,8 @@ group :development, :test do
   gem 'capistrano-passenger'
 
   gem 'capistrano-sidekiq'
+
+  gem 'did_you_mean'
 end
 
 gem 'rails_12factor', group: :production

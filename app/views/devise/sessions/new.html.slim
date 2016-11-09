@@ -2,11 +2,18 @@
   .row
     .col-md-6.col-md-offset-3
       .wrapper-login
+        - if flash[:alert]
+          #notice.alert.alert-warning.alert-dismissible role="alert"
+            button type="button" class="close" data-dismiss="alert" aria-label="Close"
+              span aria-hidden="true" &times;
+
+            strong &nbsp; Notice: &nbsp;
+            span 
+              = flash[:alert]
         .login
           = form_for(resource, as: resource_name, url: session_path(resource_name)) do |f|
             .form-group
               = f.email_field :email, autofocus: true, class: 'form-control',  placeholder: 'Email Address'
-
             .form-group
               = f.password_field :password, autocomplete: "off", class: 'form-control', placeholder: 'Password'
 

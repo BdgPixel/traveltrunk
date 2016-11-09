@@ -37,7 +37,7 @@ class User < ActiveRecord::Base
   after_create :send_mail
 
   def send_mail
-    UserMailer.delay.welcome(self)
+    UserMailer.welcome(self).deliver_now
   end
 
   def no_profile?
