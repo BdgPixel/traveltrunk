@@ -369,7 +369,7 @@ shareHotel = () ->
       $('form.new_message').attr('action', '/conversations/send_group')
 
 shareRecipientAutocomplete = ->
-  selector = '#user_group_collection'
+  selector = '#contact_list'
 
   $(selector).tokenInput( '/conversations/users_collection.json', {
     allowFreeTagging: true
@@ -526,3 +526,6 @@ $(document).ready ->
         $('.amount').val parseFloat($('#totalCharges').data('total-charges'))
 
       return
+
+    $('#recentContact').on 'shown.bs.dropdown', ->
+      $('#token-input-contact_list').attr 'placeholder', 'Enter name'
