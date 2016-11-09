@@ -387,6 +387,7 @@ shareRecipientAutocomplete = ->
         $('form.new_message').get(0).reset();
         $('#shareHotelModal').modal backdrop: 'static'
         $('.user_id').val(item.id)
+        $('.hotel_link').val window.location.href
 
         hotelName = truncateHotelName($('.hotel-name:first').text())
 
