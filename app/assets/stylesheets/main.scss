@@ -1374,7 +1374,10 @@ a.login.show {
   .messages-wrapper, .share-recipient-wrapper {
     // overflow: auto;
     max-height: 250px;
-    margin-top: 20px
+    margin-top: 20px;
+    @media(max-width:992px){
+      margin-top:-30px;
+    }
   }  
      
   .message-heading, .message-footer  {
@@ -1579,8 +1582,8 @@ ul.token-input-list {
 }
 
 .send:after {
-  box-shadow: inset 0px 10px 0 2px #fff, inset 11px -4px 0 -2px #F27935;
-  right: -19px;
+  box-shadow: inset 0px 13px 0 2px #fff, inset 14px -4px 0 -2px #F27935;
+  right: -14px;
 }
 
 * {
