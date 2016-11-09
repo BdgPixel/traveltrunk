@@ -44,14 +44,15 @@
                       br
                     .share-recipient-wrapper
                       .col-md-12
-                        .row
-                          .message-item-small.col-md-12
-                            hr
-                            = link_to '#', class: 'share-hotel-link', data: { recipient_id: 0, recipient_name: 'Your Group\'s Savings', toggle: 'modal', target: '#shareHotelModal', type: 'group_message' }
-                              p
-                                = image_tag 'default_user.png', class: 'img-circle', height: "30px", width: "30px"
-                                
-                                | &nbsp;Your Group's Savings
+                        - if @group
+                          .row
+                            .message-item-small.col-md-12
+                              hr
+                              = link_to '#', class: 'share-hotel-link', data: { recipient_id: 0, recipient_name: 'Your Group\'s Savings', toggle: 'modal', target: '#shareHotelModal', type: 'group_message' }
+                                p
+                                  = image_tag 'default_user.png', class: 'img-circle', height: "30px", width: "30px"
+                                  
+                                  | &nbsp;Your Group's Savings
 
                         - @recent_contacts.each do |user|
                           .row
