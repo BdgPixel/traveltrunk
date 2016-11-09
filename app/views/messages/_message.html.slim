@@ -1,21 +1,20 @@
 = link_to link_message(message), id: "message-#{ message.try(:ancestry) || message.id }", class: 'content link-message'
-
-  .message-item.col-md-12 class="#{message_type(message, notification)}"
+  .message-item.col-md-12 class="#{message_notification_class(action_type, notification_is_read)}"
     .col-md-8
       .row
         p.message-title
-          - if is_recipient
-            - unless notification.is_read
+          - if action_type.eql? 'send'
+            | Message to&nbsp;
+          - else
+            - unless notification_is_read
               | New&nbsp;
 
             | Message from&nbsp;
-          - else
-            | Message to&nbsp;
 
-          - if message.topic
+          - if message.topic.eql? 'Group Message'
             | Group Message
           - else
-            = is_recipient ? message.sent_messageable.full_name : message.received_messageable.full_name
+            = action_type.eql?('send') ? message.received_messageable.full_name : message.sent_messageable.full_name
 
     .col-md-4
       .row.pull-right 
@@ -24,9 +23,9 @@
     .col-md-12
       .row
         p.message-info 
-          = generate_deal_thumbnail(message.body, true, true)
+          = generate_deal_thumbnail(message.body, true)
 
-        - if message.topic
+        - if message.topic.eql? 'Group Chat'
           .text-left
             i
               small

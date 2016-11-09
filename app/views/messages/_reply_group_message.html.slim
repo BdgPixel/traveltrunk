@@ -1,45 +1,6 @@
-.message class="#{is_current_user ? 'send' : 'receive'}"
-  = generate_deal_thumbnail(message.body, is_current_user)
+.message class="#{action_type}"
+  = generate_deal_thumbnail(message.body)
 
   br
   i
     small #{sender_name} #{time_ago_in_words(message.created_at)} ago
-
-/ = generate_deal_thumbnail(message.body, is_current_user)
-/ / p = message.body
-/ br
-/ i 
-/   small #{sender_name} #{time_ago_in_words(message.created_at)} ago
-
-/ .group-body-message class="#{is_current_user ? 'pull-right' : 'pull-left' }"
-/   p class="#{is_current_user ? 'text-right' : 'text-left' }"
-/     = message.body
-/   .message-info class="#{is_current_user ? 'pull-right' : 'pull-left' }"
-/   i
-/     small #{sender_name} #{time_ago_in_words(message.created_at)} ago
-/   hr
-/ .new-column-message
-/   br
-/   br
-
-/ .pull-right.message-body
-/   p Lorem ipsum set dollor set ammet Lorem ipsum set dollor set ammet
-/   .text-right.message-info
-/     i
-/       small You about 2 hours ago
-/ br
-/ br
-/ hr
-/ .pull-left.message-body
-/   p  Lorem ipsum set dollor set ammet Lorem ipsum set dollor set ammet
-/   .text-left
-/     i
-/       small Wiro Sableng about 1 hours ago
-/ br
-/ br
-/ hr
-/ .pull-left.message-body
-/   p  Lorem ipsum set dollor set ammet Lorem ipsum set dollor set ammet
-/   .text-left
-/     i
-/       small Sinto Gendeng about 5 minutes ago

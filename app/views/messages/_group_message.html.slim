@@ -30,13 +30,17 @@
       #groupChatBox.col-md-12.message-item-wrapper
         - if @group_messages.present?
           - @group_messages.conversation.reverse.each do |message|
-            = render 'messages/reply_group_message', sender_name: 'You',
-              is_current_user: message.sent_messageable_id.eql?(current_user.id),
-              message: message
+            - if message.sent_by? current_user.id
+              = render 'messages/reply_group_message', sender_name: 'You',
+                action_type: 'send',
+                message: message
+            - else
+              = render 'messages/reply_group_message', sender_name: message.sender_name,
+                action_type: 'receive',
+                message: message
 
             / = render 'messages/reply_group_message', sender_name: message.sent_messageable.full_name,
             /   is_current_user: false, message: message
         
-      #renderMessageForm.row
-        .col-md-12
-          = render 'messages/form', url: send_group_messages_path
+      .col-md-12.reply-box-container
+        = render 'messages/form', url: send_group_messages_path

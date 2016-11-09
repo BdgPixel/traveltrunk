@@ -1515,6 +1515,7 @@ ul.token-input-list {
   padding: 0;
 }
 
+// Message Styles
 .msg-item-right,
 .msg-item-left{
   background:#eee;
@@ -1524,7 +1525,7 @@ ul.token-input-list {
 }
 
 .message-item-wrapper{
-  max-height: 500px;
+  max-height: 250px;
   overflow: auto;
 
   .msg-item-right{
@@ -1587,4 +1588,12 @@ ul.token-input-list {
 
 .fix-overflow{
   overflow: hidden;
+}
+
+.reply-box-container{
+  margin-top: 20px; 
+}
+
+#collapseGroupChat{
+  margin-top: 20px;
 }

@@ -1,11 +1,9 @@
 $('#message-<%= @first_message.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, is_recipient: false, is_recipient_group: false, is_group: (@group.message.topic ? true : false) %>");
-$('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', is_current_user: true, message: @reply_message %>");
+$('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
+
+// append new chat
+$('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', action_type: 'send', message: @message %>");
 $('form.new_message').get(0).reset();
 
-
-
-
-
-
-
+// this method is on application.js.coffee
+scrollToBottom('#groupChatBox')

@@ -248,7 +248,7 @@ initUsersCollection = ()->
   $('#messageDropdown').on 'shown.bs.dropdown', ->
     $('#token-input-user_collection').attr 'placeholder', 'Send a new message to..'
 
-scrollToBottom = (selector) ->
+root.scrollToBottom = (selector) ->
   $('html, body').animate { scrollTop: $(document).height() }, 100
   $(selector).animate { scrollTop: $(selector).prop('scrollHeight') }, 500
 

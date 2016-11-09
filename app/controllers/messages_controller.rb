@@ -71,11 +71,11 @@ class MessagesController < ApplicationController
     is_owner = current_user.group.present?
 
     members = @group.all_members
-    # @recipient = is_owner ? (member || current_user) : @group.user
     message_hash = { topic: 'Group Message', body: body_message }
 
-    if @group.message
-      @first_message = @group.message
+    @first_message = @group.message
+
+    if @first_message.present?
       @message = current_user.reply_to(@first_message, message_hash)
     else
       @message = current_user.send_message(@group.members.first, message_hash)
@@ -87,14 +87,11 @@ class MessagesController < ApplicationController
         recipient: member
       @notification = notification if member.id.eql?(current_user.id)
     end
-
-    @message_count = @message.received_messageable.messages.conversations.select { |c| !c.opened }.count
-    respond_to { |format| format.js }
   end
 
   def reply
-    @reply_message = current_user.reply_to(@message, message_params[:body])
-    @first_message = @reply_message.conversation.last
+    @first_message = @message.conversation.last
+    @reply_message = current_user.reply_to(@first_message, message_params[:body])
 
     @notification = @reply_message.create_activity key: "messages.private", owner: current_user,
       recipient: @reply_message.received_messageable
@@ -115,15 +112,13 @@ class MessagesController < ApplicationController
         recipient: member
     end
 
-    # @message_count = @first_message.received_messageable.messages.conversations
-    #   .select { |c| !c.opened if c.received_messageable_id.eql?(@reply_message.received_messageable_id) }.count
-
     respond_to { |format| format.js }
   end
 
   private
     def set_message
-      @message = CustomMessage.find params[:id]
+      @message = CustomMessage.find(params[:id]) rescue nil
+      redirect_to savings_url, notice: "No conversations found for that id" unless @message
     end
 
     def message_params

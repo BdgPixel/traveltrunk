@@ -56,8 +56,10 @@
                     br
                   .messages-wrapper
                     - @message_notifications.each do |notification|
-                      - if notification.trackable
-                        = render 'messages/message', notification: notification, message: notification.trackable, is_recipient: !notification.trackable.sent_messageable_id.eql?(current_user.id)
+                      - if message = notification.trackable
+                        = render 'messages/message', message: message,
+                          action_type: (message.sent_messageable_id.eql?(current_user.id) ? 'send' : 'receive'),
+                          notification_is_read: notification.is_read
 
               li.link-top-login = link_to 'DEALS', deals_path
               li.link-top-login = link_to 'SAVINGS', savings_path

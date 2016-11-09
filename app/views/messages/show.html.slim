@@ -6,15 +6,10 @@ br
   .col-md-6.col-md-offset-3
     #privateChatBox.col-md-12.message-item-wrapper
       - @conversations.each do |message|
-        = render 'reply_message', sender_name: 'You', is_current_user: message.sent_messageable_id.eql?(current_user.id), message: message
-        / .message-item.col-md-12.fix-overflow
-        /   - if conversation.sent_messageable_id.eql? current_user.id
-        /     .send.message
-        /       = render 'reply_message', sender_name: 'You', is_current_user: true, message: conversation
-        /   - else
-        /     .receive.message
-        /       = render 'reply_message', sender_name: conversation.sent_messageable.full_name,
-        /         is_current_user: false, message: conversation
+        - if message.sent_by? current_user.id
+          = render 'reply_message', sender_name: 'You', action_type: 'send', message: message
+        - else
+          = render 'reply_message', sender_name: message.sender_name, action_type: 'receive', message: message
         
-    .col-md-12
+    .col-md-12.reply-box-container
       = render 'messages/form', url: reply_message_path(@message)

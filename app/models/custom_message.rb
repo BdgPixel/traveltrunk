@@ -15,4 +15,16 @@ class CustomMessage < ActsAsMessageable::Message
   def is_last?
     self.id.eql? self.conversation.first.id
   end
+
+  def sender_name
+    self.sent_messageable.try(:profile).try(:full_name)
+  end
+
+  def sent_by?(user_id)
+    self.sent_messageable_id.eql?(user_id)
+  end
+
+  def is_group_chat?
+    self.topic.eql? 'Group Message'
+  end
 end

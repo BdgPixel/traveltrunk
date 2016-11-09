@@ -1,5 +1,5 @@
-.message class="#{is_current_user ? 'send' : 'receive'}"
-  = generate_deal_thumbnail(message.body, is_current_user)
+.message class="#{action_type}"
+  = generate_deal_thumbnail(message.body)
 
   br
   i

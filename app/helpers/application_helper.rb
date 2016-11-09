@@ -41,15 +41,14 @@ module ApplicationHelper
     else
       notification.is_read ? 'read' : 'unread'
     end
-    # if is_group
-    #   unless message.sent_messageable_id.eql? current_user.id
-    #     message.opened ? 'read' : 'unread'
-    #   end
-    # else
-    #   if message.received_messageable_id.eql? current_user.id
-    #     message.opened ? 'read' : 'unread'
-    #   end
-    # end
+  end
+
+  def message_notification_class(message_action_type, notification_is_read)
+    if message_action_type.eql? 'send'
+      'read'
+    else
+      notification_is_read ? 'read' : 'unread'
+    end
   end
 
   def link_message(message)
@@ -60,7 +59,7 @@ module ApplicationHelper
     end
   end
 
-  def generate_deal_thumbnail(deal_string, is_current_user, is_notification = false)
+  def generate_deal_thumbnail(deal_string, is_notification = false)
     deal_string_info = deal_string.scan(/\[shared: (.*?)\]/)
 
     if deal_string_info.present?
