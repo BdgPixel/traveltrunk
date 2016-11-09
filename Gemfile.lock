@@ -123,6 +123,8 @@ GEM
     devise_invitable (1.6.0)
       actionmailer (>= 3.2.6)
       devise (>= 3.2.0)
+    did_you_mean (0.10.0)
+      interception
     diff-lcs (1.2.5)
     dotenv (2.1.1)
     dotenv-rails (2.1.1)
@@ -299,6 +301,7 @@ GEM
     i18n (0.7.0)
     i18n_data (0.7.0)
     inflecto (0.0.2)
+    interception (0.5)
     ipaddress (0.8.3)
     jbuilder (2.4.1)
       activesupport (>= 3.0.0, < 5.1)
@@ -555,6 +558,7 @@ DEPENDENCIES
   devise
   devise-async
   devise_invitable
+  did_you_mean
   dotenv-rails
   exception_notification
   fog
@@ -607,4 +611,4 @@ RUBY VERSION
    ruby 2.2.3p173
 
 BUNDLED WITH
-   1.12.5
+   1.13.6

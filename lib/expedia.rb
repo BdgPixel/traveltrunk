@@ -104,12 +104,8 @@ module Expedia
                         hotel_y["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> hotel_x["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                       end
 
-                    total_credit = 
-                      if current_user.group || current_user.joined_groups.present?
-                        (current_user.group || current_user.joined_groups.first).total_credit / 100.0
-                      else
-                        current_user.total_credit_in_usd
-                      end
+                    group   = current_user.group || current_user.joined_groups.first
+                    total_credit = group.present? ? (group.total_credit / 100.0) : current_user.total_credit_in_usd
 
                     hotel_filter = hotels_list.group_by {|el| el["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit ? :affordable : :notaffordable} 
 
