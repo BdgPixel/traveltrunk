@@ -67,28 +67,24 @@ module ApplicationHelper
       image, title, url = deal_string_info.last.first.split('|')
 
       if is_notification
-        deal_string.gsub!(/\[shared: (.*?)\]/, "Shared #{title} ")
+        deal_string.gsub!(/\[shared: (.*?)\]/, "Shared #{title}")
         deal_string = truncate(deal_string, length: 60, omission: '...')
       else
         deal_thumbnail_html =
-          content_tag :div, class: "col-xs-12 col-md-12" do
-            content_tag :div, class: "col-xs-6 col-md-4 #{is_current_user ? 'pull-right' : 'pull-left' }" do
-              content_tag :div, class: 'wrapper-message-conversation' do
-                concat(content_tag(:div, class: 'title-hotel') {
-                  content_tag(:span, truncate(title, length: 17, omission: '...'))
-                })
+          content_tag :div, class: 'wrapper-message-conversation no-padding' do
+            concat(content_tag(:div, class: 'title-hotel') {
+              content_tag(:span, truncate(title, length: 17, omission: '...'))
+            })
 
-                concat(link_to(url, class: 'thumbnail') {
-                  image_tag image, class: 'show-hotel-image' 
-                })
-              end
-            end
+            concat(link_to(url, class: 'thumbnail') {
+              image_tag image, class: 'show-hotel-image' 
+            })
           end
 
         deal_string.gsub!(/\[shared: (.*?)\]/, deal_thumbnail_html)
       end
     end
-    
+
     deal_string.html_safe
   end
 end

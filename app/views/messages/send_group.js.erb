@@ -1,8 +1,14 @@
+// display success popup and hide message popup
 $('#messageSuccessfullySent').html("<%= j render 'success' %>");
 $('#newMessageModal').modal('hide');
 $('#shareHotelModal').modal('hide');
 $('#messageSuccess').modal({ backdrop: 'static' });
+
+// replace previous notification and append a new one
 $('#message-<%= @first_message.try(:id) %>').remove();
 $('.messages-wrapper').prepend("<%= j render 'message', notification: @notification, message: @notification.trackable, is_recipient: !@notification.trackable.sent_messageable_id.eql?(current_user.id) %>");
-$('#groupMessages').append("<%= j render 'reply_group_message', sender_name: 'You', is_current_user: true, message: @message %>");
+
+// append new chat
+$('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', is_current_user: true, message: @notification.trackable %>");
+
 $('form.new_message').get(0).reset();
