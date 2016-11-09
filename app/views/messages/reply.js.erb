@@ -1,4 +1,5 @@
 $('#message-<%= @first_message.try(:id) %>').remove();
 $('.messages-wrapper').prepend("<%= j render 'message', notification: @notification, message: @notification.trackable, is_recipient: !@notification.trackable.sent_messageable_id.eql?(current_user.id) %>");
-$('.content-conversation:last').after("<%= j render 'reply_message', sender_name: 'You', is_current_user: true, message: @reply_message %>");
+$('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', is_current_user: true, message: @reply_message %>");
 $('form.new_message').get(0).reset();
+$('#privateChatBox').animate({ scrollTop: $('#privateChatBox').height() })

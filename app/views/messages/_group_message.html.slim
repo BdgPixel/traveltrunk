@@ -1,0 +1,42 @@
+/ #collapseGroupChat.collapse
+/   .container
+/     .col-md-6.col-md-offset-3
+/       .panel.panel-default
+/         .panel-heading
+/           button.close data-target="#collapseGroupChat" data-toggle="collapse" type="button"
+/             span aria-hidden="true" &times;
+/           br
+/         .panel-body
+/           #groupMessages.col-md-12.message-item-wrapper
+/             - if @group_messages.present?
+/               - @group_messages.conversation.reverse.each do |conversation|
+/                 .col-md-12.fix-overflow
+/                   - if conversation.sent_messageable_id.eql? current_user.id
+/                     .send.message
+/                       = render 'messages/reply_group_message', sender_name: 'You', is_current_user: true, message: conversation
+/                   - else
+/                     .receive.message
+/                       = render 'messages/reply_group_message', sender_name: conversation.sent_messageable.full_name,
+/                         is_current_user: false, message: conversation
+            
+/           #renderMessageForm.row
+/             .col-md-12
+/               = render 'messages/form', url: send_group_messages_path
+
+
+#collapseGroupChat.collapse
+  .container
+    .col-md-6.col-md-offset-3
+      #groupChatBox.col-md-12.message-item-wrapper
+        - if @group_messages.present?
+          - @group_messages.conversation.reverse.each do |message|
+            = render 'messages/reply_group_message', sender_name: 'You',
+              is_current_user: message.sent_messageable_id.eql?(current_user.id),
+              message: message
+
+            / = render 'messages/reply_group_message', sender_name: message.sent_messageable.full_name,
+            /   is_current_user: false, message: message
+        
+      #renderMessageForm.row
+        .col-md-12
+          = render 'messages/form', url: send_group_messages_path
