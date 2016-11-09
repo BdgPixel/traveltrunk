@@ -459,13 +459,17 @@ class DealsController < ApplicationController
   def create_destination
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
-    custom_params = destination_params
-    
+    if params[:search_deals][:destination_string_hide].present?
+      custom_params = destination_params
+    else
+      custom_params = destination_with_hide_params
+    end
+
     custom_params.merge!({
       arrival_date:   arrival_date,
       departure_date: departure_date
     })
-    
+
     if user_signed_in?
       if @destination
         @destination.update(custom_params)
@@ -506,6 +510,14 @@ class DealsController < ApplicationController
     end
 
     def destination_params
+      params.require(:search_deals).permit(:destination_string, :city, :state_province_code,
+        :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code,
+        :number_of_adult)
+    end
+
+    def destination_with_hide_params
+      # need refactor
+      params[:search_deals][:destination_string] = params[:search_deals][:destination_string_hide]
       params.require(:search_deals).permit(:destination_string, :city, :state_province_code,
         :country_code, :latitude, :longitude, :arrival_date, :departure_date, :postal_code,
         :number_of_adult)
