@@ -36,11 +36,11 @@
                 .rating-text style="clear:both" = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
               .col-xs-12.col-md-6.hotel-voter-list-container
-                .dropdown.pull-right.text-right.col-md-12
+                #recentContact.dropdown.pull-right.text-right.col-md-12
                   = link_to 'Share this', "javascript:void(0)", class: '', data: { toggle: 'dropdown' }
                   ul.dropdown-menu aria-labelledby="dLabel" 
                     .col-md-12
-                      = text_field_tag :user_group_collection, nil, placeholder: 'Enter name'
+                      = text_field_tag :contact_list, nil, placeholder: 'Enter name'
                       br
                     .share-recipient-wrapper
                       .col-md-12
