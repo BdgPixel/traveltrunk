@@ -67,7 +67,7 @@ module ApplicationHelper
       image, title, url = deal_string_info.last.first.split('|')
 
       if is_notification
-        deal_string.gsub!(/\[shared: (.*?)\]/, "Shared #{title}")
+        deal_string.gsub!(/\[shared: (.*?)\]/, "Shared #{title} ")
         deal_string = truncate(deal_string, length: 60, omission: '...')
       else
         deal_thumbnail_html =
@@ -88,7 +88,7 @@ module ApplicationHelper
         deal_string.gsub!(/\[shared: (.*?)\]/, deal_thumbnail_html)
       end
     end
-
+    
     deal_string.html_safe
   end
 end
