@@ -4,7 +4,8 @@
       .form-group
         .col-md-12
           = f.input_field :destination_string, id: "autocompleteMobile", value: @destination.try(:destination_string), class: "form-control no-border-radius-right", placeholder: "Where would you like to be?"
-
+          = f.hidden_field :destination_string_hide, id: "hide_autocomplete"
+          
           span.wrapper-icon-delete
             a#btnClearTextMobile href="javascript:void(0)"
               i.icon.delete
