@@ -5,7 +5,7 @@ $('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', a
 // this method is on application.js.coffee
 scrollToBottom('#privateChatBox')
 
-$('form.new_message').get(0).reset();
+$('form.new_message').trigger('reset');
 
 (function(){
   newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;

@@ -11,7 +11,7 @@ if($('#privateChatBox').length > 0){
   $('#messageSuccess').modal({ backdrop: 'static' });
 }
 
-$('form.new_message').get(0).reset();
+$('form.new_message').trigger('reset');
 
 (function(){
   newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
