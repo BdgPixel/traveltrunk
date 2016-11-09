@@ -1369,11 +1369,12 @@ a.login.show {
 }
 
 .messages {
-  min-width: 420px; 
+  min-width: 360px;
 
   .messages-wrapper, .share-recipient-wrapper {
-    overflow: auto;
+    // overflow: auto;
     max-height: 250px;
+    margin-top: 20px
   }  
      
   .message-heading, .message-footer  {
@@ -1393,7 +1394,7 @@ a.login.show {
       
   .message-item {
     text-transform: none !important;
-    padding: 10px;
+    padding: 10px 15px 10px 15px;
   }
 
   .read {

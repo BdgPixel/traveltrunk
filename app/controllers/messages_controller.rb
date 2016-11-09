@@ -6,7 +6,6 @@ class MessagesController < ApplicationController
   def show
     if @message.is_last?
       @conversations = @message.conversation.reverse
-      # binding.pry
       @message.read_notification!(current_user.id)
 
       # if @conversations.last.received_messageable_id.eql? current_user.id
@@ -50,8 +49,18 @@ class MessagesController < ApplicationController
       @message = current_user.send_message(@recipient, body_message)
     end
 
-    @notification = @message.create_activity key: "messages.private", owner: current_user,
-      recipient: @recipient
+    # @notification = @message.create_activity key: "messages.private", owner: current_user,
+    #   recipient: @recipient, trackable_type: 'CustomMessage'
+
+    @notification = PublicActivity::Activity.new(
+      key: "messages.private",
+      owner: current_user,
+      recipient: @recipient,
+      trackable_id: @message.id,
+      trackable_type: 'CustomMessage'
+    )
+
+    @notification.save
 
     @message_count = @message.received_messageable.messages.conversations.select { |c| 
       !c.opened if c.received_messageable_id.eql?(@message.received_messageable_id) }.count
@@ -83,8 +92,18 @@ class MessagesController < ApplicationController
     end
 
     members.each do |member|
-      notification = @message.create_activity key: "messages.group", owner: current_user,
-        recipient: member
+      # notification = @message.create_activity key: "messages.group", owner: current_user,
+      #   recipient: member
+
+      notification = PublicActivity::Activity.new(
+        key: "messages.group",
+        owner: current_user,
+        recipient: member,
+        trackable_id: @message.id,
+        trackable_type: 'CustomMessage'
+      )
+
+      notification.save
       @notification = notification if member.id.eql?(current_user.id)
     end
   end
@@ -93,8 +112,17 @@ class MessagesController < ApplicationController
     @first_message = @message.conversation.last
     @reply_message = current_user.reply_to(@first_message, message_params[:body])
 
-    @notification = @reply_message.create_activity key: "messages.private", owner: current_user,
-      recipient: @reply_message.received_messageable
+    # @notification = @reply_message.create_activity key: "messages.private", owner: current_user,
+    #   recipient: @reply_message.received_messageable,  trackable_type: 'CustomMessage'
+
+    @notification = PublicActivity::Activity.new(
+      key: "messages.private",
+      owner: current_user,
+      recipient: @reply_message.received_messageable,
+      trackable_id: @reply_message.id, trackable_type: 'CustomMessage'
+    )
+
+    @notification.save
 
     @message_count = @first_message.received_messageable.messages.conversations
       .select { |c| !c.opened if c.received_messageable_id.eql?(@reply_message.received_messageable_id) }.count
