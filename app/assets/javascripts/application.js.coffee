@@ -321,5 +321,11 @@ ready = ->
   $(document).on "click", ".popover .close" , ()->
     $(this).parents(".popover").popover('hide');
 
+  # hide all dropdown when scrolling
+  $(window).scroll ->
+    $('.dropdown').removeClass 'open'
+    return
+
+
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
