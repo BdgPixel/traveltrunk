@@ -459,10 +459,10 @@ class DealsController < ApplicationController
   def create_destination
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
-    if params[:search_deals][:destination_string_hide].present?
-      custom_params = destination_params
-    else
+    if params[:search_deals][:destination_string_hide]
       custom_params = destination_with_hide_params
+    else
+      custom_params = destination_params
     end
 
     custom_params.merge!({
