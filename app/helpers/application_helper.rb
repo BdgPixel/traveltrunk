@@ -60,6 +60,7 @@ module ApplicationHelper
   end
 
   def generate_deal_thumbnail(deal_string, is_notification = false)
+    deal_string = deal_string.dup
     deal_string_info = deal_string.scan(/\[shared: (.*?)\]/)
 
     if deal_string_info.present?
