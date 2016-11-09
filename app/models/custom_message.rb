@@ -2,8 +2,9 @@ class CustomMessage < ActsAsMessageable::Message
   include PublicActivity::Model
 
   scope :between, -> (sender_id, recipient_id) { 
-    where('(sent_messageable_id = :sender_id AND received_messageable_id = :recipient_id)
-      OR (sent_messageable_id = :recipient_id AND received_messageable_id = :sender_id)',
+    where('((sent_messageable_id = :sender_id AND received_messageable_id = :recipient_id)
+      OR (sent_messageable_id = :recipient_id AND received_messageable_id = :sender_id))
+      AND topic IS NULL',
       { sender_id: sender_id, recipient_id: recipient_id })
   }
 

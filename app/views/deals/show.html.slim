@@ -203,7 +203,7 @@
                   .message-image
                     span lorem impsum
 
-                  = link_to 'javascrip:void(0)', class: 'thumbnail'
+                  = link_to '#', class: 'thumbnail'
                     = image_tag @featured_image['url'], class: 'show-hotel-image'
               = f.input_field :share_image, as: :hidden, value: @featured_image['url'], class: 'share-image'
               = f.input_field :hotel_name, as: :hidden, value: unescape_expedia_html(@hotel_information["HotelSummary"]["name"]), class: 'hotel_name'
