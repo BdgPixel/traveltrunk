@@ -83,7 +83,7 @@ class MessagesController < ApplicationController
     if @first_message.present?
       @message = current_user.reply_to(@first_message, message_hash)
     else
-      @message = current_user.send_message(@group.members.first, message_hash)
+      @first_message = @message = current_user.send_message(@group.members.first, message_hash)
       @group.update(message_id: @message.id)
     end
 
