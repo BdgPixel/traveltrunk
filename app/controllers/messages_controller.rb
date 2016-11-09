@@ -6,7 +6,6 @@ class MessagesController < ApplicationController
   def show
     if @message.is_last?
       @conversations = @message.conversation.reverse
-      # binding.pry
       @message.read_notification!(current_user.id)
 
       # if @conversations.last.received_messageable_id.eql? current_user.id
@@ -113,7 +112,6 @@ class MessagesController < ApplicationController
   end
 
   def reply
-    # binding.pry
     @reply_message = current_user.reply_to(@message, message_params[:body])
     @first_message = @reply_message.conversation.last
 
