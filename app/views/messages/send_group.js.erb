@@ -15,3 +15,18 @@ if($('#groupChatBox').length > 0){
 }
 
 $('form.new_message').get(0).reset();
+
+<% publish_to "/private_messages/#{@message.received_messageable_id}" do %>
+  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send',
+    notification_is_read: @notification.is_read, message: @message %>");
+  
+  if($('#privateChatBox').length > 0){
+    $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @message.sender_name,
+      action_type: 'receive', message: @message %>");
+
+    scrollToBottom('#privateChatBox');
+
+    currNotifCount = $('.message-item.unread').length()
+    $('#messageCount').text(currNotifCount + 1)
+  }
+<% end %>

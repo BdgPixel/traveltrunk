@@ -9,7 +9,7 @@ class CustomMessage < ActsAsMessageable::Message
   }
 
   def read_notification!(user_id)
-    self.activities.where(recipient_id: user_id).update_all(is_read: true)
+    self.custom_activities.where(recipient_id: user_id).update_all(is_read: true)
   end
 
   def is_last?
@@ -20,11 +20,19 @@ class CustomMessage < ActsAsMessageable::Message
     self.sent_messageable.try(:profile).try(:full_name)
   end
 
+  def recipient_name
+    self.received_messageable.try(:profile).try(:full_name)
+  end
+
   def sent_by?(user_id)
     self.sent_messageable_id.eql?(user_id)
   end
 
   def is_group_chat?
     self.topic.eql? 'Group Message'
+  end
+
+  def custom_activities
+    PublicActivity::Activity.where(trackable_type: 'CustomMessage', trackable_id: self.id)
   end
 end

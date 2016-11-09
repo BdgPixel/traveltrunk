@@ -6,3 +6,41 @@ $('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', a
 scrollToBottom('#privateChatBox')
 
 $('form.new_message').get(0).reset();
+
+(function(){
+  newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+  console.log(newNotifCount);
+  $('#messageCount').text(newNotifCount);
+
+  if(newNotifCount > 0){
+    $('#messageCount').removeClass('hide');
+  } else {
+      $('#messageCount').addClass('hide');
+    }
+}());
+
+<% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
+  $('#message-<%= @first_message.try(:id) %>').remove();
+
+  (function(){
+    $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
+      notification_is_read: @notification.is_read, message: @reply_message %>");
+    
+    if($('#privateChatBox').length > 0){
+      $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @reply_message.sender_name,
+        action_type: 'receive', message: @reply_message %>");
+
+      scrollToBottom('#privateChatBox');
+    }
+
+    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+    console.log(newNotifCount);
+    $('#messageCount').text(newNotifCount);
+
+    if(newNotifCount > 0){
+      $('#messageCount').removeClass('hide');
+    } else {
+      $('#messageCount').addClass('hide');
+    }
+  }());
+<% end %>

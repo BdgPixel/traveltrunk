@@ -59,7 +59,7 @@
                     - @message_notifications.each do |notification|
                       - if message = notification.trackable
                         = render 'messages/message', message: message,
-                          action_type: (message.sent_messageable_id.eql?(current_user.id) ? 'send' : 'receive'),
+                          action_type: (message.sent_by?(current_user.id) ? 'send' : 'receive'),
                           notification_is_read: notification.is_read
 
               li.link-top-login = link_to 'DEALS', deals_path

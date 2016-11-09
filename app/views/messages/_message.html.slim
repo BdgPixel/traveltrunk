@@ -14,7 +14,7 @@
           - if message.topic.eql? 'Group Message'
             | Group Message
           - else
-            = action_type.eql?('send') ? message.received_messageable.full_name : message.sent_messageable.full_name
+            = action_type.eql?('send') ? message.recipient_name : message.sender_name
 
     .col-md-4
       .row.pull-right 

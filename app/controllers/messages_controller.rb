@@ -6,11 +6,7 @@ class MessagesController < ApplicationController
   def show
     if @message.is_last?
       @conversations = @message.conversation.reverse
-      @message.read_notification!(current_user.id)
-
-      # if @conversations.last.received_messageable_id.eql? current_user.id
-      #   @conversations.last.open
-      # end
+      @conversations.last.try(:read_notification!, current_user.id)
         
       get_message_notifications
     else
