@@ -16,6 +16,7 @@ initAutocomplete = (selector) ->
     length = 47
     value_field  = document.getElementById(selector).value
     myTruncatedString = value_field.substring(0, length)
+    
     place = autocomplete.getPlace()
     $('#autocomplete').val myTruncatedString
     $('#hide_autocomplete').val value_field
