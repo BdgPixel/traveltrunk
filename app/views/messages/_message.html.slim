@@ -25,11 +25,11 @@
         p.message-info 
           = generate_deal_thumbnail(message.body, true)
 
-        - if message.topic.eql? 'Group Chat'
+        - if message.topic.eql? 'Group Message'
           .text-left
             i
               small
-                = is_recipient ? message.sent_messageable.full_name : 'You'
+                = action_type.eql?('send') ? 'You' : message.sender_name
 
   .col-md-12
     .row

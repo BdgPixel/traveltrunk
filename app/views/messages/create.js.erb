@@ -15,7 +15,6 @@ $('form.new_message').trigger('reset');
 
 (function(){
   newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
-  console.log(newNotifCount);
   $('#messageCount').text(newNotifCount);
 
   if(newNotifCount > 0){
@@ -28,19 +27,19 @@ $('form.new_message').trigger('reset');
 <% publish_to "/private_messages/#{@message.received_messageable_id}" do %>
   $('#message-<%= @first_message.try(:id) %>').remove();
 
+  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
+    notification_is_read: @notification.is_read, message: @message %>");
+  
+  if($('#privateChatBox').length > 0){
+    $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @message.sender_name,
+      action_type: 'receive', message: @message %>");
+
+    scrollToBottom('#privateChatBox');
+  }
+
   (function(){
-    $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
-      notification_is_read: @notification.is_read, message: @message %>");
-    
-    if($('#privateChatBox').length > 0){
-      $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @message.sender_name,
-        action_type: 'receive', message: @message %>");
-
-      scrollToBottom('#privateChatBox');
-    }
-
-    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
-    console.log(newNotifCount);
+    console.log($('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item"));
+    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
     $('#messageCount').text(newNotifCount);
 
     if(newNotifCount > 0){

@@ -27,7 +27,7 @@
 #collapseGroupChat.collapse
   .container
     .col-md-6.col-md-offset-3
-      #groupChatBox.col-md-12.message-item-wrapper
+      #groupChatBox.col-md-12.message-item-wrapper data-user-id="#{current_user.id}"
         - if @group_messages.present?
           - @group_messages.conversation.reverse.each do |message|
             - if message.sent_by? current_user.id
