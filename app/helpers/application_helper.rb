@@ -41,15 +41,14 @@ module ApplicationHelper
     else
       notification.is_read ? 'read' : 'unread'
     end
-    # if is_group
-    #   unless message.sent_messageable_id.eql? current_user.id
-    #     message.opened ? 'read' : 'unread'
-    #   end
-    # else
-    #   if message.received_messageable_id.eql? current_user.id
-    #     message.opened ? 'read' : 'unread'
-    #   end
-    # end
+  end
+
+  def message_notification_class(message_action_type, notification_is_read)
+    if message_action_type.eql? 'send'
+      'read'
+    else
+      notification_is_read ? 'read' : 'unread'
+    end
   end
 
   def link_message(message)
@@ -60,29 +59,25 @@ module ApplicationHelper
     end
   end
 
-  def generate_deal_thumbnail(deal_string, is_current_user, is_notification = false)
+  def generate_deal_thumbnail(deal_string, is_notification = false)
     deal_string_info = deal_string.scan(/\[shared: (.*?)\]/)
 
     if deal_string_info.present?
       image, title, url = deal_string_info.last.first.split('|')
 
       if is_notification
-        deal_string.gsub!(/\[shared: (.*?)\]/, "Shared #{title}")
+        deal_string.gsub!(/\[shared: (.*?)\]/, "Shared #{title} ") # don't remove the space after interpolation
         deal_string = truncate(deal_string, length: 60, omission: '...')
       else
         deal_thumbnail_html =
-          content_tag :div, class: "col-xs-12 col-md-12" do
-            content_tag :div, class: "col-xs-6 col-md-4 #{is_current_user ? 'pull-right' : 'pull-left' }" do
-              content_tag :div, class: 'wrapper-message-conversation' do
-                concat(content_tag(:div, class: 'title-hotel') {
-                  content_tag(:span, truncate(title, length: 17, omission: '...'))
-                })
+          content_tag :div, class: 'wrapper-message-conversation no-padding' do
+            concat(content_tag(:div, class: 'title-hotel') {
+              content_tag(:span, truncate(title, length: 17, omission: '...'))
+            })
 
-                concat(link_to(url, class: 'thumbnail') {
-                  image_tag image, class: 'show-hotel-image' 
-                })
-              end
-            end
+            concat(link_to(url, class: 'thumbnail') {
+              image_tag image, class: 'show-hotel-image' 
+            })
           end
 
         deal_string.gsub!(/\[shared: (.*?)\]/, deal_thumbnail_html)

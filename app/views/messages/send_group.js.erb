@@ -1,8 +1,32 @@
-$('#messageSuccessfullySent').html("<%= j render 'success' %>");
-$('#newMessageModal').modal('hide');
-$('#shareHotelModal').modal('hide');
-$('#messageSuccess').modal({ backdrop: 'static' });
+// display success popup and hide message popup
+$('#newMessageModal, #shareHotelModal').modal('hide');
+
+// replace previous notification and append a new one
 $('#message-<%= @first_message.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', notification: @notification, message: @notification.trackable, is_recipient: !@notification.trackable.sent_messageable_id.eql?(current_user.id) %>");
-$('#groupMessages').append("<%= j render 'reply_group_message', sender_name: 'You', is_current_user: true, message: @message %>");
+$('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
+
+if($('#groupChatBox').length > 0){
+  // append new chat
+  $('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', action_type: 'send', message: @message %>");
+  scrollToBottom('#groupChatBox');
+} else {
+  $('#messageSuccessfullySent').html("<%= j render 'success' %>");
+  $('#messageSuccess').modal({ backdrop: 'static' });
+}
+
 $('form.new_message').get(0).reset();
+
+<% publish_to "/private_messages/#{@message.received_messageable_id}" do %>
+  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send',
+    notification_is_read: @notification.is_read, message: @message %>");
+  
+  if($('#privateChatBox').length > 0){
+    $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @message.sender_name,
+      action_type: 'receive', message: @message %>");
+
+    scrollToBottom('#privateChatBox');
+
+    currNotifCount = $('.message-item.unread').length()
+    $('#messageCount').text(currNotifCount + 1)
+  }
+<% end %>

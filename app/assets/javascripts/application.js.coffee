@@ -248,13 +248,16 @@ initUsersCollection = ()->
   $('#messageDropdown').on 'shown.bs.dropdown', ->
     $('#token-input-user_collection').attr 'placeholder', 'Send a new message to..'
 
+root.scrollToBottom = (selector) ->
+  $('html, body').animate { scrollTop: $(document).height() }, 100
+  $(selector).animate { scrollTop: $(selector).prop('scrollHeight') }, 500
+
 showHideCollapseGroupChat = ->
   id = $('.link-message:first').attr('id').split('-')[1]
 
   $('#collapseGroupChat').collapse 'show'
-  n = $(document).height()
-  $('html, body').animate { scrollTop: n }, 250
-  $('.panel-body').animate { scrollTop: n }, 100
+  $('#collapseGroupChat').on 'shown.bs.collapse', ->
+    scrollToBottom('#groupChatBox')
   return
 
 ready = ->
@@ -269,9 +272,12 @@ ready = ->
 
   if $('#groupChatLink').length > 0
     $('#groupChatLink').on 'click', ->
-      $('#collapseGroupChat').on 'show.bs.collapse', ->
-        $('html, body').animate { scrollTop: $(document).height() }, 100
-        $('#groupMessages').animate { scrollTop: $('#groupMessages').height() }, 100
+      $('#collapseGroupChat').on 'shown.bs.collapse', ->
+        scrollToBottom('#groupChatBox')
+
+  if $('#privateChatBox').length > 0
+    scrollToBottom('#privateChatBox')
+    
 
   setTimeout(->
     $('#notice, .alert-dismissible').fadeOut()
@@ -320,6 +326,12 @@ ready = ->
 
   $(document).on "click", ".popover .close" , ()->
     $(this).parents(".popover").popover('hide');
+
+  # hide all dropdown when scrolling
+  $(window).scroll ->
+    $('.dropdown').removeClass 'open'
+    return
+
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()

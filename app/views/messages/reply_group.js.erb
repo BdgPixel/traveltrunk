@@ -1,28 +1,9 @@
-$('#messageSuccessfullySent').html("<%= j render 'success' %>");
-$('#newMessage').modal('hide');
-$('#messageSuccess').modal({ backdrop: 'static' });
 $('#message-<%= @first_message.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, is_recipient: false, is_recipient_group: false, is_group: (@group.message.topic ? true : false) %>");
+$('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
 
-var newColumn = '';
-
-if ($('.new-column-message:last').length > 0) {
-  $('.new-column-message:last').remove();
-  newColumn = '<br><br><hr>';
-}
-
-if ($('.group-body-message').length > 0) {
-  $('.group-body-message:last').after(newColumn + "<%= j render 'reply_group_message', sender_name: @group.message.sent_messageable.full_name, is_current_user: true, message: @group.message %>");
-} else {
-  $('.panel-body').prepend('<div class="group-body-message"></div>');
-  $('.group-body-message').after(newColumn + "<%= j render 'reply_group_message', sender_name: @group.message.sent_messageable.full_name, is_current_user: true, message: @group.message %>");
-}
-
+// append new chat
+$('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', action_type: 'send', message: @message %>");
 $('form.new_message').get(0).reset();
 
-
-
-
-
-
-
+// this method is on application.js.coffee
+scrollToBottom('#groupChatBox')
