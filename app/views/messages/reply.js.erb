@@ -8,7 +8,7 @@ scrollToBottom('#privateChatBox')
 $('form.new_message').trigger('reset');
 
 (function(){
-  newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+  newNotifCount = $('.message-item.unread').length;
   $('#messageCount').text(newNotifCount);
 
   if(newNotifCount > 0){
@@ -32,7 +32,7 @@ $('form.new_message').trigger('reset');
   }
 
   (function(){
-    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+    newNotifCount = $('.message-item.unread').length;
     $('#messageCount').text(newNotifCount);
 
     if(newNotifCount > 0){

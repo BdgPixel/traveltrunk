@@ -17,7 +17,7 @@ if($('#groupChatBox').length > 0){
 $('form.new_message').get(0).reset();
 
 (function(){
-  newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+  newNotifCount = $('.message-item.unread').length;
   $('#messageCount').text(newNotifCount);
 
   if(newNotifCount > 0){
@@ -42,7 +42,7 @@ $('form.new_message').get(0).reset();
     }
 
     (function(){
-      newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+      newNotifCount = $('.message-item.unread').length;
       $('#messageCount').text(newNotifCount);
 
       if(newNotifCount > 0){
