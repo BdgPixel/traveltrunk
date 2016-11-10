@@ -29,7 +29,7 @@ html lang="en"
 
   body data-controller="#{controller_name}" data-action="#{action_name}"
     - if user_signed_in?
-        currentUserId data-user-id="#{current_user.id}"
+        #currentUserId data-user-id="#{current_user.id}"
 
     = yield :css_body
 
