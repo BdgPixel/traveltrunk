@@ -10,16 +10,18 @@ componentForm =
 
 root = exports ? this
 
-initAutocomplete = (selector) ->
+initAutocomplete = (selector, hide_selector) ->
   autocomplete = new (google.maps.places.Autocomplete)(document.getElementById(selector), types: [ 'geocode' ])
-  autocomplete.addListener 'place_changed', () ->
-    length = 47
+  autocomplete.addListener 'place_changed', () ->    
+    place = autocomplete.getPlace()
+    if selector == "autocompleteMobile"
+      length = 30
+    else
+      length = 47
     value_field  = document.getElementById(selector).value
     myTruncatedString = value_field.substring(0, length)
-    
-    place = autocomplete.getPlace()
-    $('#autocomplete').val myTruncatedString
-    $('#hide_autocomplete').val value_field
+    document.getElementById(selector).value = myTruncatedString
+    document.getElementById(hide_selector).value = value_field
 
     if $('.lat').length > 0 and $('.lng').length > 0
       $('.lat').val place.geometry.location.lat()
@@ -94,10 +96,10 @@ initMap = ->
 
 $(document).ready ->
   if $('#autocomplete').length > 0
-    initAutocomplete('autocomplete')
+    initAutocomplete('autocomplete', 'hide_autocomplete')
 
   if $('#autocompleteMobile').length > 0
-    initAutocomplete('autocompleteMobile')
+    initAutocomplete('autocompleteMobile', 'hide_autocompleteMobile')
 
   if $('#map').length > 0
     initMap()
