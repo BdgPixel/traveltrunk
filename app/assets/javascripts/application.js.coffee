@@ -253,7 +253,8 @@ root.scrollToBottom = (selector) ->
   $(selector).animate { scrollTop: $(selector).prop('scrollHeight') }, 500
 
 showHideCollapseGroupChat = ->
-  id = $('.link-message:first').attr('id').split('-')[1]
+  if $('.link-message:first').length > 0
+    id = $('.link-message:first').attr('id').split('-')[1]
 
   $('#collapseGroupChat').collapse 'show'
   $('#collapseGroupChat').on 'shown.bs.collapse', ->
