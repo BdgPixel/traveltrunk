@@ -34,12 +34,6 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :async,
          :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
-  after_create :send_mail
-
-  def send_mail
-    UserMailer.welcome(self).deliver_now
-  end
-
   def no_profile?
     self.profile.nil? || self.profile.new_record?
   end

@@ -15,6 +15,7 @@ class Users::InvitationsController < Devise::InvitationsController
     yield resource if block_given?
 
     if invitation_accepted
+      UserMailer.welcome(resource).deliver_now
       if Devise.allow_insecure_sign_in_after_accept
         flash_message = resource.active_for_authentication? ? :updated : :updated_not_active
         set_flash_message :notice, flash_message if is_flashing_format?
