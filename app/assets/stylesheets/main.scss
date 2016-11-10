@@ -1548,16 +1548,13 @@ ul.token-input-list {
 
 .message {
   border-radius: 20px;
-  clear: both;
   margin: 5px 0;
   max-width: 80%;
-  padding: 10px 15px;
-  position: relative;
 }
 
-.message:after {
+.message-content:after {
   border-radius: 50%;
-  bottom: 0;
+  bottom: 1px;
   content: " ";
   height: 30px;
   position: absolute;
@@ -1566,8 +1563,8 @@ ul.token-input-list {
 }
 
 .receive {
-  background: #eee;
   float: left;
+  text-align: left;
 }
 
 .receive:after {
@@ -1576,14 +1573,14 @@ ul.token-input-list {
 }
 
 .send {
-  background: #F27935;
-  color: #fff;
+  color: #000;
   float: right;
+  text-align: right;
 }
 
 .send:after {
   box-shadow: inset 0px 13px 0 2px #fff, inset 14px -4px 0 -2px #F27935;
-  right: -14px;
+  right: -13px;
 }
 
 * {
@@ -1600,4 +1597,39 @@ ul.token-input-list {
 
 #collapseGroupChat{
   margin-top: 20px;
+}
+
+.message-content{
+  padding: 10px;
+  border-radius: 15px;
+  color: #fff;
+  position: relative;
+
+  &.send{
+    background-color: #F27935;
+  }
+
+  &.receive{
+    background-color: #eee;
+    color:#777;
+  }
+}
+
+.chat-sender-account,
+.chat-receiver-account{
+  img{
+    width:100%;
+  }
+  margin: 5px 0;
+  max-width: 50px;
+}
+
+.chat-sender-account{
+  float: right;
+  margin-left: 20px;
+}
+
+.chat-receiver-account{
+  float: left;
+  margin-right: 20px;
 }

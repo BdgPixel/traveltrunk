@@ -1,6 +1,14 @@
-.message class="#{action_type}"
-  = generate_deal_thumbnail(message.body, false)
-
-  br
-  i
-    small #{sender_name} #{time_ago_in_words(message.created_at)} ago
+.col-sm-12
+  - if action_type.eql? 'receive'
+    .chat-receiver-account
+      = image_tag 'http://localhost:3000/uploads/profile/image/13/andreas_ckckckck_360.jpg', class: "img-circle"
+  .message class="#{action_type}"
+    .message-content class="#{action_type}"
+      = generate_deal_thumbnail(message.body, false)
+      br
+      i
+        small = sender_name
+    .col-sm-12.no-padding
+      i.message-time-stamp class="#{action_type}"
+        small #{time_ago_in_words(message.created_at)} ago
+      
