@@ -1369,11 +1369,15 @@ a.login.show {
 }
 
 .messages {
-  min-width: 420px; 
+  min-width: 360px;
 
   .messages-wrapper, .share-recipient-wrapper {
-    overflow: auto;
+    // overflow: auto;
     max-height: 250px;
+    margin-top: 20px;
+    @media(max-width:992px){
+      margin-top:-30px;
+    }
   }  
      
   .message-heading, .message-footer  {
@@ -1393,7 +1397,7 @@ a.login.show {
       
   .message-item {
     text-transform: none !important;
-    padding: 10px;
+    padding: 10px 15px 10px 15px;
   }
 
   .read {
@@ -1486,6 +1490,7 @@ ul.token-input-list {
 
 .wrapper-message-conversation {
   position: relative;
+  max-width: 175px;
 
   .title-hotel {
     background-color: rgba(0, 0, 0, 0.73);
@@ -1508,4 +1513,91 @@ ul.token-input-list {
     border: none;
     padding: 0px;
   }
+}
+
+.no-padding {
+  padding: 0;
+}
+
+// Message Styles
+.msg-item-right,
+.msg-item-left{
+  background:#eee;
+  border-radius:5px;
+  padding: 10px;
+  margin-bottom: 10px;
+}
+
+.message-item-wrapper{
+  max-height: 250px;
+  overflow: auto;
+
+  .msg-item-right{
+    float: right;
+    text-align: right;
+
+  }
+
+  .msg-item-left{
+    float: left;
+    text-align: left;
+
+  }
+}
+
+
+.message {
+  border-radius: 20px;
+  clear: both;
+  margin: 5px 0;
+  max-width: 80%;
+  padding: 10px 15px;
+  position: relative;
+}
+
+.message:after {
+  border-radius: 50%;
+  bottom: 0;
+  content: " ";
+  height: 30px;
+  position: absolute;
+  width: 30px;
+  z-index: -1;
+}
+
+.receive {
+  background: #eee;
+  float: left;
+}
+
+.receive:after {
+  box-shadow: inset 1px 9px 0 4px #fff, inset -9px 0px 0 2px #eee, 0 0 0 1px #fff;
+  left: -19px;
+}
+
+.send {
+  background: #F27935;
+  color: #fff;
+  float: right;
+}
+
+.send:after {
+  box-shadow: inset 0px 13px 0 2px #fff, inset 14px -4px 0 -2px #F27935;
+  right: -14px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.fix-overflow{
+  overflow: hidden;
+}
+
+.reply-box-container{
+  margin-top: 20px; 
+}
+
+#collapseGroupChat{
+  margin-top: 20px;
 }

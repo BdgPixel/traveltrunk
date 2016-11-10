@@ -9,7 +9,7 @@ class SavingsController < ApplicationController
       redirect_to edit_profile_url(no_profile: true)
     end
 
-    if params[:open_group_chat]
+    if params[:open_group_chat] && @group.message.present?
       @group.message.conversation.first.read_notification!(current_user.id)
     end
     

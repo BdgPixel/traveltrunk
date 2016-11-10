@@ -1,4 +1,44 @@
 $('#message-<%= @first_message.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', notification: @notification, message: @notification.trackable, is_recipient: !@notification.trackable.sent_messageable_id.eql?(current_user.id) %>");
-$('.content-conversation:last').after("<%= j render 'reply_message', sender_name: 'You', is_current_user: true, message: @reply_message %>");
-$('form.new_message').get(0).reset();
+$('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, notification_is_read: true, action_type: 'send' %>");
+$('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', action_type: 'send', message: @reply_message %>");
+
+// this method is on application.js.coffee
+scrollToBottom('#privateChatBox')
+
+$('form.new_message').trigger('reset');
+
+(function(){
+  newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+  $('#messageCount').text(newNotifCount);
+
+  if(newNotifCount > 0){
+    $('#messageCount').removeClass('hide');
+  } else {
+      $('#messageCount').addClass('hide');
+    }
+}());
+
+<% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
+  $('#message-<%= @first_message.try(:id) %>').remove();
+
+  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
+    notification_is_read: @notification.is_read, message: @reply_message %>");
+  
+  if($('#privateChatBox').length > 0){
+    $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @reply_message.sender_name,
+      action_type: 'receive', message: @reply_message %>");
+
+    scrollToBottom('#privateChatBox');
+  }
+
+  (function(){
+    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+    $('#messageCount').text(newNotifCount);
+
+    if(newNotifCount > 0){
+      $('#messageCount').removeClass('hide');
+    } else {
+      $('#messageCount').addClass('hide');
+    }
+  }());
+<% end %>

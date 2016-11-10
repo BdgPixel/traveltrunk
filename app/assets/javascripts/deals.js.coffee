@@ -369,7 +369,7 @@ shareHotel = () ->
       $('form.new_message').attr('action', '/conversations/send_group')
 
 shareRecipientAutocomplete = ->
-  selector = '#user_group_collection'
+  selector = '#contact_list'
 
   $(selector).tokenInput( '/conversations/users_collection.json', {
     allowFreeTagging: true
@@ -387,6 +387,7 @@ shareRecipientAutocomplete = ->
         $('form.new_message').get(0).reset();
         $('#shareHotelModal').modal backdrop: 'static'
         $('.user_id').val(item.id)
+        $('.hotel_link').val window.location.href
 
         hotelName = truncateHotelName($('.hotel-name:first').text())
 
@@ -526,3 +527,6 @@ $(document).ready ->
         $('.amount').val parseFloat($('#totalCharges').data('total-charges'))
 
       return
+
+    $('#recentContact').on 'shown.bs.dropdown', ->
+      $('#token-input-contact_list').attr 'placeholder', 'Enter name'

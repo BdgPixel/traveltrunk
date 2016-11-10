@@ -76,19 +76,15 @@ class User < ActiveRecord::Base
     [latest_conversation_activities, unread_message_count]
   end
 
-  def get_three_notifications
-    PublicActivity::Activity
-      .where(owner_id: self.id, key: 'messages.private')
-      .where.not(recipient_id: self.id)
-      .order(id: :desc).limit(3)
-  end
-
   def get_recent_contacts
     recent_contact_ids = PublicActivity::Activity
-      .select('DISTINCT(activities.recipient_id), activities.recipient_id')
+      .select('activities.recipient_id, MAX(created_at) as created_at')
       .where(owner_id: self.id, key: 'messages.private')
+      .group('activities.recipient_id').order('created_at DESC').limit(3)
       .map(&:recipient_id)
+    
     User.includes(:profile).where(id: recent_contact_ids)
+      .order(recent_contact_ids.map{ |user_id| "ID=#{user_id} DESC" }.join(', '))
   end
 
   def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)

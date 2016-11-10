@@ -36,22 +36,23 @@
                 .rating-text style="clear:both" = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
               .col-xs-12.col-md-6.hotel-voter-list-container
-                .dropdown.pull-right.text-right.col-md-12
+                #recentContact.dropdown.pull-right.text-right.col-md-12
                   = link_to 'Share this', "javascript:void(0)", class: '', data: { toggle: 'dropdown' }
                   ul.dropdown-menu aria-labelledby="dLabel" 
                     .col-md-12
-                      = text_field_tag :user_group_collection, nil, placeholder: 'Enter name'
+                      = text_field_tag :contact_list, nil, placeholder: 'Enter name'
                       br
                     .share-recipient-wrapper
                       .col-md-12
-                        .row
-                          .message-item-small.col-md-12
-                            hr
-                            = link_to '#', class: 'share-hotel-link', data: { recipient_id: 0, recipient_name: 'Your Group\'s Savings', toggle: 'modal', target: '#shareHotelModal', type: 'group_message' }
-                              p
-                                = image_tag 'default_user.png', class: 'img-circle', height: "30px", width: "30px"
-                                
-                                | &nbsp;Your Group's Savings
+                        - if @group
+                          .row
+                            .message-item-small.col-md-12
+                              hr
+                              = link_to '#', class: 'share-hotel-link', data: { recipient_id: 0, recipient_name: 'Your Group\'s Savings', toggle: 'modal', target: '#shareHotelModal', type: 'group_message' }
+                                p
+                                  = image_tag 'default_user.png', class: 'img-circle', height: "30px", width: "30px"
+                                  
+                                  | &nbsp;Your Group's Savings
 
                         - @recent_contacts.each do |user|
                           .row
@@ -202,7 +203,7 @@
                   .message-image
                     span lorem impsum
 
-                  = link_to 'javascrip:void(0)', class: 'thumbnail'
+                  = link_to '#', class: 'thumbnail'
                     = image_tag @featured_image['url'], class: 'show-hotel-image'
               = f.input_field :share_image, as: :hidden, value: @featured_image['url'], class: 'share-image'
               = f.input_field :hotel_name, as: :hidden, value: unescape_expedia_html(@hotel_information["HotelSummary"]["name"]), class: 'hotel_name'
