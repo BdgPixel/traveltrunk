@@ -114,8 +114,12 @@ module Expedia
                     end
                     
                     if hotel_filter[:notaffordable]
-                      notaffordable = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}  
+                      notaffordable = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}
+                      notaffordable = notaffordable.sort do |k,v|
+                                        k["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> v["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
+                                      end
                     end
+
                     hotels_list   = (affordable || []) + (notaffordable || [])
                     
                     @num_of_hotel = hotels_list.size
