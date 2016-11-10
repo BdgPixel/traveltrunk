@@ -1548,42 +1548,43 @@ ul.token-input-list {
 
 .message {
   border-radius: 20px;
-  clear: both;
   margin: 5px 0;
   max-width: 80%;
-  padding: 10px 15px;
-  position: relative;
 }
 
-.message:after {
-  border-radius: 50%;
-  bottom: 0;
+.message-content:after {
+  // border-radius: 50%;
+  top: 8px;
   content: " ";
-  height: 30px;
+  height: 13px;
   position: absolute;
   width: 30px;
   z-index: -1;
 }
 
 .receive {
-  background: #eee;
   float: left;
+  text-align: left;
 }
 
 .receive:after {
-  box-shadow: inset 1px 9px 0 4px #fff, inset -9px 0px 0 2px #eee, 0 0 0 1px #fff;
-  left: -19px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-right: 11px solid #eee;
+  left: -26px;
 }
 
 .send {
-  background: #F27935;
-  color: #fff;
+  color: #000;
   float: right;
+  text-align: right;
 }
 
 .send:after {
-  box-shadow: inset 0px 13px 0 2px #fff, inset 14px -4px 0 -2px #F27935;
-  right: -14px;
+  border-top: 7px solid transparent;
+  border-bottom: 7px solid transparent;
+  border-left: 11px solid #F27935;
+  right: -25px;
 }
 
 * {
@@ -1600,4 +1601,47 @@ ul.token-input-list {
 
 #collapseGroupChat{
   margin-top: 20px;
+}
+
+.message-time-stamp{
+  color:#777;
+}
+
+.message-content{
+  padding: 10px;
+  border-radius: 5px;
+  color: #fff;
+  position: relative;
+
+  &.send{
+    background-color: #F27935;
+  }
+
+  &.receive{
+    background-color: #eee;
+    color:#777;
+  }
+}
+
+.chat-sender-account,
+.chat-receiver-account{
+  img{
+    width:100%;
+  }
+  margin-top: 20px;
+  max-width: 50px;
+}
+
+.chat-sender-account{
+  float: right;
+  margin-left: 20px;
+}
+
+.chat-receiver-account{
+  float: left;
+  margin-right: 20px;
+}
+
+.chat-name{
+  display: block;
 }
