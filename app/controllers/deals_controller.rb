@@ -38,7 +38,7 @@ class DealsController < ApplicationController
   end
 
   def show
-    @recent_contacts = current_user.get_recent_contacts
+    @recent_contacts = current_user.get_recent_contacts if user_signed_in?
 
     expedia_params_hash = { hotelId: params[:id] }
     @terms_and_conditions_url = "http://developer.ean.com/terms/en/"

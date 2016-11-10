@@ -53,17 +53,18 @@
                                   = image_tag 'default_user.png', class: 'img-circle', height: "30px", width: "30px"
                                   
                                   | &nbsp;Your Group's Savings
-
-                        - @recent_contacts.each do |user|
-                          .row
-                            .message-item-small.col-md-12
-                              hr
-                              = link_to '#', class: 'share-hotel-link', data: { recipient_id: user.id, recipient_name: user.profile.full_name, toggle: 'modal', target: '#shareHotelModal', type: 'private_message' }
-                                p
-                                  = image_tag user.profile.image.url, class: 'img-circle', height: "30px", width: "30px"
                                   
-                                  | &nbsp;
-                                  = user.profile.full_name
+                        - if @recent_contacts.present?
+                          - @recent_contacts.each do |user|
+                            .row
+                              .message-item-small.col-md-12
+                                hr
+                                = link_to '#', class: 'share-hotel-link', data: { recipient_id: user.id, recipient_name: user.profile.full_name, toggle: 'modal', target: '#shareHotelModal', type: 'private_message' }
+                                  p
+                                    = image_tag user.profile.image.url, class: 'img-circle', height: "30px", width: "30px"
+                                    
+                                    | &nbsp;
+                                    = user.profile.full_name
 
                 - if @group
                   / show to vote hotel
