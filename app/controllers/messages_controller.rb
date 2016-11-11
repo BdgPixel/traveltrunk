@@ -1,5 +1,6 @@
 class MessagesController < ApplicationController
   skip_before_action :get_message_notifications, only: :show
+  before_action :authenticate_user!
   before_action :set_message, only: [:show, :reply, :update_status]
   before_action :get_group, only: [:users_collection, :show, :reply_group, :send_group]
 
