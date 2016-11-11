@@ -1,44 +1,62 @@
-$('#message-<%= @first_message.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, notification_is_read: true, action_type: 'send' %>");
-$('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', action_type: 'send', message: @reply_message %>");
+$('span.errors').html('');
 
-// this method is on application.js.coffee
-scrollToBottom('#privateChatBox')
+<% if @reply_message.errors.any? %>
 
-$('form.new_message').trigger('reset');
+  <% @reply_message.errors.each do |errorKey, errorMessage| %>
+    errorKey = "<%= errorKey.to_s.split('.').last %>";
 
-(function(){
-  newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
-  $('#messageCount').text(newNotifCount);
-
-  if(newNotifCount > 0){
-    $('#messageCount').removeClass('hide');
-  } else {
-      $('#messageCount').addClass('hide');
+    if ($('#newMessageModal').hasClass('in')) {
+      $('#newMessageModal').find('.error-body').html("<%= errorMessage.html_safe %>");
+    } else if ($('#shareHotelModal').hasClass('in')) {
+      $('#shareHotelModal').find('.error-body').html("<%= errorMessage.html_safe %>");
+    } else {
+      $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
     }
-}());
+  <% end %>
+<% else %>
 
-<% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
   $('#message-<%= @first_message.try(:id) %>').remove();
+  $('.messages-wrapper').prepend("<%= j render 'message', message: @reply_message, notification_is_read: true, action_type: 'send' %>");
+  $('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', action_type: 'send', message: @reply_message %>");
 
-  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
-    notification_is_read: @notification.is_read, message: @reply_message %>");
-  
-  if($('#privateChatBox').length > 0){
-    $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @reply_message.sender_name,
-      action_type: 'receive', message: @reply_message %>");
+  // this method is on application.js.coffee
+  scrollToBottom('#privateChatBox')
 
-    scrollToBottom('#privateChatBox');
-  }
+  $('form.new_message').trigger('reset');
 
   (function(){
-    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
     $('#messageCount').text(newNotifCount);
 
     if(newNotifCount > 0){
       $('#messageCount').removeClass('hide');
     } else {
-      $('#messageCount').addClass('hide');
-    }
+        $('#messageCount').addClass('hide');
+      }
   }());
+
+  <% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
+    $('#message-<%= @first_message.try(:id) %>').remove();
+
+    $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
+      notification_is_read: @notification.is_read, message: @reply_message %>");
+    
+    if($('#privateChatBox').length > 0){
+      $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @reply_message.sender_name,
+        action_type: 'receive', message: @reply_message %>");
+
+      scrollToBottom('#privateChatBox');
+    }
+
+    (function(){
+      newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+      $('#messageCount').text(newNotifCount);
+
+      if(newNotifCount > 0){
+        $('#messageCount').removeClass('hide');
+      } else {
+        $('#messageCount').addClass('hide');
+      }
+    }());
+  <% end %>
 <% end %>

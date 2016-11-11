@@ -8,6 +8,8 @@ class CustomMessage < ActsAsMessageable::Message
       { sender_id: sender_id, recipient_id: recipient_id })
   }
 
+  validate :body
+
   def read_notification!(user_id)
     self.custom_activities.where(recipient_id: user_id).update_all(is_read: true)
   end

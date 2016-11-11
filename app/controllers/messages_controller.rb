@@ -79,28 +79,35 @@ class MessagesController < ApplicationController
     message_hash = { topic: 'Group Message', body: body_message }
 
     @first_message = @group.message
-
     if @first_message.present?
       @message = current_user.reply_to(@first_message, message_hash)
     else
       @first_message = @message = current_user.send_message(@group.members.first, message_hash)
       @group.update(message_id: @message.id)
     end
+    
+    respond_to do |format|
+      if @message.errors.any?
+        format.js
+      else
+        members.each do |member|
+          # notification = @message.create_activity key: "messages.group", owner: current_user,
+          #   recipient: member
 
-    members.each do |member|
-      # notification = @message.create_activity key: "messages.group", owner: current_user,
-      #   recipient: member
+          notification = PublicActivity::Activity.new(
+            key: "messages.group",
+            owner: current_user,
+            recipient: member,
+            trackable_id: @message.id,
+            trackable_type: 'CustomMessage'
+          )
 
-      notification = PublicActivity::Activity.new(
-        key: "messages.group",
-        owner: current_user,
-        recipient: member,
-        trackable_id: @message.id,
-        trackable_type: 'CustomMessage'
-      )
+          notification.save
+          @notification = notification if member.id.eql?(current_user.id)
+        end
 
-      notification.save
-      @notification = notification if member.id.eql?(current_user.id)
+        format.js
+      end
     end
   end
 
@@ -108,22 +115,25 @@ class MessagesController < ApplicationController
     @first_message = @message.conversation.last
     @reply_message = current_user.reply_to(@first_message, message_params[:body])
 
-    # @notification = @reply_message.create_activity key: "messages.private", owner: current_user,
-    #   recipient: @reply_message.received_messageable,  trackable_type: 'CustomMessage'
+    respond_to do |format|
+      if @reply_message.errors.any?
+        format.js
+      else
+        @notification = PublicActivity::Activity.new(
+          key: "messages.private",
+          owner: current_user,
+          recipient: @reply_message.received_messageable,
+          trackable_id: @reply_message.id, trackable_type: 'CustomMessage'
+        )
 
-    @notification = PublicActivity::Activity.new(
-      key: "messages.private",
-      owner: current_user,
-      recipient: @reply_message.received_messageable,
-      trackable_id: @reply_message.id, trackable_type: 'CustomMessage'
-    )
+        @notification.save
 
-    @notification.save
-
-    @message_count = @first_message.received_messageable.messages.conversations
-      .select { |c| !c.opened if c.received_messageable_id.eql?(@reply_message.received_messageable_id) }.count
+        @message_count = @first_message.received_messageable.messages.conversations
+          .select { |c| !c.opened if c.received_messageable_id.eql?(@reply_message.received_messageable_id) }.count
+      end
     
-    respond_to { |format| format.js }
+      format.js
+    end
   end
 
   def reply_group
