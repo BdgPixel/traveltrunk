@@ -1,41 +1,35 @@
-$('#message-<%= @first_message.try(:id) %>').remove();
-$('#newMessageModal').modal('hide');
-$('#shareHotelModal').modal('hide');
-$('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
+$('span.errors').html('');
 
-if($('#privateChatBox').length > 0){
-  $('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', action_type: 'send', message: @message %>");
-  scrollToBottom('#privateChatBox');
-} else {
-  $('#messageSuccessfullySent').html("<%= j render 'success' %>");
-  $('#messageSuccess').modal({ backdrop: 'static' });
-}
+<% if @message.errors.any? %>
 
-$('form.new_message').trigger('reset');
+  <% @message.errors.each do |errorKey, errorMessage| %>
+    errorKey = "<%= errorKey.to_s.split('.').last %>";
 
-(function(){
-  newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
-  $('#messageCount').text(newNotifCount);
+    if ($('#newMessageModal').hasClass('in')) {
+      $('#newMessageModal').find('.error-body').html("<%= errorMessage.html_safe %>");
+    } else if ($('#shareHotelModal').hasClass('in')) {
+      $('#shareHotelModal').find('.error-body').html("<%= errorMessage.html_safe %>");
+    } else {
+      $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
+    }
 
-  if(newNotifCount > 0){
-    $('#messageCount').removeClass('hide');
-  } else {
-    $('#messageCount').addClass('hide');
-  }
-}())
+  <% end %>
+<% else %>
 
-<% publish_to "/private_messages/#{@message.received_messageable_id}" do %>
   $('#message-<%= @first_message.try(:id) %>').remove();
+  $('#newMessageModal').modal('hide');
+  $('#shareHotelModal').modal('hide');
+  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
 
-  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
-    notification_is_read: @notification.is_read, message: @message %>");
-  
   if($('#privateChatBox').length > 0){
-    $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @message.sender_name,
-      action_type: 'receive', message: @message %>");
-
+    $('#privateChatBox').append("<%= j render 'reply_message', sender_name: 'You', action_type: 'send', message: @message %>");
     scrollToBottom('#privateChatBox');
+  } else {
+    $('#messageSuccessfullySent').html("<%= j render 'success' %>");
+    $('#messageSuccess').modal({ backdrop: 'static' });
   }
+
+  $('form.new_message').trigger('reset');
 
   (function(){
     newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
@@ -47,4 +41,29 @@ $('form.new_message').trigger('reset');
       $('#messageCount').addClass('hide');
     }
   }())
+
+  <% publish_to "/private_messages/#{@message.received_messageable_id}" do %>
+    $('#message-<%= @first_message.try(:id) %>').remove();
+
+    $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
+      notification_is_read: @notification.is_read, message: @message %>");
+    
+    if($('#privateChatBox').length > 0){
+      $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @message.sender_name,
+        action_type: 'receive', message: @message %>");
+
+      scrollToBottom('#privateChatBox');
+    }
+
+    (function(){
+      newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+      $('#messageCount').text(newNotifCount);
+
+      if(newNotifCount > 0){
+        $('#messageCount').removeClass('hide');
+      } else {
+        $('#messageCount').addClass('hide');
+      }
+    }())
+  <% end %>
 <% end %>

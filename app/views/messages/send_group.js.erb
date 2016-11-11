@@ -1,55 +1,72 @@
-// display success popup and hide message popup
-$('#newMessageModal, #shareHotelModal').modal('hide');
+$('span.errors').html('');
 
-// replace previous notification and append a new one
-$('#message-<%= @first_message.try(:id) %>').remove();
-$('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
+<% if @message.errors.any? %>
 
-if($('#groupChatBox').length > 0){
-  // append new chat
-  $('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', action_type: 'send', message: @message %>");
-  scrollToBottom('#groupChatBox');
-} else {
-  $('#messageSuccessfullySent').html("<%= j render 'success' %>");
-  $('#messageSuccess').modal({ backdrop: 'static' });
-}
-
-$('form.new_message').get(0).reset();
-
-(function(){
-  newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
-  $('#messageCount').text(newNotifCount);
-
-  if(newNotifCount > 0){
-    $('#messageCount').removeClass('hide');
-  } else {
-      $('#messageCount').addClass('hide');
-    }
-}());
-
-<% publish_to "/group_messages/#{ @group.id }" do %>
-  var senderId = parseInt('<%= @message.sent_messageable_id %>');
-  var currentUserId = $('#currentUserId').data('user-id');
-
-  if($('#currentUserId').data('user-id') !== senderId){
-    $('#message-<%= @first_message.try(:id) %>').remove();
-    $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive', notification_is_read: false, message: @message %>");
+  <% @message.errors.each do |errorKey, errorMessage| %>
+    errorKey = "<%= errorKey.to_s.split('.').last %>";
     
-    if($('#groupChatBox').length > 0){
-      // append new chat
-      $('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: @message.sender_name, action_type: 'receive', message: @message %>");
-      scrollToBottom('#groupChatBox');
+    if ($('#newMessageModal').hasClass('in')) {
+      $('#newMessageModal').find('.error-body').html("<%= errorMessage.html_safe %>");
+    } else if ($('#shareHotelModal').hasClass('in')) {
+      $('#shareHotelModal').find('.error-body').html("<%= errorMessage.html_safe %>");
+    } else {
+      $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
     }
+  <% end %>
+<% else %>
+  // display success popup and hide message popup
+  $('#newMessageModal, #shareHotelModal').modal('hide');
 
-    (function(){
-      newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
-      $('#messageCount').text(newNotifCount);
+  // replace previous notification and append a new one
+  $('#message-<%= @first_message.try(:id) %>').remove();
+  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
 
-      if(newNotifCount > 0){
-        $('#messageCount').removeClass('hide');
-      } else {
-          $('#messageCount').addClass('hide');
-        }
-    }());
+  if($('#groupChatBox').length > 0){
+    // append new chat
+    $('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', action_type: 'send', message: @message %>");
+    scrollToBottom('#groupChatBox');
+  } else {
+    $('#messageSuccessfullySent').html("<%= j render 'success' %>");
+    $('#messageSuccess').modal({ backdrop: 'static' });
   }
+
+  $('form.new_message').get(0).reset();
+
+  (function(){
+    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+    $('#messageCount').text(newNotifCount);
+
+    if(newNotifCount > 0){
+      $('#messageCount').removeClass('hide');
+    } else {
+        $('#messageCount').addClass('hide');
+      }
+  }());
+
+  <% publish_to "/group_messages/#{ @group.id }" do %>
+    var senderId = parseInt('<%= @message.sent_messageable_id %>');
+    var currentUserId = $('#currentUserId').data('user-id');
+
+    if($('#currentUserId').data('user-id') !== senderId){
+      $('#message-<%= @first_message.try(:id) %>').remove();
+      $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive', notification_is_read: false, message: @message %>");
+      
+      if($('#groupChatBox').length > 0){
+        // append new chat
+        $('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: @message.sender_name, action_type: 'receive', message: @message %>");
+        scrollToBottom('#groupChatBox');
+      }
+
+      (function(){
+        newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+        $('#messageCount').text(newNotifCount);
+
+        if(newNotifCount > 0){
+          $('#messageCount').removeClass('hide');
+        } else {
+            $('#messageCount').addClass('hide');
+          }
+      }());
+    }
+  <% end %>
 <% end %>

@@ -17,7 +17,7 @@
             = action_type.eql?('send') ? message.recipient_name : message.sender_name
 
     .col-md-4
-      .row.pull-right 
+      .row.pull-right
         small #{time_ago_in_words(message.created_at)} ago
 
     .col-md-12

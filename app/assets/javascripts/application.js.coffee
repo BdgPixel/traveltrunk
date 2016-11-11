@@ -235,6 +235,7 @@ initUsersCollection = ()->
         else
           $('form.new_message').attr('action', '/conversations')
 
+        $('span.errors').html('')
         $('form.new_message').get(0).reset();
         $('#newMessageModal').modal backdrop: 'static'
         $('#new_message_to').val(item.name)
@@ -256,6 +257,7 @@ showHideCollapseGroupChat = ->
   if $('.link-message:first').length > 0
     id = $('.link-message:first').attr('id').split('-')[1]
 
+  $('span.error').html('')
   $('#collapseGroupChat').collapse 'show'
   $('#collapseGroupChat').on 'shown.bs.collapse', ->
     scrollToBottom('#groupChatBox')
@@ -279,7 +281,6 @@ ready = ->
   if $('#privateChatBox').length > 0
     scrollToBottom('#privateChatBox')
     
-
   setTimeout(->
     $('#notice, .alert-dismissible').fadeOut()
     $('#alert').fadeOut()
