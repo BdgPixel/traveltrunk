@@ -17,6 +17,7 @@ Rails.application.config.assets.precompile += %w(
   notifications.js
   search.js
   reservations.js
+  sound_path.js
   profiles.css
   savings.css
   deals.css

@@ -12,6 +12,7 @@
 # = require private_pub
 # = require lowlag
 # = require soundmanager2
+# = require sound_path
 
 $(document).ajaxSend ->
   $('#loading').show()
