@@ -122,7 +122,7 @@ module Expedia
                     end
 
                     hotels_list   = (affordable || []) + (notaffordable || [])
-                    
+                    hotels_list   = hotels_list.delete_if {|hotel| hotel["thumbNailUrl"] == nil}
                     @num_of_hotel = hotels_list.size
                     @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                     @num_of_page = @hotels_list.size
