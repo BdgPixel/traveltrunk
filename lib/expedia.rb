@@ -118,6 +118,7 @@ module Expedia
                       notaffordable = notaffordable.sort do |k,v|
                                         k["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> v["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                                       end
+                      notaffordable.first["first_load"] = true
                     end
 
                     hotels_list   = (affordable || []) + (notaffordable || [])

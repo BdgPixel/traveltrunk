@@ -1,6 +1,11 @@
 @import 'mixins';
 @import 'fonts';
 
+.hr-modify {
+  border-top: 1px solid #777777;
+  padding-bottom: 55px;
+}
+
 .wrapper-price-deals {
   position: relative;
 
