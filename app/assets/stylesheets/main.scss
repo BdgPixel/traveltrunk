@@ -625,6 +625,9 @@ h2, h3, h4 {
   margin: 0 auto;
 
   img {
+    // width: 300px;
+    // height: 300px;
+
     @media screen and (max-width: 768px) {
       width: 200px;
       height: 200px;
@@ -1613,6 +1616,10 @@ ul.token-input-list {
   color: #fff;
   position: relative;
 
+  &.send-group {
+    background-color: #40E0D0;
+  }
+
   &.send{
     background-color: #F27935;
   }
@@ -1648,4 +1655,35 @@ ul.token-input-list {
 
 span.errors {
   color: red;
+}
+
+.no-avatar-pic {
+      width: 230px;
+    height: 230px;
+  img {
+
+  }
+}
+
+.wrapper-group-chat {
+
+  .send {
+
+    &:after {
+      border-top: 7px solid transparent;
+      border-bottom: 7px solid transparent;
+      border-left: 11px solid #43C6DB;
+      right: -25px;
+    }
+  }
+  .message-content {
+    
+    &.send {
+      background-color: #43C6DB;
+    }
+  }
+}
+
+.overflow-message {
+  overflow: hidden;
 }

@@ -1,7 +1,6 @@
 $('span.errors').html('');
 
 <% if @message.errors.any? %>
-
   <% @message.errors.each do |errorKey, errorMessage| %>
     errorKey = "<%= errorKey.to_s.split('.').last %>";
 
@@ -12,10 +11,8 @@ $('span.errors').html('');
     } else {
       $('.error-' + errorKey).html("<%= errorMessage.html_safe %>");
     }
-
   <% end %>
 <% else %>
-
   $('#message-<%= @first_message.try(:id) %>').remove();
   $('#newMessageModal').modal('hide');
   $('#shareHotelModal').modal('hide');
@@ -32,7 +29,7 @@ $('span.errors').html('');
   $('form.new_message').trigger('reset');
 
   (function(){
-    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+    newNotifCount = $('.message-item.unread').length;
     $('#messageCount').text(newNotifCount);
 
     if(newNotifCount > 0){
@@ -56,7 +53,7 @@ $('span.errors').html('');
     }
 
     (function(){
-      newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+      newNotifCount = $('.message-item.unread').length;
       $('#messageCount').text(newNotifCount);
 
       if(newNotifCount > 0){
