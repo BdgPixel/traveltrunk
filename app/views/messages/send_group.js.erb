@@ -1,7 +1,6 @@
-$('span.errors').html('');
+ $('span.errors').html('');
 
 <% if @message.errors.any? %>
-
   <% @message.errors.each do |errorKey, errorMessage| %>
     errorKey = "<%= errorKey.to_s.split('.').last %>";
     
@@ -17,9 +16,9 @@ $('span.errors').html('');
   // display success popup and hide message popup
   $('#newMessageModal, #shareHotelModal').modal('hide');
 
-  // replace previous notification and append a new one
-  $('#message-<%= @first_message.try(:id) %>').remove();
-  $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'send', notification_is_read: true, message: @message %>");
+    (function(){
+      newNotifCount = $('.message-item.unread').length;
+      $('#messageCount').text(newNotifCount);
 
   if($('#groupChatBox').length > 0){
     // append new chat
@@ -33,7 +32,7 @@ $('span.errors').html('');
   $('form.new_message').get(0).reset();
 
   (function(){
-    newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length;
+    newNotifCount = $('.message-item.unread').length;
     $('#messageCount').text(newNotifCount);
 
     if(newNotifCount > 0){
@@ -58,7 +57,7 @@ $('span.errors').html('');
       }
 
       (function(){
-        newNotifCount = $('.message-item.unread').not("#message-<%= @first_message.try(:id) %> .message-item").length + 1;
+        newNotifCount = $('.message-item.unread').length;
         $('#messageCount').text(newNotifCount);
 
         if(newNotifCount > 0){
