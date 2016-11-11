@@ -267,7 +267,12 @@ showHideCollapseGroupChat = ->
 
 root.initLowLag = ->
   lowLag.init()
-  lowLag.load(["/assets/beer_can_opening.mp3","/assets/beer_can_opening.ogg","/assets/beer_can_opening.aac"],"beer_can_opening");
+  lowLag.load([
+    window.inbox_sound_mp3_path,
+    inbox_sound_ogg_path,
+    inbox_sound_aac_path],
+    "beer_can_opening"
+  );
 
 ready = ->
   initUsersCollection()
