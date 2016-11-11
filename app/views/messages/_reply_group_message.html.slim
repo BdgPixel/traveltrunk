@@ -1,15 +1,17 @@
-.col-sm-12
-  - if action_type.eql? 'receive'
-    .chat-receiver-account
-      = image_tag message.sent_messageable.profile.image.url, class: "img-circle"
+.col-sm-12.overflow-message
+  .wrapper-group-chat 
+    - if action_type.eql? 'receive'
+      .chat-receiver-account
+        = image_tag message.sent_messageable.profile.image.url, class: "img-circle"
 
-  i.chat-name class="#{action_type.eql?('receive') ? 'text-left' : 'text-right'}" 
-    small = sender_name
 
-  .message class="#{action_type}"
-    .message-content class="#{action_type}"
-      = generate_deal_thumbnail(message.body, false)
+    .message class="#{action_type}"
+      i.chat-name class="#{action_type.eql?('receive') ? 'text-left' : 'text-right'}" 
+        small = sender_name
 
-    .col-sm-12.no-padding
-      i.message-time-stamp class="#{action_type}"
-        small #{time_ago_in_words(message.created_at)} ago
+      .message-content class="#{action_type}"
+        = generate_deal_thumbnail(message.body, false)
+
+      .col-sm-12.no-padding
+        i.message-time-stamp class="#{action_type}"
+          small #{time_ago_in_words(message.created_at)} ago

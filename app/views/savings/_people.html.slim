@@ -24,7 +24,10 @@
           .col-md-12.text-center
             - if group.user_id.eql?(current_user.id)
               = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
-                = image_tag current_user.profile.image.url, class: 'img-circle'
+                - if current_user.profile.image.present?
+                  = image_tag current_user.profile.image.url, class: 'img-circle'
+                - else
+                  = image_tag current_user.profile.image.url, class: 'img-circle no-avatar-pic'
 
               = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
                 h3 = current_user.profile.first_name.titleize
@@ -34,7 +37,12 @@
 
             - else
               = link_to user_profile_path(group.user), title: group.user.profile.first_name.titleize
-                = image_tag group.user.profile.image.url, class: 'img-circle'
+                - if current_user.profile.image.present?
+                  = image_tag group.profile.image.url, class: 'img-circle'
+                - else
+                  = image_tag group.profile.image.url, class: 'img-circle no-avatar-pic'
+
+                / = image_tag group.user.profile.image.url, class: 'img-circle'
               = link_to user_profile_path(group.user), title: group.user.profile.first_name
                 h3 = group.user.profile.first_name.titleize
 
@@ -45,7 +53,10 @@
           li
             .col-md-12.text-center
               = link_to user_profile_path(member), title: member.profile.first_name.titleize
-                = image_tag member.profile.image.url, class: 'img-circle'
+                - if member.profile.image.present?
+                  = image_tag member.profile.image.url, class: 'img-circle'
+                - else
+                  = image_tag member.profile.image.url, class: 'img-circle no-avatar-pic'
 
               = link_to user_profile_path(member), title: member.profile.first_name.titleize
                 h3 = member.profile.first_name.titleize
@@ -58,7 +69,11 @@
         .col-md-12.text-center
           - if group.user_id.eql?(current_user.id)
             = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
-              = image_tag current_user.profile.image.url, class: 'img-circle'
+              - if current_user.profile.image.present?
+                = image_tag current_user.profile.image.url, class: 'img-circle'
+              - else
+                = image_tag current_user.profile.image.url, class: 'img-circle no-avatar-pic'
+              / = image_tag current_user.profile.image.url, class: 'img-circle'
 
             = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
               h3 = current_user.profile.first_name.titleize
@@ -68,7 +83,12 @@
 
           - else
             = link_to user_profile_path(group.user), title: group.user.profile.first_name.titleize
-              = image_tag group.user.profile.image.url, class: 'img-circle'
+              - if current_user.profile.image.present?
+                = image_tag group.profile.image.url, class: 'img-circle'
+              - else
+                = image_tag group.profile.image.url, class: 'img-circle no-avatar-pic'
+
+              / = image_tag group.user.profile.image.url, class: 'img-circle'
 
             = link_to user_profile_path(group.user), title: group.user.profile.first_name
               h3 = group.user.profile.first_name.titleize
@@ -80,7 +100,11 @@
         li
           .col-md-12.text-center
             = link_to user_profile_path(member), title: member.profile.first_name.titleize
-              = image_tag member.profile.image.url, class: 'img-circle'
+              / = image_tag member.profile.image.url, class: 'img-circle'
+              - if member.profile.image.present?
+                = image_tag member.profile.image.url, class: 'img-circle'
+              - else
+                = image_tag member.profile.image.url, class: 'img-circle no-avatar-pic'
 
             = link_to user_profile_path(member), title: member.profile.first_name.titleize
               h3 = member.profile.first_name.titleize
