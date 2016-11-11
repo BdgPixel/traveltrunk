@@ -43,6 +43,8 @@
   }());
 
   <% publish_to "/group_messages/#{ @group.id }" do %>
+    lowLag.play('beer_can_opening');
+    
     var senderId = parseInt('<%= @message.sent_messageable_id %>');
     var currentUserId = $('#currentUserId').data('user-id');
 

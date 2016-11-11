@@ -35,6 +35,8 @@ $('span.errors').html('');
   }());
 
   <% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
+    lowLag.play('beer_can_opening');
+
     $('#message-<%= @first_message.try(:id) %>').remove();
 
     $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',

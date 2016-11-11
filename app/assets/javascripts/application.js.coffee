@@ -10,6 +10,8 @@
 # = require custom
 # = require jquery.tokeninput
 # = require private_pub
+# = require lowlag
+# = require soundmanager2
 
 $(document).ajaxSend ->
   $('#loading').show()
@@ -263,8 +265,13 @@ showHideCollapseGroupChat = ->
     scrollToBottom('#groupChatBox')
   return
 
+root.initLowLag = ->
+  lowLag.init()
+  lowLag.load(["/assets/beer_can_opening.mp3","/assets/beer_can_opening.ogg","/assets/beer_can_opening.aac"],"beer_can_opening");
+
 ready = ->
   initUsersCollection()
+  initLowLag()
   
   $('.link-message').on 'click', ->
     if $(this).attr('href').indexOf("#collapseGroupChat") != -1
