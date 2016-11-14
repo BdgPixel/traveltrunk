@@ -37,7 +37,7 @@
 
             - else
               = link_to user_profile_path(group.user), title: group.user.profile.first_name.titleize
-                - if current_user.profile.image.present?
+                - if group.user.profile.image.present?
                   = image_tag group.user.profile.image.url, class: 'img-circle'
                 - else
                   = image_tag group.user.profile.image.url, class: 'img-circle no-avatar-pic'
@@ -83,7 +83,7 @@
 
           - else
             = link_to user_profile_path(group.user), title: group.user.profile.first_name.titleize
-              - if current_user.profile.image.present?
+              - if group.user.profile.image.present?
                 = image_tag group.user.profile.image.url, class: 'img-circle'
               - else
                 = image_tag group.user.profile.image.url, class: 'img-circle no-avatar-pic'
