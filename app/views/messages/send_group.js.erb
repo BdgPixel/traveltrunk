@@ -16,10 +16,6 @@
   // display success popup and hide message popup
   $('#newMessageModal, #shareHotelModal').modal('hide');
 
-    (function(){
-      newNotifCount = $('.message-item.unread').length;
-      $('#messageCount').text(newNotifCount);
-
   if($('#groupChatBox').length > 0){
     // append new chat
     $('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: 'You', action_type: 'send', message: @message %>");
@@ -57,6 +53,8 @@
         $('#groupChatBox').append("<%= j render 'reply_group_message', sender_name: @message.sender_name, action_type: 'receive', message: @message %>");
         scrollToBottom('#groupChatBox');
       }
+
+      $('form.new_message').trigger('reset');
 
       (function(){
         newNotifCount = $('.message-item.unread').length;
