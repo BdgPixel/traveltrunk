@@ -23,12 +23,12 @@
                       .card-item
                         = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
                           = list_of_deals_div(hotel["thumbNailUrl"])
-                      .row
-                        .col-md-12
-                          .inner-deals-content
-                            p.content-deals
-                              = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
-                                = unescape_expedia_html(hotel["name"])
+                        .row
+                          .col-md-12
+                            .inner-deals-content
+                              p.content-deals
+                                = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
+                                  = unescape_expedia_html(hotel["name"])
                   - else
                     - if hotel["first_load"] == true
                       .col-md-12
@@ -42,12 +42,12 @@
                         .card-item
                           = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
                             = notaffordable(hotel["thumbNailUrl"])
-                        .row
-                          .col-md-12
-                            .inner-deals-content
-                              p.content-deals
-                                = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
-                                  = unescape_expedia_html(hotel["name"])
+                          .row
+                            .col-md-12
+                              .inner-deals-content
+                                p.content-deals
+                                  = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
+                                    = unescape_expedia_html(hotel["name"])
 
                     - else
                       .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
@@ -58,12 +58,12 @@
                         .card-item
                           = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
                             = notaffordable(hotel["thumbNailUrl"])
-                        .row
-                          .col-md-12
-                            .inner-deals-content
-                              p.content-deals
-                                = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
-                                  = unescape_expedia_html(hotel["name"])
+                          .row
+                            .col-md-12
+                              .inner-deals-content
+                                p.content-deals
+                                  = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
+                                    = unescape_expedia_html(hotel["name"])
 
       .col-md-12
         .row
