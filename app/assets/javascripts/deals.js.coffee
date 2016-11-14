@@ -69,9 +69,11 @@ root.roomSelected = (selector)->
     $('#modalBook').modal('show')
     $('.modal .modal-header h3').not('#myModalLabel').text(rooms.hotelName)
     $('.modal #roomRating').attr('data-rating', rooms.tripAdvisorRating)
-
+    
     if rooms.tripAdvisorRating
       $('.modal .rating-text').text(rooms.tripAdvisorRating + " ratings")
+    else if rooms.tripAdvisorRating == undefined
+      $('.modal .rating-text').text($('.rating-text').first().text())
     else
       $('.modal .rating-text').text("0 rating")
 

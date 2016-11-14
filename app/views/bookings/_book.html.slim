@@ -32,8 +32,8 @@
                     | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
                 p
-                  #roomRating
-                  .rating-text
+                  #roomRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
+                  .rating-text style="clear:both" = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
                 p.hotel-info-addr
                 p.hotel-info-city
