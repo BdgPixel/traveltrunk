@@ -14,7 +14,7 @@ var lowLag = new function(){
 
   this.audioTagTimeToLive = 5000;
 
-  this.sm2url = 'sm2/swf/';
+  this.sm2url = 'assets/sm2/swf/';
 
   this.soundUrl = "";
 
