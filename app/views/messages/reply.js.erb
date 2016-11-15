@@ -35,7 +35,7 @@ $('span.errors').html('');
   }());
 
   <% publish_to "/private_messages/#{@reply_message.received_messageable_id}" do %>
-    lowLag.play('beer_can_opening');
+    lowLag.play('new_inbox');
 
     $('#message-<%= @first_message.try(:id) %>').remove();
 
