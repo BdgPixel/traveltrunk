@@ -164,7 +164,7 @@ root.roomSelected = (selector)->
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
     $('#confirmation_book_smoking_preferences').val(room[0]['smokingPreferences'])
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
-
+    
     if $(this).data('group')
       $('.form-book').hide()
       $('#linkVote').attr('disabled', true)
