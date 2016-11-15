@@ -167,7 +167,17 @@ root.roomSelected = (selector)->
 
     if $(this).data('group')
       $('.form-book').hide()
-      $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
+      $('#linkVote').attr('disabled', true)
+      $('#linkVote').attr('href', 'javascript:void(0)')
+
+      $('#agree').on 'click', ->
+        if $(this).prop('checked')
+          $('#linkVote').attr('disabled', false)
+          $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
+        else
+          $('#linkVote').attr('href', 'javascript:void(0)')
+          $('#linkVote').attr('disabled', true)
+
       $('.form-vote ').show()
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
