@@ -277,6 +277,9 @@ root.initLowLag = ->
 ready = ->
   initUsersCollection()
   initLowLag()
+
+  $(document).one 'touchstart', ->
+    lowLag.play('new_inbox')
   
   $('.link-message').on 'click', ->
     if $(this).attr('href').indexOf("#collapseGroupChat") != -1
@@ -349,5 +352,3 @@ ready = ->
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
-$(document).one 'touchstart', ->
-  lowLag.play()
