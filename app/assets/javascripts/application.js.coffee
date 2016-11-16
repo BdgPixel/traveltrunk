@@ -279,7 +279,13 @@ ready = ->
   initLowLag()
 
   $(document).one 'touchstart', ->
-    lowLag.play('new_inbox')
+    lowLag.init()
+    lowLag.load([
+      window.new_inbox_mp3_path,
+      window.new_inbox_ogg_path,
+      window.new_inbox_aac_path],
+      "new_inbox"
+    );
   
   $('.link-message').on 'click', ->
     if $(this).attr('href').indexOf("#collapseGroupChat") != -1
