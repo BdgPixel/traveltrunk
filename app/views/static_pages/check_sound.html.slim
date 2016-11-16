@@ -5,7 +5,7 @@
   h1 click anywhere on this page to start sound
 
 coffee:
-  $(document).bind 'touchstart', ->
+  $(document).one 'touchstart', ->
     lowLag.play('new_inbox')
 
   $(document).ready ()->
