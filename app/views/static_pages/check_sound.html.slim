@@ -1,0 +1,14 @@
+.container
+  br
+  br
+  br
+  h1 click anywhere on this page to start sound
+
+coffee:
+  $(document).one 'click', ->
+    lowLag.play('new_inbox')
+
+  $(document).ready ()->
+    setInterval(->
+      lowLag.play('new_inbox')
+    , 5000)
