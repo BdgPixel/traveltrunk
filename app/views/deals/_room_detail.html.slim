@@ -79,8 +79,8 @@
   .btn-let-go
     .title-row
     = button_actions_in_deals_detail(room)
-
-  .members-voted
-    - binding.pry
-    #titlePopover style="display:block"
-      h4 = "#{pluralize(@votes.count, 'person')} want to go"
+    - if @members_voted.present?
+      .members-voted.text-left
+        small 
+          = members_of_voted(@members_voted)
+          | &nbsp;agreed on this room type

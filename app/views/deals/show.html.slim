@@ -73,19 +73,19 @@
 
                   / share link
 
-                  #titlePopover style="display:none"
-                    h4 = "#{pluralize(@votes.count, 'person')} want to go"
+                  / #titlePopover style="display:none"
+                  /   h4 = "#{pluralize(@votes.count, 'person')} want to go"
 
-                  #contentPopover style="display:none"
-                    - if @votes.empty?
-                      .alert.alert-info No members vote for this hotel
-                    - else
-                      - @votes.each do |vote|
-                        .col-md-12.popover-list-users
-                          = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
-                            = image_tag vote.user.profile.image.url, width: '70px'
-                          = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
-                            = vote.user.id.eql?(current_user.id) ? "You" : vote.user.try(:profile).try(:full_name)
+                  / #contentPopover style="display:none"
+                  /   - if @votes.empty?
+                  /     .alert.alert-info No members vote for this hotel
+                  /   - else
+                  /     - @votes.each do |vote|
+                  /       .col-md-12.popover-list-users
+                  /         = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
+                  /           = image_tag vote.user.profile.image.url, width: '70px'
+                  /         = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
+                  /           = vote.user.id.eql?(current_user.id) ? "You" : vote.user.try(:profile).try(:full_name)
 
       br
 
