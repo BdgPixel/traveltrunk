@@ -167,13 +167,17 @@ root.roomSelected = (selector)->
     
     if $(this).data('group')
       $('.form-book').hide()
+      $('#agree:checked').removeAttr('checked')
       $('#linkVote').attr('disabled', true)
       $('#linkVote').attr('href', 'javascript:void(0)')
 
       $('#agree').on 'click', ->
         if $(this).prop('checked')
           $('#linkVote').attr('disabled', false)
-          $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}")
+
+          shareImageLink = $('#shareHotelInfo').data('share-image')
+
+          $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{rooms.hotelName}&share_image=#{shareImageLink}")
         else
           $('#linkVote').attr('href', 'javascript:void(0)')
           $('#linkVote').attr('disabled', true)
