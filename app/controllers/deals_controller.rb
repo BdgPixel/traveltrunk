@@ -421,36 +421,6 @@ class DealsController < ApplicationController
     respond_to :js
   end
 
-  def like23
-    respond_to do |format|
-      format.html { redirect_to deals_show_url(params[:id]) }
-      format.js
-    end
-    # @hotel_id = params[:id]
-        
-    # notice =
-    #   if @like.present?
-    #     @like.destroy
-    #     'You successfully cancel vote for this hotel'
-    #   else
-    #     like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
-    #     if like.save
-    #       joined_group = current_user.joined_groups.first
-    #       joined_group.members.each do |user|
-    #         unless user.id.eql?(current_user.id)
-    #           like.create_activity key: "group.like", owner: current_user,
-    #             recipient: user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
-    #         end
-    #       end
-    #       like.create_activity key: "group.like", owner: current_user,
-    #         recipient: joined_group.user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
-    #     end
-    #     'You successfully vote for this hotel'
-    #   end
-
-    # redirect_to deals_show_url(params[:id]), notice: notice
-  end
-
   def like
     @hotel_id = params[:id]
     

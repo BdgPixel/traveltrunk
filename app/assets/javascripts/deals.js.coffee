@@ -482,9 +482,12 @@ $(document).ready ->
           # removeBackdropModal '#modalBook'
 
         if $('.refundable-info').length > 0
-            $('body').tooltip
-             selector: '.refundable-info'
-             container: 'body'
+          $('body').tooltip
+            selector: '.refundable-info'
+            container: 'body'
+
+        if $('.disable-book-link').length > 0
+          $('.disable-book-link').tooltip()
 
         return
 
