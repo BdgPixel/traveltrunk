@@ -7,7 +7,7 @@ class DealsController < ApplicationController
   before_action :authenticate_user!, except: [:search, :show, :room_availability, :guest_booking,
     :confirmation_page]
   before_action :get_group, only: [:index, :search, :show, :room_availability, :create_book,
-    :update_credit]
+    :update_credit, :like]
   before_action :redirect_to_root, only: [:search]
   before_action :get_destination, only: [:index, :search, :create_book, :room_availability]
   before_action :update_arrival_and_departure_date, only: [:index, :create_book, :room_availability]
@@ -388,6 +388,7 @@ class DealsController < ApplicationController
 
     if user_signed_in?
       @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
+      @members_voted = Like.where(hotel_id: params[:id])
 
       @total_credit =
         if @group
@@ -420,30 +421,96 @@ class DealsController < ApplicationController
     respond_to :js
   end
 
+  def like23
+    respond_to do |format|
+      format.html { redirect_to deals_show_url(params[:id]) }
+      format.js
+    end
+    # @hotel_id = params[:id]
+        
+    # notice =
+    #   if @like.present?
+    #     @like.destroy
+    #     'You successfully cancel vote for this hotel'
+    #   else
+    #     like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
+    #     if like.save
+    #       joined_group = current_user.joined_groups.first
+    #       joined_group.members.each do |user|
+    #         unless user.id.eql?(current_user.id)
+    #           like.create_activity key: "group.like", owner: current_user,
+    #             recipient: user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
+    #         end
+    #       end
+    #       like.create_activity key: "group.like", owner: current_user,
+    #         recipient: joined_group.user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
+    #     end
+    #     'You successfully vote for this hotel'
+    #   end
+
+    # redirect_to deals_show_url(params[:id]), notice: notice
+  end
+
   def like
     @hotel_id = params[:id]
     
-    notice =
+    respond_to do |format|
       if @like.present?
         @like.destroy
-        'You successfully cancel vote for this hotel'
+
+        format.html {redirect_to deals_show_url(params[:id]), notice: 'You successfully cancel vote for this hotel'}
       else
         like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
+
         if like.save
           joined_group = current_user.joined_groups.first
+
           joined_group.members.each do |user|
             unless user.id.eql?(current_user.id)
               like.create_activity key: "group.like", owner: current_user,
                 recipient: user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
             end
           end
+
           like.create_activity key: "group.like", owner: current_user,
             recipient: joined_group.user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
-        end
-        'You successfully vote for this hotel'
-      end
 
-    redirect_to deals_show_url(params[:id]), notice: notice
+          body_message = 
+            tmp_body = "[shared: #{params[:share_image]}|#{params[:hotel_name]}|#{request.referer}]"
+            tmp_body << "#{current_user.profile.full_name} has agreed to this hotel and room type"
+            
+          members = @group.all_members
+          message_hash = { topic: 'Group Message', body: body_message }
+
+          @first_message = @group.message
+
+          if @first_message.present?
+            @message = current_user.reply_to(@first_message, message_hash)
+          else
+            @first_message = @message = current_user.send_message(@group.members.first, message_hash)
+            @group.update(message_id: @message.id)
+          end
+
+          members.each do |member|
+            notification = PublicActivity::Activity.new(
+              key: "messages.group",
+              owner: current_user,
+              recipient: member,
+              trackable_id: @message.id,
+              trackable_type: 'CustomMessage'
+            )
+
+            notification.save
+            @notification = notification if member.id.eql?(current_user.id)
+          end
+        end
+
+        format.html {redirect_to deals_show_url(params[:id]), notice: 'You successfully vote for this hotel' }
+        format.js
+      end
+    end
+
+    # redirect_to deals_show_url(params[:id]), notice: notice
   end
 
   def next

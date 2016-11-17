@@ -1,7 +1,52 @@
-<%- if @like.present? %>
-  $("#like-<%= @hotel_id %>").removeClass("icon love-active");
-  $("#like-<%= @hotel_id %>").addClass("icon love-normal");
-<%- else %>
-  $("#like-<%= @hotel_id %>").removeClass("icon love-normal");
-  $("#like-<%= @hotel_id %>").addClass("icon love-active");
+window.location = "<%= deals_show_url(params[:id]) %>";
+
+// display success popup and hide message popup
+ if($('#groupChatBox').length > 0){
+  // append new chat
+  $('#groupChatBox').append("<%= j render 'messages/reply_group_message', sender_name: 'You', action_type: 'send', message: @message %>");
+  scrollToBottom('#groupChatBox');
+} else {
+  $('#messageSuccess').modal({ backdrop: 'static' });
+}
+
+(function(){
+  newNotifCount = $('.message-item.unread').length;
+  $('#messageCount').text(newNotifCount);
+
+  if(newNotifCount > 0){
+    $('#messageCount').removeClass('hide');
+  } else {
+      $('#messageCount').addClass('hide');
+    }
+}());
+
+<% publish_to "/group_messages/#{ @group.id }" do %>
+  lowLag.play('new_inbox');
+  
+  var senderId = parseInt('<%= @message.sent_messageable_id %>');
+  var currentUserId = $('#currentUserId').data('user-id');
+
+  if($('#currentUserId').data('user-id') !== senderId){
+    $('#message-<%= @first_message.try(:id) %>').remove();
+    $('.messages-wrapper').prepend("<%= j render 'messages/message', action_type: 'receive', notification_is_read: false, message: @message %>");
+    
+    if($('#groupChatBox').length > 0){
+      // append new chat
+      $('#groupChatBox').append("<%= j render 'messages/reply_group_message', sender_name: @message.sender_name, action_type: 'receive', message: @message %>");
+      scrollToBottom('#groupChatBox');
+    }
+
+    $('form.new_message').trigger('reset');
+
+    (function(){
+      newNotifCount = $('.message-item.unread').length;
+      $('#messageCount').text(newNotifCount);
+
+      if(newNotifCount > 0){
+        $('#messageCount').removeClass('hide');
+      } else {
+          $('#messageCount').addClass('hide');
+        }
+    }());
+  }
 <% end %>

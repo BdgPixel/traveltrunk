@@ -57,6 +57,7 @@
                   = render "bookings/form_selected_room"
                   
                 .form-vote
+                  #shareHotelInfo data-share-image="#{@featured_image['url']}"
                   | Would you like to agree to this hotel?
                   br
                   br
@@ -66,7 +67,7 @@
                       | &nbsp;I agree to the&nbsp;
                       = link_to 'Terms & Conditions', 'http://developer.ean.com/terms/en/', target: '_blank'
                     
-                  = link_to "Yes", deals_like_path(params[:id], hotel_name: '538664'), id: 'linkVote', class: "btn btn-saving btn-green", data: { no_turbolink: true }, role: 'button'
+                  = link_to "Yes", deals_like_path(params[:id], hotel_name: '538664'), id: 'linkVote', class: "btn btn-saving btn-green", data: { no_turbolink: true }, role: 'button', remote: true
                   | &nbsp;&nbsp;
                   
                   = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }

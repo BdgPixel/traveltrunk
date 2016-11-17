@@ -179,7 +179,11 @@ module DealsHelper
         if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
           link = link_to "Add to savings", "#", class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
         else
-          link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+          if @members_voted.count.eql? @group.members.count
+            link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
+          else
+            link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size", disabled: true
+          end
         end
       else
         if @current_user_votes_count.zero?
@@ -231,5 +235,9 @@ module DealsHelper
 
   def full_name(first_name, last_name)
     "#{first_name} #{last_name}".titleize
+  end
+
+  def members_of_voted(members_voted)
+    members_voted.map { |member_voted| member_voted.user.profile.full_name }.join(', ')
   end
 end
