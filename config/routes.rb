@@ -18,6 +18,12 @@ Rails.application.routes.draw do
     end
   end
 
+  resources :flights, only: [:index, :show] do
+    collection do
+      post :search
+    end
+  end
+
   require 'sidekiq/web'
 
   authenticate :user, lambda { |u| u.admin? } do

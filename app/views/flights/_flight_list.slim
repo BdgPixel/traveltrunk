@@ -1,0 +1,43 @@
+- if @flights.present?
+  .deals-page data-page="1"
+    .row
+      - @itineraries.each_with_index do |itinerarie, index|
+        .wrapper-price-deals   
+          .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
+            .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
+              h4
+                = itinerarie[:OutboundLegId]
+
+            .card-item
+              = itinerarie[:PricingOptions].each do |price|
+                .row
+                  .col-md-12
+                    .inner-deals-content
+                      p.content-deals
+                        = price[:Agents]
+                      p Price #{price[:Price]}
+                      = link_to "Link Booking", @itineraries.first[:PricingOptions].first[:DeeplinkUrl]
+
+    .col-md-12
+      .row
+        br
+
+        div.text-center
+          i
+            small 
+              | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
+
+        .wrapper-pagination
+          #valueOfPagination data-num-of-pages="#{@flights.first[:num_of_page]}" data-num-of-hotels="#{@flights.first[:num_of_hotel]}"
+          #pagination
+
+          p#pagination-info.text-center
+            | 1 - 15 of #{@flights.first[:num_of_hotel]} Flights
+
+- else
+  #error_response.alert.alert-info style="margin-top: 20px"
+    button type="button" class="close" data-dismiss="alert" aria-label="Close"
+      span aria-hidden="true" &times;
+    
+    strong Notice: &nbsp;
+    | Something when wrong

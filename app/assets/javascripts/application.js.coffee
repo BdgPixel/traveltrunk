@@ -180,6 +180,26 @@ root.initDatePickerForDesktop = (today) ->
     startDate: today
     autoclose: true).on 'changeDate', (e) ->
 
+root.initDatePickerFlightForDesktop = (today) ->
+  $('input.search_flights_departure_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      $(this).valid()
+      departureDate = e.date
+      departureDate.setDate(departureDate.getDate() + 1)
+
+      $('input.search_flights_departure_date').datepicker('remove')
+      $('input.search_flights_departure_date').datepicker
+        startDate:  getFormattedDate(departureDate)
+        autoclose: true
+      setTimeout(->
+        $('input.search_flights_departure_date').datepicker('show')
+      , 100)
+
+  $('input.search_deals_departure_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+
 root.initDatePickerForMobile = (today) ->
   $('input.search_deals_arrival_date_mobile').datepicker(
     startDate: today
