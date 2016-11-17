@@ -175,12 +175,16 @@ root.roomSelected = (selector)->
         if $(this).prop('checked')
           $('#linkVote').attr('disabled', false)
 
-          shareImageLink = encodeURIComponent($('#shareHotelInfo').data('share-image'))
-          hotelName = encodeURIComponent(rooms.hotelName)
+          # shareImageLink = encodeURIComponent($('#shareHotelInfo').data('share-image'))
+          # hotelName = encodeURIComponent(rooms.hotelName)
 
-          $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{hotelName}&share_image=#{shareImageLink}")
+          $('.vote-hotel-name').val(rooms.hotelName)
+          $('.vote-share-image').val($('#shareHotelInfo').data('share-image'))
+
+          # $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{hotelName}&share_image=#{shareImageLink}")
         else
-          $('#linkVote').attr('href', 'javascript:void(0)')
+          $('.vote-hotel-name').val('')
+          $('.vote-share-image').val('')
           $('#linkVote').attr('disabled', true)
 
       $('.form-vote ').show()

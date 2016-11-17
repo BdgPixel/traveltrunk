@@ -66,10 +66,14 @@
                     small 
                       | &nbsp;I agree to the&nbsp;
                       = link_to 'Terms & Conditions', 'http://developer.ean.com/terms/en/', target: '_blank'
-                    
-                  = link_to "Yes", deals_like_path(params[:id], hotel_name: '538664'), id: 'linkVote', class: "btn btn-saving btn-green", data: { no_turbolink: true }, role: 'button', remote: true
-                  | &nbsp;&nbsp;
                   
-                  = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
-                  / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
-                  /   | No
+                  = simple_form_for :like, url: deals_like_path(params[:id]), method: :get, remote: true do |f|
+                    = hidden_field_tag :hotel_name, nil, class: 'vote-hotel-name'
+                    = hidden_field_tag :share_image, nil, class: 'vote-share-image'
+
+                    = submit_tag 'Yes', id: 'linkVote', class: 'btn btn-saving btn-green'
+                    | &nbsp;&nbsp;
+                    
+                    = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
+                    / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
+                    /   | No
