@@ -41,7 +41,11 @@
 
                         .card-item
                           = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                            = notaffordable(hotel["thumbNailUrl"])
+                            - if user_signed_in?
+                              = notaffordable(hotel["thumbNailUrl"])
+                            - else
+                              = list_of_deals_div(hotel["thumbNailUrl"])
+
                           .row
                             .col-md-12
                               .inner-deals-content
@@ -57,7 +61,10 @@
 
                         .card-item
                           = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                            = notaffordable(hotel["thumbNailUrl"])
+                            - if user_signed_in?
+                              = notaffordable(hotel["thumbNailUrl"])
+                            - else
+                              = list_of_deals_div(hotel["thumbNailUrl"])
                           .row
                             .col-md-12
                               .inner-deals-content
