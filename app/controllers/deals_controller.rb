@@ -30,7 +30,7 @@ class DealsController < ApplicationController
 
   def search
     session[:customer_session_id] = @hotels_list.first[:customer_session_id]
-
+    
     respond_to do |format|
       format.html
       format.js
@@ -503,6 +503,7 @@ class DealsController < ApplicationController
   def create_destination
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
+    
     if params[:search_deals][:destination_string_hide]
       custom_params = destination_with_hide_params
     else

@@ -44,6 +44,8 @@ $(document).ready ->
   initDatePickerForMobile(today)
   showSearchForm()
   showSearchFormMobile()
+  truncateString('input#autocomplete')
+  truncateString('input#autocompleteMobile')
 
   numOfpages = $('#valueOfPagination').data('num-of-pages')
   numOfHotels = $('#valueOfPagination').data('num-of-hotels')
