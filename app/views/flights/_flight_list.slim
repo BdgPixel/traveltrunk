@@ -1,4 +1,4 @@
-- if @flights.first[:response].present?
+- if @flights.present?
   .deals-page data-page="1"
     .row
       - @flights.first[:response].each_with_index do |itinerarie, index|
