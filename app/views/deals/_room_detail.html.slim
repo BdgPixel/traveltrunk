@@ -76,12 +76,13 @@
 
     = hidden_field_tag "total", room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
-  .btn-let-go
+  .btn-let-go style="text-align: left"
     .title-row
     = button_actions_in_deals_detail(room)
 
-    - if @members_voted.present?
+    - if @likes_grouped.present?
       .members-voted.text-left
         small 
-          = members_of_voted(@members_voted)
-          | &nbsp;agreed on this room type
+          - if @likes_grouped[room['rateCode'].to_s]
+            = members_of_voted(@likes_grouped[room['rateCode'].to_s])
+            | &nbsp;agreed on this room type

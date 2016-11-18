@@ -56,10 +56,12 @@
               | &nbsp;&nbsp;
             - else
               = link_to 'Yes', 'javascript:void(0)', id: 'linkBtnYes', class: 'btn btn-saving btn-green'
-              / , data: { toggle: 'modal', target: '#modalSavingsForm' }
               | &nbsp;&nbsp;
             
             = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
-            / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
-            /   | I want to keep looking
+
+      #modalMembersVoted.row.hide
+        .col-md-6
+          p
+            
 

@@ -43,7 +43,9 @@ class DealsController < ApplicationController
     expedia_params_hash = { hotelId: params[:id] }
     @terms_and_conditions_url = "http://developer.ean.com/terms/en/"
 
-    @votes = Like.where(hotel_id: params[:id])
+    # @votes = Like.where(hotel_id: params[:id])
+    # @likes_grouped = @votes.group_by { |like| like.rate_code }
+    # binding.pry
     @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
     @title = @hotel_information['HotelSummary']['name']
 
@@ -387,8 +389,9 @@ class DealsController < ApplicationController
     'MC', 'NL', 'CH']
 
     if user_signed_in?
-      @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
-      @members_voted = Like.where(hotel_id: params[:id])
+      # @current_user_votes_count = Like.where(hotel_id: params[:id], user_id: current_user.id).count
+      @votes = Like.where(hotel_id: params[:id])
+      @likes_grouped = @votes.group_by { |like| like.rate_code }
 
       @total_credit =
         if @group
@@ -430,7 +433,7 @@ class DealsController < ApplicationController
 
         format.html {redirect_to deals_show_url(params[:id]), notice: 'You successfully cancel vote for this hotel'}
       else
-        like = Like.new(hotel_id: @hotel_id, user_id: current_user.id)
+        like = Like.new(hotel_id: @hotel_id, user_id: current_user.id, rate_code: params[:rate_code], room_type_code: params[:room_type_code])
 
         if like.save
           joined_group = current_user.joined_groups.first
@@ -550,7 +553,8 @@ class DealsController < ApplicationController
     end
 
     def check_like
-      @like = Like.find_by(hotel_id: params[:id], user_id: current_user.id)
+      @like = Like.find_by(hotel_id: params[:id], user_id: current_user.id,
+        rate_code: params[:rate_code], room_type_code: params[:room_type_code])
     end
 
     def destination_params
