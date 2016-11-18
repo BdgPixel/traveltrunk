@@ -58,7 +58,8 @@
                   
                 .form-vote
                   #shareHotelInfo data-share-image="#{@featured_image['url']}"
-                  | Would you like to agree to this hotel?
+                  span#voteConfirmationText Would you like to agree to this hotel?
+                
                   br
                   br
                   .form-group
@@ -70,6 +71,9 @@
                   = simple_form_for :like, url: deals_like_path(params[:id]), method: :get, remote: true do |f|
                     = hidden_field_tag :hotel_name, nil, class: 'vote-hotel-name'
                     = hidden_field_tag :share_image, nil, class: 'vote-share-image'
+                    = hidden_field_tag :rate_code, nil, class: 'vote-rate-code'
+                    = hidden_field_tag :rate_code, nil, class: 'vote-rate-code'
+                    = hidden_field_tag :room_type_code, nil, class: 'vote-room-type-code'
 
                     = submit_tag 'Yes', id: 'linkVote', class: 'btn btn-saving btn-green'
                     | &nbsp;&nbsp;

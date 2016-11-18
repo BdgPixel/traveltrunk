@@ -180,6 +180,8 @@ root.roomSelected = (selector)->
 
           $('.vote-hotel-name').val(rooms.hotelName)
           $('.vote-share-image').val($('#shareHotelInfo').data('share-image'))
+          $('.vote-rate-code').val(room[0]['rateCode'])
+          $('.vote-room-type-code').val(room[0]['RoomType']['@roomCode'])
 
           # $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{hotelName}&share_image=#{shareImageLink}")
         else
@@ -187,7 +189,30 @@ root.roomSelected = (selector)->
           $('.vote-share-image').val('')
           $('#linkVote').attr('disabled', true)
 
+      if $(this).data('cancel-vote')
+        $('#voteConfirmationText').text('Would you like to cancel vote to this hotel?')
+        $('form.like').data('remote', false)
+      else
+        $('#voteConfirmationText').text('Would you like to agree to this hotel?')
+        $('form.like').data('remote', true)
+
       $('.form-vote ').show()
+
+
+    if $(this).data('allow-booking') != 'undefined'
+      membersVotedStr = $(this).siblings('.members-voted').text().trim()
+
+      if membersVotedStr.length > 0
+        $('#modalMembersVoted').removeClass('hide')
+      else
+        $('#modalMembersVoted').addClass('hide')
+
+      if $(this).data('allow-booking') == true
+        $('#modalMembersVoted p').text(membersVotedStr)
+        $("form#formBook input[type='submit']").removeAttr('disabled')
+      else
+        $('#modalMembersVoted p').text(membersVotedStr + ' (all members need to agree on this hotel first, before you can book)')
+        $("form#formBook input[type='submit']").attr('disabled', 'disabled')
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
