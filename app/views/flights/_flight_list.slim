@@ -50,9 +50,9 @@
                   hr
                   - itinerarie[:InboundLegId][:Carriers].each do |carrier|
                     b Airline
-                      .card-airline
-                        p #{image_tag carrier[:ImageUrl]}
-                        p #{carrier[:Name]} 
+                    .card-airline
+                      p #{image_tag carrier[:ImageUrl]}
+                      p #{carrier[:Name]} 
               .col-md-4
                 h4 Price Options
                 - itinerarie[:PricingOptions].each do |price|
@@ -91,4 +91,4 @@
       span aria-hidden="true" &times;
     
     strong Notice: &nbsp;
-    | Something when wrong Please try againt!
+    | Please try again!

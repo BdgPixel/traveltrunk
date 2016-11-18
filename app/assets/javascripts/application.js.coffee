@@ -149,16 +149,6 @@ root.validateSearchForm = ->
 
   return
 
-root.validateFlightSearchForm = ->
-  $('.search-flights-form').validate
-    ignore: ".ignore"
-    rules:
-      autocomplete: 'required'
-
-    messages:
-      autocomplete: 'Please enter your destination'
-
-  return
 
 root.validateSearchFormMobile = ->
   $('.search-deals-form-mobile').validate
