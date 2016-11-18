@@ -515,10 +515,12 @@ $(document).ready ->
         if (imageLoadedCount == $('.slider-images').length) || imageSizeType == 'b'
           clearInterval replaceImageInterval
 
-          blueimp.Gallery $('.slider-images'),
-            container: '#blueimp-gallery-carousel'
-            carousel: true
-      , 0)
+          setTimeOut( ->
+            blueimp.Gallery $('.slider-images'),
+              container: '#blueimp-gallery-carousel'
+              carousel: true
+          , 2000)
+      , 1000)
 
     $('#linkBtnYes').on 'click', ->
       $('.payment-errors').text('')
