@@ -60,6 +60,8 @@ gem 'public_activity'
 
 gem 'httparty'
 
+gem 'typhoeus'
+
 gem 'ratyrate'
 
 gem 'authorizenet', '1.8.9.1'

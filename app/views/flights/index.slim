@@ -1,0 +1,47 @@
+- content_for :javascripts
+  = javascript_include_tag "flights"
+  = javascript_include_tag "variables", "profiles"
+
+.wrap-middle.hidden-xs
+  .container
+    .row
+      .col-md-12.pad-left-75.pad-right-75.js-close-searchbox
+        .wrapper-top-deals
+          .slide
+            .text-header-slide.js-close-searchbox
+              h1.text-center
+                span data-toggle="tooltip" data-placement="bottom" data-title="Click the arrow to search for other destinations and or change dates"
+                  - if current_user.profile.home_airport && current_user.bank_account && current_user.total_credit > 0
+                    = link_to "The origin city or airport?", "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
+        / #slideToggle
+        #slideToggle.collapse
+          .row.js-close-searchbox
+            .col-md-10.col-md-offset-1.no-pad-left.no-pad-right
+              .panel.panel-default.box-shadow-none
+                .panel-body.js-close-searchbox
+                  .wrapper-search-deal
+                    = render 'flights/form_search'
+
+        .wrapper-arrow-down.js-arrow-desktop
+          span data-toggle="tooltip" data-placement="bottom" data-title="Click the arrow to search for other destinations and or change dates"
+            .arrow-downs data-toggle="collapse" data-target="#slideToggle"
+
+.wrapper-search-deal.hidden-sm.hidden-md.hidden-lg
+  .wrap-middle-mobile
+    .container
+      .row
+        .wrapper-where-search.top-deals
+          .col-md-12
+            button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
+              span.text
+              span.btn-search
+
+.container
+  .row
+  .row
+  .wrapper-list-hotel
+
+  #dealsHotelsList
+  br
+  br
+  .pad-btm-350.hide

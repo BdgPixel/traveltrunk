@@ -1,0 +1,22 @@
+= simple_form_for :flights, method: @method_name, url: search_flights_path, remote: true, html: { class: 'search-flights-form' } do |f|
+  .col-xs-2.no-pad-left.no-pad-right
+    .form-group
+      = f.input_field :origin_place, class: "form-control no-border-radius-right separated-form", placeholder: "Where would you airport?", value: "MAN-sky", id: "origin_place"
+  .col-xs-2.no-pad-left.no-pad-right
+    .form-group
+      = f.input_field :destination_place, class: "form-control no-border-radius", placeholder: "Where would destination?", value: "WASA-sky", id: "destination_place"
+  .col-xs-2.no-pad-left.no-pad-right
+    .form-group
+      = f.input_field :outbounddate, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%Y-%m-%d"), class: "form-control no-border-radius search_flights_arrival_date", placeholder: "Departing when?"
+
+  .col-xs-2.no-pad-left.no-pad-right
+    .form-group
+      = f.input_field :inbounddate, value: @destination.nil? ? nil : @destination.departure_date.strftime("%Y-%m-%d"), class: "form-control no-border-radius search_flights_departure_date", placeholder: "Return when?"
+
+  .col-xs-2.no-pad-left.no-pad-right
+    .form-group
+      = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, class: "form-control no-border-radius"
+
+  .col-xs-2.no-pad-left.no-pad-right
+    .form-group
+      = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"

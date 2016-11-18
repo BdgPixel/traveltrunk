@@ -22,5 +22,6 @@ Rails.application.config.assets.precompile += %w(
   savings.css
   deals.css
   height.css
+  flights.js
 )
 # Rails.application.config.assets.precompile += %w( groups.js galleria.classic.min.js variables.js profiles.js deals.js holder.js profiles.css deals.css)

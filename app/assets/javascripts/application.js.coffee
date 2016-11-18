@@ -149,6 +149,17 @@ root.validateSearchForm = ->
 
   return
 
+root.validateFlightSearchForm = ->
+  $('.search-flights-form').validate
+    ignore: ".ignore"
+    rules:
+      autocomplete: 'required'
+
+    messages:
+      autocomplete: 'Please enter your destination'
+
+  return
+
 root.validateSearchFormMobile = ->
   $('.search-deals-form-mobile').validate
     ignore: ".ignore"
@@ -177,6 +188,27 @@ root.initDatePickerForDesktop = (today) ->
       , 100)
 
   $('input.search_deals_departure_date').datepicker(
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+
+root.initDatePickerFlightForDesktop = (today) ->
+  $('input.search_flights_arrival_date').datepicker(
+    format: 'yyyy-mm-dd'
+    startDate: today
+    autoclose: true).on 'changeDate', (e) ->
+      departureDate = e.date
+      departureDate.setDate(departureDate.getDate() + 1)
+
+      $('input.search_flights_departure_date').datepicker('remove')
+      $('input.search_flights_departure_date').datepicker
+        format: 'yyyy-mm-dd'
+        startDate:  getFormattedDateFlight(departureDate)
+        autoclose: true
+      setTimeout(->
+        $('input.search_flights_departure_date').datepicker('show')
+      , 100)
+
+  $('input.search_flights_departure_date').datepicker(
     startDate: today
     autoclose: true).on 'changeDate', (e) ->
 
@@ -223,6 +255,14 @@ getFormattedDate = (date) ->
   month = date.getMonth() + 1
   year = date.getFullYear()
   formattedDate = [month, day, year].join('/')
+
+  formattedDate
+
+getFormattedDateFlight = (date) ->
+  day = date.getDate()
+  month = date.getMonth() + 1
+  year = date.getFullYear()
+  formattedDate = [year, month, day, ].join('-')
 
   formattedDate
 

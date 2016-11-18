@@ -1,0 +1,19 @@
+<%- if @destination %>
+  $("#slideToggleLink").text("<%= @destination.title_destination %>");
+<%- else %>
+  $("#slideToggleLink").text("Where would you like to be?");
+<% end %>
+
+$("#dealsHotelsList").html("<%= j render 'flight_list' %>");
+
+if ($('.arrow-downs').length) {
+  $('#slideToggleLink').css('padding-bottom', 0);
+  $('#slideToggleLink').removeClass('arrow-downs');
+} else {
+  $('#slideToggleLink').css('padding-bottom', '50px');
+  $('#slideToggleLink').addClass('arrow-downs');
+}
+
+$("#slideToggle").collapse('hide');
+$('[data-toggle="tooltip"]').tooltip();
+showSearchForm();
