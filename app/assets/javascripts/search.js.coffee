@@ -40,6 +40,7 @@ $(document).ready ->
   moment.tz.link('America/Los_Angeles|US/Pacific')
   today = moment.tz('US/Pacific').format('M/D/Y')
 
+  initDatePickerFlightForDesktop(today)
   initDatePickerForDesktop(today)
   initDatePickerForMobile(today)
   showSearchForm()

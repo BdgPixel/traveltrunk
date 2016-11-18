@@ -7,9 +7,6 @@ class FlightsController < ApplicationController
 
 	def search
 		set_session_flight
-		@itineraries 	= @flights.first[:response][:Itineraries]
-		@legs 				= @flights.first[:response][:Legs]
-		@agents 			= @flights.first[:response][:Agents]
     respond_to do |format|
       format.html
       format.js
@@ -22,6 +19,6 @@ class FlightsController < ApplicationController
 	end
 
 	def set_session_flight
-		@flights = Skyscanner::Flights.create_session("US", "USD", "en-GB", flight_params[:origin_place], flight_params[:destination_place], flight_params[:outbounddate], flight_params[:inbounddate], flight_params[:number_of_adult])
+		@flights = Skyscanner::Flights.list_flight("US", "USD", "en-GB", flight_params[:origin_place], flight_params[:destination_place], flight_params[:outbounddate], flight_params[:inbounddate], flight_params[:number_of_adult])
 	end
 end

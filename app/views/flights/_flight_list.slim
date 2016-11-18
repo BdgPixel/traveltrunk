@@ -1,22 +1,73 @@
-- if @flights.present?
+- if @flights.first[:response].present?
   .deals-page data-page="1"
     .row
-      - @itineraries.each_with_index do |itinerarie, index|
-        .wrapper-price-deals   
-          .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
-            .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
-              h4
-                = itinerarie[:OutboundLegId]
-
-            .card-item
-              = itinerarie[:PricingOptions].each do |price|
-                .row
-                  .col-md-12
-                    .inner-deals-content
-                      p.content-deals
-                        = price[:Agents]
-                      p Price #{price[:Price]}
-                      = link_to "Link Booking", @itineraries.first[:PricingOptions].first[:DeeplinkUrl]
+      - @flights.first[:response].each_with_index do |itinerarie, index|
+        .panel.panel-default.event
+          .panel-body
+            .col-md-12
+              .col-md-4
+                h4 Out Bound
+                p 
+                  b Origin Ariport 
+                  | #{itinerarie[:OutboundLegId][:OriginStation][:Name]} (#{itinerarie[:OutboundLegId][:OriginStation][:Code]})
+                p
+                  b Destination Ariport 
+                  | #{itinerarie[:OutboundLegId][:DestinationStation][:Name]} (#{itinerarie[:OutboundLegId][:DestinationStation][:Code]})
+                p 
+                  b Departure 
+                  | #{parse_date(itinerarie[:OutboundLegId][:Departure])}
+                p 
+                  b Arrival 
+                  | #{parse_date(itinerarie[:OutboundLegId][:Arrival])}
+                p 
+                  b Duration 
+                  | #{itinerarie[:OutboundLegId][:Duration]} Minutes
+                hr
+                - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
+                  b Airline
+                  .card-airline
+                    p #{image_tag carrier[:ImageUrl]}
+                    p #{carrier[:Name]} 
+                  
+              .col-md-4
+                - unless (itinerarie[:InboundLegId].nil? rescue false)
+                  h4 In Bound
+                  p
+                    b Origin Ariport 
+                    | #{itinerarie[:InboundLegId][:OriginStation][:Name]} (#{itinerarie[:InboundLegId][:OriginStation][:Code]})
+                  p
+                    b Destination Ariport 
+                    | #{itinerarie[:InboundLegId][:DestinationStation][:Name]} (#{itinerarie[:InboundLegId][:DestinationStation][:Code]})
+                  p
+                    b Departure 
+                    | #{parse_date(itinerarie[:InboundLegId][:Departure])}
+                  p 
+                    b Arrival 
+                    | #{parse_date(itinerarie[:InboundLegId][:Arrival])}
+                  p  
+                    b Duration 
+                    | #{itinerarie[:InboundLegId][:Duration]} Minutes
+                  hr
+                  - itinerarie[:InboundLegId][:Carriers].each do |carrier|
+                    b Airline
+                      .card-airline
+                        p #{image_tag carrier[:ImageUrl]}
+                        p #{carrier[:Name]} 
+              .col-md-4
+                h4 Price Options
+                - itinerarie[:PricingOptions].each do |price|
+                  .card-price
+                    .card-agent
+                      - price[:Agents].each do |agent|
+                        p #{image_tag agent[:ImageUrl]}
+                        p #{agent[:name]} 
+                    p 
+                      b Price  
+                      = currency(price[:Price])
+                    p 
+                      b Link Booking 
+                      | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success"}
+                  hr
 
     .col-md-12
       .row
@@ -40,4 +91,4 @@
       span aria-hidden="true" &times;
     
     strong Notice: &nbsp;
-    | Something when wrong
+    | Something when wrong Please try againt!
