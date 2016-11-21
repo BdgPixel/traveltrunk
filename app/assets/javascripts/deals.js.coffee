@@ -540,7 +540,7 @@ $(document).ready ->
         if (imageLoadedCount == $('.slider-images').length) || imageSizeType == 'b'
           clearInterval replaceImageInterval
 
-          setTimeOut( ->
+          setTimeout( ->
             blueimp.Gallery $('.slider-images'),
             container: '#blueimp-gallery-carousel'
             carousel: true
