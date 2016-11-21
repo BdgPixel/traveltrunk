@@ -487,7 +487,10 @@ $(document).ready ->
     showPopUpProfile()
 
   else if controller == 'deals' && action == 'show'
-    coverflow = $('#coverflow').flipster()
+    setTimeout( ->
+      coverflow = $('#coverflow').flipster()
+      $('#coverflow').removeClass('on-loader')
+    , 100) 
     
     initAutoNumeric('.formatted-amount', '.amount')
     initAutoNumeric('.formatted-amount', '.amount-saving')
