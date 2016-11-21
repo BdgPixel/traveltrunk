@@ -56,11 +56,10 @@
                   span.caret
 
                 ul.dropdown-menu.messages
-                  - unless controller_name.eql?('messages') && action_name.eql?('show')
-                    li.col-md-12
-                      = text_field_tag :user_collection, nil, placeholder: 'Send a new message to..'
-                    br
-                    br
+                  li.col-md-12
+                    = text_field_tag :user_collection, nil, placeholder: 'Send a new message to..'
+                  br
+                  br
                   .messages-wrapper
                     - @message_notifications.each do |notification|
                       - if message = notification.trackable
