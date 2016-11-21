@@ -1,90 +1,87 @@
 - if @flights.present?
   - if @flights.first[:response].present?
-    .deals-page data-page="1"
-      .row
-        - @flights.first[:response].each_with_index do |itinerarie, index|
-          .panel.panel-default.event
-            .panel-body
-              .col-md-12
-                .col-md-4
-                  h4 Out Bound
-                  p 
-                    b Origin Ariport 
-                    | #{itinerarie[:OutboundLegId][:OriginStation][:Name]} (#{itinerarie[:OutboundLegId][:OriginStation][:Code]})
-                  p
-                    b Destination Ariport 
-                    | #{itinerarie[:OutboundLegId][:DestinationStation][:Name]} (#{itinerarie[:OutboundLegId][:DestinationStation][:Code]})
-                  p 
-                    b Departure 
-                    | #{parse_date(itinerarie[:OutboundLegId][:Departure])}
-                  p 
-                    b Arrival 
-                    | #{parse_date(itinerarie[:OutboundLegId][:Arrival])}
-                  p 
-                    b Duration 
-                    | #{itinerarie[:OutboundLegId][:Duration]} Minutes
-                  hr
-                  - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
-                    b Airline
-                    .card-airline
-                      p #{image_tag carrier[:ImageUrl]}
-                      p #{carrier[:Name]} 
-                    
-                .col-md-4
-                  - unless (itinerarie[:InboundLegId].nil? rescue false)
-                    h4 In Bound
-                    p
-                      b Origin Ariport 
-                      | #{itinerarie[:InboundLegId][:OriginStation][:Name]} (#{itinerarie[:InboundLegId][:OriginStation][:Code]})
-                    p
-                      b Destination Ariport 
-                      | #{itinerarie[:InboundLegId][:DestinationStation][:Name]} (#{itinerarie[:InboundLegId][:DestinationStation][:Code]})
-                    p
-                      b Departure 
-                      | #{parse_date(itinerarie[:InboundLegId][:Departure])}
-                    p 
-                      b Arrival 
-                      | #{parse_date(itinerarie[:InboundLegId][:Arrival])}
-                    p  
-                      b Duration 
-                      | #{itinerarie[:InboundLegId][:Duration]} Minutes
-                    hr
-                    - itinerarie[:InboundLegId][:Carriers].each do |carrier|
-                      b Airline
-                      .card-airline
-                        p #{image_tag carrier[:ImageUrl]}
-                        p #{carrier[:Name]} 
-                .col-md-4
-                  h4 Price Options
-                  - itinerarie[:PricingOptions].each do |price|
-                    .card-price
-                      .card-agent
-                        - price[:Agents].each do |agent|
-                          p #{image_tag agent[:ImageUrl]}
-                          p #{agent[:name]} 
-                      p 
-                        b Price  
-                        = currency(price[:Price])
-                      p 
-                        b Link Booking 
-                        | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success"}
-                    hr
-
-      .col-md-12
+    - @flights.first[:response].each_with_index do |itinerarie, index|
+      .wrapper-result-flight
         .row
-          br
+          .col-md-12
+            .row.row-white
+              .result-flight
+                .col-md-8
+                  .content-result-flight
+                    .list-flight
+                      - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
+                        .logo-flight
+                          | #{image_tag carrier[:ImageUrl]}
+                      .time-flight-start
+                        span 
+                          | #{hours(itinerarie[:OutboundLegId][:Departure])}
+                      .destination-start
+                        span
+                          | #{itinerarie[:OutboundLegId][:OriginStation][:Code]}
+                      .open-arrow
+                        a href="#"
+                          = image_tag "right-arrow.png"
+                      .time-arrive
+                        span
+                          | #{hours(itinerarie[:OutboundLegId][:Arrival])}
+                      .destination-arrive
+                        span
+                          | #{itinerarie[:OutboundLegId][:DestinationStation][:Code]}
+                      .hour
+                        span 
+                          = duration(itinerarie[:OutboundLegId][:Duration])
+                - unless (itinerarie[:InboundLegId].nil? rescue false)
+                  .col-md-8
+                    .content-result-flight
+                      .list-flight
+                        - itinerarie[:InboundLegId][:Carriers].each do |carrier|
+                          .logo-flight
+                            | #{image_tag carrier[:ImageUrl]}
+                        .time-flight-start
+                          span 
+                            | #{hours(itinerarie[:InboundLegId][:Departure])}
+                        .destination-start
+                          span
+                            | #{itinerarie[:InboundLegId][:OriginStation][:Code]}
+                        .open-arrow
+                          a href="#"
+                            = image_tag "right-arrow.png"
+                        .time-arrive
+                          span
+                            | #{hours(itinerarie[:InboundLegId][:Arrival])}
+                        .destination-arrive
+                          span
+                            | #{itinerarie[:InboundLegId][:DestinationStation][:Code]}
+                        .hour
+                          span 
+                            = duration(itinerarie[:InboundLegId][:Duration])
 
-          div.text-center
-            i
-              small 
-                | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
-
-          .wrapper-pagination
-            #valueOfPagination data-num-of-pages="#{@flights.first[:num_of_page]}" data-num-of-hotels="#{@flights.first[:num_of_hotel]}"
-            #pagination
-
-            p#pagination-info.text-center
-              | 1 - 15 of #{@flights.first[:num_of_hotel]} Flights
+                .col-md-4
+                  .price-flight.text-right
+                    .price
+                      = currency(itinerarie[:PricingOptions].first[:Price])
+                    .caption-text
+                      a href="javascriot:void(0)"
+                        = itinerarie[:PricingOptions].first[:Agents].first[:name]
+                    .btn-accept
+                      .btn-group
+                        button.btn.btn-select[type="button"]
+                          | View Prices
+                        button.btn.btn-select.dropdown-toggle[type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"]
+                          span.caret
+                          span.sr-only
+                            | Toggle Dropdown
+                        ul.dropdown-menu
+                          li
+                            - itinerarie[:PricingOptions].each do |price|
+                              - price[:Agents].each do |agent|
+                                .col-md-3
+                                  .logo-agent
+                                    | #{image_tag agent[:ImageUrl]}
+                                  .price-agent
+                                    = currency(price[:Price])
+                                  .book
+                                    | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success"}
 
 - else
   #error_response.alert.alert-info style="margin-top: 20px"

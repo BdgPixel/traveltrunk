@@ -78,6 +78,8 @@ gem 'exception_notification'
 
 gem 'redis-namespace'
 
+gem "selectize-rails"
+
 gem 'web-console', '~> 3.1', '>= 3.1.1', group: :development
 
 group :development, :test do

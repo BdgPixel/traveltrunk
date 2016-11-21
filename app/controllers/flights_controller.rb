@@ -3,6 +3,7 @@ class FlightsController < ApplicationController
 	# before_action :set_session_flight
 
 	def index
+		@airports = Place.all.pluck(:place_name, :place_id)
 	end
 
 	def search
