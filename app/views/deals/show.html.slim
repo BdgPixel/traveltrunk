@@ -93,7 +93,7 @@
           ul.flip-items.flip-custom
             - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
               li data-flip-title="Red" 
-                = image_tag hotel_image["url"].gsub('http', 'https'), alt: hotel_image["caption"], class: 'hotel-gallery'
+                = image_tag hotel_image["url"].gsub('http', 'https'), alt: hotel_image["caption"], class: 'hotel-gallery img-flip-custom'
 
       / Show gallery image using blueimp
       / .col-sm-12
