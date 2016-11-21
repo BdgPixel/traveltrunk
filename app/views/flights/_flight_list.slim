@@ -45,7 +45,7 @@
                             | #{itinerarie[:InboundLegId][:OriginStation][:Code]}
                         .open-arrow
                           a href="#"
-                            = image_tag "right-arrow.png"
+                            = image_tag "left-arrow.png"
                         .time-arrive
                           span
                             | #{hours(itinerarie[:InboundLegId][:Arrival])}
@@ -81,7 +81,7 @@
                                   .price-agent
                                     = currency(price[:Price])
                                   .book
-                                    | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success"}
+                                    | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
 
 - else
   #error_response.alert.alert-info style="margin-top: 20px"
