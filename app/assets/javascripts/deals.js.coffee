@@ -205,7 +205,7 @@ root.roomSelected = (selector)->
       if membersVotedStr.length > 0
         $('#modalMembersVoted').removeClass('hide')
       else
-        $('#modalMembersVoted').addClass('hide')
+        $('#modalMembersVoted').addClass('show')
 
       if $(this).data('allow-booking') == true
         $('#modalMembersVoted p').text(membersVotedStr)
@@ -540,12 +540,28 @@ $(document).ready ->
         if (imageLoadedCount == $('.slider-images').length) || imageSizeType == 'b'
           clearInterval replaceImageInterval
 
+<<<<<<< HEAD
           setTimeOut( ->
+=======
+          setTimeout( ->
+>>>>>>> group
             blueimp.Gallery $('.slider-images'),
               container: '#blueimp-gallery-carousel'
               carousel: true
           , 2000)
       , 1000)
+<<<<<<< HEAD
+=======
+
+      # replaceImageInterval = setInterval(->
+      #   if (imageLoadedCount == $('.slider-images').length) || imageSizeType == 'b'
+      #     clearInterval replaceImageInterval
+
+      #     blueimp.Gallery $('.slider-images'),
+      #       container: '#blueimp-gallery-carousel'
+      #       carousel: true
+      # , 0)
+>>>>>>> group
 
     $('#linkBtnYes').on 'click', ->
       $('.payment-errors').text('')
