@@ -200,8 +200,10 @@ root.roomSelected = (selector)->
       $('.form-vote ').show()
 
     root.yuhuu = $(this)
+
     if $(this).data('allow-booking') != undefined
       membersVotedStr = $(this).siblings('.members-voted').text().trim()
+      $("form#formBook input[type='submit']").val('Book Now')
 
       if membersVotedStr.length > 0
         $('#modalMembersVoted').removeClass('hide')
@@ -219,6 +221,35 @@ root.roomSelected = (selector)->
           $('#modalMembersVoted p').text('All members need to agree on this hotel first, before you can book')
           
         $("form#formBook input[type='submit']").attr('disabled', 'disabled')
+
+        linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
+
+        if $(this).data('is-smaller-balance') != undefined
+          if $(this).data('is-smaller-balance') == true
+            $("form#formBook input[type='submit']").addClass('hide')
+            linkModalAddToSavingForm.removeClass('hide')
+
+            linkModalAddToSavingForm.attr
+              # 'data-toggle': "modal"
+              # 'data-target': "#modalSavingsForm"
+              'data-id': rooms['hotelId']
+              'data-rate-code': room[0]['rateCode']
+              'data-room-type_code': room[0]["RoomType"]["@roomCode"]
+              'data-total': room[0]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+
+            linkModalAddToSavingForm.on 'click', ->
+              if $('#confirmation_book_policy').is(':checked') == false
+                $('.errors-policy').html 'Cancellation policy must be approved'
+              else
+                $('#modalSavingsForm').modal('show')
+
+            $('#modalSavingsForm').on 'show.bs.modal', ->
+              $('#modalBook').modal 'hide'
+
+        else
+          $("form#formBook input[type='submit']").removeClass('hide')
+          linkModalAddToSavingForm.addClass('hide')
+          console.log 'yuhuu'
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
