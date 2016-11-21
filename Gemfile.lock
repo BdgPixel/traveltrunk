@@ -473,6 +473,7 @@ GEM
     sdoc (0.4.1)
       json (~> 1.7, >= 1.7.7)
       rdoc (~> 4.0)
+    selectize-rails (0.12.4)
     sidekiq (4.0.0)
       concurrent-ruby (~> 1.0)
       connection_pool (~> 2.2, >= 2.2.0)
@@ -600,6 +601,7 @@ DEPENDENCIES
   rspec (~> 3.4)
   sass-rails (~> 5.0)
   sdoc (~> 0.4.0)
+  selectize-rails
   sidekiq (= 4.0.0)
   simple_form
   sinatra
