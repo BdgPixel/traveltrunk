@@ -1,5 +1,6 @@
 # = require blueimp-gallery
 # = require blueimp-gallery-indicator
+# = require jquery.flipster
 # = require jquery.lazyload
 # = require bootstrap-datepicker
 # = require google-api
@@ -486,6 +487,8 @@ $(document).ready ->
     showPopUpProfile()
 
   else if controller == 'deals' && action == 'show'
+    coverflow = $('#coverflow').flipster()
+    
     initAutoNumeric('.formatted-amount', '.amount')
     initAutoNumeric('.formatted-amount', '.amount-saving')
     shareRecipientAutocomplete()
@@ -549,6 +552,10 @@ $(document).ready ->
             blueimp.Gallery $('.slider-images'),
             container: '#blueimp-gallery-carousel'
             carousel: true
+            onslide: ->
+              $('.slide-content').lazyload()
+              console.log 'yuhuuu'
+
           , 2000)
       , 1000)
 

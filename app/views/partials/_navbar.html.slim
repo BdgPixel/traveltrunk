@@ -43,6 +43,12 @@
             ul.nav.navbar-nav.navbar-right
               li = link_to 'Check Reservation', reservations_path
 
+              li.link-top-login = link_to 'HOTELS', deals_path
+              
+              li.link-top-login = link_to 'FLIGHT', flights_path
+
+              li.link-top-login = link_to 'SAVINGS', savings_path
+
               li#messageDropdown.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
                   span#messageCount.notification-bubble class="#{'hide' if @message_notification_count.zero?}" = @message_notification_count
@@ -61,10 +67,6 @@
                         = render 'messages/message', message: message,
                           action_type: (message.sent_by?(current_user.id) ? 'send' : 'receive'),
                           notification_is_read: notification.is_read
-
-              li.link-top-login = link_to 'DEALS', deals_path
-              li.link-top-login = link_to 'SAVINGS', savings_path
-              li.link-top-login = link_to 'FLIGHT', flights_path
 
               li.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"

@@ -88,24 +88,31 @@
                   /           = vote.user.id.eql?(current_user.id) ? "You" : vote.user.try(:profile).try(:full_name)
 
       br
-
       .col-sm-12
-        .wrapper-gallery-deals
-          #blueimp-gallery-carousel.blueimp-gallery.blueimp-gallery-carousel.blueimp-gallery-controls
-            .slides
-
-            h3.title
-
-            a.prev.round-slide-prev
-            a.next.round-slide-next
-            a.play-pause
-
-            ol.indicator.hide
-
-          #links
+        #coverflow
+          ul.flip-items
             - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
-              = link_to hotel_image["url"].gsub('http', 'https').gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
-                = image_tag hotel_image["thumbnailUrl"].gsub('http', 'https'), alt: hotel_image["caption"], class: 'hide-thumb-image'
+              li data-flip-title="Red" 
+                = image_tag hotel_image["url"].gsub('http', 'https'), alt: hotel_image["caption"]
+
+      / Show gallery image using blueimp
+      / .col-sm-12
+      /   .wrapper-gallery-deals
+      /     #blueimp-gallery-carousel.blueimp-gallery.blueimp-gallery-carousel.blueimp-gallery-controls
+      /       .slides
+
+      /       h3.title
+
+      /       a.prev.round-slide-prev
+      /       a.next.round-slide-next
+      /       a.play-pause
+
+      /       ol.indicator.hide
+
+      /     #links
+      /       - @hotel_information["HotelImages"]["HotelImage"][0..7].each do |hotel_image|
+      /         = link_to hotel_image["url"].gsub('http', 'https').gsub("b", "z"), title: hotel_image["caption"], class: 'slider-images'
+      /           = image_tag hotel_image["thumbnailUrl"].gsub('http', 'https'), alt: hotel_image["caption"], class: 'hide-thumb-image'
 
     .row
       .col-md-12
