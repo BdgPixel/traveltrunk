@@ -205,7 +205,7 @@ root.roomSelected = (selector)->
       if membersVotedStr.length > 0
         $('#modalMembersVoted').removeClass('hide')
       else
-        $('#modalMembersVoted').addClass('hide')
+        $('#modalMembersVoted').addClass('show')
 
       if $(this).data('allow-booking') == true
         $('#modalMembersVoted p').text(membersVotedStr)

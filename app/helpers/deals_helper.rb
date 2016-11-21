@@ -181,7 +181,7 @@ module DealsHelper
         else
           # if @members_voted.count.eql? @group.members.count
           likes_count = @likes_grouped[room['rateCode'].to_s].try(:count) || 0
-          link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], allow_booking: likes_count.eql?(@group.members.count) }
+          link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], allow_booking: likes_count.eql?(@group.members.count) }
           # else
           #   link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size disable-book-link", disabled: true, data: { toggle: 'tooltip', placement: 'bottom', title: 'All members need to agree on this hotel first, before you can book'}
           # end
