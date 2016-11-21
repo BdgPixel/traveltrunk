@@ -198,20 +198,25 @@ root.roomSelected = (selector)->
 
       $('.form-vote ').show()
 
-
-    if $(this).data('allow-booking') != 'undefined'
+    root.yuhuu = $(this)
+    if $(this).data('allow-booking') != undefined
       membersVotedStr = $(this).siblings('.members-voted').text().trim()
 
       if membersVotedStr.length > 0
         $('#modalMembersVoted').removeClass('hide')
       else
-        $('#modalMembersVoted').addClass('show')
+        $('#modalMembersVoted').addClass('hide')
 
       if $(this).data('allow-booking') == true
         $('#modalMembersVoted p').text(membersVotedStr)
         $("form#formBook input[type='submit']").removeAttr('disabled')
       else
-        $('#modalMembersVoted p').text(membersVotedStr + ' (all members need to agree on this hotel first, before you can book)')
+        if membersVotedStr.length > 0
+          $('#modalMembersVoted p').text(membersVotedStr + ' (all members need to agree on this hotel first, before you can book)')
+        else
+          $('#modalMembersVoted').removeClass('hide')
+          $('#modalMembersVoted p').text('All members need to agree on this hotel first, before you can book')
+          
         $("form#formBook input[type='submit']").attr('disabled', 'disabled')
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
