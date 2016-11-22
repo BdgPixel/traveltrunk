@@ -42,10 +42,7 @@ class DealsController < ApplicationController
 
     expedia_params_hash = { hotelId: params[:id] }
     @terms_and_conditions_url = "http://developer.ean.com/terms/en/"
-
-    # @votes = Like.where(hotel_id: params[:id])
-    # @likes_grouped = @votes.group_by { |like| like.rate_code }
-    # binding.pry
+    
     @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
     @title = @hotel_information['HotelSummary']['name']
 
