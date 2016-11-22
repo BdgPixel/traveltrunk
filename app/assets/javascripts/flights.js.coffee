@@ -22,4 +22,6 @@ $(document).ready ->
   initDatePickerFlightForDesktop(today)
   initSelectize()
 
-  $('#flightForm').validate()
+  $('#flightForm').validate({
+    ignore: ':hidden:not([class~=selectized]),:hidden > .selectized, .selectize-control .selectize-input input'
+  })
