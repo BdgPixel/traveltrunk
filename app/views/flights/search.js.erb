@@ -12,8 +12,13 @@ if ($('.arrow-downs').length) {
 } else {
   $('#slideToggleLink').css('padding-bottom', '50px');
   $('#slideToggleLink').addClass('arrow-downs');
+  
 }
-
+$('#myDropdown .dropdown-menu').on({
+    "click":function(e){
+      e.stopPropagation();
+    }
+});
 $("#slideToggle").collapse('hide');
 $('[data-toggle="tooltip"]').tooltip();
 showSearchForm();

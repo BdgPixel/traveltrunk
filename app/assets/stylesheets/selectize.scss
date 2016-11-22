@@ -232,19 +232,20 @@
   right: 0;
 }
 .selectize-dropdown {
+  position: absolute;
   z-index: 10;
-  border: 1px solid #d0d0d0;
-  background: #ffffff;
   margin: -1px 0 0 0;
+  background: #ffffff;
+  border: 1px solid #d0d0d0;
   border-top: 0 none;
-  -webkit-box-sizing: border-box;
-  -moz-box-sizing: border-box;
-  box-sizing: border-box;
-  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
   -webkit-border-radius: 0 0 3px 3px;
-  -moz-border-radius: 0 0 3px 3px;
-  border-radius: 0 0 3px 3px;
+     -moz-border-radius: 0 0 3px 3px;
+          border-radius: 0 0 3px 3px;
+  -webkit-box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+          box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+  -webkit-box-sizing: border-box;
+     -moz-box-sizing: border-box;
+          box-sizing: border-box;
 }
 .selectize-dropdown [data-selectable] {
   cursor: pointer;
@@ -320,4 +321,20 @@
 .selectize-control .selectize-input.disabled {
   opacity: 0.5;
   background-color: #fafafa;
+}
+
+.selectize-input.items.has-options.full.has-items{
+  cursor: pointer;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 14px;
+  height: 42px;
+}
+
+.selectize-input.items.has-options.not-full {
+  cursor: pointer;
+  border-top-right-radius: 0px;
+  border-bottom-right-radius: 0px;
+  font-size: 14px;
+  height: 42px;
 }

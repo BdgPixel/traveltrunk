@@ -36,8 +36,7 @@
                     .hour
                       span 
                         = duration(itinerarie[:OutboundLegId][:Duration])
-              - unless (itinerarie[:InboundLegId].nil? rescue false)
-                .col-md-8
+                - unless (itinerarie[:InboundLegId].nil? rescue false)
                   .content-result-flight
                     .list-flight
                       - itinerarie[:InboundLegId][:Carriers].each do |carrier|
@@ -70,7 +69,7 @@
                     a href="javascriot:void(0)"
                       = itinerarie[:PricingOptions].first[:Agents].first[:name]
                   .btn-accept
-                    .btn-group
+                    .btn-group#myDropdown
                       button.btn.btn-select[type="button"]
                         | View Prices
                       button.btn.btn-select.dropdown-toggle[type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"]
