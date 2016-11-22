@@ -1,5 +1,3 @@
-# = require blueimp-gallery
-# = require blueimp-gallery-indicator
 # = require jquery.flipster
 # = require jquery.lazyload
 # = require bootstrap-datepicker
@@ -575,24 +573,6 @@ $(document).ready ->
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
     
-    if $('#links').length > 0
-      replaceImage() # replace biggest image if not found, with medium image
-
-      replaceImageInterval = setInterval(->
-        if (imageLoadedCount == $('.slider-images').length) || imageSizeType == 'b'
-          clearInterval replaceImageInterval
-
-          setTimeout( ->
-            blueimp.Gallery $('.slider-images'),
-            container: '#blueimp-gallery-carousel'
-            carousel: true
-            onslide: ->
-              $('.slide-content').lazyload()
-              console.log 'yuhuuu'
-
-          , 2000)
-      , 1000)
-
     $('#linkBtnYes').on 'click', ->
       $('.payment-errors').text('')
 
