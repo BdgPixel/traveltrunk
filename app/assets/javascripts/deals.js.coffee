@@ -164,90 +164,8 @@ root.roomSelected = (selector)->
     $('#confirmation_book_smoking_preferences').val(room[0]['smokingPreferences'])
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
     
-    if $(this).data('group')
-      $('.form-book').hide()
-      $('#agree:checked').removeAttr('checked')
-      $('#linkVote').attr('disabled', true)
-      $('#linkVote').attr('href', 'javascript:void(0)')
-
-      $('#agree').on 'click', ->
-        if $(this).prop('checked')
-          $('#linkVote').attr('disabled', false)
-
-          # shareImageLink = encodeURIComponent($('#shareHotelInfo').data('share-image'))
-          # hotelName = encodeURIComponent(rooms.hotelName)
-
-          $('.vote-hotel-name').val(rooms.hotelName)
-          $('.vote-share-image').val($('#shareHotelInfo').data('share-image'))
-          $('.vote-rate-code').val(room[0]['rateCode'])
-          $('.vote-room-type-code').val(room[0]['RoomType']['@roomCode'])
-
-          # $('#linkVote').attr('href', "/deals/#{rooms.hotelId}/like?hotel_name=#{hotelName}&share_image=#{shareImageLink}")
-        else
-          $('.vote-hotel-name').val('')
-          $('.vote-share-image').val('')
-          $('#linkVote').attr('disabled', true)
-
-      if $(this).data('cancel-vote')
-        $('#voteConfirmationText').text('Would you like to cancel vote to this hotel?')
-        $('form.like').data('remote', false)
-      else
-        $('#voteConfirmationText').text('Would you like to agree to this hotel?')
-        $('form.like').data('remote', true)
-
-      $('.form-vote ').show()
-
-    root.yuhuu = $(this)
-
-    if $(this).data('allow-booking') != undefined
-      membersVotedStr = $(this).siblings('.members-voted').text().trim()
-      $("form#formBook input[type='submit']").val('Book Now')
-
-      if membersVotedStr.length > 0
-        $('#modalMembersVoted').removeClass('hide')
-      else
-        $('#modalMembersVoted').addClass('hide')
-
-      if $(this).data('allow-booking') == true
-        $('#modalMembersVoted p').text(membersVotedStr)
-        $("form#formBook input[type='submit']").removeAttr('disabled')
-      else
-        if membersVotedStr.length > 0
-          $('#modalMembersVoted p').text(membersVotedStr + ' (all members need to agree on this hotel first, before you can book)')
-        else
-          $('#modalMembersVoted').removeClass('hide')
-          $('#modalMembersVoted p').text('All members need to agree on this hotel first, before you can book')
-          
-        $("form#formBook input[type='submit']").attr('disabled', 'disabled')
-
-        linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
-
-        if $(this).data('is-smaller-balance') != undefined
-          if $(this).data('is-smaller-balance') == true
-            $("form#formBook input[type='submit']").addClass('hide')
-            linkModalAddToSavingForm.removeClass('hide')
-
-            linkModalAddToSavingForm.attr
-              # 'data-toggle': "modal"
-              # 'data-target': "#modalSavingsForm"
-              'data-id': rooms['hotelId']
-              'data-rate-code': room[0]['rateCode']
-              'data-room-type_code': room[0]["RoomType"]["@roomCode"]
-              'data-total': room[0]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
-
-            linkModalAddToSavingForm.on 'click', ->
-              if $('#confirmation_book_policy').is(':checked') == false
-                $('.errors-policy').html 'Cancellation policy must be approved'
-              else
-                $('#modalSavingsForm').modal('show')
-
-            $('#modalSavingsForm').on 'show.bs.modal', ->
-              $('#modalBook').modal 'hide'
-
-        else
-          $("form#formBook input[type='submit']").removeClass('hide')
-          linkModalAddToSavingForm.addClass('hide')
-          console.log 'yuhuu'
+    membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
+    allowBooking($(this).data('is-group'), this, rooms.hotelId, room)
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
@@ -283,6 +201,104 @@ root.roomSelected = (selector)->
         starOn: window.star_on_mid_image_path
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
+
+membersVoted = (isGroup, thisGroup, hotelName, room) ->
+  if isGroup
+    $('.form-book').hide()
+    $('#agree:checked').removeAttr('checked')
+    $('#linkVote').attr('disabled', true)
+    $('#linkVote').attr('href', 'javascript:void(0)')
+
+    $('#agreeTermCondition').addClass('hide')
+    $('#linkVote').removeAttr('disabled')
+
+    $('.vote-hotel-name').val(hotelName)
+    $('.vote-share-image').val($('#shareHotelInfo').data('share-image'))
+    $('.vote-rate-code').val(room[0]['rateCode'])
+    $('.vote-room-type-code').val(room[0]['RoomType']['@roomCode'])
+
+    if $(thisGroup).data('cancel-vote')
+      $('#voteConfirmationText').text('Would you like to cancel vote to this hotel?')
+      $('form.like').data('remote', false)
+    else
+      $('#voteConfirmationText').text('Would you like to agree to this hotel?')
+      $('form.like').data('remote', true)
+
+    $('.form-vote ').show()
+
+allowBooking = (isGroup, thisGroup, hotelId, room) ->
+  if isGroup
+    if $(thisGroup).data('allow-booking') != undefined
+      $('.form-book').show()
+      $('.form-vote').hide()
+
+      membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
+      totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
+      totalRoom = parseFloat($(thisGroup).data('total'))
+
+      if totalGroupCredit < totalRoom
+        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
+      else
+        $("form#formBook input[type='submit']").val('Book Now')
+
+      if membersVotedStr.length > 0
+        $('#modalMembersVoted').removeClass('hide')
+      else
+        $('#modalMembersVoted').addClass('hide')
+
+      if $(thisGroup).data('allow-booking') == true
+        $('#modalMembersVoted p').text(membersVotedStr)
+        $("form#formBook input[type='submit']").removeAttr('disabled')
+        $('#agree').removeAttr('disabled')
+      else
+        root.thisGroup = thisGroup
+
+        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
+
+        $('#agree').attr('disabled', 'disabled')
+
+        if membersVotedStr.length > 0
+          $('#modalMembersVoted p').text(membersVotedStr + ' (all members need to agree on this hotel first, before you can book)')
+        else
+          $('#modalMembersVoted').removeClass('hide')
+          $('#modalMembersVoted p').text('All members need to agree on this hotel first, before you can book')
+          
+        $("form#formBook input[type='submit']").attr('disabled', 'disabled')
+
+initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, room, membersCount) ->
+  linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
+
+  if totalGroupCredit < totalRoom
+    $("form#formBook input[type='submit']").addClass('hide')
+    $("form.like input[type='submit']").addClass('hide')
+    linkModalAddToSavingForm.removeClass('hide')
+
+    linkModalAddToSavingForm.attr
+      # 'data-toggle': "modal"
+      # 'data-target': "#modalSavingsForm"
+      'data-id': hotelId
+      'data-rate-code': room[0]['rateCode']
+      'data-room-type_code': room[0]["RoomType"]["@roomCode"]
+      'data-total': room[0]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+
+    linkModalAddToSavingForm.on 'click', ->
+      if $('#confirmation_book_policy').is(':checked') == false
+        $('.errors-policy').html 'Cancellation policy must be approved'
+      else
+        $('#modalSavingsForm').modal('show')
+
+    $('#modalSavingsForm').on 'show.bs.modal', ->
+      $('#modalBook').modal 'hide'
+
+      creditGroup = ((totalRoom - totalGroupCredit) / parseInt(membersCount)).toFixed(2)
+      $('#modalSavingsForm .modal-header small').remove()
+      $('#groupCreditText').text("Part to add to the savings is $#{creditGroup}")
+      $('#formAddToSavings').attr('data-is-referrer', true)
+  else
+    $("form#formBook input[type='submit']").removeClass('hide')
+    $("form.like input[type='submit']").removeClass('hide')
+    linkModalAddToSavingForm.addClass('hide')
+
 
 root.replaceImage = ()->
   sliderImages = $('a.slider-images')
