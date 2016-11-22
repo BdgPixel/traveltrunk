@@ -13,7 +13,7 @@
                   - if current_user.profile.home_airport && current_user.bank_account && current_user.total_credit > 0
                     = link_to "The origin city or airport?", "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
         / #slideToggle
-        #slideToggle.collapse
+        #slideToggle.collapse.slidetoggle-flight
           .row.js-close-searchbox
             .col-md-10.col-md-offset-1.no-pad-left.no-pad-right
               .panel.panel-default.box-shadow-none

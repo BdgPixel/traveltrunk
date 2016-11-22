@@ -76,11 +76,12 @@
 .selectize-control.plugin-remove_button [data-value] .remove {
   z-index: 1;
   /* fixes ie bug (see #392) */
-  position: absolute;
+  position: relative;
   top: 0;
   right: 0;
   bottom: 0;
   width: 17px;
+  min-height: 200px;
   text-align: center;
   font-weight: bold;
   font-size: 12px;

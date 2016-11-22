@@ -1200,6 +1200,28 @@ a.login.show {
 
 #slideToggle {
   overflow: hidden;
+
+  &.slidetoggle-flight {
+    overflow: inherit;
+
+    .selectize-input {
+      padding: 11px 8px;
+
+      .item {
+        font-size: 11px;
+        color: #505050;
+      }
+
+      input {
+        height: auto;
+      }
+
+      &:after {
+        border-width: 8px 7px 0 7px;
+        border-color: #b3b3b3 transparent transparent transparent;
+      }
+    }
+  }
 }
 
 .wrapper-icon-payment {
