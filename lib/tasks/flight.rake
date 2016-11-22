@@ -5,11 +5,7 @@ namespace :flight do
 		url = 'http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/US/USD/en-GB/?query=#{word}&apiKey=prtl6749387986743898559646983194'
 
 		query.each do |word|
-    	request = Typhoeus.get("http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/US/USD/en-GB/?query=#{word}&apiKey=prtl6749387986743898559646983194", 
-    		headers: {
-    			'Content-Type' => 'application/x-www-form-urlencoded',
-    			'Accept' => 'application/json'
-    		})
+    	request = Typhoeus.get("http://partners.api.skyscanner.net/apiservices/autosuggest/v1.0/US/USD/en-GB/?query=#{word}&apiKey=prtl6749387986743898559646983194", headers: {'Content-Type' => 'application/x-www-form-urlencoded', 'Accept' => 'application/json'})
     	request = eval(request.response_body)
     	request[:Places].each do |place|
     		unless Place.find_by(place_id: place[:PlaceId]).present?

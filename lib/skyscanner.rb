@@ -52,8 +52,13 @@ module Skyscanner
     			}
     		)
 
-    	if session.code.eql? 201
-	    	location 	= session.headers["Location"]
+    	session_body = eval(session.response_body)
+    	case session.code
+    	when 400
+    		@error_response = session_body[:ValidationErrors].first[:Message]
+				return response_result(error_response: @error_response)
+    	else
+    		location 	= session.headers["Location"]
 	    	location	= location+"?apiKey="+api_key
 	    	request 	= Typhoeus::Request.new(location, followlocation: true)
 				request.on_complete do |response|
@@ -70,61 +75,71 @@ module Skyscanner
 				    puts("HTTP request failed: " + response.code.to_s)
 				  end
 				end
+				status_code = nil
+				iteneraries = []
+				retry_count	= 0
 
-				request.run
-				# reRequest API
-				request.run if request.response.code.eql? 304
-				if request.response.code.eql? 200
-		    	@flights 				= eval(request.response.body)  
-		    	@num_of_flight 	= @flights.size
-					@carriers = {}
-					@flights[:Carriers].each do |c|
-					  @carriers[c[:Id]] = c
-					end;0
-
-					@places = {}
-					@flights[:Places].each do |p|
-					  @places[p[:Id]] = p
-					end;0
-
-					@agents = {}
-					@flights[:Agents].each do |a|
-					  @agents[a[:Id]] = a
-					end;0
-
-					@flights[:Legs].each do |l|
-					  l[:DestinationStation] = @places[l[:DestinationStation]] || l[:DestinationStation]
-					  l[:OriginStation] = @places[l[:OriginStation]] || l[:OriginStation]
-					end;0
-
-					@legs = {}
-					@flights[:Legs].each do |l|
-					  l[:Carriers].each_with_index do |c, idx|
-					    l[:Carriers][idx] = @carriers[c]
-					  end
-
-					  l[:OperatingCarriers].each_with_index do |c, idx|
-					    l[:OperatingCarriers][idx] = @carriers[c]
-					  end
-
-					  @legs[l[:Id]] = l
-					end;0
-
-					@flights[:Itineraries].each do |it|
-					  it[:PricingOptions].each do |opt|
-					    opt[:Agents].each_with_index do |agent, index|
-					      opt[:Agents][index] = @agents[agent] || agent
-					      opt[:Agents][index] = @agents[agent] || agent
-					    end
-					  end
-
-					  it[:InboundLegId] = @legs[it[:InboundLegId]] || it[:InboundLegId];
-					  it[:OutboundLegId] = @legs[it[:OutboundLegId]] || it[:OutboundLegId]
-					end;0
-		    	response_result(response: @flights[:Itineraries], carriers: @carriers, places: @places, agents: @agents, num_of_flight: @num_of_flight)
+				loop do 
+					request.run
+					@flights 				= eval(request.response.body)  
+					@num_of_flight 	= (@flights.size rescue 0)
+					iteneraries 		= (@flights[:Itineraries] rescue [])
+					reorder_parameters(@flights) if @flights.present?
+					status_code 		= request.response.code 
+					retry_count += 1
+					sleep(1)
+					return response_result(response: @flights[:Itineraries], carriers: @carriers, places: @places, agents: @agents, num_of_flight: @num_of_flight) if (status_code.eql?(200) && iteneraries.any?) || retry_count == 6
+					break if (status_code.eql?(200) && iteneraries.any?) || retry_count == 6
 		    end
-	    end  
+    	end 
 	  end
 
+	  def self.reorder_parameters(flights)
+	  	@flights = flights
+			@carriers = {}
+			@flights[:Carriers].each do |c|
+			  @carriers[c[:Id]] = c
+			end;0
+
+			@places = {}
+			@flights[:Places].each do |p|
+			  @places[p[:Id]] = p
+			end;0
+
+			@agents = {}
+			@flights[:Agents].each do |a|
+			  @agents[a[:Id]] = a
+			end;0
+
+			@flights[:Legs].each do |l|
+			  l[:DestinationStation] = @places[l[:DestinationStation]] || l[:DestinationStation]
+			  l[:OriginStation] = @places[l[:OriginStation]] || l[:OriginStation]
+			end;0
+
+			@legs = {}
+			@flights[:Legs].each do |l|
+			  l[:Carriers].each_with_index do |c, idx|
+			    l[:Carriers][idx] = @carriers[c]
+			  end
+
+			  l[:OperatingCarriers].each_with_index do |c, idx|
+			    l[:OperatingCarriers][idx] = @carriers[c]
+			  end
+
+			  @legs[l[:Id]] = l
+			end;0
+
+			@flights[:Itineraries].each do |it|
+			  it[:PricingOptions].each do |opt|
+			    opt[:Agents].each_with_index do |agent, index|
+			      opt[:Agents][index] = @agents[agent] || agent
+			      opt[:Agents][index] = @agents[agent] || agent
+			    end
+			  end
+
+			  it[:InboundLegId] = @legs[it[:InboundLegId]] || it[:InboundLegId];
+			  it[:OutboundLegId] = @legs[it[:OutboundLegId]] || it[:OutboundLegId]
+			end;0
+	  end
   end
 end

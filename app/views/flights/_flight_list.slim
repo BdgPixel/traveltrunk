@@ -1,87 +1,93 @@
-- if @flights.present?
-  - if @flights.first[:response].present?
-    - @flights.first[:response].each_with_index do |itinerarie, index|
-      .wrapper-result-flight
-        .row
-          .col-md-12
-            .row.row-white
-              .result-flight
+- if @flights.first[:error_response].present?
+  #error_response.alert.alert-info style="margin-top: 20px"
+    button type="button" class="close" data-dismiss="alert" aria-label="Close"
+      span aria-hidden="true" &times;
+    
+    strong Notice: &nbsp;
+    = @flights.first[:error_response]
+- elsif @flights.first[:response].present?
+  - @flights.first[:response].each_with_index do |itinerarie, index|
+    .wrapper-result-flight
+      .row
+        .col-md-12
+          .row.row-white
+            .result-flight
+              .col-md-8
+                .content-result-flight
+                  .list-flight
+                    - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
+                      .logo-flight
+                        | #{image_tag carrier[:ImageUrl]}
+                    .time-flight-start
+                      span 
+                        | #{hours(itinerarie[:OutboundLegId][:Departure])}
+                    .destination-start
+                      span
+                        | #{itinerarie[:OutboundLegId][:OriginStation][:Code]}
+                    .open-arrow
+                      a href="#"
+                        = image_tag "right-arrow.png"
+                    .time-arrive
+                      span
+                        | #{hours(itinerarie[:OutboundLegId][:Arrival])}
+                    .destination-arrive
+                      span
+                        | #{itinerarie[:OutboundLegId][:DestinationStation][:Code]}
+                    .hour
+                      span 
+                        = duration(itinerarie[:OutboundLegId][:Duration])
+              - unless (itinerarie[:InboundLegId].nil? rescue false)
                 .col-md-8
                   .content-result-flight
                     .list-flight
-                      - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
+                      - itinerarie[:InboundLegId][:Carriers].each do |carrier|
                         .logo-flight
                           | #{image_tag carrier[:ImageUrl]}
                       .time-flight-start
                         span 
-                          | #{hours(itinerarie[:OutboundLegId][:Departure])}
+                          | #{hours(itinerarie[:InboundLegId][:Departure])}
                       .destination-start
                         span
-                          | #{itinerarie[:OutboundLegId][:OriginStation][:Code]}
+                          | #{itinerarie[:InboundLegId][:OriginStation][:Code]}
                       .open-arrow
                         a href="#"
-                          = image_tag "right-arrow.png"
+                          = image_tag "left-arrow.png"
                       .time-arrive
                         span
-                          | #{hours(itinerarie[:OutboundLegId][:Arrival])}
+                          | #{hours(itinerarie[:InboundLegId][:Arrival])}
                       .destination-arrive
                         span
-                          | #{itinerarie[:OutboundLegId][:DestinationStation][:Code]}
+                          | #{itinerarie[:InboundLegId][:DestinationStation][:Code]}
                       .hour
                         span 
-                          = duration(itinerarie[:OutboundLegId][:Duration])
-                - unless (itinerarie[:InboundLegId].nil? rescue false)
-                  .col-md-8
-                    .content-result-flight
-                      .list-flight
-                        - itinerarie[:InboundLegId][:Carriers].each do |carrier|
-                          .logo-flight
-                            | #{image_tag carrier[:ImageUrl]}
-                        .time-flight-start
-                          span 
-                            | #{hours(itinerarie[:InboundLegId][:Departure])}
-                        .destination-start
-                          span
-                            | #{itinerarie[:InboundLegId][:OriginStation][:Code]}
-                        .open-arrow
-                          a href="#"
-                            = image_tag "left-arrow.png"
-                        .time-arrive
-                          span
-                            | #{hours(itinerarie[:InboundLegId][:Arrival])}
-                        .destination-arrive
-                          span
-                            | #{itinerarie[:InboundLegId][:DestinationStation][:Code]}
-                        .hour
-                          span 
-                            = duration(itinerarie[:InboundLegId][:Duration])
+                          = duration(itinerarie[:InboundLegId][:Duration])
 
-                .col-md-4
-                  .price-flight.text-right
-                    .price
-                      = currency(itinerarie[:PricingOptions].first[:Price])
-                    .caption-text
-                      a href="javascriot:void(0)"
-                        = itinerarie[:PricingOptions].first[:Agents].first[:name]
-                    .btn-accept
-                      .btn-group
-                        button.btn.btn-select[type="button"]
-                          | View Prices
-                        button.btn.btn-select.dropdown-toggle[type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"]
-                          span.caret
-                          span.sr-only
-                            | Toggle Dropdown
-                        ul.dropdown-menu
-                          li
-                            - itinerarie[:PricingOptions].each do |price|
-                              - price[:Agents].each do |agent|
-                                .col-md-3
-                                  .logo-agent
-                                    | #{image_tag agent[:ImageUrl]}
-                                  .price-agent
-                                    = currency(price[:Price])
-                                  .book
-                                    | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
+              .col-md-4
+                .price-flight.text-right
+                  .price
+                    = currency(itinerarie[:PricingOptions].first[:Price])
+                  .caption-text
+                    a href="javascriot:void(0)"
+                      = itinerarie[:PricingOptions].first[:Agents].first[:name]
+                  .btn-accept
+                    .btn-group
+                      button.btn.btn-select[type="button"]
+                        | View Prices
+                      button.btn.btn-select.dropdown-toggle[type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"]
+                        span.caret
+                        span.sr-only
+                          | Toggle Dropdown
+                      ul.dropdown-menu
+                        li
+                          - itinerarie[:PricingOptions].each do |price|
+                            - price[:Agents].each do |agent|
+                              .col-md-3
+                                .logo-agent
+                                  | #{image_tag agent[:ImageUrl]}
+                                .price-agent
+                                  = currency(price[:Price])
+                                .book
+                                  | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
 
 - else
   #error_response.alert.alert-info style="margin-top: 20px"
@@ -89,4 +95,4 @@
       span aria-hidden="true" &times;
     
     strong Notice: &nbsp;
-    | Please try again!
+    | Please try again later, We have troble with API
