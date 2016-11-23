@@ -36,15 +36,30 @@ savingFormValidation = function() {
       }
     }
 
-    if ($('.amount').val() == '') {
-      $('.amount-error').html('Minimum $25.00');
-      returnValue = false;
+    if ($(this).data('is-referrer')) {
+      groupCredit = $('#groupCreditText').text().split('$')[1]
+
+      if ($('.amount').val() == '') {
+        $('.amount-error').html('Minimum $' + groupCredit);
+        returnValue = false;
+      }
+
+      if ($('.amount').val() < parseFloat(groupCredit)) {
+        $('.amount-error').html('Minimum $ ' + groupCredit);
+        returnValue = false;
+      }
+    } else {
+      if ($('.amount').val() == '') {
+        $('.amount-error').html('Minimum $25.00');
+        returnValue = false;
+      }
+
+      if ($('.amount').val() < 25) {
+        $('.amount-error').html('Minimum $25.00');
+        returnValue = false;
+      }
     }
 
-    if ($('.amount').val() < 25) {
-      $('.amount-error').html('Minimum $25.00');
-      returnValue = false;
-    }
     
     return returnValue;
     e.preventDefault()

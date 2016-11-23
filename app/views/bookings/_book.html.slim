@@ -62,7 +62,7 @@
                 
                   br
                   br
-                  .form-group
+                  #agreeTermCondition.form-group
                     = check_box_tag :agree, 1, false
                     small 
                       | &nbsp;I agree to the&nbsp;
@@ -81,3 +81,7 @@
                     = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
                     / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
                     /   | No
+                
+                #modalMembersVoted.row.col-md-12
+                  .row.col-md-6
+                    p

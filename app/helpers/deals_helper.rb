@@ -175,31 +175,25 @@ module DealsHelper
     link = ''
     
     if @group
+      likes_count = @likes_grouped[room['rateCode'].to_s].try(:count) || 0
+
       if @group.user_id.eql? current_user.id
         if @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
-          # link = link_to "Add to savings", "#", class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { toggle: "modal", target: "#modalSavingsForm", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"] }
-          likes_count = @likes_grouped[room['rateCode'].to_s].try(:count) || 0
-          link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], allow_booking: likes_count.eql?(@group.members.count), is_smaller_balance: true }
+          link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], total_group_credit: (@total_credit / 100.0), allow_booking: likes_count.eql?(@group.members.count), is_group: true,  members_count: (@group.members.count + 1) }
         else
-          # if @members_voted.count.eql? @group.members.count
-          likes_count = @likes_grouped[room['rateCode'].to_s].try(:count) || 0
-          link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], allow_booking: likes_count.eql?(@group.members.count) }
-          # else
-          #   link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size disable-book-link", disabled: true, data: { toggle: 'tooltip', placement: 'bottom', title: 'All members need to agree on this hotel first, before you can book'}
-          # end
+          link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], allow_booking: likes_count.eql?(@group.members.count), is_group: true }
         end
       else
         if likes = @likes_grouped[room['rateCode'].to_s]
           if likes.detect { |like| like.user_id.eql? current_user.id }
-            # link = link_to "Cancel Vote", deals_like_path(params[:id], rate_code: room['rateCode'], room_type_code: room['RoomType']['@roomCode']) 
-            link = link_to "Cancel Vote", '#', class: 'room-selected', data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], group: "member", cancel_vote: true }
+            link = link_to "Cancel Vote", '#', class: 'room-selected', data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], is_group: true, cancel_vote: true }
           else
             link = '<div class="vote-explainer">Let your group know you like this option</div>'
-            link += link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], group: "member" }
+            link += link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], is_group: true }
           end
         else
           link = '<div class="vote-explainer">Let your group know you like this option</div>'
-          link += link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], group: "member" }
+          link += link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], is_group: true }
         end
       end
     else

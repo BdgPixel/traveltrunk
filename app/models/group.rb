@@ -10,6 +10,8 @@ class Group < ActiveRecord::Base
   friendly_id :name, use: [:slugged, :finders]
 
   before_destroy :destroy_destination
+  before_destroy :destroy_likes
+  after_destroy :destory_messages
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed?
@@ -27,5 +29,14 @@ class Group < ActiveRecord::Base
   private
     def destroy_destination
       self.destination.destroy if self.destination
+    end
+
+    def destroy_likes
+      Like.where(user_id: self.member_ids).destroy_all
+    end
+
+    def destory_messages
+      CustomMessage.where('id = ? OR ancestry = ?', self.message_id, self.message_id.to_s).destroy_all
+      PublicActivity::Activity.where(trackable_id: self.message_id).destroy_all
     end
 end
