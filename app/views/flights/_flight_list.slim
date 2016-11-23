@@ -15,9 +15,9 @@
               .col-md-8
                 .content-result-flight
                   .list-flight
-                    - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
-                      .logo-flight
-                        | #{image_tag carrier[:ImageUrl]}
+                    .logo-flight
+                      - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
+                        | #{image_tag carrier[:ImageUrl], alt: carrier[:Name]}
                     .time-flight-start
                       span 
                         | #{hours(itinerarie[:OutboundLegId][:Departure])}
@@ -76,24 +76,23 @@
                     a href="javascriot:void(0)"
                       = itinerarie[:PricingOptions].first[:Agents].first[:name]
                   .btn-accept
-                    .btn-group#myDropdown
-                      button.btn.btn-select[type="button"]
-                        | View Prices
-                      button.btn.btn-select.dropdown-toggle[type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"]
+                    .btn-group
+                      a.btn.btn-default aria-controls="collapseFlight#{index + 1}" aria-expanded="false" data-toggle="collapse" href="#collapseFlight#{index + 1}" role="button"  
+                        span.text
+                          | View Prices
                         span.caret
-                        span.sr-only
-                          | Toggle Dropdown
-                      ul.dropdown-menu
-                        li
-                          - itinerarie[:PricingOptions].each do |price|
-                            - price[:Agents].each do |agent|
-                              .col-md-3
-                                .logo-agent
-                                  | #{image_tag agent[:ImageUrl]}
-                                .price-agent
-                                  = currency(price[:Price])
-                                .book
-                                  | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
+                .wrapper-collapse-flight
+                  div[id="collapseFlight#{index + 1}" class="collapse collapse-flight"]
+                    .well-box
+                      - itinerarie[:PricingOptions].each do |price|
+                        - price[:Agents].each do |agent|
+                          .col-md-3
+                            .logo-agent
+                              | #{image_tag agent[:ImageUrl]}
+                            .price-agent
+                              = currency(price[:Price])
+                            .book
+                              | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
 
 - else
   #error_response.alert.alert-info style="margin-top: 20px"

@@ -1717,8 +1717,6 @@ span.errors {
   .row-white {
     background-color: #ffffff;
   }
-  .result-flight {
-  }
 
   .content-result-flight {
     padding: 15px;
@@ -1791,6 +1789,7 @@ span.errors {
         margin-left: 10px;
       }
     }
+
   }
 }
 
@@ -1814,7 +1813,7 @@ span.errors {
   .btn-accept {
     margin-top: 30px;
 
-    .btn-select {
+    .btn-default {
       background: #ea4f33;
       color: #ffffff;
       @include border-radius(0px);
@@ -1835,5 +1834,17 @@ span.errors {
         }
       }
     }
+
+    span.text {
+      display: inline-block;
+      margin-right: 10px;
+    }
+  }
+}
+
+.wrapper-collapse-flight {
+  
+  .collapse.in {
+    clear: both;
   }
 }
