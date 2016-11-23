@@ -36,6 +36,10 @@
                     .hour
                       span 
                         = duration(itinerarie[:OutboundLegId][:Duration])
+                    .date
+                      span
+                        = parse_date(itinerarie[:OutboundLegId][:Arrival])
+                
                 - unless (itinerarie[:InboundLegId].nil? rescue false)
                   .content-result-flight
                     .list-flight
@@ -60,6 +64,9 @@
                       .hour
                         span 
                           = duration(itinerarie[:InboundLegId][:Duration])
+                      .date
+                        span
+                          = parse_date(itinerarie[:InboundLegId][:Departure])
 
               .col-md-4
                 .price-flight.text-right

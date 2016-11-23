@@ -2,7 +2,7 @@ module FlightHelper
   include ActionView::Helpers::UrlHelper
 
   def parse_date str
-  	date = Date.parse(str).strftime("%m/%d/%Y at %I:%M%p")
+  	date = Date.parse(str).strftime("%A at %m/%d/%Y")
   end
 
   def duration(minutes)

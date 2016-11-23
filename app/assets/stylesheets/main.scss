@@ -1731,7 +1731,8 @@ span.errors {
       .hour,
       .stop,
       .logo-flight,
-      .open-arrow {
+      .open-arrow,
+      .date {
         display: inline-block;
       }
 
@@ -1782,6 +1783,12 @@ span.errors {
       .hour,
       .stop {
         margin-left: 11px;
+      }
+
+      .date {
+        font-size: 13px;
+        color: #777777;
+        margin-left: 10px;
       }
     }
   }

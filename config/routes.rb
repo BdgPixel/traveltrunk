@@ -20,6 +20,8 @@ Rails.application.routes.draw do
 
   resources :flights, only: [:index, :show] do
     collection do
+      get :arrival_typeahead
+      get :depart_typeahead
       post :search
     end
   end

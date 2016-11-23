@@ -78,7 +78,9 @@ gem 'exception_notification'
 
 gem 'redis-namespace'
 
-gem "selectize-rails"
+# autocompleted and handle bar
+gem 'twitter-typeahead-rails'
+gem 'handlebars_assets'
 
 gem 'web-console', '~> 3.1', '>= 3.1.1', group: :development
 
