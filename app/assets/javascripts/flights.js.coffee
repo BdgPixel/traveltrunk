@@ -11,14 +11,12 @@ initSelectize = (selector1, selector2)->
   depart_typeahead = new Bloodhound(
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id', 'name', 'country')
     queryTokenizer: Bloodhound.tokenizers.whitespace
-    prefetch: '/flights/base_place'
     remote:
       url: '/flights/depart_typeahead?query=%QUERY'
       wildcard: '%QUERY')
   depart_typeahead = new Bloodhound(
     datumTokenizer: Bloodhound.tokenizers.obj.whitespace('id', 'name', 'country')
     queryTokenizer: Bloodhound.tokenizers.whitespace
-    prefetch: '/flights/base_place'
     remote:
       url: '/flights/depart_typeahead?query=%QUERY'
       wildcard: '%QUERY')

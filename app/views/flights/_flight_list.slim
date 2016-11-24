@@ -17,12 +17,12 @@
                   .list-flight
                     .logo-flight
                       - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
-                        | #{image_tag carrier[:ImageUrl], alt: carrier[:Name]}
+                        | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)" }
                     .time-flight-start
                       span 
                         | #{hours(itinerarie[:OutboundLegId][:Departure])}
                     .destination-start
-                      span
+                      span[class="black-tooltip" data-toggle="tooltip" data-placement="top"  data-original-title="#{itinerarie[:OutboundLegId][:OriginStation][:Name]}"]
                         | #{itinerarie[:OutboundLegId][:OriginStation][:Code]}
                     .open-arrow
                       a href="#"
@@ -31,7 +31,7 @@
                       span
                         | #{hours(itinerarie[:OutboundLegId][:Arrival])}
                     .destination-arrive
-                      span
+                      span[class="black-tooltip" data-toggle="tooltip" data-placement="top"  data-original-title="#{itinerarie[:OutboundLegId][:DestinationStation][:Name]}"]
                         | #{itinerarie[:OutboundLegId][:DestinationStation][:Code]}
                     .hour
                       span 
@@ -45,7 +45,7 @@
                     .list-flight
                       - itinerarie[:InboundLegId][:Carriers].each do |carrier|
                         .logo-flight
-                          | #{image_tag carrier[:ImageUrl]}
+                          | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)"}
                       .time-flight-start
                         span 
                           | #{hours(itinerarie[:InboundLegId][:Departure])}
@@ -59,7 +59,7 @@
                         span
                           | #{hours(itinerarie[:InboundLegId][:Arrival])}
                       .destination-arrive
-                        span
+                        span[class="black-tooltip" data-toggle="tooltip" data-placement="top"  data-original-title="#{itinerarie[:InboundLegId][:DestinationStation][:Name]}, #{itinerarie[:InboundLegId][:DestinationStation][:Code]}"]
                           | #{itinerarie[:InboundLegId][:DestinationStation][:Code]}
                       .hour
                         span 

@@ -101,3 +101,5 @@ span.twitter-typeahead {
   outline: 0;
   background-color: #337ab7;
 }
+
+.black-tooltip + .tooltip > .tooltip-inner {background-color: #000; color: #fff;}
