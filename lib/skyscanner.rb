@@ -9,11 +9,10 @@ module Skyscanner
     def self.response_result(*args)
       args.each do |arg|
         {
-          welcome_state: arg[:welcome_state],
-          responses: arg[:response],
+          response: arg[:response],
           agents: arg[:agents],
           carriers: arg[:carriers],
-          customer_session_id: arg[:customer_session_id],
+          query: arg[:query],
           num_of_flight: arg[:num_of_flight] || 0,
           num_of_page: arg[:num_of_page] || 0,
           error_response: {
@@ -78,18 +77,22 @@ module Skyscanner
 				status_code = nil
 				iteneraries = []
 				retry_count	= 0
-
-				loop do 
+				time 				= Time.now
+				loop do
 					request.run
-					@flights 				= eval(request.response.body)  
+					@flights 				= eval(request.response.body)
 					@num_of_flight 	= (@flights.size rescue 0)
 					iteneraries 		= (@flights[:Itineraries] rescue [])
-					reorder_parameters(@flights) if @flights.present?
+					reorder_parameters(@flights) if iteneraries.present?
 					status_code 		= request.response.code 
 					retry_count += 1
-					sleep(1)
-					return response_result(response: @flights[:Itineraries], carriers: @carriers, places: @places, agents: @agents, num_of_flight: @num_of_flight) if (status_code.eql?(200) && iteneraries.any?) || retry_count == 6
-					break if (status_code.eql?(200) && iteneraries.any?) || retry_count == 6
+					sleep(1)  
+					if status_code != 200 && (time - Time.now) == 30 || status_code != 200 && retry_count == 6
+						@error_response = eval(request.response.body)[:ValidationErrors].first[:Message] rescue "We have problem with get API"
+						return response_result(error_response: @error_response) 
+					end
+					return response_result(response: @flights[:Itineraries], query: @flights[:Query], carriers: @carriers, places: @places, agents: @agents, num_of_flight: @num_of_flight) if (status_code.eql?(200) && iteneraries.any?) || (time - Time.now) == 30 || retry_count == 6
+					break if (status_code.eql?(200) && iteneraries.any?) || (time - Time.now) == 30 || retry_count == 6
 		    end
     	end 
 	  end

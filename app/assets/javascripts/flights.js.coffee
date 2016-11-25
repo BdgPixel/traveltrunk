@@ -46,6 +46,8 @@ initSelectize = (selector1, selector2)->
 $(document).ready ->
   controller = $('body').data('controller')
   action = $('body').data('action')
+  moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
+  moment.tz.link('America/Los_Angeles|US/Pacific')
   today = moment.tz('US/Pacific').format('Y/M/D')
   disableEnterFormSubmit()
   initDatePickerFlightForDesktop(today)
@@ -53,3 +55,28 @@ $(document).ready ->
   $('#flightForm').validate({
     ignore: ':hidden, .tt-hint'
   })
+  $('.gallery-wrap').each ->
+    childrenCount = undefined
+    childrenCount = $(this).find('img').length - 1
+    $(this).attr('data-cur', childrenCount).attr 'data-total', childrenCount
+    $(this).find('img').each (i) ->
+      $(this).attr 'data-num', i
+      return
+    return
+  $('.gallery-wrap').mousemove (e) ->
+    current = undefined
+    offset = undefined
+    part = undefined
+    section = undefined
+    totalCount = undefined
+    totalWidth = undefined
+    offset = e.offsetX
+    totalWidth = $(this).outerWidth()
+    totalCount = parseInt($(this).attr('data-total'))
+    part = totalWidth / (totalCount + 1)
+    section = parseInt(totalCount - Math.floor(offset / part))
+    current = parseInt($(this).attr('data-cur'))
+    if current != section
+      $(this).attr 'data-cur', section
+      $(this).append $(this).find('img[data-num="' + section + '"]').detach()
+    return

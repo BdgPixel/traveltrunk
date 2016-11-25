@@ -15,4 +15,12 @@ module FlightHelper
   	a = Time.strptime(time, "%Y-%m-%dT%H:%M:%S")
   	a.strftime("%H:%M%P")
   end
+
+  def stop(stops)
+    if stops > 1
+      return "#{stops} 'Stop'.pluralize"
+    else
+      return "Non-Stop"
+    end
+  end
 end
