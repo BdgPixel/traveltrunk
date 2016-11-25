@@ -22,7 +22,7 @@
       .form-group
         = f.hidden_field :total
 
-      .form-group
+      #jsBedTypeSection.form-group data-a="a" data-b="b"
         / = f.hidden_field :bed_type
         = f.label :bed_type, class: 'bed-type', required: false
         = f.select :bed_type, [['- Select Bed Type -', 0]], { selected: 0 }, { class: 'form-control custom-bed' }
@@ -39,7 +39,7 @@
         / b
         /   small Full payment will be charged to your credit card when you book this hotel.
 
-      .form-group
+      #jsTermsConditionsSection.form-group
         = f.input :policy, as: :boolean, checked_value: true, unchecked_value: false, label: "<small>&nbsp; By selecting to complete this booking I acknowledge that I have read and accept the cancellation policy for this room as well as our <a href='#{@terms_and_conditions_url}' target='_blank'>Terms & Conditions</a></small>".html_safe
         
         .payment-errors.errors-policy
@@ -53,17 +53,10 @@
 
             - if user_signed_in?
               = f.button :submit, "Yes", class: 'btn btn-saving btn-green'
-              | &nbsp;&nbsp;
             - else
               = link_to 'Yes', 'javascript:void(0)', id: 'linkBtnYes', class: 'btn btn-saving btn-green'
-              | &nbsp;&nbsp;
             
             = link_to "Add to savings", "javascript:void(0)", id: 'linkModalAddToSavingForm', class: 'btn btn-saving btn-green hide'
-            | &nbsp;&nbsp;
-            = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
-
-/ #modalMembersVoted.row.col-md-12.show
-/   .col-md-6
-/     p yuhuu
             
+            = link_to 'I want to keep looking', 'javascript:void(0)', id: 'keepLooking', data: { dismiss: 'modal' }
 
