@@ -265,7 +265,7 @@ initUsersCollection = ()->
     zindex: 9999
     onAdd: (item)->
       $(selector).tokenInput("clear")
-      
+
       if item.email
         if item.email is 'group'
           $('form.new_message').attr('action', '/conversations/send_group')
@@ -321,11 +321,11 @@ ready = ->
       window.new_inbox_aac_path],
       "new_inbox"
     );
-  
+
   $('.link-message').on 'click', ->
     if $(this).attr('href').indexOf("#collapseGroupChat") != -1
       showHideCollapseGroupChat()
-      
+
   if window.location.href.indexOf("#collapseGroupChat") != -1
     showHideCollapseGroupChat()
 
@@ -336,7 +336,7 @@ ready = ->
 
   if $('#privateChatBox').length > 0
     scrollToBottom('#privateChatBox')
-    
+
   setTimeout(->
     $('#notice, .alert-dismissible').fadeOut()
     $('#alert').fadeOut()
