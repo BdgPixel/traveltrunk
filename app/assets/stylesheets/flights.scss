@@ -103,3 +103,33 @@ span.twitter-typeahead {
 }
 
 .black-tooltip + .tooltip > .tooltip-inner {background-color: #000; color: #fff;}
+
+
+.wrapper-list-flight {
+  overflow: hidden;
+
+  .wrapper-caption-content-deals {
+    margin-top: 15px;
+  }
+
+  &.wrapper-list-flight {
+    overflow: inherit;
+  }
+}
+
+
+.caret-dropdown {
+  display: inline-block;
+  height: 100%;
+  box-sizing: border-box;
+  width: 24px;
+}
+
+.caret-button {
+  height: 100%;
+  display: block;
+  margin-top: 0;
+  box-sizing: border-box;
+  min-width: 0;
+  border-radius: 0 2px 2px 0;
+}

@@ -1199,10 +1199,10 @@ a.login.show {
 // End
 
 #slideToggle {
-  overflow: hidden;
+  // overflow: hidden;
 
-  &.slidetoggle-flight {
-    overflow: inherit;
+  .slidetoggle-flight {
+    overflow: inherit !important;
 
     .selectize-input {
       padding: 11px 8px;
@@ -1403,8 +1403,8 @@ a.login.show {
     @media(max-width:992px){
       margin-top:-30px;
     }
-  }  
-     
+  }
+
   .message-heading, .message-footer  {
     padding: 2px 10px;
   }
@@ -1419,7 +1419,7 @@ a.login.show {
     text-decoration: none;
     background: #ccc;
   }
-      
+
   .message-item {
     text-transform: none !important;
     padding: 10px 15px 10px 15px;
@@ -1621,7 +1621,7 @@ ul.token-input-list {
 }
 
 .reply-box-container{
-  margin-top: 20px; 
+  margin-top: 20px;
 }
 
 #collapseGroupChat{
@@ -1699,7 +1699,7 @@ span.errors {
     }
   }
   .message-content {
-    
+
     &.send {
       background-color: #43C6DB;
     }
@@ -1713,7 +1713,7 @@ span.errors {
 .wrapper-result-flight {
   background-color: #efefef;
   padding: 10px 30px 10px 30px;
-  
+
   .row-white {
     background-color: #ffffff;
   }
@@ -1748,7 +1748,7 @@ span.errors {
 
       .time-flight-start,
       .time-arrive {
-        
+
         span {
           font-size: 18px;
           color: #00005e;
@@ -1758,7 +1758,7 @@ span.errors {
       .open-arrow {
         margin-left: 15px;
         margin-right: 15px;
-        
+
         img {
           width: 15px;
           vertical-align: text-top;
@@ -1796,7 +1796,7 @@ span.errors {
 .price-flight {
   margin-top: 15px;
   margin-bottom: 15px;
-  
+
   .price {
     font-size: 24px;
     line-height: 24px;
@@ -1806,16 +1806,19 @@ span.errors {
   .caption-text {
 
     a {
-      color: #ff5326; 
+      color: #ff5326;
     }
   }
-  
+
   .btn-accept {
     margin-top: 30px;
+    margin-right: 30px;
 
     .btn-default {
+      padding: 0;
       background: #ea4f33;
       color: #ffffff;
+      border: none;
       @include border-radius(0px);
     }
 
@@ -1826,6 +1829,7 @@ span.errors {
       text-align: center;
 
       .logo-agent {
+        margin-top: 15px;
 
         img {
           width: 95px;
@@ -1837,14 +1841,123 @@ span.errors {
 
     span.text {
       display: inline-block;
-      margin-right: 10px;
+      padding: 6px 18px;
+    }
+
+    .btn-caret {
+      position: absolute;
+      background: #ea4f33;
+      padding: 6px 12px;
+      border-left: 1px solid white;
     }
   }
 }
 
 .wrapper-collapse-flight {
-  
+
+  .well {
+    background-color: #ffffff;
+    border-color: transparent;
+  }
+
+  .table {
+
+    thead {
+
+      tr {
+
+        th {
+          border-color: transparent;
+        }
+      }
+    }
+
+    tbody {
+
+      tr {
+
+        th, td {
+          border-color: transparent;
+        }
+      }
+    }
+
+    > tbody {
+      > tr > td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .tab-content {
+    padding: 15px;
+  }
+
+  .wrapper-details-book {
+
+    .book {
+      margin-top: 15px;
+    }
+  }
+
+  .wrapper-tabs-flight {
+    overflow: hidden;
+
+    a.close-tabs {
+      position: absolute;
+      right: 12px;
+      top: 11px;
+
+      img {
+        width: 10px;
+      }
+    }
+
+    .nav-tabs {
+      background-color: #f6f6f6;
+      position: relative;
+
+       > li {
+
+        > a {
+          color: #888;
+          @include border-radius(0px);
+        }
+      }
+
+      > li.active {
+
+        > a {
+          color: #000;
+        }
+      }
+    }
+  }
+
   .collapse.in {
     clear: both;
+  }
+}
+
+ul.galleries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  > li.gallery-wrap {
+    float: left;
+    margin: 0;
+    > img {
+      display:block;
+      position: absolute;
+      margin: 0;
+      padding: 0;
+      &:last-child {
+        position: relative;
+      }
+      &:nth-last-child(2) { transform: translateX(5px) translateY(-5px); }
+      &:nth-last-child(3) { transform: translateX(10px) translateY(-10px); }
+      &:nth-last-child(4) { transform: translateX(15px) translateY(-15px); }
+      &:nth-last-child(5) { transform: translateX(20px) translateY(-20px); }
+    }
   }
 }

@@ -46,10 +46,17 @@ initSelectize = (selector1, selector2)->
 $(document).ready ->
   controller = $('body').data('controller')
   action = $('body').data('action')
+
+  moment.tz.add('America/Los_Angeles|PST PDT|80 70|01010101010|1Lzm0 1zb0 Op0 1zb0 Rd0 1zb0 Op0 1zb0 Op0 1zb0');
+  moment.tz.link('America/Los_Angeles|US/Pacific')
   today = moment.tz('US/Pacific').format('Y/M/D')
+
   disableEnterFormSubmit()
   initDatePickerFlightForDesktop(today)
   initSelectize('.origin_place', '.destination_place')
+  showSearchForm()
+  
   $('#flightForm').validate({
     ignore: ':hidden, .tt-hint'
   })
+  
