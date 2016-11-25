@@ -271,6 +271,8 @@ initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, room, membersCount)
   if totalGroupCredit < totalRoom
     $("form#formBook input[type='submit']").addClass('hide')
     $("form.like input[type='submit']").addClass('hide')
+    $("#jsBedTypeSection").addClass('hide')
+    $("#jsTermsConditionsSection").addClass('hide')
     linkModalAddToSavingForm.removeClass('hide')
 
     linkModalAddToSavingForm.attr
@@ -282,22 +284,23 @@ initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, room, membersCount)
       'data-total': room[0]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
     linkModalAddToSavingForm.on 'click', ->
-      if $('#confirmation_book_policy').is(':checked') == false
-        $('.errors-policy').html 'Cancellation policy must be approved'
-      else
-        $('#modalSavingsForm').modal('show')
+      $('#modalSavingsForm').modal('show')
 
     $('#modalSavingsForm').on 'show.bs.modal', ->
       $('#modalBook').modal 'hide'
 
       creditGroup = ((totalRoom - totalGroupCredit) / parseInt(membersCount)).toFixed(2)
       $('#modalSavingsForm .modal-header small').remove()
-      $('#groupCreditText').text("Part to add to the savings is $#{creditGroup}")
+      $('#groupCreditText').text("Part to add to the savings min $#{creditGroup}")
       $('#formAddToSavings').attr('data-is-referrer', true)
   else
     $("form#formBook input[type='submit']").removeClass('hide')
     $("form.like input[type='submit']").removeClass('hide')
+    $("#jsBedTypeSection").removeClass('hide')
+    $("#jsTermsConditionsSection").removeClass('hide')
     linkModalAddToSavingForm.addClass('hide')
+
+showHideComponents = ->
 
 
 root.replaceImage = ()->
