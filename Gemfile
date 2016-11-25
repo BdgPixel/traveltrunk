@@ -140,3 +140,5 @@ gem 'acts-as-messageable'
 gem 'private_pub'
 
 gem 'thin'
+
+gem 'jquery-turbolinks'

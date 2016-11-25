@@ -5,7 +5,6 @@
 # = require jquery.simplePagination
 # = require jquery.raty
 # = require ratyrate
-# = require savings_form_validation
 # = require autoNumeric-min
 # = require moment
 # = require moment-timezone
