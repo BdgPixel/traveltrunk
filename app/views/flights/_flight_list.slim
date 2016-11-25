@@ -16,8 +16,10 @@
                 .content-result-flight
                   .list-flight
                     .logo-flight
-                      - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
-                        | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)", :data => {code: carrier[:Code], name: carrier[:Name]}, class: "img-dapart-#{carrier[:Code]}"}
+                      ul.galleries
+                        li.gallery-wrap
+                          - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
+                            | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)", :data => {code: carrier[:Code], name: carrier[:Name]}, class: "img-dapart-#{carrier[:Code]}"}
                     .time-flight-start
                       span
                         | #{hours(itinerarie[:OutboundLegId][:Departure])}

@@ -1938,3 +1938,26 @@ span.errors {
     clear: both;
   }
 }
+
+ul.galleries {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  > li.gallery-wrap {
+    float: left;
+    margin: 0;
+    > img {
+      display:block;
+      position: absolute;
+      margin: 0;
+      padding: 0;
+      &:last-child {
+        position: relative;
+      }
+      &:nth-last-child(2) { transform: translateX(5px) translateY(-5px); }
+      &:nth-last-child(3) { transform: translateX(10px) translateY(-10px); }
+      &:nth-last-child(4) { transform: translateX(15px) translateY(-15px); }
+      &:nth-last-child(5) { transform: translateX(20px) translateY(-20px); }
+    }
+  }
+}
