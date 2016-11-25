@@ -11,7 +11,7 @@ module Expedia
     end
 
     def self.set_session_customer_id=(session_)
-      @customer_session_id = session_ 
+      @customer_session_id = session_
     end
 
     def self.session_customer_id
@@ -107,18 +107,20 @@ module Expedia
                     group   = current_user.group || current_user.joined_groups.first
                     total_credit = group.present? ? (group.total_credit / 100.0) : current_user.total_credit_in_usd
 
-                    hotel_filter = hotels_list.group_by {|el| el["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit ? :affordable : :notaffordable} 
+                    hotel_filter = hotels_list.group_by {|el| el["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit ? :affordable : :notaffordable}
 
                     if hotel_filter[:affordable]
                       affordable = hotel_filter[:affordable].each {|k, v| k["is_notaffordable"] = false }
                     end
-                    
+
                     if hotel_filter[:notaffordable]
                       notaffordable = hotel_filter[:notaffordable].each {|k, v| k["is_notaffordable"] = true}
                       notaffordable = notaffordable.sort do |k,v|
                                         k["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <=> v["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f
                                       end
-                      notaffordable.first["first_load"] = true
+                      if affordable.present?
+                        notaffordable.first["first_load"] = true
+                      end
                     end
 
                     hotels_list   = (affordable || []) + (notaffordable || [])
@@ -126,7 +128,7 @@ module Expedia
                     @num_of_hotel = hotels_list.size
                     @hotels_list = hotels_list.in_groups_of(3).in_groups_of(5)
                     @num_of_page = @hotels_list.size
-                    
+
                     response_result(response: @hotels_list, num_of_hotel: @num_of_hotel, num_of_page: @num_of_page, customer_session_id: response["HotelListResponse"]["customerSessionId"] )
                   end
                 end
@@ -149,7 +151,7 @@ module Expedia
         end
       end
     end
-    
+
     def self.list_for_guest(destination = nil, group = nil)
       if destination
         custom_params = Destination.get_session_search_hashes(destination)
@@ -157,7 +159,7 @@ module Expedia
         url = 'http://api.ean.com/ean-services/rs/hotel/v3/list?'
         xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelListRequest").gsub(" ", "").gsub("\n", "") }
         url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-        
+
         begin
           response = HTTParty.get(url_custom_params)
 
@@ -173,7 +175,7 @@ module Expedia
                 else
                   response["HotelListResponse"]["HotelList"]["HotelSummary"]
                 end
-              
+
               if hotels_list.empty?
                 @error_response = "There is no hotels that match your criteria and saving credits"
                 response_result(error_response: @error_response)
@@ -258,7 +260,7 @@ module Expedia
       url = "https://book.api.ean.com/ean-services/rs/hotel/v3/res?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelRoomReservationRequest").gsub(" ", "").gsub("\n", "") }
       url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-      
+
       begin
         response = HTTParty.post(url_custom_params)
 
@@ -266,7 +268,7 @@ module Expedia
           @error_response = response["HotelRoomReservationResponse"]["EanWsError"]["presentationMessage"]
           @error_response << ". "
           @error_response << response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"]
-          
+
           if response["HotelRoomReservationResponse"]["EanWsError"]["category"].eql? "DATA_VALIDATION"
             response_result(error_response: response["HotelRoomReservationResponse"]["EanWsError"]["verboseMessage"], response: response["HotelRoomReservationResponse"], is_error: true)
           else
@@ -289,7 +291,7 @@ module Expedia
 
       begin
         response = HTTParty.get(url_custom_params)
-        
+
         if response["HotelRoomCancellationResponse"]["EanWsError"]
           @error_response = response["HotelRoomCancellationResponse"]["EanWsError"]
           response_result(error_response: @error_response)
@@ -307,10 +309,10 @@ module Expedia
       url = "http://api.ean.com/ean-services/rs/hotel/v3/itin?"
       xml_params = { xml: custom_params.to_xml(skip_instruct: true, root: "HotelItineraryRequest").gsub(" ", "").gsub("\n", "") }
       url_custom_params = url + Expedia::Hotels.global_api_params_hash.merge(xml_params).to_query
-      
+
       begin
         response = HTTParty.get(url_custom_params)
-        
+
         if response["HotelItineraryResponse"]["EanWsError"]
           @error_response    = response["HotelItineraryResponse"]["EanWsError"]["presentationMessage"]
           response_result(error_response: @error_response)
