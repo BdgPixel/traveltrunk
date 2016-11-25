@@ -1,4 +1,3 @@
-# = require savings_form_validation
 # = require autoNumeric-min
 
 validateInvitationForm = ->

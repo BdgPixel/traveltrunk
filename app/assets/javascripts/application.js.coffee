@@ -1,4 +1,5 @@
 # = require jquery-main.min
+# = require jquery.turbolinks
 # = require jquery_ujs
 # = require turbolinks
 # = require nprogress
@@ -12,6 +13,7 @@
 # = require private_pub
 # = require lowlag
 # = require sound_path
+# = require savings_form_validation
 
 $(document).ajaxSend ->
   $('#loading').show()

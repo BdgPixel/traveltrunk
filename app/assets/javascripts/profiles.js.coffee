@@ -1,5 +1,4 @@
 # = require bootstrap.file-input
-# = require savings_form_validation
 # = require autoNumeric-min
 # = require jquery.remotipart
 
