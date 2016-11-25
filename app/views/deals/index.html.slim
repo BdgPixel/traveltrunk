@@ -12,9 +12,9 @@
               h1.text-center
                 span data-toggle="tooltip" data-placement="bottom" data-title="Click the arrow to search for other destinations and or change dates"
                   - if current_user.profile.home_airport && current_user.bank_account && current_user.total_credit > 0
-                    = link_to (@destination.try(:title_destination) || 'Where would you like to be?'), "#slideToggle", id:'slideToggleLink', class: "grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
+                    = link_to init_title_destination(@destination), "#slideToggle", id:'slideToggleLink', class: "grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
                   - else
-                    = link_to "Where would you like to be?", "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
+                    = link_to init_title_destination(@destination), "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
 
         / #slideToggle
         #slideToggle.collapse
@@ -38,7 +38,7 @@
             button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
               span.text
                 - if current_user.profile.home_airport && current_user.bank_account && current_user.total_credit > 0
-                  = @destination.try(:title_destination) || 'Where would you like to be?'
+                  = init_title_destination(@destination)
                 - else
                   | Where would you like to be?
 

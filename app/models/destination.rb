@@ -75,7 +75,9 @@ class Destination < ActiveRecord::Base
   end
 
   def title_destination
-    destination_string.split(", ").first
+    if destination_string
+      destination_string.split(", ").first
+    end
   end
 
   def update_arrival_and_departure_date
