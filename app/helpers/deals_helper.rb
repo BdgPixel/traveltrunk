@@ -251,6 +251,6 @@ module DealsHelper
   end
 
   def init_title_destination(destination)
-    destination ? destination.title_destination.html_safe : 'Where would you like to be?'
+    destination.present? ? destination.title_destination.html_safe : 'Where would you like to be?'
   end
 end
