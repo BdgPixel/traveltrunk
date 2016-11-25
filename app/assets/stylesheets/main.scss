@@ -1812,10 +1812,13 @@ span.errors {
   
   .btn-accept {
     margin-top: 30px;
+    margin-right: 30px;
 
     .btn-default {
+      padding: 0;
       background: #ea4f33;
       color: #ffffff;
+      border: none;
       @include border-radius(0px);
     }
 
@@ -1837,13 +1840,69 @@ span.errors {
 
     span.text {
       display: inline-block;
-      margin-right: 10px;
+      padding: 6px 18px;
+    }
+
+    .btn-caret {
+      position: absolute;
+      background: #ea4f33;
+      padding: 6px 12px;
+      border-left: 1px solid white;
     }
   }
 }
 
 .wrapper-collapse-flight {
-  
+
+  .well {
+    background-color: #ffffff;
+    border-color: transparent;
+  }
+
+  .table {
+    
+    thead {
+
+      tr {
+
+        th {
+          border-color: transparent;
+        }
+      }
+    }
+
+    tbody {
+
+      tr {
+
+        th, td {
+          border-color: transparent;
+        }
+      }
+    }
+
+    > tbody {
+      > tr > td {
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .tab-content {
+    padding: 15px;
+  }
+
+  .wrapper-details-book {
+
+    .book {
+      margin-top: 15px;
+    }
+  }
+
+  .wrapper-tabs-flight {
+    overflow: hidden;
+  }
+
   .collapse.in {
     clear: both;
   }

@@ -78,6 +78,9 @@ gem 'exception_notification'
 
 gem 'redis-namespace'
 
+gem 'mechanize'
+gem 'nokogiri'
+
 # autocompleted and handle bar
 gem 'twitter-typeahead-rails'
 gem 'handlebars_assets'

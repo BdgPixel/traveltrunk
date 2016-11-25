@@ -1,5 +1,5 @@
 module Skyscanner
-  class Flights
+  class Flight
   	attr_accessor :current_user
 
     def self.current_user=(current_user)

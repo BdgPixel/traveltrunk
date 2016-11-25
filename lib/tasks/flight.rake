@@ -16,4 +16,34 @@ namespace :flight do
 		end
   end
 
+
+  desc "TODO"
+  task carrier: :environment do
+    base_url  = 'https://www.kayak.co.id/airlines'
+    doc       = Nokogiri::HTML(open(base_url))
+
+    wrapper   = doc.css(".leftColumn .seoAirlinesList .seoAirlinesListItem")
+    wrapper.each do |el|
+      # get logo
+      logo  = el.css('.seoAirlinesListIcon img').attr('src').text.partition('?').first
+      code  = el.css('.seoAirlinesListCode').text.strip
+      airline = el.css('.seoAirlinesListNameLink').text.strip
+      big_logo = logo.gsub("air", "booking/larger")
+      if Carrier.find_by_code(code).nil?
+        # save to store
+        dw    = open(big_logo.gsub("air", "booking/larger"))
+        IO.copy_stream(dw, 'app/assets/images/carriers/larger/'+ code +'.png')
+        puts "Already save to store for image #{dw}"
+        puts "======================"
+        Carrier.create(logo: logo, code: code, airline: airline, big_logo: big_logo)
+        puts "Save success for #{code}"
+        puts "======================"
+        dwlogo    = open(logo)
+        IO.copy_stream(dwlogo, 'app/assets/images/carriers/logo/'+ code +'.png')
+        puts "Already save logo to store for image #{dwlogo}"
+        puts "======================"
+      end
+    end  
+  end
+
 end

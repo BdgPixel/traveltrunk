@@ -17,7 +17,7 @@
                   .list-flight
                     .logo-flight
                       - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
-                        | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)" }
+                        | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)", :data => {code: carrier[:Code], name: carrier[:Name]}, class: "img-dapart-#{carrier[:Code]}"}
                     .time-flight-start
                       span 
                         | #{hours(itinerarie[:OutboundLegId][:Departure])}
@@ -45,7 +45,7 @@
                     .list-flight
                       - itinerarie[:InboundLegId][:Carriers].each do |carrier|
                         .logo-flight
-                          | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)"}
+                          | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)", :data => {code: carrier[:Code], name: carrier[:Name]}}
                       .time-flight-start
                         span 
                           | #{hours(itinerarie[:InboundLegId][:Departure])}
@@ -73,27 +73,59 @@
                   .price
                     = currency(itinerarie[:PricingOptions].first[:Price])
                   .caption-text
-                    a href="javascriot:void(0)"
+                    a href="javascript:void(0)"
                       = itinerarie[:PricingOptions].first[:Agents].first[:name]
                   .btn-accept
                     .btn-group
-                      a.btn.btn-default aria-controls="collapseFlight#{index + 1}" aria-expanded="false" data-toggle="collapse" href="#collapseFlight#{index + 1}" role="button"  
+                      a.btn.btn-default for="collapseFlight#{index + 1}" aria-controls="collapseFlight#{index + 1}" aria-expanded="true" data-toggle="collapse" href="#collapseFlight#{index + 1}" role="button"  
                         span.text
                           | View Prices
-                        span.caret
-                .wrapper-collapse-flight
-                  div[id="collapseFlight#{index + 1}" class="collapse collapse-flight"]
-                    .well-box
-                      - itinerarie[:PricingOptions].each do |price|
-                        - price[:Agents].each do |agent|
-                          .col-md-3
-                            .logo-agent
-                              | #{image_tag agent[:ImageUrl]}
-                            .price-agent
-                              = currency(price[:Price])
-                            .book
-                              | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
-
+                        span.btn-caret
+                          i.caret
+            .wrapper-collapse-flight
+              div[id="collapseFlight#{index + 1}" class="collapse"]
+                .well
+                  .wrapper-tabs-flight
+                    ul.nav.nav-tabs role="tablist" 
+                      li.active role="presentation" 
+                        a aria-controls="details" data-toggle="tab" href="#details" role="tab" Details
+                      li role="presentation" 
+                        a aria-controls="fares" data-toggle="tab" href="#fares" role="tab" Fares
+                      
+                    .tab-content
+                      #details.tab-pane.active role="tabpanel"
+                        .wrapper-details-book.text-center
+                          - itinerarie[:PricingOptions].each do |price|
+                            - price[:Agents].each do |agent|
+                              .col-md-3
+                                .logo-agent
+                                  | #{image_tag agent[:ImageUrl]}
+                                .price-agent
+                                  = currency(price[:Price])
+                                .book
+                                  | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
+                      #fares.tab-pane role="tabpanel"
+                        table.table
+                          thead
+                            tr
+                              th Booking site
+                              th Agent Name
+                              th Payment fee
+                              th Total
+                              th 
+                          tbody
+                            - itinerarie[:PricingOptions].each do |price|
+                              - price[:Agents].each do |agent|
+                                tr
+                                  th
+                                    span
+                                      | #{image_tag agent[:ImageUrl]}
+                                  td 
+                                    | #{agent[:Name]}
+                                  td 
+                                    | #{currency(price[:Price])}
+                                  td
+                                    | #{link_to "Go", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
 - else
   #error_response.alert.alert-info style="margin-top: 20px"
     button type="button" class="close" data-dismiss="alert" aria-label="Close"
@@ -101,3 +133,18 @@
     
     strong Notice: &nbsp;
     | Please try again later, We have troble with API
+
+javascript:
+  function ImgError(source){
+    string  = source.className
+    string  = string.split("");
+    string.splice(0,0,".");
+    string  = string.join('');
+    code    = $(string).attr('data-code');
+    _url    = "#{asset_path('larger/0B.png')}";
+    var someAssetPath = "#{asset_path('larger/0B.png')}";
+    console.log(someAssetPath);
+    source.src = _url
+    source.onerror = "";
+    return true;
+  }
