@@ -1,5 +1,5 @@
 <%- if @destination %>
-  $("#slideToggleLink").text("<%= @destination.title_destination.html_safe %>");
+  $("#slideToggleLink").text("<%= init_title_destination(@destination) %>");
 <%- else %>
   $("#slideToggleLink").text("Where would you like to be?");
 <% end %>
