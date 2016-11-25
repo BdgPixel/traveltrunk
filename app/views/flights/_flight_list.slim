@@ -92,16 +92,17 @@
                       a.close-tabs href="#"
                         = image_tag 'icon_delete_fill_input.png'
                       li.active role="presentation"
-                        a aria-controls="details" data-toggle="tab" href="#details" role="tab" Details
+                        a aria-controls="details" data-toggle="tab" href="#details#{index + 1}" role="tab" Details
                       li role="presentation"
-                        a aria-controls="fares" data-toggle="tab" href="#fares" role="tab" Fares
+                        a aria-controls="fares" data-toggle="tab" href="#fares#{index + 1}" role="tab" Fares
 
                     .tab-content
-                      #details.tab-pane.active role="tabpanel"
+                      div[id="details#{index + 1}" class="tab-pane active" role="tabpanel"]
                         b | #{@flights.first[:query][:CabinClass]}
                         .depart
                           p Adults: #{@flights.first[:query][:Adults]}
-                      #fares.tab-pane role="tabpanel"
+
+                      div[id="fares#{index + 1}" class="tab-pane" role="tabpanel"]    
                         table.table
                           thead
                             tr
