@@ -98,16 +98,9 @@
 
                     .tab-content
                       #details.tab-pane.active role="tabpanel"
-                        .wrapper-details-book.text-center
-                          - itinerarie[:PricingOptions].each do |price|
-                            - price[:Agents].each do |agent|
-                              .col-md-3
-                                .logo-agent
-                                  | #{image_tag agent[:ImageUrl]}
-                                .price-agent
-                                  = currency(price[:Price])
-                                .book
-                                  | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-success", target: "_new"}
+                        b | #{@flights.first[:query][:CabinClass]}
+                        .depart
+                          p Adults: #{@flights.first[:query][:Adults]}
                       #fares.tab-pane role="tabpanel"
                         table.table
                           thead

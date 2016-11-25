@@ -1199,10 +1199,10 @@ a.login.show {
 // End
 
 #slideToggle {
-  overflow: hidden;
+  // overflow: hidden;
 
-  &.slidetoggle-flight {
-    overflow: inherit;
+  .slidetoggle-flight {
+    overflow: inherit !important;
 
     .selectize-input {
       padding: 11px 8px;

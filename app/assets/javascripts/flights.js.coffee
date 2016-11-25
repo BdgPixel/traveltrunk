@@ -59,3 +59,4 @@ $(document).ready ->
   $('#flightForm').validate({
     ignore: ':hidden, .tt-hint'
   })
+  
