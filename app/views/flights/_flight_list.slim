@@ -2,7 +2,7 @@
   #error_response.alert.alert-info style="margin-top: 20px"
     button type="button" class="close" data-dismiss="alert" aria-label="Close"
       span aria-hidden="true" &times;
-    
+
     strong Notice: &nbsp;
     = @flights.first[:error_response]
 - elsif @flights.first[:response].present?
@@ -19,7 +19,7 @@
                       - itinerarie[:OutboundLegId][:Carriers].each do |carrier|
                         | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)", :data => {code: carrier[:Code], name: carrier[:Name]}, class: "img-dapart-#{carrier[:Code]}"}
                     .time-flight-start
-                      span 
+                      span
                         | #{hours(itinerarie[:OutboundLegId][:Departure])}
                     .destination-start
                       span[class="black-tooltip" data-toggle="tooltip" data-placement="top"  data-original-title="#{itinerarie[:OutboundLegId][:OriginStation][:Name]}"]
@@ -34,12 +34,12 @@
                       span[class="black-tooltip" data-toggle="tooltip" data-placement="top"  data-original-title="#{itinerarie[:OutboundLegId][:DestinationStation][:Name]}"]
                         | #{itinerarie[:OutboundLegId][:DestinationStation][:Code]}
                     .hour
-                      span 
+                      span
                         = duration(itinerarie[:OutboundLegId][:Duration])
                     .date
                       span
                         = parse_date(itinerarie[:OutboundLegId][:Arrival])
-                
+
                 - unless (itinerarie[:InboundLegId].nil? rescue false)
                   .content-result-flight
                     .list-flight
@@ -47,7 +47,7 @@
                         .logo-flight
                           | #{image_tag carrier[:ImageUrl], alt: carrier[:Name], onerror:"ImgError(this)", :data => {code: carrier[:Code], name: carrier[:Name]}}
                       .time-flight-start
-                        span 
+                        span
                           | #{hours(itinerarie[:InboundLegId][:Departure])}
                       .destination-start
                         span
@@ -62,7 +62,7 @@
                         span[class="black-tooltip" data-toggle="tooltip" data-placement="top"  data-original-title="#{itinerarie[:InboundLegId][:DestinationStation][:Name]}, #{itinerarie[:InboundLegId][:DestinationStation][:Code]}"]
                           | #{itinerarie[:InboundLegId][:DestinationStation][:Code]}
                       .hour
-                        span 
+                        span
                           = duration(itinerarie[:InboundLegId][:Duration])
                       .date
                         span
@@ -77,7 +77,7 @@
                       = itinerarie[:PricingOptions].first[:Agents].first[:name]
                   .btn-accept
                     .btn-group
-                      a.btn.btn-default for="collapseFlight#{index + 1}" aria-controls="collapseFlight#{index + 1}" aria-expanded="true" data-toggle="collapse" href="#collapseFlight#{index + 1}" role="button"  
+                      a.btn.btn-default for="collapseFlight#{index + 1}" aria-controls="collapseFlight#{index + 1}" aria-expanded="true" data-toggle="collapse" href="#collapseFlight#{index + 1}" role="button"
                         span.text
                           | View Prices
                         span.btn-caret
@@ -86,12 +86,14 @@
               div[id="collapseFlight#{index + 1}" class="collapse"]
                 .well
                   .wrapper-tabs-flight
-                    ul.nav.nav-tabs role="tablist" 
-                      li.active role="presentation" 
+                    ul.nav.nav-tabs role="tablist"
+                      a.close-tabs href="#"
+                        = image_tag 'icon_delete_fill_input.png'
+                      li.active role="presentation"
                         a aria-controls="details" data-toggle="tab" href="#details" role="tab" Details
-                      li role="presentation" 
+                      li role="presentation"
                         a aria-controls="fares" data-toggle="tab" href="#fares" role="tab" Fares
-                      
+
                     .tab-content
                       #details.tab-pane.active role="tabpanel"
                         .wrapper-details-book.text-center
@@ -112,7 +114,7 @@
                               th Agent Name
                               th Payment fee
                               th Total
-                              th 
+                              th
                           tbody
                             - itinerarie[:PricingOptions].each do |price|
                               - price[:Agents].each do |agent|
@@ -120,9 +122,9 @@
                                   th
                                     span
                                       | #{image_tag agent[:ImageUrl]}
-                                  td 
+                                  td
                                     | #{agent[:Name]}
-                                  td 
+                                  td
                                     | #{currency(price[:Price])}
                                   td
                                     | #{link_to "Go", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
@@ -130,7 +132,7 @@
   #error_response.alert.alert-info style="margin-top: 20px"
     button type="button" class="close" data-dismiss="alert" aria-label="Close"
       span aria-hidden="true" &times;
-    
+
     strong Notice: &nbsp;
     | Please try again later, We have troble with API
 
