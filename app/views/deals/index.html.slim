@@ -1,6 +1,10 @@
 - content_for :javascripts
   = javascript_include_tag "deals"
-  = javascript_include_tag "variables", "profiles"
+  = javascript_include_tag "variables"
+
+  - if user_signed_in?
+    - unless current_user.profile.try(:home_airport)
+      = javascript_include_tag "variables", "profiles"
 
 .wrap-middle.hidden-xs
   .container
