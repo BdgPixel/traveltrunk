@@ -1,7 +1,7 @@
 <% if @destination %>
-  $('#slideToggleLink').text("<%= @destination.title_destination %>");
-  $('#slideToggleLinkMobile').text("<%= @destination.title_destination %>");
-  $('.search_mobile span.text').text("<%= @destination.title_destination %>");
+  $('#slideToggleLink').text("<%= @destination.title_destination.html_safe %>");
+  $('#slideToggleLinkMobile').text("<%= @destination.title_destination.html_safe %>");
+  $('.search_mobile span.text').text("<%= @destination.title_destination.html_safe %>");
 <% end %>
 
 $("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
