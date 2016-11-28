@@ -1,10 +1,12 @@
 class Transaction < ActiveRecord::Base
   after_create :update_user_total_credit
-  after_create :create_activity
+  after_create :set_activity
 
   belongs_to :user
 
   paginates_per 10
+
+  attr_accessor :is_referrer
 
   def transaction_type_label
     case self.transaction_type
@@ -107,7 +109,7 @@ class Transaction < ActiveRecord::Base
       self.user.save
     end
 
-    def create_activity
+    def set_activity
       unless ["refund", "void"].include? self.transaction_type
         activity_key = 
           if self.transaction_type.eql? "add_to_saving"
@@ -117,18 +119,37 @@ class Transaction < ActiveRecord::Base
           else
             'payment.recurring'
           end
+        
+        total_credit = self.user.total_credit / 100.0
 
-        self.user.create_activity(
-          key: activity_key, 
-          owner: self.user,
-          recipient: self.user, 
-          parameters: { 
-            amount: self.amount / 100.0, 
-            total_credit: self.user.total_credit / 100.0,
-            trans_id: self.trans_id,
-            is_request_refund: false 
-          }
-        )
+        if self.is_referrer
+          if self.user.group || self.user.joined_groups.present?
+            members = self.user.group || self.user.joined_groups.first
+            total_credit_group = members.total_credit / 100.0
+            members.try(:members) << self.user
+            
+            # send notif to all members
+            members.try(:members).each { |member| _create_activity(self.user, member, activity_key, total_credit_group) }
+          else
+            _create_activity(self.user, self.user, activity_key, total_credit)
+          end
+        else
+          _create_activity(self.user, self.user, activity_key, total_credit)
+        end
       end
+    end
+
+    def _create_activity(owner, recipient, activity_key, total_credit)
+      owner.create_activity(
+        key: activity_key, 
+        owner: owner,
+        recipient: recipient, 
+        parameters: { 
+          amount: self.amount / 100.0, 
+          total_credit: total_credit,
+          trans_id: self.trans_id,
+          is_request_refund: false 
+        }
+      )
     end
 end

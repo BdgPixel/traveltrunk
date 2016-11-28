@@ -2,7 +2,10 @@
   .notif-background
     .description
       span
-        | You successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
+      	- if activity.owner_id.eql? @current_user.id
+	        | You successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
+      	- else
+	      	| #{@current_user.full_name} successfully transfered #{number_to_currency(activity.parameters[:amount])} to TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit group is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
 
     .date 
       span

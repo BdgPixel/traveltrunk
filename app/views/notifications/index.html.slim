@@ -18,4 +18,4 @@ section.notif
 				  table.table.table-striped.table-hover
 				    tbody
 				      - @activities.each do |activity|
-				        == render_activity activity, locals: { current_total_credit: @current_total_credit }
+				      	== render_activity activity, locals: { current_total_credit: @current_total_credit }
