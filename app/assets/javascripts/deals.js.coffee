@@ -289,9 +289,12 @@ initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, room, membersCount)
     $('#modalSavingsForm').on 'show.bs.modal', ->
       $('#modalBook').modal 'hide'
 
+      # add routes query string
+      $('#formAddToSavings').attr('action', '/deals/update_credit?is_referrer=true')
+
       creditGroup = ((totalRoom - totalGroupCredit) / parseInt(membersCount)).toFixed(2)
       $('#modalSavingsForm .modal-header small').remove()
-      $('#groupCreditText').text("Part to add to the savings min $#{creditGroup}")
+      $('#groupCreditText').text("Your minimum contribution for this hotel is $#{creditGroup}")
       $('#formAddToSavings').attr('data-is-referrer', true)
   else
     $("form#formBook input[type='submit']").removeClass('hide')
