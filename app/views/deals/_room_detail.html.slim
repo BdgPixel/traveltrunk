@@ -86,4 +86,4 @@
           - if current_user.group || current_user.joined_groups.present?
             - if @likes_grouped[room['rateCode'].to_s]
               = members_of_voted(@likes_grouped[room['rateCode'].to_s])
-              | &nbsp;agreed on this room type
+              | &nbsp;agreed on this option
