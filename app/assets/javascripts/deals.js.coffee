@@ -164,8 +164,8 @@ root.roomSelected = (selector)->
     $('#confirmation_book_smoking_preferences').val(room[0]['smokingPreferences'])
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
     
-    membersVoted($(this), this, rooms.hotelName, room)
-    # allowBooking($(this).data('is-group'), this, rooms.hotelId, room)
+    membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
+    allowBooking($(this).data('is-group'), $(this).data('is-owner-group'), this, rooms.hotelId, room)
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
@@ -202,8 +202,8 @@ root.roomSelected = (selector)->
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
 
-membersVoted = (group, thisGroup, hotelName, room) ->
-  if group.data('is-group')
+membersVoted = (isGroup, thisGroup, hotelName, room) ->
+  if isGroup
     $('.form-book').hide()
     $('#agree:checked').removeAttr('checked')
     $('#linkVote').attr('disabled', true)
@@ -212,7 +212,7 @@ membersVoted = (group, thisGroup, hotelName, room) ->
     $('#agreeTermCondition').addClass('hide')
     $('#linkVote').removeAttr('disabled')
 
-    if group.data('member-liked')
+    if $(thisGroup).data('member-liked')
       $('#voteConfirmationText').addClass('hide')
       $('#linkVote').addClass('hide')
     else
@@ -225,23 +225,23 @@ membersVoted = (group, thisGroup, hotelName, room) ->
     $('.vote-room-type-code').val(room[0]['RoomType']['@roomCode'])
 
     if $(thisGroup).data('cancel-vote')
-      $('#voteConfirmationText').text('Would you like to cancel vote to this hotel?')
+      $('#voteConfirmationText').text('Would you like to cancel vote to this hotel? Let your friends know you like this option')
       $('form.like').data('remote', false)
     else
-      $('#voteConfirmationText').text('Would you like to agree to this hotel?')
+      $('#voteConfirmationText').text('Would you like to agree to this hotel? Let your friends know you like this option')
       $('form.like').data('remote', true)
 
     $('.form-vote ').show()
 
-allowBooking = (isGroup, thisGroup, hotelId, room) ->
-  if isGroup
+allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, room) ->
+  root.membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
+  root.totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
+  root.totalRoom = parseFloat($(thisGroup).data('total'))
+  root.membersCount = parseInt($(thisGroup).data('members-count'))
+  if isGroup && isOwnerGroup
     if $(thisGroup).data('allow-booking') != undefined
       $('.form-book').show()
       $('.form-vote').hide()
-
-      membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
-      totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
-      totalRoom = parseFloat($(thisGroup).data('total'))
 
       if totalGroupCredit < totalRoom
         initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
@@ -271,6 +271,15 @@ allowBooking = (isGroup, thisGroup, hotelId, room) ->
           $('#modalMembersVoted p').text('All members need to agree on this hotel first, before you can book')
           
         $("form#formBook input[type='submit']").attr('disabled', 'disabled')
+  else
+    if totalGroupCredit < totalRoom
+      $('.form-book').show()
+      $('.form-vote').hide()
+
+      initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, membersCount)
+    else
+      $("form#formBook input[type='submit']").val('Book Now')
+
 
 initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, room, membersCount) ->
   linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
