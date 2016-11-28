@@ -188,11 +188,12 @@ module DealsHelper
           if likes.detect { |like| like.user_id.eql? current_user.id }
             link = link_to "Cancel Vote", '#', class: 'room-selected', data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], is_group: true, cancel_vote: true }
           else
-            link = '<div class="vote-explainer">Let your group know you like this option</div>'
+            # remove Let your group know you like this option
+            # link = '<div class="vote-explainer">Let your group know you like this option</div>'
             link += link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], is_group: true }
           end
         else
-          link = '<div class="vote-explainer">Let your group know you like this option</div>'
+          # link = '<div class="vote-explainer">Let your group know you like this option</div>'
           link += link_to "Let's Go", "#", class: "btn btn-saving btn-green btn-full-size room-selected", data: { toggle: "modal", target: ".modal-lg", id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], is_group: true }
         end
       end
