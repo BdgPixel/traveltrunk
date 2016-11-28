@@ -164,8 +164,8 @@ root.roomSelected = (selector)->
     $('#confirmation_book_smoking_preferences').val(room[0]['smokingPreferences'])
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
     
-    membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
-    allowBooking($(this).data('is-group'), this, rooms.hotelId, room)
+    membersVoted($(this), this, rooms.hotelName, room)
+    # allowBooking($(this).data('is-group'), this, rooms.hotelId, room)
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
@@ -202,8 +202,8 @@ root.roomSelected = (selector)->
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
 
-membersVoted = (isGroup, thisGroup, hotelName, room) ->
-  if isGroup
+membersVoted = (group, thisGroup, hotelName, room) ->
+  if group.data('is-group')
     $('.form-book').hide()
     $('#agree:checked').removeAttr('checked')
     $('#linkVote').attr('disabled', true)
@@ -211,6 +211,13 @@ membersVoted = (isGroup, thisGroup, hotelName, room) ->
 
     $('#agreeTermCondition').addClass('hide')
     $('#linkVote').removeAttr('disabled')
+
+    if group.data('member-liked')
+      $('#voteConfirmationText').addClass('hide')
+      $('#linkVote').addClass('hide')
+    else
+      $('#voteConfirmationText').removeClass('hide')
+      $('#linkVote').removeClass('hide')
 
     $('.vote-hotel-name').val(hotelName)
     $('.vote-share-image').val($('#shareHotelInfo').data('share-image'))
