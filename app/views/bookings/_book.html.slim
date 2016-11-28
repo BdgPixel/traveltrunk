@@ -55,8 +55,14 @@
                 hr
                 .form-book
                   = render "bookings/form_selected_room"
-                  
+
                 .form-vote
+                  .form-group
+                    p
+                      b Reservation Terms and Cancellation Policy
+                      br
+                      span.cancellation-policy
+
                   #shareHotelInfo data-share-image="#{@featured_image['url']}"
                   span#voteConfirmationText Would you like to agree to this hotel?
                 
