@@ -1,5 +1,5 @@
-<%- if @destination %>
-  $("#slideToggleLink").text("<%= @destination.title_destination %>");
+<%- if session[:destination_flight] %>
+  $("#slideToggleLink").text("<%= session[:destination_flight][:destination_string] %>");
 <%- else %>
   $("#slideToggleLink").text("Where would you like to be?");
 <% end %>

@@ -47,5 +47,9 @@ class FlightsController < ApplicationController
 
 	def set_session_flight
 		@flights = Skyscanner::Flights.list_flight("US", "USD", "en-GB", flight_params[:origin_place_hide], flight_params[:destination_place_hide], flight_params[:outbounddate], flight_params[:inbounddate], flight_params[:number_of_adult])
+
+		session[:destination_flight] = { 
+			destination_string: flight_params[:destination_place]
+		}
 	end
 end
