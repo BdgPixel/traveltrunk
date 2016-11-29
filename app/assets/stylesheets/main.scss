@@ -1858,6 +1858,13 @@ span.errors {
   .well {
     background-color: #ffffff;
     border-color: transparent;
+
+    .price {
+      font-size: 20px;
+      color: #00005e;
+      display: block;
+      margin-bottom: 20px;
+    }
   }
 
   .table {
