@@ -36,12 +36,21 @@ initSelectize = (selector1, selector2)->
       suggestion: Handlebars.compile('<div><img src="{{image}}"/>  <strong>{{name}}</strong> – {{country}}</div>')
 
   $('.origin_place').on 'typeahead:select', (evt, item) ->
-    $('#flights_origin_place_hide').val(item.id)
+    $('.flights_origin_place_hide').val(item.id)
     return
 
   $('.destination_place').on 'typeahead:select', (evt, item) ->
-    $('#flights_destination_place_hide').val(item.id)
+    $('.flights_destination_place_hide').val(item.id)
     return
+
+  $('#origin_place_2').on 'typeahead:select', (evt, item) ->
+    $('.flights_origin_place_hide').val(item.id)
+    return
+
+  $('#destination_place_2').on 'typeahead:select', (evt, item) ->
+    $('.flights_destination_place_hide').val(item.id)
+    return
+
 
 root.closeClollapse = (selector)->
   selector = selector.replace /^/, '#'

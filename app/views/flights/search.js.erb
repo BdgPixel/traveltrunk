@@ -1,4 +1,8 @@
-$("#slideToggleLink").text("<%= @title%>");
+<%- if session[:title].present? %>
+  $("#slideToggleLink").text("<%= session[:title] %>");
+<%- else %>
+  $("#slideToggleLink").text("<%= @title%>");
+<% end %>
 
 $("#dealsFlightsList").html("<%= j render 'flight_list' %>");
 
