@@ -826,6 +826,7 @@ h3.hotel-name {
         letter-spacing: 0.5px
       }
     }
+
     .date {
       width: 50%;
       display: table-cell;
@@ -1788,8 +1789,12 @@ span.errors {
         color: #777777;
         margin-left: 10px;
       }
-    }
 
+      .date,
+      .hour {
+        font-weight: bolder;
+      }
+    }
   }
 }
 
@@ -1798,8 +1803,8 @@ span.errors {
   margin-bottom: 15px;
 
   .price {
-    font-size: 24px;
-    line-height: 24px;
+    font-size: 40px;
+    line-height: 45px;
     color: #00005e;
   }
 
