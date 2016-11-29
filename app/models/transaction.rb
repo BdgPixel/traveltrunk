@@ -6,7 +6,7 @@ class Transaction < ActiveRecord::Base
 
   paginates_per 10
 
-  attr_accessor :is_referrer
+  attr_accessor :is_referrer, :hotel_name, :room_description
 
   def transaction_type_label
     case self.transaction_type
@@ -124,12 +124,18 @@ class Transaction < ActiveRecord::Base
 
         if self.is_referrer
           if self.user.group || self.user.joined_groups.present?
-            members = self.user.group || self.user.joined_groups.first
-            total_credit_group = members.total_credit / 100.0
-            members.try(:members) << self.user
+            group = self.user.group || self.user.joined_groups.first
+            total_credit_group = group.total_credit / 100.0
+
+            members = 
+              if self.user.group
+                group.try(:members).to_a << self.user
+              elsif self.user.joined_groups.present?
+                group.try(:members).to_a << group.user
+              end
             
             # send notif to all members
-            members.try(:members).each { |member| _create_activity(self.user, member, activity_key, total_credit_group) }
+            members.each { |member| _create_activity(self.user, member, activity_key, total_credit_group) }
           else
             _create_activity(self.user, self.user, activity_key, total_credit)
           end
@@ -148,7 +154,10 @@ class Transaction < ActiveRecord::Base
           amount: self.amount / 100.0, 
           total_credit: total_credit,
           trans_id: self.trans_id,
-          is_request_refund: false 
+          is_request_refund: false, 
+          is_referrer: self.is_referrer,
+          hotel_name: self.hotel_name,
+          room_description: self.room_description
         }
       )
     end

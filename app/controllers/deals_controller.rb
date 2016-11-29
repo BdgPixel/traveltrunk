@@ -331,7 +331,9 @@ class DealsController < ApplicationController
           transaction_type: 'add_to_saving', 
           ref_id: response_payment.refId,
           trans_id: response_payment.transactionResponse.transId,
-          is_referrer: params[:is_referrer] ? true : false
+          is_referrer: params[:is_referrer] ? true : false,
+          hotel_name: params[:hotel_name],
+          room_description: params[:room_description]
         )
 
         if transaction.save
@@ -348,6 +350,8 @@ class DealsController < ApplicationController
           @notification_count = current_user.get_notification(false).count
 
           card_last_4 = response_payment.transactionResponse.accountNumber
+
+          @is_referrer = params[:is_referrer]
 
           PaymentProcessorMailer.delay.payment_succeed(current_user.id, transaction.amount, card_last_4)
         end
