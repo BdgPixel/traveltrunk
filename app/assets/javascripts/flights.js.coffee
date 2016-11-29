@@ -26,14 +26,14 @@ initSelectize = (selector1, selector2)->
     source: depart_typeahead
     templates:
       empty: Handlebars.compile('<div class="not-found"><strong>Airport not found</strong></div>')
-      suggestion: Handlebars.compile('<div><img src="{{image}}"/>  <strong>({{id}})</strong> <strong>{{name}}</strong> – {{country}}</div>')
+      suggestion: Handlebars.compile('<div><img src="{{image}}"/>  <strong>{{name}}</strong> – {{country}}</div>')
   $(selector2).typeahead null,
     name: 'origin-place'
     display: 'name'
     source: arrival_typeahead
     templates:
       empty: ('<div class="not-found"><strong>Airport not found</strong></div>')
-      suggestion: Handlebars.compile('<div><img src="{{image}}"/>  <strong>({{id}})</strong> <strong>{{name}}</strong> – {{country}}</div>')
+      suggestion: Handlebars.compile('<div><img src="{{image}}"/>  <strong>{{name}}</strong> – {{country}}</div>')
 
   $('.origin_place').on 'typeahead:select', (evt, item) ->
     $('#flights_origin_place_hide').val(item.id)
