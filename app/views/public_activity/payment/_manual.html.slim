@@ -6,13 +6,13 @@
           - if activity.owner_id.eql? @current_user.id
             | You successfully transfered #{number_to_currency(activity.parameters[:amount])} for room&nbsp;
             b #{activity.parameters[:room_description]}
-            | &nbsp;and hotel
+            | &nbsp;and hotel&nbsp;
             b #{activity.parameters[:hotel_name]}
             | &nbsp;to your TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
           - else
             | #{activity.owner.full_name} successfully transfered #{number_to_currency(activity.parameters[:amount])} for room&nbsp;
             b #{activity.parameters[:room_description]}
-            | &nbsp;and hotel
+            | &nbsp;and hotel&nbsp;
             b #{activity.parameters[:hotel_name]}
             | &nbsp;to TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit group is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
         - else
