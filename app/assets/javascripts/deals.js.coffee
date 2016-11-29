@@ -165,7 +165,8 @@ root.roomSelected = (selector)->
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
     
     membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
-    allowBooking($(this).data('is-group'), $(this).data('is-owner-group'), this, rooms.hotelId, rooms.hotelName, room)
+    allowBooking($(this).data('is-group'), $(this).data('is-owner-group'),
+      this, rooms.hotelId, rooms.hotelName, room)
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
@@ -247,7 +248,7 @@ allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, hotelName, room) ->
       if totalGroupCredit < totalRoom
         $('#linkModalAddToSavingForm').removeClass('btn-green')
         $('#linkModalAddToSavingForm').addClass('btn-yellow')
-        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
+        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
       else
         $("form#formBook input[type='submit']").val('Book Now')
 
@@ -263,7 +264,7 @@ allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, hotelName, room) ->
       else
         root.thisGroup = thisGroup
 
-        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
+        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
 
         $('#agree').attr('disabled', 'disabled')
 
@@ -276,19 +277,26 @@ allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, hotelName, room) ->
         $("form#formBook input[type='submit']").attr('disabled', 'disabled')
   else
     if totalGroupCredit < totalRoom
-      $('.form-book').show()
-      $('.form-vote').hide()
+      $('.form-book').hide()
+      $('.form-vote').show()
+
+      # $('.form-book').show()
+      # $('.form-vote').hide()
       $('#linkModalAddToSavingForm').removeClass('btn-green')
       $('#linkModalAddToSavingForm').addClass('btn-yellow')
 
-      initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
+      if $(thisGroup).data('member-liked') != undefined
+        if $(thisGroup).data('member-liked')
+          $('.form-book').show()
+          $('.form-vote').hide()
+          initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
     else
       $("form#formBook input[type='submit']").val('Book Now')
 
 
 initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount) ->
   linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
-
+  # console.log room
   if totalGroupCredit < totalRoom
     $("form#formBook input[type='submit']").addClass('hide')
     $("form.like input[type='submit']").addClass('hide')
