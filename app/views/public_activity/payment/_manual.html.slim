@@ -2,11 +2,21 @@
   .notif-background
     .description
       span
-      	- if activity.owner_id.eql? @current_user.id
-	        | You successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
-      	- else
-	      	| #{activity.owner.full_name} successfully transfered #{number_to_currency(activity.parameters[:amount])} to TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit group is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
-
+        - if activity.parameters[:is_referrer]
+          - if activity.owner_id.eql? @current_user.id
+            | You successfully transfered #{number_to_currency(activity.parameters[:amount])} for room&nbsp;
+            b #{activity.parameters[:room_description]}
+            | &nbsp;and hotel
+            b #{activity.parameters[:hotel_name]}
+            | &nbsp;to your TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
+          - else
+            | #{activity.owner.full_name} successfully transfered #{number_to_currency(activity.parameters[:amount])} for room&nbsp;
+            b #{activity.parameters[:room_description]}
+            | &nbsp;and hotel
+            b #{activity.parameters[:hotel_name]}
+            | &nbsp;to TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit group is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
+        - else
+          | You successfully transfered #{number_to_currency(activity.parameters[:amount])} to your TravelTrunk account (transaction ID #{activity.parameters[:trans_id]}). Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
     .date 
       span
         = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

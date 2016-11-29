@@ -1,12 +1,12 @@
 class Transaction < ActiveRecord::Base
-  # after_create :update_user_total_credit
+  after_create :update_user_total_credit
   after_create :set_activity
 
   belongs_to :user
 
   paginates_per 10
 
-  attr_accessor :is_referrer
+  attr_accessor :is_referrer, :hotel_name, :room_description
 
   def transaction_type_label
     case self.transaction_type
@@ -154,7 +154,10 @@ class Transaction < ActiveRecord::Base
           amount: self.amount / 100.0, 
           total_credit: total_credit,
           trans_id: self.trans_id,
-          is_request_refund: false 
+          is_request_refund: false, 
+          is_referrer: self.is_referrer,
+          hotel_name: self.hotel_name,
+          room_description: self.room_description
         }
       )
     end

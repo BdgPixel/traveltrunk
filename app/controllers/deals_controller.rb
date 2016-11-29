@@ -290,6 +290,7 @@ class DealsController < ApplicationController
   end
 
   def update_credit
+    # binding.pry
     begin
       exp_month = params[:update_credit][:exp_month].rjust(2, '0')
       exp_year = params[:update_credit][:exp_year][-2, 2]
@@ -330,7 +331,9 @@ class DealsController < ApplicationController
           transaction_type: 'add_to_saving', 
           ref_id: response_payment.refId,
           trans_id: response_payment.transactionResponse.transId,
-          is_referrer: params[:is_referrer] ? true : false
+          is_referrer: params[:is_referrer] ? true : false,
+          hotel_name: params[:hotel_name],
+          room_description: params[:room_description]
         )
 
         if transaction.save
