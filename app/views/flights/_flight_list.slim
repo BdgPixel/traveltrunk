@@ -87,43 +87,43 @@
             .wrapper-collapse-flight
               div[id="collapseFlight#{index + 1}" class="collapse"]
                 .well
-                  .wrapper-tabs-flight
-                    ul.nav.nav-tabs role="tablist"
-                      a[class="close-tabs" href="javascript:void(0)" id="collapseFlight#{index + 1}" onclick="closeClollapse()"] 
-                        = image_tag 'icon_delete_fill_input.png'
-                      li.active role="presentation"
-                        a aria-controls="details" data-toggle="tab" href="#details#{index + 1}" role="tab" Details
-                      li role="presentation"
-                        a aria-controls="fares" data-toggle="tab" href="#fares#{index + 1}" role="tab" Fares
+                  / .wrapper-tabs-flight
+                  /   ul.nav.nav-tabs role="tablist"
+                  /     a[class="close-tabs" href="javascript:void(0)" id="collapseFlight#{index + 1}" onclick="closeClollapse()"]
+                  /       = image_tag 'icon_delete_fill_input.png'
+                  /     li.active role="presentation"
+                  /       a aria-controls="details" data-toggle="tab" href="#details#{index + 1}" role="tab" Details
+                  /     li role="presentation"
+                  /       a aria-controls="fares" data-toggle="tab" href="#fares#{index + 1}" role="tab" Fares
 
-                    .tab-content
-                      div[id="details#{index + 1}" class="tab-pane active" role="tabpanel"]
-                        b | #{@flights.first[:query][:CabinClass]}
-                        .depart
-                          p Adults: #{@flights.first[:query][:Adults]}
 
-                      div[id="fares#{index + 1}" class="tab-pane" role="tabpanel"]    
-                        table.table
-                          thead
+                  / div[id="details#{index + 1}" class="tab-pane active" role="tabpanel"]
+                  /   b | #{@flights.first[:query][:CabinClass]}
+                  /   .depart
+                  /     p Adults: #{@flights.first[:query][:Adults]}
+
+                  div[id="fares#{index + 1}" class="tab-pane" role="tabpanel"]
+                    table.table
+                      thead
+                        tr
+                          th Booking site
+                          th Agent Name
+                          th Payment fee
+                          th Total
+                          th
+                      tbody
+                        - itinerarie[:PricingOptions].each do |price|
+                          - price[:Agents].each do |agent|
                             tr
-                              th Booking site
-                              th Agent Name
-                              th Payment fee
-                              th Total
                               th
-                          tbody
-                            - itinerarie[:PricingOptions].each do |price|
-                              - price[:Agents].each do |agent|
-                                tr
-                                  th
-                                    span
-                                      | #{image_tag agent[:ImageUrl]}
-                                  td
-                                    | #{agent[:Name]}
-                                  td
-                                    | #{currency(price[:Price])}
-                                  td
-                                    | #{link_to "Go", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
+                                span
+                                  | #{image_tag agent[:ImageUrl]}
+                              td
+                                | #{agent[:Name]}
+                              td
+                                | #{currency(price[:Price])}
+                              td
+                                | #{link_to "Go", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
 - else
   #error_response.alert.alert-info style="margin-top: 20px"
     button type="button" class="close" data-dismiss="alert" aria-label="Close"
