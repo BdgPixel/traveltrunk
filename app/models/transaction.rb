@@ -1,5 +1,5 @@
 class Transaction < ActiveRecord::Base
-  after_create :update_user_total_credit
+  # after_create :update_user_total_credit
   after_create :set_activity
 
   belongs_to :user
@@ -124,12 +124,18 @@ class Transaction < ActiveRecord::Base
 
         if self.is_referrer
           if self.user.group || self.user.joined_groups.present?
-            members = self.user.group || self.user.joined_groups.first
-            total_credit_group = members.total_credit / 100.0
-            members.try(:members) << self.user
+            group = self.user.group || self.user.joined_groups.first
+            total_credit_group = group.total_credit / 100.0
+
+            members = 
+              if self.user.group
+                group.try(:members).to_a << self.user
+              elsif self.user.joined_groups.present?
+                group.try(:members).to_a << group.user
+              end
             
             # send notif to all members
-            members.try(:members).each { |member| _create_activity(self.user, member, activity_key, total_credit_group) }
+            members.each { |member| _create_activity(self.user, member, activity_key, total_credit_group) }
           else
             _create_activity(self.user, self.user, activity_key, total_credit)
           end
