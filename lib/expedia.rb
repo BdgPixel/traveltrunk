@@ -107,7 +107,7 @@ module Expedia
                     group   = current_user.group || current_user.joined_groups.first
                     total_credit = group.present? ? (group.total_credit / 100.0) : current_user.total_credit_in_usd
 
-                    hotel_filter = hotels_list.group_by {|el| el["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f <= total_credit ? :affordable : :notaffordable}
+                    hotel_filter = hotels_list.group_by {|el| el["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"].to_f.round <= total_credit ? :affordable : :notaffordable}
 
                     if hotel_filter[:affordable]
                       affordable = hotel_filter[:affordable].each {|k, v| k["is_notaffordable"] = false }

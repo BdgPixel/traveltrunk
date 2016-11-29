@@ -1,5 +1,7 @@
 <%- if session[:title].present? %>
   $("#slideToggleLink").text("<%= session[:title] %>");
+<%- elsif session[:destination_flight] %>
+  $("#slideToggleLink").text("<%= session[:destination_flight][:destination_string] %>");
 <%- else %>
   $("#slideToggleLink").text("<%= @title%>");
 <% end %>

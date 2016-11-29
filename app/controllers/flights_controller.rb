@@ -53,5 +53,8 @@ class FlightsController < ApplicationController
 			params[:flights][:origin_place_hide] = flight_params[:origin_place_hide_2]
 		end
 		@flights = Skyscanner::Flight.list_flight("US", "USD", "en-GB", flight_params[:origin_place_hide], flight_params[:destination_place_hide], flight_params[:outbounddate], flight_params[:inbounddate], flight_params[:number_of_adult])
+		session[:destination_flight] = { 
+			destination_string: flight_params[:destination_place]
+		}
 	end
 end

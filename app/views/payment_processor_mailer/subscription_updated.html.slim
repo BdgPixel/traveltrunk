@@ -4,21 +4,17 @@ p#subscriptionCreated
   br
   br
 
-  | You’ve successfully updated your savings plan to #{number_to_currency(@bank_account.amount_transfer.to_f)} every #{payment_frequency_label(@bank_account.transfer_frequency)}. Nice!
+  | You’ve successfully updated your savings plan to #{number_to_currency(@bank_account.amount_transfer.to_f)} every #{payment_frequency_label(@bank_account.transfer_frequency)}.
 
   br
   br
 
-  | Starting next period, Travel Trunk will charge your credit card on file #{currency_in_usd(@subscription.amount)}, adding this new amount to your travel savings every #{payment_frequency_label(@bank_account.transfer_frequency)}.
+  | Starting next period, TravelTrunk will charge your credit card on file #{currency_in_usd(@subscription.amount)}, adding this new amount to your travel savings every #{payment_frequency_label(@bank_account.transfer_frequency)}.
 
   br
   br
 
-  | Your adventure just got closer…
-
-  br
-  br
-
-  | Congrats,
+  / | Your adventure just got closer…
+  | Way to go!
   br
   = render 'partials/footer_mailer'
