@@ -43,7 +43,9 @@ initSelectize = (selector1, selector2)->
     $('#flights_destination_place_hide').val(item.id)
     return
 
-root.closeClollapse = ->
+root.closeClollapse = (selector)->
+  selector = selector.replace /^/, '#'
+  $(selector).collapse 'hide'
 
 $(document).ready ->
   controller = $('body').data('controller')
