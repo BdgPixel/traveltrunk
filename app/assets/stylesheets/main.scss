@@ -1887,6 +1887,10 @@ span.errors {
         vertical-align: middle;
       }
     }
+
+    .btn-default {
+      @include border-radius(0px);
+    }
   }
 
   .tab-content {
