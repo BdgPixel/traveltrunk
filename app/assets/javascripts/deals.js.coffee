@@ -234,16 +234,19 @@ membersVoted = (isGroup, thisGroup, hotelName, room) ->
     $('.form-vote ').show()
 
 allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, room) ->
-  root.membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
-  root.totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
-  root.totalRoom = parseFloat($(thisGroup).data('total'))
-  root.membersCount = parseInt($(thisGroup).data('members-count'))
+  membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
+  totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
+  totalRoom = parseFloat($(thisGroup).data('total'))
+  membersCount = parseInt($(thisGroup).data('members-count'))
+
   if isGroup && isOwnerGroup
     if $(thisGroup).data('allow-booking') != undefined
       $('.form-book').show()
       $('.form-vote').hide()
 
       if totalGroupCredit < totalRoom
+        $('#linkModalAddToSavingForm').removeClass('btn-green')
+        $('#linkModalAddToSavingForm').addClass('btn-yellow')
         initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
       else
         $("form#formBook input[type='submit']").val('Book Now')
@@ -275,6 +278,8 @@ allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, room) ->
     if totalGroupCredit < totalRoom
       $('.form-book').show()
       $('.form-vote').hide()
+      $('#linkModalAddToSavingForm').removeClass('btn-green')
+      $('#linkModalAddToSavingForm').addClass('btn-yellow')
 
       initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, membersCount)
     else
