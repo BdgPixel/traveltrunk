@@ -34,6 +34,7 @@ class FlightsController < ApplicationController
 
 	def search
 		set_session_flight
+		@title 			= flight_params[:origin_place] + " to "+ flight_params[:destination_place]
     respond_to do |format|
       format.html
       format.js

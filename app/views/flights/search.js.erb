@@ -1,8 +1,4 @@
-<%- if @destination %>
-  $("#slideToggleLink").text("<%= @destination.title_destination.html_safe %>");
-<%- else %>
-  $("#slideToggleLink").text("Where would you like to be?");
-<% end %>
+$("#slideToggleLink").text("<%= @title%>");
 
 $("#dealsFlightsList").html("<%= j render 'flight_list' %>");
 
