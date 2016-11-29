@@ -87,6 +87,31 @@
             .wrapper-collapse-flight
               div[id="collapseFlight#{index + 1}" class="collapse"]
                 .well
+                  .text-right
+                    a.close-tabs href="javascript:void(0)"
+                      = image_tag 'icon_delete_fill_input.png'
+                  table.table
+                    thead
+                      tr
+                        th Booking site
+                        th Agent Name
+                        th Payment fee
+                        th Total
+                        th
+                    tbody
+                      - itinerarie[:PricingOptions].each do |price|
+                        - price[:Agents].each do |agent|
+                          tr
+                            th
+                              span
+                                | #{image_tag agent[:ImageUrl]}
+                            td
+                              | #{agent[:Name]}
+                            td
+                              | #{currency(price[:Price])}
+                            td
+                              | #{link_to "Go", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
+
                   / .wrapper-tabs-flight
                   /   ul.nav.nav-tabs role="tablist"
                   /     a[class="close-tabs" href="javascript:void(0)" id="collapseFlight#{index + 1}" onclick="closeClollapse()"]
@@ -103,28 +128,8 @@
                   /   .depart
                   /     p Adults: #{@flights.first[:query][:Adults]}
 
-                  div[id="fares#{index + 1}" class="tab-pane" role="tabpanel"]
-                    table.table
-                      thead
-                        tr
-                          th Booking site
-                          th Agent Name
-                          th Payment fee
-                          th Total
-                          th
-                      tbody
-                        - itinerarie[:PricingOptions].each do |price|
-                          - price[:Agents].each do |agent|
-                            tr
-                              th
-                                span
-                                  | #{image_tag agent[:ImageUrl]}
-                              td
-                                | #{agent[:Name]}
-                              td
-                                | #{currency(price[:Price])}
-                              td
-                                | #{link_to "Go", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
+                  / div[id="fares#{index + 1}" class="tab-pane" role="tabpanel"]
+
 - else
   #error_response.alert.alert-info style="margin-top: 20px"
     button type="button" class="close" data-dismiss="alert" aria-label="Close"
