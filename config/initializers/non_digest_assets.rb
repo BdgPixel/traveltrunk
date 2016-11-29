@@ -1,1 +1,1 @@
-NonStupidDigestAssets.whitelist += [/images\/.*/]
+NonStupidDigestAssets.whitelist += [/images\/.*/, "/carriers/*", "images/carriers/*"]
