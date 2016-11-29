@@ -1,5 +1,5 @@
 p#oneTimePayment
-  | Congratulations #{@profile.first_name.try(:titleize)}!
+  | Hello #{@profile.first_name.try(:titleize)}!
 
   br
   br
@@ -9,16 +9,10 @@ p#oneTimePayment
   br
   br
 
-  | This means you’ve added #{currency_in_usd(@amount)} to your Travel Trunk savings account. Your total savings is now #{currency_in_usd(@user.total_credit)}.
-
+  | This means you’ve added #{currency_in_usd(@amount)} to your TravelTrunk savings. Your total savings is now #{currency_in_usd(@user.total_credit)}. If this information is incorrect and you did not add #{currency_in_usd(@amount)} to your Trunk Account please contact me right away.
   br
   br
 
-  | You’re on your way!
-
-  br
-  br
-
-  | Bon voyage,
+  | You're on your way to that dream vacation!,
   br
   = render 'partials/footer_mailer'
