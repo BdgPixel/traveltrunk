@@ -43,10 +43,14 @@ class FlightsController < ApplicationController
 
 	private
 	def flight_params
-		params.require(:flights).permit(:origin_place, :destination_place, :origin_place_hide, :destination_place_hide, :outbounddate, :inbounddate, :number_of_adult)
+		params.require(:flights).permit(:origin_place, :destination_place, :origin_place_hide, :destination_place_hide, :outbounddate, :inbounddate, :number_of_adult, :origin_place_hide_2, :destination_place_hide_2)
 	end
 
 	def set_session_flight
+		if flight_params[:destination_place_hide_2].present? && flight_params[:origin_place_hide_2].present? 
+			params[:flights][:destination_place_hide] = flight_params[:destination_place_hide_2]
+			params[:flights][:origin_place_hide] = flight_params[:origin_place_hide_2]
+		end
 		@flights = Skyscanner::Flight.list_flight("US", "USD", "en-GB", flight_params[:origin_place_hide], flight_params[:destination_place_hide], flight_params[:outbounddate], flight_params[:inbounddate], flight_params[:number_of_adult])
 	end
 end
