@@ -79,6 +79,32 @@ root.showSearchForm = () ->
 
     return
 
+
+root.showSearchFormFlight = () ->
+  if $('.wrapper-result-flight').length == 0
+    $("#slideToggle").collapse('show')
+    $('.js-arrow-desktop').css('visibility', 'visible');
+
+  if $('#slideToggleLink').length > 0
+    $('.js-close-searchbox').on 'click', (e) ->
+      if e.target != this
+        return
+
+      $("#slideToggle").collapse('show')
+      $('.js-arrow-desktop').css('visibility', 'visible');
+
+      return
+
+    $('#slideToggle').on 'show.bs.collapse', ()->
+      $('.tooltip').tooltip('hide')
+      $('.js-arrow-desktop').css('visibility', 'hidden');
+
+    $('#slideToggle').on 'hide.bs.collapse', ()->
+      $('.tooltip').tooltip('hide')
+      $('.js-arrow-desktop').css('visibility', 'visible');
+
+    return
+
 root.showSearchFormMobile = () ->
   if $('#slideToggleLinkMobile').length > 0
 

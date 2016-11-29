@@ -58,7 +58,7 @@ $(document).ready ->
   disableEnterFormSubmit()
   initDatePickerFlightForDesktop(today)
   initSelectize('.origin_place', '.destination_place')
-  showSearchForm()
+  showSearchFormFlight()
 
   $('#flightForm').validate({
     ignore: ':hidden, .tt-hint'
