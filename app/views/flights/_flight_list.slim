@@ -88,8 +88,8 @@
               div[id="collapseFlight#{index + 1}" class="collapse"]
                 .well
                   .text-right
-                    a.close-tabs href="javascript:void(0)"
-                      = image_tag 'icon_delete_fill_input.png'
+                    a[class="close-tabs" href="javascript:void(0)" id="collapseFlight#{index + 1}" onclick="closeClollapse(this.id)"] 
+                        = image_tag 'icon_delete_fill_input.png'
                   table.table
                     thead
                       tr
