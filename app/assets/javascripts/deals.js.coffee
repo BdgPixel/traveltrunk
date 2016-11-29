@@ -165,7 +165,8 @@ root.roomSelected = (selector)->
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
     
     membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
-    allowBooking($(this).data('is-group'), $(this).data('is-owner-group'), this, rooms.hotelId, room)
+    allowBooking($(this).data('is-group'), $(this).data('is-owner-group'),
+      this, rooms.hotelId, rooms.hotelName, room)
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
@@ -233,18 +234,21 @@ membersVoted = (isGroup, thisGroup, hotelName, room) ->
 
     $('.form-vote ').show()
 
-allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, room) ->
-  root.membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
-  root.totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
-  root.totalRoom = parseFloat($(thisGroup).data('total'))
-  root.membersCount = parseInt($(thisGroup).data('members-count'))
+allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, hotelName, room) ->
+  membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
+  totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
+  totalRoom = parseFloat($(thisGroup).data('total'))
+  membersCount = parseInt($(thisGroup).data('members-count'))
+
   if isGroup && isOwnerGroup
     if $(thisGroup).data('allow-booking') != undefined
       $('.form-book').show()
       $('.form-vote').hide()
 
       if totalGroupCredit < totalRoom
-        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
+        $('#linkModalAddToSavingForm').removeClass('btn-green')
+        $('#linkModalAddToSavingForm').addClass('btn-yellow')
+        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
       else
         $("form#formBook input[type='submit']").val('Book Now')
 
@@ -260,7 +264,7 @@ allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, room) ->
       else
         root.thisGroup = thisGroup
 
-        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, $(thisGroup).data('members-count'))
+        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
 
         $('#agree').attr('disabled', 'disabled')
 
@@ -273,17 +277,26 @@ allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, room) ->
         $("form#formBook input[type='submit']").attr('disabled', 'disabled')
   else
     if totalGroupCredit < totalRoom
-      $('.form-book').show()
-      $('.form-vote').hide()
+      $('.form-book').hide()
+      $('.form-vote').show()
 
-      initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, room, membersCount)
+      # $('.form-book').show()
+      # $('.form-vote').hide()
+      $('#linkModalAddToSavingForm').removeClass('btn-green')
+      $('#linkModalAddToSavingForm').addClass('btn-yellow')
+
+      if $(thisGroup).data('member-liked') != undefined
+        if $(thisGroup).data('member-liked')
+          $('.form-book').show()
+          $('.form-vote').hide()
+          initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
     else
       $("form#formBook input[type='submit']").val('Book Now')
 
 
-initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, room, membersCount) ->
+initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount) ->
   linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
-
+  # console.log room
   if totalGroupCredit < totalRoom
     $("form#formBook input[type='submit']").addClass('hide')
     $("form.like input[type='submit']").addClass('hide')
@@ -306,7 +319,8 @@ initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, room, membersCount)
       $('#modalBook').modal 'hide'
 
       # add routes query string
-      $('#formAddToSavings').attr('action', '/deals/update_credit?is_referrer=true')
+      $('#formAddToSavings').attr('action',
+        "/deals/update_credit?is_referrer=true&hotel_name=#{hotelName}&room_description=#{room[0]['rateDescription']}")
 
       creditGroup = ((totalRoom - totalGroupCredit) / parseInt(membersCount)).toFixed(2)
       $('#modalSavingsForm .modal-header small').remove()

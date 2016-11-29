@@ -17,11 +17,15 @@
     roomSelected(currentButton);
   }
 
+  message = ''
+
   <% if @group %>
     $('.text-total-credits').html("Total : &nbsp;<%= number_to_currency(@total_credit) %>");
+    message = "<%= 'Your group\'s total credit in '.html_safe %>"
+  <% else %>
+    $(".text-total-credit-users-<%= current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
+    message = "<%= @is_referrer ? 'Your group\'s total credit in '.html_safe : 'Your total credit is ' %>"
   <% end %>
-
-  $(".text-total-credit-users-<%= current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
 
   $('.notification-bubble').removeClass('hide');
   $('.notification-bubble').text("<%= @notification_count %>");
@@ -32,7 +36,8 @@
   $('.payment-errors').html("");
 
   $('.alert').show();
-  $('#transferSuccessMessage').text("You've successfully transferred <%= number_to_currency(@transaction_amount, precision: 2) %> to your TravelTrunk account. Your total credit is <%= number_to_currency(@total_credit, precision: 2) %>");
+
+  $('#transferSuccessMessage').text("You've successfully transferred <%= number_to_currency(@transaction_amount, precision: 2) %> to your TravelTrunk account. " + message + "<%= number_to_currency(@total_credit, precision: 2) %>");
   
   $('#modalTransferSuccess').modal('show');
 <% end %>

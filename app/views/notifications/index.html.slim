@@ -11,11 +11,11 @@ section.notif
 				h1 Notification
 
 				- if @activities.empty?
-				  .alert.alert-info
-				    strong Notice:&nbsp;
-				    | No Activities
+					.alert.alert-info
+				  	strong Notice:&nbsp;
+				  	| No Activities
 				- else
-				  table.table.table-striped.table-hover
-				    tbody
-				      - @activities.each do |activity|
-				      	== render_activity activity, locals: { current_total_credit: @current_total_credit }
+					table.table.table-striped.table-hover
+						tbody
+							- @activities.each do |activity|
+								== render_activity activity, locals: { current_total_credit: @current_total_credit }
