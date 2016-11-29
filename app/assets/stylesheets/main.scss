@@ -1777,8 +1777,8 @@ span.errors {
       .time-arrive {
 
         span {
-          font-size: 18px;
-          color: #00005e;
+          font-size: 15px;
+          color: #777;
         }
       }
 
@@ -1799,8 +1799,8 @@ span.errors {
 
       .destination-start,
       .destination-arrive {
-        font-size: 18px;
-        color: #000;
+        font-size: 15px;
+        color: #777;
         text-transform: uppercase;
         margin-left: 10px;
       }
@@ -1811,7 +1811,7 @@ span.errors {
       }
 
       .date {
-        font-size: 13px;
+        font-size: 15px;
         color: #777777;
         margin-left: 10px;
       }
@@ -1829,9 +1829,10 @@ span.errors {
   margin-bottom: 15px;
 
   .price {
-    font-size: 40px;
+    font-size: 24px;
+    font-weight: bold;
     line-height: 45px;
-    color: #00005e;
+    color: #777;
   }
 
   .caption-text {
@@ -1847,7 +1848,7 @@ span.errors {
 
     .btn-default {
       padding: 0;
-      background: #ea4f33;
+      background-color: #3DB1AE;
       color: #ffffff;
       border: none;
       @include border-radius(0px);
@@ -1877,7 +1878,7 @@ span.errors {
 
     .btn-caret {
       position: absolute;
-      background: #ea4f33;
+      background-color: #3DB1AE;
       padding: 6px 12px;
       border-left: 1px solid white;
     }
