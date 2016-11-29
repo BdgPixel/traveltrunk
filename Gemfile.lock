@@ -378,6 +378,8 @@ GEM
     net-ssh (3.1.1)
     nokogiri (1.6.7.2)
       mini_portile2 (~> 2.0.0.rc2)
+    non-stupid-digest-assets (1.0.9)
+      sprockets (>= 2.0)
     nprogress-rails (0.1.6.7)
     ntlm-http (0.1.1)
     oauth2 (1.2.0)
@@ -614,6 +616,7 @@ DEPENDENCIES
   moment_timezone-rails
   momentjs-rails
   nokogiri
+  non-stupid-digest-assets
   nprogress-rails
   omniauth
   omniauth-facebook

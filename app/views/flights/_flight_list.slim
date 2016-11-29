@@ -118,10 +118,8 @@ javascript:
     string.splice(0,0,".");
     string  = string.join('');
     code    = $(string).attr('data-code');
-    _url    = "#{asset_path('larger/0B.png')}";
-    var someAssetPath = "#{asset_path('larger/0B.png')}";
-    console.log(someAssetPath);
-    source.src = _url
+    url    = "/assets/carriers/larger/"+code+".png"
+    source.src = url
     source.onerror = "";
     return true;
   }
