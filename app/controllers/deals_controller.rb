@@ -290,7 +290,6 @@ class DealsController < ApplicationController
   end
 
   def update_credit
-    # binding.pry
     begin
       exp_month = params[:update_credit][:exp_month].rjust(2, '0')
       exp_year = params[:update_credit][:exp_year][-2, 2]
@@ -348,6 +347,8 @@ class DealsController < ApplicationController
           @notification_count = current_user.get_notification(false).count
 
           card_last_4 = response_payment.transactionResponse.accountNumber
+
+          @is_referrer = params[:is_referrer]
 
           PaymentProcessorMailer.delay.payment_succeed(current_user.id, transaction.amount, card_last_4)
         end
