@@ -1222,6 +1222,31 @@ a.login.show {
         border-color: #b3b3b3 transparent transparent transparent;
       }
     }
+
+    .nav-tabs {
+      border-bottom: transparent;
+
+      li {
+
+        > a {
+          color: #cac6c6;
+
+          &:hover {
+            background-color: transparent;
+            border-color: transparent;
+
+          }
+        }
+      }
+
+      li.active {
+
+        a {
+          color: #888;
+          border-color: transparent;
+        }
+      }
+    }
   }
 }
 
@@ -1681,8 +1706,9 @@ span.errors {
 }
 
 .no-avatar-pic {
-      width: 230px;
-    height: 230px;
+  width: 230px;
+  height: 230px;
+
   img {
 
   }
@@ -1936,7 +1962,7 @@ span.errors {
        > li {
 
         > a {
-          color: #888;
+          color: #cac6c6;
           @include border-radius(0px);
         }
       }

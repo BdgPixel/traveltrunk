@@ -1,24 +1,32 @@
-= simple_form_for :flights, method: @method_name, url: search_flights_path, remote: true, html: { id: 'flightForm', class: 'search-flights-form' } do |f|
-  .col-xs-2.no-pad-left.no-pad-right
-    .form-group
-      = f.input_field :origin_place, class: "form-control no-border-radius-right origin_place typeahead", id: "origin_place",placeholder: "Where would you airport?", required: true
-      = f.hidden_field :origin_place_hide
-  .col-xs-2.no-pad-left.no-pad-right
-    .form-group
-      = f.input_field :destination_place, class: "form-control no-border-radius destination_place typeahead", placeholder: "Where would destination?", required: true
-      = f.hidden_field :destination_place_hide
-  .col-xs-2.no-pad-left.no-pad-right
-    .form-group
-      = f.input_field :outbounddate, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%Y-%m-%d"), class: "form-control no-border-radius search_flights_arrival_date", placeholder: "Departing when?", required: true
+.tab-content
+  #trip.tab-pane.active role="tabpanel"
+    = simple_form_for :flights, method: @method_name, url: search_flights_path, remote: true, html: { id: 'flightForm', class: 'search-flights-form' } do |f|
+      .col-xs-2.no-pad-left.no-pad-right
+        .form-group
+          = f.input_field :origin_place, class: "form-control no-border-radius-right origin_place typeahead", id: "origin_place",placeholder: "Where would you airport?", required: true
+          = f.hidden_field :origin_place_hide
+      .col-xs-2.no-pad-left.no-pad-right
+        .form-group
+          = f.input_field :destination_place, class: "form-control no-border-radius destination_place typeahead", placeholder: "Where would destination?", required: true
+          = f.hidden_field :destination_place_hide
+      .col-xs-2.no-pad-left.no-pad-right
+        .form-group
+          = f.input_field :outbounddate, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%Y-%m-%d"), class: "form-control no-border-radius search_flights_arrival_date", placeholder: "Departing when?", required: true
 
-  .col-xs-2.no-pad-left.no-pad-right
-    .form-group
-      = f.input_field :inbounddate, value: @destination.nil? ? nil : @destination.departure_date.strftime("%Y-%m-%d"), class: "form-control no-border-radius search_flights_departure_date", placeholder: "Return when?", required: false
+      .col-xs-2.no-pad-left.no-pad-right
+        .form-group
+          = f.input_field :inbounddate, value: @destination.nil? ? nil : @destination.departure_date.strftime("%Y-%m-%d"), class: "form-control no-border-radius search_flights_departure_date", placeholder: "Return when?", required: false
 
-  .col-xs-2.no-pad-left.no-pad-right
-    .form-group
-      = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, class: "form-control no-border-radius"
+      .col-xs-2.no-pad-left.no-pad-right
+        .form-group
+          = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, class: "form-control no-border-radius"
 
-  .col-xs-2.no-pad-left.no-pad-right
-    .form-group
-      = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
+      .col-xs-2.no-pad-left.no-pad-right
+        .form-group
+          = f.submit "Search", class: "btn btn-global save btn-md btn-block no-border-radius-left"
+  #way.tab-pane role="tabpanel"
+    h1
+      | Hello
+  #multi.tab-pane role="tabpanel"
+    h1
+      | Jajang
