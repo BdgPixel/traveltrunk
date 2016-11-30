@@ -27,6 +27,15 @@
     message = "<%= @is_referrer ? 'Your group\'s total credit in '.html_safe : 'Your total credit is ' %>"
   <% end %>
 
+  <% if params[:is_referrer] %>
+    var isBalance = <%= @total_credit >= params[:update_credit][:total].to_f %>;
+    var rateCode = $("[data-rate-code='<%= params[:update_credit][:rate_code] %>']").not('#linkModalAddToSavingForm');
+    rateCode.data('is-balance', isBalance);
+    rateCode.attr('data-is-balance', isBalance);
+    rateCode.data('total-group-credit', "<%= @total_credit %>");
+    rateCode.attr('data-total-group-credit', "<%= @total_credit %>");
+  <% end %>
+
   $('.notification-bubble').removeClass('hide');
   $('.notification-bubble').text("<%= @notification_count %>");
   $('#notificationCountLink').text("Notification (<%= @notification_count %>)");

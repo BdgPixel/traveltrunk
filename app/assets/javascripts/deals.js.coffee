@@ -165,8 +165,19 @@ root.roomSelected = (selector)->
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
     
     membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
-    allowBooking($(this).data('is-group'), $(this).data('is-owner-group'),
-      this, rooms.hotelId, rooms.hotelName, room)
+    if $(this).data('is-balance') == true
+      if $(this).data('is-owner-group')
+        # $('.form-book').show()
+        # $('.form-vote').hide()
+        root.wew = this
+
+        allowBooking($(this).data('is-group'), $(this).data('is-owner-group'), this, rooms.hotelId, rooms.hotelName, room)
+      else
+        $('.form-book').hide()
+        $('.form-vote').show()
+    else
+      allowBooking($(this).data('is-group'), $(this).data('is-owner-group'),
+        this, rooms.hotelId, rooms.hotelName, room)
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
@@ -236,9 +247,9 @@ membersVoted = (isGroup, thisGroup, hotelName, room) ->
 
 allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, hotelName, room) ->
   membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
-  totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
-  totalRoom = parseFloat($(thisGroup).data('total'))
-  membersCount = parseInt($(thisGroup).data('members-count'))
+  root.totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
+  root.totalRoom = parseFloat($(thisGroup).data('total'))
+  root.membersCount = parseInt($(thisGroup).data('members-count'))
 
   if isGroup && isOwnerGroup
     if $(thisGroup).data('allow-booking') != undefined
@@ -321,8 +332,10 @@ initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, hotelName, room, me
       # add routes query string
       $('#formAddToSavings').attr('action',
         "/deals/update_credit?is_referrer=true&hotel_name=#{hotelName}&room_description=#{room[0]['rateDescription']}")
+      $('#update_credit_rate_code').val(room[0]['rateCode'])
+      $('#update_credit_total').val(totalRoom)
 
-      creditGroup = ((totalRoom - totalGroupCredit) / parseInt(membersCount)).toFixed(2)
+      creditGroup = ((totalRoom - totalGroupCredit) / membersCount).toFixed(2)
       $('#modalSavingsForm .modal-header small').remove()
       $('#groupCreditText').text("Your minimum contribution for this hotel is $#{creditGroup}")
       $('#formAddToSavings').attr('data-is-referrer', true)
