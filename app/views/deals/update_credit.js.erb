@@ -8,7 +8,7 @@
   for(var i=0; i < savingButtons.length; i++){
     currentButton = savingButtons[i];
 
-    $(currentButton).text('Book Now')
+    $(currentButton).text('View Details')
       .unbind('click')
       .removeClass('append-credit')
       .addClass('btn btn-saving btn-green btn-full-size room-selected')
@@ -25,6 +25,15 @@
   <% else %>
     $(".text-total-credit-users-<%= current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
     message = "<%= @is_referrer ? 'Your group\'s total credit in '.html_safe : 'Your total credit is ' %>"
+  <% end %>
+
+  <% if params[:is_referrer] %>
+    var isBalance = <%= @total_credit >= params[:update_credit][:total].to_f %>;
+    var rateCode = $("[data-rate-code='<%= params[:update_credit][:rate_code] %>']").not('#linkModalAddToSavingForm');
+    rateCode.data('is-balance', isBalance);
+    rateCode.attr('data-is-balance', isBalance);
+    rateCode.data('total-group-credit', "<%= @total_credit %>");
+    rateCode.attr('data-total-group-credit', "<%= @total_credit %>");
   <% end %>
 
   $('.notification-bubble').removeClass('hide');

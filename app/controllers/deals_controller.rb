@@ -290,7 +290,6 @@ class DealsController < ApplicationController
   end
 
   def update_credit
-    # binding.pry
     begin
       exp_month = params[:update_credit][:exp_month].rjust(2, '0')
       exp_year = params[:update_credit][:exp_year][-2, 2]
