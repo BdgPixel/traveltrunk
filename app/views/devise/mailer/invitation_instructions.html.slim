@@ -1,20 +1,15 @@
 p#invitationInstruction
-  | Hi,
+  | Hello,
 
   br
   br
 
-  | #{@current_user.profile.try(:first_name).try(:titleize) || 'No Name'} wants to go on a vacation and has invited you to join #{@current_user.profile.try(:pronoun, 'object') || 'him / her'}.
+  | #{@current_user.profile.try(:first_name).try(:titleize) || 'No Name'} wants to go on a vacation and has invited you to join. To plan your next gateway with #{@current_user.profile.try(:first_name).try(:titleize) || 'No Name'}, sign up with #{ link_to 'TravelTrunk.us', accept_invitation_url(@resource, :invitation_token => @token) } today and get started by creating a Trunk Account. It's safe, fast and easy. Just click the link below and you'll be all set to go.
 
   br
   br
 
-  | #{@current_user.profile.try(:pronoun, 'subject') || "He's / She's"} using #{ link_to 'TravelTrunk.us', accept_invitation_url(@resource, :invitation_token => @token) } to plan #{@current_user.profile.try(:pronoun, 'possesive') || 'his / her'} next getaway and wants you in the loop.
-
-  br
-  br
-
-  | Sign up today. It’s safe, fast and easy. Just click the link below and you’ll be all set to go.
+  | If you have any trouble we'll also be here to help you through the process. Just send us an email.
 
   br
   br
