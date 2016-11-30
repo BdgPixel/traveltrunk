@@ -5,9 +5,9 @@ class FlightsController < ApplicationController
 	end
 
 	def depart_typeahead
-		query = params[:query].humanize
+		query = params[:query].downcase
 		image = ActionController::Base.helpers.asset_path('departures.png')
-		places = Place.where("place_name LIKE ? OR place_id LIKE ? OR country_name LIKE ?", "%#{query}%", "%#{query}%", "%#{query}%").map do |pl|
+		places = Place.where("lower(place_name) LIKE ? OR lower(place_id) LIKE ? OR lower(country_name) LIKE ?", "#{query}%", "#{query}%", "#{query}%").map do |pl|
 						{ 
 							id: pl.place_id,
 							name: pl.place_name,
@@ -19,9 +19,9 @@ class FlightsController < ApplicationController
 	end
 	
 	def arrival_typeahead
-		query = params[:query].humanize
+		query = params[:query].downcase
 		image = ActionController::Base.helpers.asset_path('arrival.png')
-		places = Place.where("place_name LIKE ? OR place_id LIKE ? OR country_name LIKE ?", "%#{query}%", "%#{query}%", "%#{query}%").map do |pl|
+		places = Place.where("lower(place_name) LIKE ? OR lower(place_id) LIKE ? OR lower(country_name) LIKE ?", "#{query}%", "#{query}%", "#{query}%").map do |pl|
 						{ 
 							id: pl.place_id,
 							name: pl.place_name,
