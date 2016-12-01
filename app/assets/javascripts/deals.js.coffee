@@ -167,10 +167,6 @@ root.roomSelected = (selector)->
     membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
     if $(this).data('is-balance') == true
       if $(this).data('is-owner-group')
-        # $('.form-book').show()
-        # $('.form-vote').hide()
-        root.wew = this
-
         allowBooking($(this).data('is-group'), $(this).data('is-owner-group'), this, rooms.hotelId, rooms.hotelName, room)
       else
         $('.form-book').hide()
