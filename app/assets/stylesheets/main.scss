@@ -826,6 +826,7 @@ h3.hotel-name {
         letter-spacing: 0.5px
       }
     }
+
     .date {
       width: 50%;
       display: table-cell;
@@ -1219,6 +1220,31 @@ a.login.show {
       &:after {
         border-width: 8px 7px 0 7px;
         border-color: #b3b3b3 transparent transparent transparent;
+      }
+    }
+
+    .nav-tabs {
+      border-bottom: transparent;
+
+      li {
+
+        > a {
+          color: #cac6c6;
+
+          &:hover {
+            background-color: transparent;
+            border-color: transparent;
+
+          }
+        }
+      }
+
+      li.active {
+
+        a {
+          color: #888;
+          border-color: transparent;
+        }
       }
     }
   }
@@ -1680,8 +1706,9 @@ span.errors {
 }
 
 .no-avatar-pic {
-      width: 230px;
-    height: 230px;
+  width: 230px;
+  height: 230px;
+
   img {
 
   }
@@ -1750,8 +1777,8 @@ span.errors {
       .time-arrive {
 
         span {
-          font-size: 18px;
-          color: #00005e;
+          font-size: 15px;
+          color: #777;
         }
       }
 
@@ -1772,8 +1799,8 @@ span.errors {
 
       .destination-start,
       .destination-arrive {
-        font-size: 18px;
-        color: #000;
+        font-size: 15px;
+        color: #777;
         text-transform: uppercase;
         margin-left: 10px;
       }
@@ -1784,12 +1811,16 @@ span.errors {
       }
 
       .date {
-        font-size: 13px;
+        font-size: 15px;
         color: #777777;
         margin-left: 10px;
       }
-    }
 
+      .date,
+      .hour {
+        font-weight: bolder;
+      }
+    }
   }
 }
 
@@ -1799,8 +1830,9 @@ span.errors {
 
   .price {
     font-size: 24px;
-    line-height: 24px;
-    color: #00005e;
+    font-weight: bold;
+    line-height: 45px;
+    color: #777;
   }
 
   .caption-text {
@@ -1816,7 +1848,7 @@ span.errors {
 
     .btn-default {
       padding: 0;
-      background: #ea4f33;
+      background-color: #3DB1AE;
       color: #ffffff;
       border: none;
       @include border-radius(0px);
@@ -1846,7 +1878,7 @@ span.errors {
 
     .btn-caret {
       position: absolute;
-      background: #ea4f33;
+      background-color: #3DB1AE;
       padding: 6px 12px;
       border-left: 1px solid white;
     }
@@ -1858,6 +1890,13 @@ span.errors {
   .well {
     background-color: #ffffff;
     border-color: transparent;
+
+    .price {
+      font-size: 20px;
+      color: #00005e;
+      display: block;
+      margin-bottom: 20px;
+    }
   }
 
   .table {
@@ -1886,6 +1925,10 @@ span.errors {
       > tr > td {
         vertical-align: middle;
       }
+    }
+
+    .btn-default {
+      @include border-radius(0px);
     }
   }
 
@@ -1920,7 +1963,7 @@ span.errors {
        > li {
 
         > a {
-          color: #888;
+          color: #cac6c6;
           @include border-radius(0px);
         }
       }
@@ -1936,6 +1979,13 @@ span.errors {
 
   .collapse.in {
     clear: both;
+  }
+
+  a.close-tabs {
+
+    img {
+      width: 10px;
+    }
   }
 }
 
@@ -1960,4 +2010,9 @@ ul.galleries {
       &:nth-last-child(5) { transform: translateX(20px) translateY(-20px); }
     }
   }
+}
+
+.token-item {
+  font-size: 14px;
+  font-family: 'Source Sans Pro', sans-serif;
 }

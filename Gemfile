@@ -84,6 +84,7 @@ gem 'nokogiri'
 # autocompleted and handle bar
 gem 'twitter-typeahead-rails'
 gem 'handlebars_assets'
+gem "non-stupid-digest-assets"
 
 gem 'web-console', '~> 3.1', '>= 3.1.1', group: :development
 

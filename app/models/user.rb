@@ -112,16 +112,21 @@ class User < ActiveRecord::Base
   end
 
   def self.get_autocomplete_data(email, current_user)
-    User.joins("FULL OUTER JOIN profiles ON profiles.user_id = users.id")
+    users = User.joins("FULL OUTER JOIN profiles ON profiles.user_id = users.id")
       .joins("FULL OUTER JOIN users_groups ON users_groups.user_id = users.id")
       .joins("FULL OUTER JOIN groups ON groups.user_id = users.id")
-      .select("users.id, users.email, users.admin, profiles.first_name, profiles.image")
+      .select("DISTINCT(users.id), users.email, profiles.first_name, profiles.image,
+        COALESCE(groups.id, users_groups.group_id) AS user_group_id")
       .where("(LOWER(profiles.first_name) LIKE LOWER(:keyword) OR users.email LIKE :keyword)
         AND users.id NOT IN (:ids)", { keyword: "%#{email}%", ids: [current_user]} )
-      .where("users.admin = ?", false)
-      .where("users_groups.user_id IS NULL OR users.id IS NULL")
-      .where("groups.user_id IS NULL OR users.id IS NULL")
-      .map {|u| { id: u.id, name: "#{u.profile.try(:first_name) || 'No Name'}", email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png' } }
+      .where("users.admin = ?", false).order("user_group_id DESC, profiles.first_name ASC").limit(10)
+      .map do |u|
+        {
+          id: u.id, name: "#{u.first_name || 'No Name'}", 
+          email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png',
+          group_id: u.user_group_id
+        }
+      end
   end
 
   def self.get_user_collection(email, current_user)

@@ -4,7 +4,7 @@ p#subscriptionCharged
   br
   br
 
-  | We’ve successfully charged your credit card on file for #{currency_in_usd(@amount)}, as per your reoccurring #{@user.bank_account.try(:transfer_frequency) || 'Weekly'} request. Bringing your total savings to #{currency_in_usd(@user.total_credit)}
+  | We’ve successfully charged your credit card on file for #{currency_in_usd(@amount)}, as per your recurring #{@user.bank_account.try(:transfer_frequency) || 'Weekly'} request. Bringing your total savings to #{currency_in_usd(@user.total_credit)}
 
   br
   br

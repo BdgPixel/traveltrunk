@@ -10,10 +10,20 @@
             .text-header-slide.js-close-searchbox
               h1.text-center
                 span data-toggle="tooltip" data-placement="bottom" data-title="Click the arrow to search for other destinations and or change dates"
-                  = link_to "The origin city or airport?", "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
+                  - if session[:title].present?
+                    = link_to session[:title], "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
+                  - else
+                    = link_to "Flying Somewhere", "#slideToggle", id:'slideToggleLink', class:"arrow-downs grey-link-arrows white-tooltip", data: { toggle: 'collapse' }
         / #slideToggle
         #slideToggle.collapse
           .slidetoggle-flight
+            .col-md-10.col-md-offset-1.no-pad-left.no-pad-right
+              ul.nav.nav-tabs role="tablist"
+                li.active role="presentation"
+                  a aria-controls="trip" data-toggle="tab" href="#trip" role="tab"  Round Trip
+                li role="presentation"
+                  a aria-controls="way" data-toggle="tab" href="#way" role="tab"  One Way
+
             .row.js-close-searchbox
               .col-md-10.col-md-offset-1.no-pad-left.no-pad-right
                 .panel.panel-default.box-shadow-none

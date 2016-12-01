@@ -1,7 +1,9 @@
-<%- if @destination %>
-  $("#slideToggleLink").text("<%= @destination.title_destination.html_safe %>");
+<%- if session[:title].present? %>
+  $("#slideToggleLink").text("<%= session[:title] %>");
+<%- elsif session[:destination_flight] %>
+  $("#slideToggleLink").text("<%= session[:destination_flight][:destination_string] %>");
 <%- else %>
-  $("#slideToggleLink").text("Where would you like to be?");
+  $("#slideToggleLink").text("<%= @title%>");
 <% end %>
 
 $("#dealsFlightsList").html("<%= j render 'flight_list' %>");

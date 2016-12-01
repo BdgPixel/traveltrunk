@@ -87,43 +87,22 @@
             .wrapper-collapse-flight
               div[id="collapseFlight#{index + 1}" class="collapse"]
                 .well
-                  .wrapper-tabs-flight
-                    ul.nav.nav-tabs role="tablist"
-                      a.close-tabs href="#"
-                        = image_tag 'icon_delete_fill_input.png'
-                      li.active role="presentation"
-                        a aria-controls="details" data-toggle="tab" href="#details#{index + 1}" role="tab" Details
-                      li role="presentation"
-                        a aria-controls="fares" data-toggle="tab" href="#fares#{index + 1}" role="tab" Fares
+                  .text-right
+                    a[class="close-tabs" href="javascript:void(0)" id="collapseFlight#{index + 1}" onclick="closeClollapse(this.id)"]
+                      = image_tag 'icon_delete_fill_input.png'
+                    .row
+                      .text-center
+                        - itinerarie[:PricingOptions].each do |price|
+                          - price[:Agents].each do |agent|
+                            .col-md-3.box-agent
+                              .image
+                                = image_tag agent[:ImageUrl]
+                              span.price
+                                | #{currency(price[:Price])}
+                              div
+                                | #{link_to "Book", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
 
-                    .tab-content
-                      div[id="details#{index + 1}" class="tab-pane active" role="tabpanel"]
-                        b | #{@flights.first[:query][:CabinClass]}
-                        .depart
-                          p Adults: #{@flights.first[:query][:Adults]}
 
-                      div[id="fares#{index + 1}" class="tab-pane" role="tabpanel"]    
-                        table.table
-                          thead
-                            tr
-                              th Booking site
-                              th Agent Name
-                              th Payment fee
-                              th Total
-                              th
-                          tbody
-                            - itinerarie[:PricingOptions].each do |price|
-                              - price[:Agents].each do |agent|
-                                tr
-                                  th
-                                    span
-                                      | #{image_tag agent[:ImageUrl]}
-                                  td
-                                    | #{agent[:Name]}
-                                  td
-                                    | #{currency(price[:Price])}
-                                  td
-                                    | #{link_to "Go", price[:DeeplinkUrl], class: "btn btn-default btn-block", target: "_new"}
 - else
   #error_response.alert.alert-info style="margin-top: 20px"
     button type="button" class="close" data-dismiss="alert" aria-label="Close"
@@ -139,10 +118,8 @@ javascript:
     string.splice(0,0,".");
     string  = string.join('');
     code    = $(string).attr('data-code');
-    _url    = "#{asset_path('larger/0B.png')}";
-    var someAssetPath = "#{asset_path('larger/0B.png')}";
-    console.log(someAssetPath);
-    source.src = _url
+    url    = "https://www.kayak.co.id/res/images/booking/larger/DL.png"
+    source.src = url
     source.onerror = "";
     return true;
   }
