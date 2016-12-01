@@ -50,36 +50,52 @@ showInviteNotification = ->
 
 inviteFriends = (selector) ->
   $(selector).tokenInput( '/group/users_collection.json', {
-    allowFreeTagging: true
-    preventDuplicates: true
-    zindex: 9999
-    onAdd: (item)->
-      if item.email
-        item
-      else
-        re = /\S+@\S+\.\S+/
-
-        if re.test(item.name)
-          item
+      allowFreeTagging: true
+      preventDuplicates: true
+      zindex: 9999
+      onAdd: (item)->
+        if item.email && !item.group_id
+          return item
         else
-          $(selector).tokenInput("remove", {name: item.name})
-          console.log 'You only can enter email address for unregistered users'
+          re = /\S+@\S+\.\S+/
 
-      showInviteNotification()
-    onDelete: (item) ->
-      $(selector).tokenInput("remove", { name: item.name })
-      showInviteNotification()
+          if re.test(item.name)
+            return item
+          else
+            $(selector).tokenInput("remove", { id: item.id })
 
-    prePopulate: $('#invite_user_id').data('load')
-    resultsFormatter: (item) ->
-      "<li><img src='#{item.image_url}' title='#{item.name}' height='50px' width='50px' /><div style='display: inline-block; padding-left: 10px;'><div class='full_name'>#{item.name}</div><div class='email'>#{item.email}</div></div></li>"
-    tokenFormatter: (item)->
-      if isNaN(item.id)
-        tags = "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
-        tags
-      else
-        "<li><p><img src='#{item.image_url}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}&nbsp;<b style='color: red'>#{item.email}</b></p></li>"
-  })
+        showInviteNotification()
+      onDelete: (item) ->
+        $(selector).tokenInput("remove", { id: item.id })
+        showInviteNotification()
+
+      prePopulate: $('#invite_user_id').data('load')
+      resultsFormatter: (item) ->
+        status = if item.group_id then '<i>already in group</i>' else ''
+
+        "<li class='token-item col-md-12 col-sm-12 col-xs-12'>
+          <div class='col-md-1 col-sm-1 col-xs-2'>
+            <div class='row'>
+              <img src='#{item.image_url}' title='#{item.name}' height='50px' width='50px' />
+            </div>
+          </div>
+          <div class='col-md-7 col-sm-7 col-xs-10' style='display: inline-block; padding-left: 10px;'>
+            <div class='col-md-12 col-sm-12 col-xs-12 full_name'>#{item.name}</div>
+            <div class='col-md-12 col-sm-12 col-xs-12 email'>#{item.email}</div>
+            <div class='visible-xs col-md-12 col-sm-12 col-xs-12'>#{status}</div>
+          </div>
+          <div class='col-md-4 col-sm-4 hidden-xs'>
+            <div class='pull-right'>#{status}</div>
+          </div>
+        </li>"
+
+      tokenFormatter: (item)->
+        if isNaN(item.id)
+          tags = "<li><p><img src='#{default_image_user_path}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}</p></li>"
+          tags
+        else
+          "<li><p><img src='#{item.image_url}' title='#{item.name}' height='25px' width='25px' />&nbsp;#{item.name}&nbsp;<b style='color: red'>#{item.email}</b></p></li>"
+    })
 
 initSwipeGroupSaving = ->
   $('.swipe-group-saving').slick

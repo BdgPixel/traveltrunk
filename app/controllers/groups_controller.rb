@@ -19,8 +19,6 @@ class GroupsController < ApplicationController
 
     if invitation_params.empty?
       redirect_to savings_path, alert: 'You should provide user email or choose from existing users from suggestion to invite.'
-    elsif invitation_params.size > 4
-      redirect_to savings_path, alert: 'You can only invite max 4 users to your group savings.'
     else
       # check if array element is string id or string email
       invitation_params = invitation_params.group_by { |param| !/\A\d+\z/.match(param) ? 'emails' : 'ids' }
