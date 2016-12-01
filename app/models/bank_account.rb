@@ -98,7 +98,6 @@ class BankAccount < ActiveRecord::Base
         else
           Subscription.create(subscription_params)
         end
-        PaymentProcessorMailer.subscription_created(self.user_id).deliver_now
       end
     rescue => e
       logger.error e
@@ -149,7 +148,6 @@ class BankAccount < ActiveRecord::Base
 
           subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
           user_subscription.update(subscription_hash)
-          PaymentProcessorMailer.subscription_updated(self.user_id).deliver_now
           
           if customer_payment_profile
             AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(user_subscription.subscription_id, customer_profile.customerProfileId)
