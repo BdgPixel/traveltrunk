@@ -4,6 +4,7 @@ class UsersGroup < ActiveRecord::Base
   belongs_to :member, class_name: "User", foreign_key: :user_id
   belongs_to :joined_group, class_name: "Group", foreign_key: :group_id
 
+  before_destroy :destroy_likes
   before_create :set_invitation_token
   after_create :send_invitation_notification
 
@@ -29,5 +30,9 @@ class UsersGroup < ActiveRecord::Base
       current_user = self.joined_group.user
       self.create_activity key: "group.invitation_sent", owner: current_user,
         recipient: User.find(self.user_id), parameters: { token: self.invitation_token, group_id: current_user.id }
+    end
+
+    def destroy_likes
+      self.member.likes.destroy_all
     end
 end
