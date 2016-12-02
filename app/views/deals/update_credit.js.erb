@@ -28,12 +28,12 @@
   <% end %>
 
   <% if params[:is_referrer] %>
-    var isBalance = <%= @total_credit >= params[:update_credit][:total].to_f %>;
+    var isCredit = <%= @total_credit >= params[:update_credit][:total].to_f %>;
     var rateCode = $("[data-rate-code='<%= params[:update_credit][:rate_code] %>']").not('#linkModalAddToSavingForm');
-    rateCode.data('is-balance', isBalance);
-    rateCode.attr('data-is-balance', isBalance);
-    rateCode.data('total-group-credit', "<%= @total_credit %>");
-    rateCode.attr('data-total-group-credit', "<%= @total_credit %>");
+    rateCode.data('is-credit', isCredit);
+    rateCode.attr('data-is-credit', isCredit);
+    rateCode.data('total-credit', "<%= @total_credit %>");
+    rateCode.attr('data-total-credit', "<%= @total_credit %>");
   <% end %>
 
   $('.notification-bubble').removeClass('hide');

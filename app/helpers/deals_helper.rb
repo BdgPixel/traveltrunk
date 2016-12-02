@@ -172,6 +172,56 @@ module DealsHelper
   end
 
   def button_actions_in_deals_detail(room)
+    like = ''
+    rate_code, room_type_code = [room["rateCode"], room["RoomType"]["@roomCode"]]
+    total_room = room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
+    is_credit = @total_credit >= (total_room.to_f * 100).to_i
+
+    if @group
+      if @group.user_id.eql? current_user.id 
+        user_type = 'owner'
+      else
+        user_type = 'member'
+
+        if likes = @likes_grouped[room['rateCode'].to_s]
+          current_member_liked = likes.detect { |like| like.user_id.eql? current_user.id } ? true : false
+        else
+          current_member_liked = false
+        end
+      end
+      
+      likes_count = @likes_grouped[room['rateCode'].to_s].try(:count) || 0
+      allow_booking = likes_count.eql?(@group.members.count)
+      members_count = (@group.members.count + 1)
+
+      link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room, total_credit: (@total_credit / 100.0), allow_booking: allow_booking, user_type: user_type, members_count: members_count, is_credit: is_credit, current_member_liked: current_member_liked }
+    else
+      if user_signed_in?
+        if @total_credit < (total_room.to_f * 100).to_i
+          path = 
+            if current_user.profile.home_airport.nil?
+              edit_profile_path(no_profile: true)
+            else
+              'javascript:void(0)'
+            end
+
+          link = link_to "Add to savings", path, class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room,  }
+        else
+          link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room }
+        end
+      else
+        link += link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room }
+        link += '<br><br>'
+        link += '<center>'
+        link += link_to "Start saving for a vacation", new_user_registration_path
+        link += '</center>'
+      end
+    end
+
+    link.html_safe
+  end
+
+  def button_actions_in_deals_detail_ori(room)
     link = ''
     
     if @group
