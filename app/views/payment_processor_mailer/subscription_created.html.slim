@@ -1,30 +1,18 @@
 p#subscriptionCreated
   | Hi #{@profile.first_name.try(:titleize)}!
-
   br
   br
-
-  | Tanks for choosing TravelTrunk! Your vacation savings plan has officially begun.
-
+  | Thanks for choosing TravelTrunk! Your vacation savings plan has officially begun.
   br
   br
-
   | You've started saving #{number_to_currency(@bank_account.try(:amount_transfer).to_f)} every #{payment_frequency_label(@bank_account.try(:transfer_frequency))}. Nice! From here on, TravelTrunk will charge your credit card on file #{currency_in_usd(@subscription.amount)}, adding this new amount to your travel savings every #{payment_frequency_label(@bank_account.try(:transfer_frequency))}.
-
   br
   br
-
   | Your adventure just got closer…
- 
   br
   br
-
   | Congrats!
-
   br
-  
   = render 'partials/footer_mailer'
-  
   br
-
   | Your TravelTrunk Agent
