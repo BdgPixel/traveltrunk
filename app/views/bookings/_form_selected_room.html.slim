@@ -52,11 +52,11 @@
             br
 
             - if user_signed_in?
-              = f.button :submit, "Yes", class: 'btn btn-saving btn-green'
+              = f.button :submit, "Book Now", class: 'btn btn-saving btn-green'
             - else
               = link_to 'Yes', 'javascript:void(0)', id: 'linkBtnYes', class: 'btn btn-saving btn-green'
             
-            = link_to "Add to savings", "javascript:void(0)", id: 'linkModalAddToSavingForm', class: 'btn btn-saving btn-green hide'
+            = link_to "Add to savings", "javascript:void(0)", id: 'linkModalAddToSavingForm', class: 'btn btn-saving btn-yellow hide'
             
             = link_to 'I want to keep looking', 'javascript:void(0)', id: 'keepLooking', data: { dismiss: 'modal' }
 
