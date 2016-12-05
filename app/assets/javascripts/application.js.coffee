@@ -123,8 +123,10 @@ root.showSearchFormMobile = () ->
     $('.slide').on 'click', (e) ->
       if e.target != this
         return
+
       $("#slideToggleMobile").collapse('hide')
       $('.js-arrow-mobile').css('visibility', 'visible');
+
       return
 
     $('.text-header-slide').on 'click', (e) ->
