@@ -164,20 +164,14 @@ root.roomSelected = (selector)->
     $('#confirmation_book_smoking_preferences').val(room[0]['smokingPreferences'])
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
     
-    membersVoted($(this).data('is-group'), this, rooms.hotelName, room)
-    if $(this).data('is-balance') == true
-      if $(this).data('is-owner-group')
-        # $('.form-book').show()
-        # $('.form-vote').hide()
-        root.wew = this
+    # Group section
+    group = $(this)
 
-        allowBooking($(this).data('is-group'), $(this).data('is-owner-group'), this, rooms.hotelId, rooms.hotelName, room)
+    if group.data('user-type') != undefined
+      if group.data('user-type') == 'owner'
+        ownerGroup(group, rooms.hotelId, rooms.hotelName, room)
       else
-        $('.form-book').hide()
-        $('.form-vote').show()
-    else
-      allowBooking($(this).data('is-group'), $(this).data('is-owner-group'),
-        this, rooms.hotelId, rooms.hotelName, room)
+        memberGroup(group, rooms.hotelId, rooms.hotelName, room)
 
     existingRoomImage = $(this).closest('div.wrapper-body-room').find('.room-image')
 
@@ -214,139 +208,113 @@ root.roomSelected = (selector)->
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
 
-membersVoted = (isGroup, thisGroup, hotelName, room) ->
-  if isGroup
-    $('.form-book').hide()
-    $('#agree:checked').removeAttr('checked')
-    $('#linkVote').attr('disabled', true)
-    $('#linkVote').attr('href', 'javascript:void(0)')
+ownerGroup = (group, hotelId, hotelName, room) ->
+  membersVotedStr = group.siblings('.members-voted').text().trim()
 
-    $('#agreeTermCondition').addClass('hide')
-    $('#linkVote').removeAttr('disabled')
+  if membersVotedStr.length > 0
+    $('#membersVotedList p').text(membersVotedStr + ' (all members need to agree on this hotel first, before you can book)')
+  else
+    $('#membersVotedList p').text('All members need to agree on this hotel first, before you can book')
 
-    if $(thisGroup).data('member-liked')
+  $("form#formBook input[type='submit']").attr('disabled', 'disabled')
+  linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
+
+  if group.data('allow-booking')
+    if group.data('is-credit')
+      $('.form-book').show()
+      $("form#formBook input[type='submit']").removeClass('hide')
+      $("form#formBook input[type='submit']").removeAttr('disabled')
+      $("#jsBedTypeSection").removeClass('hide')
+      $("#jsTermsConditionsSection").removeClass('hide')
+      linkModalAddToSavingForm.addClass('hide')
+    else
+      $("form#formBook input[type='submit']").addClass('hide')
+      $("form#formBook input[type='submit']").attr('disabled', 'disabled')
+      $("#jsBedTypeSection").addClass('hide')
+      $("#jsTermsConditionsSection").addClass('hide')
+      linkModalAddToSavingForm.removeClass('hide')
+      setAddToSavingForm(linkModalAddToSavingForm, hotelId, hotelName, room, parseFloat(group.data('total-credit')),
+        parseFloat(group.data('total')), parseInt(group.data('members-count')))
+  else
+    $("form#formBook input[type='submit']").attr('disabled', 'disabled')
+
+    if group.data('is-credit') == false
+      $("form#formBook input[type='submit']").addClass('hide')
+      $("#jsBedTypeSection").addClass('hide')
+      $("#jsTermsConditionsSection").addClass('hide')
+      linkModalAddToSavingForm.removeClass('hide')
+    else
+      $("form#formBook input[type='submit']").removeClass('hide')
+      $("#jsBedTypeSection").removeClass('hide')
+      $("#jsTermsConditionsSection").removeClass('hide')
+      linkModalAddToSavingForm.addClass('hide')
+      setAddToSavingForm(linkModalAddToSavingForm, hotelId, hotelName, room, parseFloat(group.data('total-credit')),
+        parseFloat(group.data('total')), parseInt(group.data('members-count')))
+
+memberGroup = (group, hotelId, hotelName, room) ->
+  $('.form-book').hide()
+  $('#agree:checked').removeAttr('checked')
+  $('#linkVote').attr('disabled', true)
+  $('#linkVote').attr('href', 'javascript:void(0)')
+
+  $('#agreeTermCondition').addClass('hide')
+  $('#linkVote').removeAttr('disabled')
+
+  if group.data('current-member-liked')
+    linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
+    
+    if group.data('is-credit') == false
+      $('.form-book').show()
+      $('.form-vote').hide()
+
+      $("form#formBook input[type='submit']").addClass('hide')
+      $("#jsBedTypeSection").addClass('hide')
+      $("#jsTermsConditionsSection").addClass('hide')
+      linkModalAddToSavingForm.removeClass('hide')
+
+      setAddToSavingForm(linkModalAddToSavingForm, hotelId, hotelName, room, parseFloat(group.data('total-credit')),
+        parseFloat(group.data('total')), parseInt(group.data('members-count')))
+    else
       $('#voteConfirmationText').addClass('hide')
       $('#linkVote').addClass('hide')
-    else
-      $('#voteConfirmationText').removeClass('hide')
-      $('#linkVote').removeClass('hide')
+      $('.form-vote ').show()
+
+  else
+    $('#voteConfirmationText').removeClass('hide')
+    $('#linkVote').removeClass('hide')
 
     $('.vote-hotel-name').val(hotelName)
     $('.vote-share-image').val($('#shareHotelInfo').data('share-image'))
     $('.vote-rate-code').val(room[0]['rateCode'])
     $('.vote-room-type-code').val(room[0]['RoomType']['@roomCode'])
 
-    if $(thisGroup).data('cancel-vote')
-      $('#voteConfirmationText').text('Would you like to cancel vote to this hotel? Let your friends know you like this option')
-      $('form.like').data('remote', false)
-    else
-      $('#voteConfirmationText').text('Would you like to agree to this hotel? Let your friends know you like this option')
-      $('form.like').data('remote', true)
-
     $('.form-vote ').show()
 
-allowBooking = (isGroup, isOwnerGroup, thisGroup, hotelId, hotelName, room) ->
-  membersVotedStr = $(thisGroup).siblings('.members-voted').text().trim()
-  root.totalGroupCredit = parseFloat($(thisGroup).data('total-group-credit'))
-  root.totalRoom = parseFloat($(thisGroup).data('total'))
-  root.membersCount = parseInt($(thisGroup).data('members-count'))
+setAddToSavingForm = (link, hotelId, hotelName, room, totalCredit, totalRoom, membersCount) ->
+  link.attr
+    # 'data-toggle': "modal"
+    # 'data-target': "#modalSavingsForm"
+    'data-id': hotelId
+    'data-rate-code': room[0]['rateCode']
+    'data-room-type_code': room[0]["RoomType"]["@roomCode"]
+    'data-total': room[0]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
 
-  if isGroup && isOwnerGroup
-    if $(thisGroup).data('allow-booking') != undefined
-      $('.form-book').show()
-      $('.form-vote').hide()
+  link.on 'click', ->
+    $('#modalSavingsForm').modal('show')
 
-      if totalGroupCredit < totalRoom
-        $('#linkModalAddToSavingForm').removeClass('btn-green')
-        $('#linkModalAddToSavingForm').addClass('btn-yellow')
-        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
-      else
-        $("form#formBook input[type='submit']").val('Book Now')
+  $('#modalSavingsForm').on 'show.bs.modal', ->
+    $('#modalBook').modal 'hide'
 
-      if membersVotedStr.length > 0
-        $('#modalMembersVoted').removeClass('hide')
-      else
-        $('#modalMembersVoted').addClass('hide')
+    # add routes query string
+    $('#formAddToSavings').attr('action',
+      "/deals/update_credit?is_referrer=true&hotel_name=#{hotelName}&room_description=#{room[0]['rateDescription']}")
+    $('#update_credit_rate_code').val(room[0]['rateCode'])
+    $('#update_credit_total').val(totalRoom)
 
-      if $(thisGroup).data('allow-booking') == true
-        $('#modalMembersVoted p').text(membersVotedStr)
-        $("form#formBook input[type='submit']").removeAttr('disabled')
-        $('#agree').removeAttr('disabled')
-      else
-        root.thisGroup = thisGroup
-
-        initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
-
-        $('#agree').attr('disabled', 'disabled')
-
-        if membersVotedStr.length > 0
-          $('#modalMembersVoted p').text(membersVotedStr + ' (all members need to agree on this hotel first, before you can book)')
-        else
-          $('#modalMembersVoted').removeClass('hide')
-          $('#modalMembersVoted p').text('All members need to agree on this hotel first, before you can book')
-          
-        $("form#formBook input[type='submit']").attr('disabled', 'disabled')
-  else
-    if totalGroupCredit < totalRoom
-      $('.form-book').hide()
-      $('.form-vote').show()
-
-      # $('.form-book').show()
-      # $('.form-vote').hide()
-      $('#linkModalAddToSavingForm').removeClass('btn-green')
-      $('#linkModalAddToSavingForm').addClass('btn-yellow')
-
-      if $(thisGroup).data('member-liked') != undefined
-        if $(thisGroup).data('member-liked')
-          $('.form-book').show()
-          $('.form-vote').hide()
-          initAddToSavingForm(totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount)
-    else
-      $("form#formBook input[type='submit']").val('Book Now')
-
-
-initAddToSavingForm = (totalGroupCredit, totalRoom, hotelId, hotelName, room, membersCount) ->
-  linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
-  # console.log room
-  if totalGroupCredit < totalRoom
-    $("form#formBook input[type='submit']").addClass('hide')
-    $("form.like input[type='submit']").addClass('hide')
-    $("#jsBedTypeSection").addClass('hide')
-    $("#jsTermsConditionsSection").addClass('hide')
-    linkModalAddToSavingForm.removeClass('hide')
-
-    linkModalAddToSavingForm.attr
-      # 'data-toggle': "modal"
-      # 'data-target': "#modalSavingsForm"
-      'data-id': hotelId
-      'data-rate-code': room[0]['rateCode']
-      'data-room-type_code': room[0]["RoomType"]["@roomCode"]
-      'data-total': room[0]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
-
-    linkModalAddToSavingForm.on 'click', ->
-      $('#modalSavingsForm').modal('show')
-
-    $('#modalSavingsForm').on 'show.bs.modal', ->
-      $('#modalBook').modal 'hide'
-
-      # add routes query string
-      $('#formAddToSavings').attr('action',
-        "/deals/update_credit?is_referrer=true&hotel_name=#{hotelName}&room_description=#{room[0]['rateDescription']}")
-      $('#update_credit_rate_code').val(room[0]['rateCode'])
-      $('#update_credit_total').val(totalRoom)
-
-      creditGroup = ((totalRoom - totalGroupCredit) / membersCount).toFixed(2)
-      $('#modalSavingsForm .modal-header small').remove()
-      $('#groupCreditText').text("Your minimum contribution for this hotel is $#{creditGroup}")
-      $('#formAddToSavings').attr('data-is-referrer', true)
-  else
-    $("form#formBook input[type='submit']").removeClass('hide')
-    $("form.like input[type='submit']").removeClass('hide')
-    $("#jsBedTypeSection").removeClass('hide')
-    $("#jsTermsConditionsSection").removeClass('hide')
-    linkModalAddToSavingForm.addClass('hide')
-
-showHideComponents = ->
+    credit = ((totalRoom - totalCredit) / membersCount).toFixed(2)
+    $('#modalSavingsForm .modal-header small').remove()
+    $('#groupCreditText').text("Your minimum contribution for this hotel is $#{credit}")
+    $('#formAddToSavings').attr('data-is-referrer', true)
 
 
 root.replaceImage = ()->
@@ -444,6 +412,7 @@ getSurcharge = (room, table, europeCountries, hotelCountry) ->
 
 appendCreditform = ->
   $('.append-credit').on 'click', ->
+    $('#modalSavingsForm').modal 'show'
     rateCode = $(this).data('rate-code')
     $(this).addClass("form-#{rateCode}")
     $('#update_credit_rate_code').val(rateCode)
