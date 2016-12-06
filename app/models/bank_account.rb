@@ -77,7 +77,7 @@ class BankAccount < ActiveRecord::Base
       start_date = Time.now.in_time_zone("Pacific Time (US & Canada)").strftime("%Y-%m-%d")
       params_recurring[:customer][:start_date] = start_date
       response = recurring_authorize.create_subscription(params_recurring)
-      
+
       if response.messages.resultCode.eql? 'Ok'
         unless customer
           Customer.create(customer_id: params_recurring[:customer][:customer_id], user_id: user.id, customer_profile_id: response.profile.customerProfileId)
@@ -148,7 +148,7 @@ class BankAccount < ActiveRecord::Base
 
           subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
           user_subscription.update(subscription_hash)
-
+          
           if customer_payment_profile
             AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(user_subscription.subscription_id, customer_profile.customerProfileId)
           end
