@@ -19,6 +19,8 @@ public/assets/
 
 .env
 .env.*
+.env_staging
+.env_production
 
 .ruby-gemset
 
