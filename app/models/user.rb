@@ -43,7 +43,7 @@ class User < ActiveRecord::Base
   end
 
   def total_credit_in_usd
-    (self.total_credit / 100.0).round
+    (self.total_credit / 100.0)
   end
 
   def total_credit_in_cents(total_credit)
