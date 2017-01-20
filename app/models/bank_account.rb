@@ -15,7 +15,7 @@ class BankAccount < ActiveRecord::Base
   validates :transfer_frequency, presence: { message: 'please select one' }
   validates :amount_transfer, numericality: { only_integer: false }
   validate :validate_amount
-  validate :auth_credit_card
+  # validate :auth_credit_card
 
   def validate_amount
     if self.amount_transfer.to_f < 25.0

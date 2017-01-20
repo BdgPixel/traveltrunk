@@ -38,7 +38,7 @@ showInviteNotification = ->
     unregisteredUsers = $('#invite_user_id').val().split(',').filter((item) ->
       /\S+@\S+\.\S+/.test item
     )
-    console.log unregisteredUsers
+    
     if unregisteredUsers.length > 0
       $('.noticeEmail').html "<b>Notice: </b>#{unregisteredUsers.join(", ")} does not have an account with us yet. Send them an email to join Travel Trunk for your next trip together."
       $('.noticeEmail').show()

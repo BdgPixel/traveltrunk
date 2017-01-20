@@ -45,7 +45,7 @@
 
               li.link-top-login = link_to 'HOTELS', deals_path
               
-              li.link-top-login = link_to 'FLIGHTS', flights_path
+              / li.link-top-login = link_to 'FLIGHTS', flights_path
 
               li.link-top-login = link_to 'SAVINGS', savings_path
 
@@ -106,5 +106,5 @@
               = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide"
                | Sign Up
 
-= render file: 'messages/new'
-#messageSuccessfullySent
+/ = render file: 'messages/new'
+/ #messageSuccessfullySent

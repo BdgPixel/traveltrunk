@@ -18,13 +18,13 @@ Rails.application.routes.draw do
     end
   end
 
-  resources :flights, only: [:index, :show] do
-    collection do
-      get :arrival_typeahead
-      get :depart_typeahead
-      post :search
-    end
-  end
+  # resources :flights, only: [:index, :show] do
+  #   collection do
+  #     get :arrival_typeahead
+  #     get :depart_typeahead
+  #     post :search
+  #   end
+  # end
 
   require 'sidekiq/web'
 
