@@ -172,7 +172,7 @@ module DealsHelper
   end
 
   def button_actions_in_deals_detail(room)
-    like = ''
+    link = ''
     rate_code, room_type_code = [room["rateCode"], room["RoomType"]["@roomCode"]]
     total_room = room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"]
     is_credit = @total_credit >= (total_room.to_f * 100).to_i

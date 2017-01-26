@@ -417,7 +417,8 @@ class DealsController < ApplicationController
         room_response = Expedia::Hotels.room_availability(room_params_hash).first
         @room_availability = room_response[:response]
         @first_room_image = get_first_room_image(@room_availability)
-
+        @total_credit = 0
+        
         @error_category_room_message = room_response[:category_room]
         @error_response = room_response[:error_response]
       end
