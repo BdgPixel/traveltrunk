@@ -37,8 +37,8 @@
     rateCode.attr('data-total-credit', "<%= @total_credit %>");
   <% end %>
 
-  $('.notification-bubble').removeClass('hide');
-  $('.notification-bubble').text("<%= @notification_count %>");
+  $('.notification-bubble').not('#messageCount').removeClass('hide');
+  $('.notification-bubble').not('#messageCount').text("<%= @notification_count %>");
   $('#notificationCountLink').text("Notification (<%= @notification_count %>)");
 
   $('#modalSavingsForm').modal('hide');
