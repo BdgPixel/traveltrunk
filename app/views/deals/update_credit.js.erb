@@ -21,6 +21,7 @@
 
   <% if @group %>
     $('.text-total-credits').html("Total : &nbsp;<%= number_to_currency(@total_credit) %>");
+    $(".text-total-credit-users-<%= current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
     message = "<%= 'Your group\'s total credit in '.html_safe %>"
   <% else %>
     $(".text-total-credit-users-<%= current_user.id %>").html("Total : &nbsp;<%= number_to_currency(@user_total_credit) %>");
