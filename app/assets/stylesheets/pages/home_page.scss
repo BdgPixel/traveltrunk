@@ -539,12 +539,22 @@ section.vacation {
 	}
 }
 
-video {
-  min-width: 100%;
-  min-height: 100%;
-  width: auto;
-  height: auto;
+// video {
+//   min-width: 100%;
+//   min-height: 100%;
+//   width: auto;
+//   height: auto;
+// }
+
+// BEGIN override mediaelement
+.mejs__container {
+	margin-bottom: 24px;
 }
+
+.mejs__poster {
+  background-size: cover !important;
+}
+// END
 
 .overlay-video {
 	background: rgb(246,82,68);

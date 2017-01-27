@@ -416,5 +416,8 @@ ready = ->
     $('.dropdown').removeClass 'open'
     return
 
+  if $('video#player').length > 0
+    $('video#player').mediaelementplayer()
+
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
