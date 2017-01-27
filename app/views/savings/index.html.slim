@@ -26,10 +26,11 @@
                   = link_to "Add to savings", "#", class: "display append-credit", data: { toggle: "modal", target: "#modalSavingsForm" }
                   |&emsp;&emsp;&emsp;
 
-                - if (current_user.group && current_user.group.members.present?) || current_user.joined_groups.present?
-                  li
-                    = link_to "Group Chat", "#collapseGroupChat", id: 'groupChatLink', data: { toggle: "collapse" }, aria: { expanded: false, controls: 'collapseGroupChat' }
-                    |&emsp;&emsp;&emsp;
+                / later this feature will be used
+                / - if (current_user.group && current_user.group.members.present?) || current_user.joined_groups.present?
+                /   li
+                /     = link_to "Group Chat", "#collapseGroupChat", id: 'groupChatLink', data: { toggle: "collapse" }, aria: { expanded: false, controls: 'collapseGroupChat' }
+                /     |&emsp;&emsp;&emsp;
 
                 li
                   = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
@@ -55,8 +56,9 @@
     = render 'savings/transfer_success'
     = render 'promo_codes/form_modal_activation_promo_code'
 
-    - if current_user.group || current_user.joined_groups.present?
-      = render 'messages/group_message'
+    / later this feature will be used
+    / - if current_user.group || current_user.joined_groups.present?
+    /   = render 'messages/group_message'
       
   - else
     = render 'single_person'

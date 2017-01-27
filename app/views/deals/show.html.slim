@@ -4,7 +4,6 @@
 .wrap-nav-color
   | &nbsp;
 
-
 .wrapper-detail-deals
   .container
     .row
@@ -35,7 +34,9 @@
               .col-xs-6.col-md-6
                 .rating-text style="clear:both" = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
 
-              .col-xs-12.col-md-6.hotel-voter-list-container
+              / later this feature will be used
+              / .col-xs-12.col-md-6.hotel-voter-list-container
+                / current code vote/like hotel
                 #recentContact.dropdown.pull-right.text-right.col-md-12
                   = link_to 'Share this', "javascript:void(0)", class: '', data: { toggle: 'dropdown' }
                   ul.dropdown-menu aria-labelledby="dLabel" 
@@ -66,26 +67,27 @@
                                     | &nbsp;
                                     = user.profile.full_name
 
-                - if @group
-                  / show to vote hotel
-                  / = link_to "javascript:void(0)", id: 'linkPopover', class: 'pull-right', data: { toggle: 'popover', trigger: 'focus' }, role: 'button', tabindex: '0', style: "float:left;margin-top:10px;margin-left:10px;"
-                  /   = "#{pluralize(@votes.count, 'person')} like this hotel"
+                / Old code vote/like hotel
+                / - if @group
+                /   / show to vote hotel
+                /   = link_to "javascript:void(0)", id: 'linkPopover', class: 'pull-right', data: { toggle: 'popover', trigger: 'focus' }, role: 'button', tabindex: '0', style: "float:left;margin-top:10px;margin-left:10px;"
+                /     = "#{pluralize(@votes.count, 'person')} like this hotel"
 
-                  / share link
+                /   share link
 
-                  / #titlePopover style="display:none"
-                  /   h4 = "#{pluralize(@votes.count, 'person')} want to go"
+                /   #titlePopover style="display:none"
+                /     h4 = "#{pluralize(@votes.count, 'person')} want to go"
 
-                  / #contentPopover style="display:none"
-                  /   - if @votes.empty?
-                  /     .alert.alert-info No members vote for this hotel
-                  /   - else
-                  /     - @votes.each do |vote|
-                  /       .col-md-12.popover-list-users
-                  /         = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
-                  /           = image_tag vote.user.profile.image.url, width: '70px'
-                  /         = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
-                  /           = vote.user.id.eql?(current_user.id) ? "You" : vote.user.try(:profile).try(:full_name)
+                /   #contentPopover style="display:none"
+                /     - if @votes.empty?
+                /       .alert.alert-info No members vote for this hotel
+                /     - else
+                /       - @votes.each do |vote|
+                /         .col-md-12.popover-list-users
+                /           = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
+                /             = image_tag vote.user.profile.image.url, width: '70px'
+                /           = link_to user_profile_path(vote.user), title: vote.user.try(:profile).try(:full_name)
+                /             = vote.user.id.eql?(current_user.id) ? "You" : vote.user.try(:profile).try(:full_name)
 
       br
       .col-sm-12
@@ -173,40 +175,41 @@
             i
               small It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
-#shareHotelModal.modal.fade data-backdrop="static" role="dialog" tabindex="-1"
-  .modal-dialog
-    .modal-content
-      .modal-header
-        button.close aria-label="Close" data-dismiss="modal" type="button"
-          span aria-hidden="true" &times;
-        h3 New message
-      .modal-body
-        = simple_form_for :new_message, method: :post, url: messages_path, remote: true do |f|
-          = f.input_field :user_id, as: :hidden, class: 'user_id'
-          = f.input_field :hotel_link, as: :hidden, class: 'hotel_link'
+/ later this feature will be used
+/ #shareHotelModal.modal.fade data-backdrop="static" role="dialog" tabindex="-1"
+/   .modal-dialog
+/     .modal-content
+/       .modal-header
+/         button.close aria-label="Close" data-dismiss="modal" type="button"
+/           span aria-hidden="true" &times;
+/         h3 New message
+/       .modal-body
+/         = simple_form_for :new_message, method: :post, url: messages_path, remote: true do |f|
+/           = f.input_field :user_id, as: :hidden, class: 'user_id'
+/           = f.input_field :hotel_link, as: :hidden, class: 'hotel_link'
 
-          .form-group
-            .row
-              .col-xs-6.col-md-6.col-md-offset-3
-                .wrapper-message-image
-                  .message-image
-                    span lorem impsum
+/           .form-group
+/             .row
+/               .col-xs-6.col-md-6.col-md-offset-3
+/                 .wrapper-message-image
+/                   .message-image
+/                     span lorem impsum
 
-                  = link_to '#', class: 'thumbnail'
-                    = image_tag @featured_image['url'], class: 'show-hotel-image'
-              = f.input_field :share_image, as: :hidden, value: @featured_image['url'], class: 'share-image'
-              = f.input_field :hotel_name, as: :hidden, value: unescape_expedia_html(@hotel_information["HotelSummary"]["name"]), class: 'hotel_name'
+/                   = link_to '#', class: 'thumbnail'
+/                     = image_tag @featured_image['url'], class: 'show-hotel-image'
+/               = f.input_field :share_image, as: :hidden, value: @featured_image['url'], class: 'share-image'
+/               = f.input_field :hotel_name, as: :hidden, value: unescape_expedia_html(@hotel_information["HotelSummary"]["name"]), class: 'hotel_name'
 
-          .form-group
-            .row
-              .col-md-12
-                = f.label :body, 'Message'
-                = f.input_field :body, as: :text, class: 'form-control', placeholder: 'Enter your message here...', rows: 3
+/           .form-group
+/             .row
+/               .col-md-12
+/                 = f.label :body, 'Message'
+/                 = f.input_field :body, as: :text, class: 'form-control', placeholder: 'Enter your message here...', rows: 3
 
-          .modal-footer
-            .row
-              .col-md-8.col-md-offset-4
-                = f.submit "Send", class: "btn btn-saving btn-green"
+/           .modal-footer
+/             .row
+/               .col-md-8.col-md-offset-4
+/                 = f.submit "Send", class: "btn btn-saving btn-green"
 
 = render partial: 'bookings/book'
 

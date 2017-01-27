@@ -1,15 +1,16 @@
 Rails.application.routes.draw do
-  resources :messages, only: [:index, :show, :create], path: 'conversations' do
-    collection do
-      get 'users_collection'
-      post 'send_group'
-    end
+  # later this feature will be used
+  # resources :messages, only: [:index, :show, :create], path: 'conversations' do
+  #   collection do
+  #     get 'users_collection'
+  #     post 'send_group'
+  #   end
 
-    member do
-      post 'reply'
-      post 'reply_group'
-    end
-  end
+  #   member do
+  #     post 'reply'
+  #     post 'reply_group'
+  #   end
+  # end
 
   resources :reservations, only: [:index] do
     collection do 

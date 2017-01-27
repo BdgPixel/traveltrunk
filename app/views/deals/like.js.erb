@@ -20,8 +20,6 @@ window.location = "<%= deals_show_url(params[:id]) %>";
     }
 }());
 
-console.log('<%= @group.id %>');
-
 <% publish_to "/group_messages/#{ @group.id }" do %>
   lowLag.play('new_inbox');
   

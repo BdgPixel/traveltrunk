@@ -451,38 +451,41 @@ class DealsController < ApplicationController
           like.create_activity key: "group.like", owner: current_user,
             recipient: joined_group.user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
 
-          body_message = 
-            tmp_body = "[shared: #{params[:share_image]}|#{params[:hotel_name]}|#{request.referer}]"
-            tmp_body << "#{current_user.profile.full_name} has agreed to this hotel and room type"
+          # later this feature will be used
+          # body_message = 
+          #   tmp_body = "[shared: #{params[:share_image]}|#{params[:hotel_name]}|#{request.referer}]"
+          #   tmp_body << "#{current_user.profile.full_name} has agreed to this hotel and room type"
             
-          members = @group.all_members
-          message_hash = { topic: 'Group Message', body: body_message }
+          # members = @group.all_members
+          # message_hash = { topic: 'Group Message', body: body_message }
 
-          @first_message = @group.message
+          # @first_message = @group.message
 
-          if @first_message.present?
-            @message = current_user.reply_to(@first_message, message_hash)
-          else
-            @first_message = @message = current_user.send_message(@group.members.first, message_hash)
-            @group.update(message_id: @message.id)
-          end
+          # if @first_message.present?
+          #   @message = current_user.reply_to(@first_message, message_hash)
+          # else
+          #   @first_message = @message = current_user.send_message(@group.members.first, message_hash)
+          #   @group.update(message_id: @message.id)
+          # end
 
-          members.each do |member|
-            notification = PublicActivity::Activity.new(
-              key: "messages.group",
-              owner: current_user,
-              recipient: member,
-              trackable_id: @message.id,
-              trackable_type: 'CustomMessage'
-            )
+          # members.each do |member|
+          #   notification = PublicActivity::Activity.new(
+          #     key: "messages.group",
+          #     owner: current_user,
+          #     recipient: member,
+          #     trackable_id: @message.id,
+          #     trackable_type: 'CustomMessage'
+          #   )
 
-            notification.save
-            @notification = notification if member.id.eql?(current_user.id)
-          end
+          #   notification.save
+          #   @notification = notification if member.id.eql?(current_user.id)
+          # end
         end
 
-        format.html {redirect_to deals_show_url(params[:id]), notice: 'You successfully vote for this hotel' }
-        format.js
+        format.html { redirect_to deals_show_url(params[:id]), notice: 'You successfully vote for this hotel' }
+
+        # desabled message feature
+        # format.js
       end
     end
 

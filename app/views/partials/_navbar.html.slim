@@ -49,23 +49,24 @@
 
               li.link-top-login = link_to 'SAVINGS', savings_path
 
-              li#messageDropdown.dropdown.dropdown-top-active
-                a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                  span#messageCount.notification-bubble class="#{'hide' if @message_notification_count.zero?}" = @message_notification_count
-                  | &nbsp;Messages
-                  span.caret
+              / later message feature will be used
+              / li#messageDropdown.dropdown.dropdown-top-active
+              /   a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
+              /     span#messageCount.notification-bubble class="#{'hide' if @message_notification_count.zero?}" = @message_notification_count
+              /     | &nbsp;Messages
+              /     span.caret
 
-                ul.dropdown-menu.messages
-                  li.col-md-12
-                    = text_field_tag :user_collection, nil, placeholder: 'Send a new message to..'
-                  br
-                  br
-                  .messages-wrapper
-                    - @message_notifications.each do |notification|
-                      - if message = notification.trackable
-                        = render 'messages/message', message: message,
-                          action_type: (message.sent_by?(current_user.id) ? 'send' : 'receive'),
-                          notification_is_read: notification.is_read
+              /   ul.dropdown-menu.messages
+              /     li.col-md-12
+              /       = text_field_tag :user_collection, nil, placeholder: 'Send a new message to..'
+              /     br
+              /     br
+              /     .messages-wrapper
+              /       - @message_notifications.each do |notification|
+              /         - if message = notification.trackable
+              /           = render 'messages/message', message: message,
+              /             action_type: (message.sent_by?(current_user.id) ? 'send' : 'receive'),
+              /             notification_is_read: notification.is_read
 
               li.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
@@ -106,5 +107,6 @@
               = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide"
                | Sign Up
 
-= render file: 'messages/new'
-#messageSuccessfullySent
+/ later this feature will be used
+/ = render file: 'messages/new'
+/ #messageSuccessfullySent

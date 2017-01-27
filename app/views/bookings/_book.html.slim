@@ -74,7 +74,9 @@
                       | &nbsp;I agree to the&nbsp;
                       = link_to 'Terms & Conditions', 'http://developer.ean.com/terms/en/', target: '_blank'
                   
-                  = simple_form_for :like, url: deals_like_path(params[:id]), method: :get, remote: true do |f|
+                  / later form remote true will be used
+                  / change form to remote true if want enable message feature
+                  = simple_form_for :like, url: deals_like_path(params[:id]), method: :get, remote: false do |f|
                     = hidden_field_tag :hotel_name, nil, class: 'vote-hotel-name'
                     = hidden_field_tag :share_image, nil, class: 'vote-share-image'
                     = hidden_field_tag :rate_code, nil, class: 'vote-rate-code'
