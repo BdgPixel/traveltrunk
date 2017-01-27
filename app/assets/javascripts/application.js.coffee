@@ -79,7 +79,6 @@ root.showSearchForm = () ->
 
     return
 
-
 root.showSearchFormFlight = () ->
   if $('.wrapper-result-flight').length == 0
     $("#slideToggle").collapse('show')
@@ -113,10 +112,10 @@ root.showSearchFormMobile = () ->
 
       if $('#slideToggleLinkMobile.arrow-downs').length
         $('#slideToggleLinkMobile').removeClass 'arrow-downs'
-        $('.js-arrow-mobile').css('visibility', 'hidden');
+        $('.js-arrow-mobile').css('visibility', 'hidden')
       else
         $('#slideToggleLinkMobile').addClass 'arrow-downs'
-        $('.js-arrow-mobile').css('visibility', 'visible');
+        $('.js-arrow-mobile').css('visibility', 'visible')
 
       return
 
@@ -125,7 +124,7 @@ root.showSearchFormMobile = () ->
         return
 
       $("#slideToggleMobile").collapse('hide')
-      $('.js-arrow-mobile').css('visibility', 'visible');
+      $('.js-arrow-mobile').css('visibility', 'visible')
 
       return
 
@@ -134,7 +133,7 @@ root.showSearchFormMobile = () ->
         return
 
       $("#slideToggleMobile").collapse('hide')
-      $('.js-arrow-mobile').css('visibility', 'visible');
+      $('.js-arrow-mobile').css('visibility', 'visible')
 
       return
 
@@ -176,7 +175,6 @@ root.validateSearchForm = ->
       autocomplete: 'Please enter your destination'
 
   return
-
 
 root.validateSearchFormMobile = ->
   $('.search-deals-form-mobile').validate
@@ -417,7 +415,6 @@ ready = ->
   $(window).scroll ->
     $('.dropdown').removeClass 'open'
     return
-
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()

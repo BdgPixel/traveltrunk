@@ -25,9 +25,11 @@ module DealsHelper
 
   def notaffordable(hotel_image)
     if hotel_image
-        content_tag(:div, nil, class: 'overlay', data: { content: "Currently outside of your budget"}) do
-          content_tag(:div, nil, class: 'lazy deals-image', data: { original: "https://images.trvl-media.com#{ hotel_image.gsub('_t.', '_y.') }" },
-              style: "background:url('https://images.trvl-media.com#{ hotel_image.gsub('_t.', '_b.') }'), url('https://images.trvl-media.com#{ hotel_image.gsub('_t.', '_l.') }') no-repeat grey; background-size: 100% 100%; height: 300px;")
+      url = 'https://images.trvl-media.com'
+      content_tag(:div, nil, class: 'overlay', data: { content: "Currently outside of your budget"}) do
+        content_tag(:div, nil, class: 'lazy deals-image',
+          data: { original: "#{ url }#{ hotel_image.gsub('_t.', '_y.') }" },
+          style: "background:url('#{ url }#{ hotel_image.gsub('_t.', '_b.') }'), url('#{ url }#{ hotel_image.gsub('_t.', '_l.') }') no-repeat grey; background-size: 100% 100%; height: 300px;")
       end
     end
   end
