@@ -58,9 +58,7 @@ var lowLag = new function(){
     this.safelyRemoveElement(this.divLowLag);
     this.divLowLag = this.createElement("div",{"id":"lowLag"});
     document.body.appendChild(this.divLowLag);
-    
-  
-    
+        
     var force = undefined;
     if(config != undefined){
       if(config['force'] != undefined){
@@ -96,7 +94,7 @@ var lowLag = new function(){
     var format = "sm2";
     if(force != undefined) format = force;
     else {
-      if(typeof(AudioContext) != "undefined") format = 'webkitAudio';
+      if(typeof(webkitAudioContext) != "undefined") format = 'webkitAudio';
       else if(navigator.userAgent.indexOf("Firefox")!=-1) format = 'audioTag';
     }
     switch(format){
@@ -105,8 +103,8 @@ var lowLag = new function(){
         this.msg("init webkitAudio");
         this.load= this.loadSoundWebkitAudio;
         this.play = this.playSoundWebkitAudio;
-        this.AudioContext = new AudioContext();
-        if (this.useSuspension &= ('suspend' in lowLag.AudioContext && 'onended' in lowLag.AudioContext.createBufferSource())) {
+        this.webkitAudioContext = new webkitAudioContext();
+        if (this.useSuspension &= ('suspend' in lowLag.webkitAudioContext && 'onended' in lowLag.webkitAudioContext.createBufferSource())) {
           this.playingQueue = [];
           this.suspendPlaybackWebkitAudio();
         }
@@ -177,8 +175,6 @@ var lowLag = new function(){
     soundManager.play(tag);
   }
 
-
-
 //we'll use the tag they hand us, or else the url as the tag if it's a single tag,
 //or the first url 
   this.getTagFromURL = function(url,tag){
@@ -195,13 +191,9 @@ var lowLag = new function(){
     return urls;
   }
 
-
-
-
   this.webkitPendingRequest = {};
 
-
-  this.AudioContext = undefined;
+  this.webkitAudioContext = undefined;
   this.webkitAudioBuffers = {};
 
   this.loadSoundWebkitAudio = function(urls,tag){
@@ -214,7 +206,7 @@ var lowLag = new function(){
 
     // Decode asynchronously
     request.onload = function() {
-      lowLag.AudioContext.decodeAudioData(request.response, function(buffer) {
+      lowLag.webkitAudioContext.decodeAudioData(request.response, function(buffer) {
         lowLag.webkitAudioBuffers[tag] = buffer;
         
         if(lowLag.webkitPendingRequest[tag]){ //a request might have come in, try playing it now
@@ -236,7 +228,7 @@ var lowLag = new function(){
       lowLag.webkitPendingRequest[tag] = true;
       return;
     }
-    var context = lowLag.AudioContext;
+    var context = lowLag.webkitAudioContext;
     if (this.useSuspension && this.suspended) {
       this.resumePlaybackWebkitAudio(); // Resume playback
     }
@@ -269,7 +261,7 @@ var lowLag = new function(){
   }
 
   this.resumePlaybackWebkitAudio = function(){
-    this.AudioContext.resume();
+    this.webkitAudioContext.resume();
     this.suspended = false;
   }
 
@@ -278,7 +270,7 @@ var lowLag = new function(){
       clearTimeout(this.suspendTimeout);
     }
     this.suspendTimeout = setTimeout(function(){
-      lowLag.AudioContext.suspend();
+      lowLag.webkitAudioContext.suspend();
       lowLag.suspended = true;
       lowLag.suspendTimeout = null;
     }, this.suspendDelay);
@@ -346,8 +338,4 @@ var lowLag = new function(){
       lowLag.divDebug.innerHTML += m+"\n";      
     }
   }
-
-
-
-
 }
