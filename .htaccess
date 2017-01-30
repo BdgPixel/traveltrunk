@@ -3,3 +3,4 @@ AddType video/ogg .ogv
 AddType video/mp4 .mp4
 AddType video/webm .webm
 AddType video/ogv .ogv
+AddType video/x-flv
