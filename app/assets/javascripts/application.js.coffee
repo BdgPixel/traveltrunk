@@ -190,6 +190,8 @@ root.validateSearchFormMobile = ->
 root.initDatePickerForDesktop = (today) ->
   $('input.search_deals_arrival_date').datepicker(
     startDate: today
+    disableTouchKeyboard: true
+    Readonly: true
     autoclose: true).on 'changeDate', (e) ->
       $(this).valid()
       departureDate = e.date
@@ -205,6 +207,8 @@ root.initDatePickerForDesktop = (today) ->
 
   $('input.search_deals_departure_date').datepicker(
     startDate: today
+    disableTouchKeyboard: true
+    Readonly: true
     autoclose: true).on 'changeDate', (e) ->
 
 root.initDatePickerFlightForDesktop = (today) ->
@@ -231,6 +235,8 @@ root.initDatePickerFlightForDesktop = (today) ->
 root.initDatePickerForMobile = (today) ->
   $('input.search_deals_arrival_date_mobile').datepicker(
     startDate: today
+    disableTouchKeyboard: true
+    Readonly: true
     autoclose: true).on 'changeDate', (e) ->
       $(this).valid()
       departureDate = e.date
@@ -246,6 +252,8 @@ root.initDatePickerForMobile = (today) ->
 
   $('input.search_deals_departure_date_mobile').datepicker(
     startDate: today
+    disableTouchKeyboard: true
+    Readonly: true
     autoclose: true).on 'changeDate', (e) ->
 
 root.truncateString = (selector) ->
