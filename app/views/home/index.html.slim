@@ -44,10 +44,17 @@
 
               .wrapper-where-search.hidden-sm.hidden-md.hidden-lg
                 .col-md-12
-                  button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
+                  = link_to home_search_path(referrer: 'home/index'), class: 'btn btn-default btn-block search_mobile no-border-grey', data: { no_turbolink: true }
                     span.text
                       | Where would you like to be?
                     span.btn-search
+
+                  / old code modal search hotels
+                  / button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
+                  /   span.text
+                  /     | Where would you like to be?
+                  /   span.btn-search
+                  
 
               / .col-md-12.video-credit.hidden-xs
               /   p
@@ -217,13 +224,14 @@ section.couple.parallax-image2.hidden-xs
 
                   = link_to "Click HERE to Get Started", new_user_registration_path, class: "btn btn-default"
 
-.search-form-mobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
-  .modal-dialog role="document"
-    .modal-content
-      .modal-header
-        button.close aria-label="Close" data-dismiss="modal" type="button"
-          span aria-hidden="true"  &times;
-        h4#myModalLabel.modal-title Search
-      = render 'deals/form_search_mobile'
+/ old code modal search hotels
+/ .search-form-mobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1" backdrop="static"
+/   .modal-dialog role="document"
+/     .modal-content
+/       .modal-header
+/         button.close aria-label="Close" data-dismiss="modal" type="button"
+/           span aria-hidden="true"  &times;
+/         h4#myModalLabel.modal-title Search
+/       = render 'deals/form_search_mobile'
 
 = render 'partials/footer'

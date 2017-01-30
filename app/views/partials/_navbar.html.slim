@@ -11,15 +11,23 @@
 
         .wrapper-navbar-brand
           - if user_signed_in?
-            = link_to deals_path, id: 'logo-color-white', class: 'color'
-              span TravelTrunk
-            = link_to deals_path, id: 'logo-color-orange', class: 'color hide'
-              span TravelTrunk
+            - if controller_name.eql?('home') && action_name.eql?('search')
+              = link_to '/', id: 'logo-color-orange', class: 'color'
+                span TravelTrunk
+            - else
+              = link_to deals_path, id: 'logo-color-white', class: 'color'
+                span TravelTrunk
+              = link_to deals_path, id: 'logo-color-orange', class: 'color hide'
+                span TravelTrunk
           - else
-            = link_to '/', id: 'logo-color-white', class: 'color'
-              span TravelTrunk
-            = link_to '/', id: 'logo-color-orange', class: 'color hide'
-              span TravelTrunk
+            - if controller_name.eql?('home') && action_name.eql?('search')
+              = link_to '/', id: 'logo-color-orange', class: 'color'
+                span TravelTrunk
+            - else
+              = link_to '/', id: 'logo-color-white', class: 'color'
+                span TravelTrunk
+              = link_to '/', id: 'logo-color-orange', class: 'color hide'
+                span TravelTrunk
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         - if user_signed_in?

@@ -195,9 +195,12 @@
   position: absolute;
   bottom: 60px;
 
-  button {
+  button, a {
     position: relative;
-    border-color: transparent;
+    // border-color: transparent;
+    &.no-border-grey {
+      border-color: transparent;
+    }
 
     &:before {
       content: '';
@@ -230,7 +233,7 @@
 
   &.top-deals {
 
-    button {
+    button, a {
       background-color: #e6e6e6;
     }
   }

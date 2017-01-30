@@ -1,5 +1,24 @@
+- content_for :css_body
+  = stylesheet_link_tag 'height'
+
+- content_for :javascripts
+  = javascript_include_tag "search"
+  = javascript_include_tag "variables"
+
 = simple_form_for :search_deals, method: @method_name, url: deals_search_path, html: { class: 'search-deals-form-mobile' } do |f|
-  .modal-body
+  .top-modal
+    .col-xs-6
+      | Search
+    .col-xs-6
+      .close-top-modal
+        - if @referrer.eql? 'home/index'
+          = link_to 'x', home_index_path
+        - else
+          - if user_signed_in?
+            = link_to 'x', deals_search_path(params)
+          - else
+            = link_to 'x', deals_search_path(params)
+  .static-page
     .wrapper-where-serach-form
       .form-group
         .col-md-12
@@ -22,15 +41,21 @@
 
       .form-group
         .col-md-12
-          / = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date_mobile", placeholder: "Arriving when?", onfocus: 'blur();'
+          / - if @is_get_destination
+          = f.input_field :arrival_date, value: @destination.nil? ? nil : @destination.arrival_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date_mobile", placeholder: "Arriving when?", onfocus: 'blur();'
+          / - else
+          /   = f.input_field :arrival_date, value: @destination.nil? ? nil : Date.strptime(@destination.arrival_date, "%m/%d/%Y").strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_arrival_date_mobile", placeholder: "Arriving when?", onfocus: 'blur();'
 
       .form-group
         .col-md-12
+          / - if @is_get_destination
           = f.input_field :departure_date, value: @destination.nil? ? nil : @destination.departure_date.strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_departure_date_mobile", placeholder: "Departing when?", onfocus: 'blur();'
+          / - else
+          /   = f.input_field :departure_date, value: @destination.nil? ? nil : Date.strptime(@destination.departure_date, "%m/%d/%Y").strftime("%m/%d/%Y"), class: "form-control no-border-radius search_deals_departure_date_mobile", placeholder: "Departing when?", onfocus: 'blur();'
 
       .form-group
         .col-md-12
           = f.input_field :number_of_adult, as: :select, collection: number_of_adults_collection, selected: selected_number_of_adult, class: "form-control no-border-radius"
 
-  .modal-footer
-    = f.submit "Search", class: "btn btn-primary btn-block"
+    .modal-footer
+      = f.submit "Search", class: "btn btn-primary btn-block btn-yellow"

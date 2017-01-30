@@ -39,7 +39,7 @@
       .row
         .wrapper-where-search.top-deals
           .col-md-12
-            button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
+            = link_to home_search_path(params.except(:controller, :action)), class: 'btn btn-default btn-block search_mobile', data: { no_turbolink: true }
               span.text
                 - if current_user.profile.home_airport && current_user.bank_account && current_user.total_credit > 0
                   = init_title_destination(@destination)
@@ -47,6 +47,16 @@
                   | Where would you like to be?
 
               span.btn-search
+
+            / old code modal search hotels
+            / button.btn.btn-default.btn-block.search_mobile type="button" data-toggle="modal" data-target=".search-form-mobile"
+            /   span.text
+            /     - if current_user.profile.home_airport && current_user.bank_account && current_user.total_credit > 0
+            /       = init_title_destination(@destination)
+            /     - else
+            /       | Where would you like to be?
+
+            /   span.btn-search
 
 .container
   .row
@@ -63,11 +73,12 @@
       #popUpProfile
         = render 'profiles/complete_profile'
 
-.search-form-mobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
-  .modal-dialog role="document"
-    .modal-content
-      .modal-header
-        button.close aria-label="Close" data-dismiss="modal" type="button"
-          span aria-hidden="true"  &times;
-        h4#myModalLabel.modal-title Search
-      = render 'deals/form_search_mobile'
+/ old code modal search hotels
+/ .search-form-mobile.modal.fade.modal-search aria-labelledby="myModalLabel" role="dialog" tabindex="-1"
+/   .modal-dialog role="document"
+/     .modal-content
+/       .modal-header
+/         button.close aria-label="Close" data-dismiss="modal" type="button"
+/           span aria-hidden="true"  &times;
+/         h4#myModalLabel.modal-title Search
+/       = render 'deals/form_search_mobile'

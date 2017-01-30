@@ -2016,3 +2016,24 @@ ul.galleries {
   font-size: 14px;
   font-family: 'Source Sans Pro', sans-serif;
 }
+
+.static-page {
+  padding-top: 15px;
+  .btn-yellow {
+    background-color: #ff9e51;
+    border-color: #ff9e51;
+  }
+}
+
+.top-modal {
+  border-bottom: 1px solid;
+  padding-top: 70px;
+  padding-bottom: 40px;
+}
+
+.close-top-modal {
+  padding-bottom: 20px;
+  text-align: right;
+
+  a { color: #777; }
+} 

@@ -50,6 +50,8 @@ Rails.application.routes.draw do
   get 'static_pages/check_sound'
 
   get 'home/index'
+  
+  get 'home/search'
 
   get  'privacy_policy' => 'policies#privacy'
   get  'refund_policy' => 'policies#refund'

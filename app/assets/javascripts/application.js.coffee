@@ -237,6 +237,7 @@ root.initDatePickerForMobile = (today) ->
     startDate: today
     disableTouchKeyboard: true
     Readonly: true
+    orientation: 'auto'
     autoclose: true).on 'changeDate', (e) ->
       $(this).valid()
       departureDate = e.date
@@ -426,6 +427,21 @@ ready = ->
 
   if $('video#player').length > 0
     $('video#player').mediaelementplayer()
+
+  # scrollPos = 0
+  # $('.modal').on('shown.bs.modal', ->
+  #   scrollPos = $('body').scrollTop(0)
+  #   $('body').css
+  #     overflow: 'hidden'
+  #     position: 'fixed'
+  #     # top: -scrollPos
+  #   return
+  # ).on 'hidden.bs.modal', ->
+  #   $('body').css(
+  #     overflow: ''
+  #     position: ''
+  #     top: '').scrollTop scrollPos
+  #   return
 
 $(document).ready -> ready()
 $(document).on 'page:load', -> ready()
