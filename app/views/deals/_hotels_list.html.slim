@@ -8,69 +8,72 @@
 - else
   - if @hotels_list.first[:error_response].blank?
     .deals-page data-page="1"
-      .div
+      .row
         - @hotels_list.first[:response].each_with_index do |page, index|
           div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
             .wrapper-price-deals
               - page.compact.each do |group|
                 - group.compact.each do |hotel| 
                   - if hotel["is_notaffordable"] == false       
-                    .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
-                      .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
-                        h4
-                          = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+                    .wrap-hotel-list
+                      .col-xs-12.col-sm-6.col-md-4.pad-left-75.pad-right-75
+                        .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
+                          h4
+                            = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-                      .card-item
-                        = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                          = list_of_deals_div(hotel["thumbNailUrl"])
-                        .row
-                          .col-md-12
-                            .inner-deals-content
-                              p.content-deals
-                                = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
-                                  = unescape_expedia_html(hotel["name"])
+                        .card-item style="position:relative;"
+                          = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+                            = list_of_deals_div(hotel["thumbNailUrl"])
+                          .row
+                            .col-md-12
+                              .inner-deals-content
+                                p.content-deals
+                                  = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
+                                    = unescape_expedia_html(hotel["name"])
                   - else
                     - if hotel["first_load"] == true
                       .col-md-12
                         h3 More Options
                         .hr-modify
-                      .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
-                        .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
-                          h4
-                            = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+                      .wrap-hotel-list
+                        .col-xs-12.col-sm-6.col-md-4.pad-left-75.pad-right-75.no-pad-xs
+                          .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
+                            h4
+                              = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-                        .card-item
-                          = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                            - if user_signed_in?
-                              = notaffordable(hotel["thumbNailUrl"])
-                            - else
-                              = list_of_deals_div(hotel["thumbNailUrl"])
+                          .card-item style="position:relative;"
+                            = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+                              - if user_signed_in?
+                                = notaffordable(hotel["thumbNailUrl"])
+                              - else
+                                = list_of_deals_div(hotel["thumbNailUrl"])
 
-                          .row
-                            .col-md-12
-                              .inner-deals-content
-                                p.content-deals
-                                  = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
-                                    = unescape_expedia_html(hotel["name"])
+                            .row
+                              .col-md-12
+                                .inner-deals-content
+                                  p.content-deals
+                                    = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
+                                      = unescape_expedia_html(hotel["name"])
 
                     - else
-                      .col-xs-6.col-sm-6.col-md-4.pad-left-75.pad-right-75
-                        .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
-                          h4
-                            = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
+                      .wrap-hotel-list
+                        .col-xs-12.col-sm-6.col-md-4.pad-left-75.pad-right-75.no-pad-xs
+                          .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
+                            h4
+                              = currency(hotel["RoomRateDetailsList"]["RoomRateDetails"]["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"])
 
-                        .card-item
-                          = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
-                            - if user_signed_in?
-                              = notaffordable(hotel["thumbNailUrl"])
-                            - else
-                              = list_of_deals_div(hotel["thumbNailUrl"])
-                          .row
-                            .col-md-12
-                              .inner-deals-content
-                                p.content-deals
-                                  = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
-                                    = unescape_expedia_html(hotel["name"])
+                          .card-item style="position:relative;"
+                            = link_to deals_show_path(hotel["hotelId"]), data: { no_turbolink: true }
+                              - if user_signed_in?
+                                = notaffordable(hotel["thumbNailUrl"])
+                              - else
+                                = list_of_deals_div(hotel["thumbNailUrl"])
+                            .row
+                              .col-md-12
+                                .inner-deals-content
+                                  p.content-deals
+                                    = link_to deals_show_path(id: hotel["hotelId"]), class:'wrapper-text'
+                                      = unescape_expedia_html(hotel["name"])
 
       .col-md-12
         .row

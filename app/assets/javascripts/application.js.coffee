@@ -391,7 +391,14 @@ ready = ->
 
   # Change navbar background when menu dropdown visible
 
-  if $('body').data('controller') is 'home' &&  $('body').data('action') != 'search'
+  if $('body').data('controller') is 'home' &&  $('body').data('action') == 'search'
+    $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
+      $(".btn-border").addClass("hide")
+      $(".btn-border").removeClass("show")
+
+      $(".btn-orange2").removeClass("hide")
+      $(".link-top-login").addClass('grey-nav-color')
+  else
     $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
       $(".transparent").addClass("scrolling")
       $("#logo-color-orange").removeClass("hide")
@@ -417,13 +424,6 @@ ready = ->
 
       $(".btn-orange2").addClass("hide")
       $(".link-top-login").removeClass('grey-nav-color')
-  else
-    $("#bs-example-navbar-collapse-1").on 'show.bs.collapse', () ->
-      $(".btn-border").addClass("hide")
-      $(".btn-border").removeClass("show")
-
-      $(".btn-orange2").removeClass("hide")
-      $(".link-top-login").addClass('grey-nav-color')
 
   $(document).on "click", ".popover .close" , ()->
     $(this).parents(".popover").popover('hide');

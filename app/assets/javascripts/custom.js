@@ -22,7 +22,13 @@ var initScrolling = function() {
   var controller = $('body').data('controller')
   var action = $('body').data('action')
 
-  if (controller == 'home' && action != 'search') {
+  if (controller == 'home' && action == 'search') {
+    $(".transparent").addClass("scrolling");
+    $(".btn-border").removeClass("show");
+    $(".btn-border").addClass("show");
+
+    $(".btn-orange2").addClass("hide");
+  } else {
     $(window).scroll(function() {
       var scroll = $(window).scrollTop();
 
@@ -55,12 +61,6 @@ var initScrolling = function() {
         }
       }
     });
-  } else {
-    $(".transparent").addClass("scrolling");
-    $(".btn-border").removeClass("show");
-    $(".btn-border").addClass("show");
-
-    $(".btn-orange2").addClass("hide");
   }
 };
 

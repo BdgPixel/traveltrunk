@@ -2041,4 +2041,15 @@ ul.galleries {
   text-align: right;
 
   a { color: #777; }
+}
+
+.wrap-deals-top {
+  display: table;
 } 
+
+.no-pad-xs {
+  @media(max-width:767px){
+    padding-left:0 !important;
+    padding-right:0 !important;
+  }
+}
