@@ -19,37 +19,49 @@ var initParalax = function() {
 };
 
 var initScrolling = function() {
-  $(window).scroll(function() {
-    var scroll = $(window).scrollTop();
+  var controller = $('body').data('controller')
+  var action = $('body').data('action')
 
-    if (scroll >= 10) {
-      $(".transparent").addClass("scrolling");
-      $("#logo-color-orange").removeClass("hide");
+  if (controller == 'home' && action != 'search') {
+    $(window).scroll(function() {
+      var scroll = $(window).scrollTop();
 
-      $("#logo-color-white").addClass("hide");
-      $("#logo-color-white").removeClass("");
+      if (scroll >= 10) {
+        $(".transparent").addClass("scrolling");
+        $("#logo-color-orange").removeClass("hide");
 
-      $(".btn-border").addClass("hide");
-      $(".btn-border").removeClass("show");
+        $("#logo-color-white").addClass("hide");
+        $("#logo-color-white").removeClass("");
 
-      $(".btn-orange2").removeClass("hide");
-      $(".link-top-login").addClass('grey-nav-color');
-    } else {
-      if ($("#bs-example-navbar-collapse-1").hasClass('in') === false) {
-        $(".transparent").removeClass("scrolling");
-        $("#logo-color-white").removeClass("hide");
-        $("#logo-color-white").addClass("");
-
-        $("#logo-color-orange").addClass("hide");
-
+        $(".btn-border").addClass("hide");
         $(".btn-border").removeClass("show");
-        $(".btn-border").addClass("show");
 
-        $(".btn-orange2").addClass("hide");
-        $(".link-top-login").removeClass('grey-nav-color');
+        $(".btn-orange2").removeClass("hide");
+        $(".link-top-login").addClass('grey-nav-color');
+      } else {
+        if ($("#bs-example-navbar-collapse-1").hasClass('in') === false) {
+
+          $(".transparent").removeClass("scrolling");
+          $("#logo-color-white").removeClass("hide");
+          $("#logo-color-white").addClass("");
+
+          $("#logo-color-orange").addClass("hide");
+
+          $(".btn-border").removeClass("show");
+          $(".btn-border").addClass("show");
+
+          $(".btn-orange2").addClass("hide");
+          $(".link-top-login").removeClass('grey-nav-color');
+        }
       }
-    }
-  });
+    });
+  } else {
+    $(".transparent").addClass("scrolling");
+    $(".btn-border").removeClass("show");
+    $(".btn-border").addClass("show");
+
+    $(".btn-orange2").addClass("hide");
+  }
 };
 
 var ready = function() {

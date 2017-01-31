@@ -12,22 +12,50 @@
         .wrapper-navbar-brand
           - if user_signed_in?
             - if controller_name.eql?('home') && action_name.eql?('search')
+              = link_to deals_path, id: 'logo-color-white', class: 'color hide'
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
               = link_to '/', id: 'logo-color-orange', class: 'color'
-                span TravelTrunk
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
             - else
               = link_to deals_path, id: 'logo-color-white', class: 'color'
-                span TravelTrunk
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
               = link_to deals_path, id: 'logo-color-orange', class: 'color hide'
-                span TravelTrunk
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
           - else
             - if controller_name.eql?('home') && action_name.eql?('search')
+              = link_to deals_path, id: 'logo-color-white', class: 'color hide'
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
               = link_to '/', id: 'logo-color-orange', class: 'color'
-                span TravelTrunk
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
             - else
               = link_to '/', id: 'logo-color-white', class: 'color'
-                span TravelTrunk
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
               = link_to '/', id: 'logo-color-orange', class: 'color hide'
-                span TravelTrunk
+                span
+                  | TravelTrunk&nbsp;
+                  b
+                    i Beta
 
       #bs-example-navbar-collapse-1.collapse.navbar-collapse
         - if user_signed_in?
