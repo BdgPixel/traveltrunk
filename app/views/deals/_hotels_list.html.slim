@@ -8,7 +8,7 @@
 - else
   - if @hotels_list.first[:error_response].blank?
     .deals-page data-page="1"
-      .row
+      .div
         - @hotels_list.first[:response].each_with_index do |page, index|
           div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
             .wrapper-price-deals

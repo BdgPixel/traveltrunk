@@ -4,9 +4,9 @@
 - content_for :javascripts
   = javascript_include_tag 'groups', 'variables'
 
-.row
+.div
   - if current_user.profile.home_airport
-    / && current_user.bank_account
+    
     - if @group
       - if @group.members.any?
         = render 'people', group: @group
@@ -15,7 +15,7 @@
     - else
       = render 'single_person'
 
-    .row
+    .div
       .col-md-12
         .text-center
           p
