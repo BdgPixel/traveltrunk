@@ -11,7 +11,7 @@ class Group < ActiveRecord::Base
 
   before_destroy :destroy_destination
   before_destroy :destroy_likes
-  after_destroy :destory_messages
+  # after_destroy :destory_messages
 
   def should_generate_new_friendly_id?
     slug.blank? || name_changed?
