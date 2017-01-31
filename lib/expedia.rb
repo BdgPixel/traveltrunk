@@ -38,7 +38,7 @@ module Expedia
 
       config_hash = {
         'apiKey' => api_key,
-        'cid' => 496147,
+        'cid' => ENV['EXPEDIA_CID'],
         'sig' => sig,
         'minorRev' => 30,
         'locale' => "en_US",
