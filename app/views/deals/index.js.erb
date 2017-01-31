@@ -11,3 +11,6 @@ $("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
 <% end %>
 
 $('[data-toggle="tooltip"]').tooltip();
+
+// show footer after load hotels list
+$('.footer').removeClass('hide');

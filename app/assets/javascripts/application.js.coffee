@@ -258,15 +258,16 @@ root.initDatePickerForMobile = (today) ->
     autoclose: true).on 'changeDate', (e) ->
 
 root.truncateString = (selector) ->
-  if selector == "input#autocompleteMobile"
-    length = 30
-  else
-    length = 47
-  # length = 50
+  if $(selector).length > 0
+    if selector == "input#autocompleteMobile"
+      length = 30
+    else
+      length = 47
+    # length = 50
 
-  myString = $(selector).val()
-  myTruncatedString = myString.substring(0, length)
-  $(selector).val myTruncatedString
+    myString = $(selector).val()
+    myTruncatedString = myString.substring(0, length)
+    $(selector).val myTruncatedString
 
 root.clearValidationMessage = ->
   $('.payment-account-error').text('')

@@ -21,6 +21,7 @@ class DealsController < ApplicationController
   def index
     current_user.build_profile unless current_user.profile
     @bank_account = current_user.bank_account || current_user.build_bank_account
+    @is_footer_hide = true
     
     if request.xhr?
       set_search_data

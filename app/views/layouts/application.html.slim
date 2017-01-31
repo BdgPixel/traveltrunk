@@ -45,3 +45,6 @@ html lang="en"
     #loading
 
     = yield :javascripts
+    
+    - unless user_signed_in? && current_user.admin?
+        = render 'partials/footer'
