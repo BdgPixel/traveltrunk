@@ -551,7 +551,11 @@ $(document).ready ->
 
   else if controller == 'deals' && action == 'show'
     setTimeout( ->
-      coverflow = $('#coverflow').flipster()
+      coverflow = $('#coverflow').flipster 
+        touch: true
+        buttons: true
+        loop: true
+
       $('#coverflow').removeClass('on-loader')
     , 100) 
     
