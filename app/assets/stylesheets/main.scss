@@ -913,6 +913,7 @@ h3.hotel-name {
   left: 0;
   width: 100%;
   color: #ffffff;
+  margin-top: 40px;
   overflow: hidden;
 
   ul {
@@ -1415,7 +1416,7 @@ a.login.show {
     }
 
     @media (min-width: 1200px) {
-      display: inline-flex;
+      display: table-cell;
     }
   }
 }
