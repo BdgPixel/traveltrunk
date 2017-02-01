@@ -89,9 +89,12 @@ module ApplicationHelper
   end
 
   def footer_height
-    unless controller_name.eql?('home') && action_name.eql?('index')
+
+    if controller_name.eql?('home') && action_name.eql?('index')
+      "footer-height"
+    else
       is_footer_hide = @is_footer_hide ? 'hide' : ''
-      "footer-height #{is_footer_hide}"
+      "footer-absolute #{is_footer_hide}"
     end
   end
 end

@@ -1,66 +1,21 @@
-.col-md-12.text-center
-  .wrapper-group-saving
-    - if notice
-      #notice.alert.alert-info.alert-dismissible.text-left role="alert"
-        button type="button" class="close" data-dismiss="alert" aria-label="Close"
-          span aria-hidden="true" &times;
-        = notice
-    - if alert
-      #notice.alert.alert-info.alert-dismissible.text-left role="alert"
-        button type="button" class="close" data-dismiss="alert" aria-label="Close"
-          span aria-hidden="true" &times;
-        = alert
-    h1 My Group's Savings
+/ .col-md-12.text-center
+.wrapper-group-saving.text-center
+  - if notice
+    #notice.alert.alert-info.alert-dismissible.text-left role="alert"
+      button type="button" class="close" data-dismiss="alert" aria-label="Close"
+        span aria-hidden="true" &times;
+      = notice
+  - if alert
+    #notice.alert.alert-info.alert-dismissible.text-left role="alert"
+      button type="button" class="close" data-dismiss="alert" aria-label="Close"
+        span aria-hidden="true" &times;
+      = alert
+  h1 My Group's Savings
 
-    br
+  br
 
-    ul.hidden-sm.hidden-md.hidden-lg class="#{ 'small-img-saving' if group.members.size > 2 }"
-      .swipe-group-saving
-        li
-          .col-md-12.text-center
-            - if group.user_id.eql?(current_user.id)
-              = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
-                - if current_user.profile.image.present?
-                  = image_tag current_user.profile.image.url, class: 'img-circle'
-                - else
-                  = image_tag current_user.profile.image.url, class: 'img-circle no-avatar-pic'
-
-              = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
-                h3 = current_user.profile.first_name.titleize
-
-              h3 class="text-total-credit-users-#{current_user.id}"
-                = currency_in_usd(current_user.total_credit)
-
-            - else
-              = link_to user_profile_path(group.user), title: group.user.profile.first_name.titleize
-                - if group.user.profile.image.present?
-                  = image_tag group.user.profile.image.url, class: 'img-circle'
-                - else
-                  = image_tag group.user.profile.image.url, class: 'img-circle no-avatar-pic'
-
-                / = image_tag group.user.profile.image.url, class: 'img-circle'
-              = link_to user_profile_path(group.user), title: group.user.profile.first_name
-                h3 = group.user.profile.first_name.titleize
-
-              h3 class="text-total-credit-users-#{group.user.id}"
-                = currency_in_usd(group.user.total_credit)
-
-        - group.members.each do |member|
-          li
-            .col-md-12.text-center
-              = link_to user_profile_path(member), title: member.profile.first_name.titleize
-                - if member.profile.image.present?
-                  = image_tag member.profile.image.url, class: 'img-circle'
-                - else
-                  = image_tag member.profile.image.url, class: 'img-circle no-avatar-pic'
-
-              = link_to user_profile_path(member), title: member.profile.first_name.titleize
-                h3 = member.profile.first_name.titleize
-
-              h3 class="text-total-credit-users-#{member.id}"
-                = currency_in_usd(member.total_credit)
-
-    ul.hidden-xs class="#{ 'small-img-saving' if group.members.size > 2 }"
+  ul.hidden-sm.hidden-md.hidden-lg class="#{ 'small-img-saving' if group.members.size > 2 }"
+    .swipe-group-saving
       li
         .col-md-12.text-center
           - if group.user_id.eql?(current_user.id)
@@ -69,7 +24,6 @@
                 = image_tag current_user.profile.image.url, class: 'img-circle'
               - else
                 = image_tag current_user.profile.image.url, class: 'img-circle no-avatar-pic'
-              / = image_tag current_user.profile.image.url, class: 'img-circle'
 
             = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
               h3 = current_user.profile.first_name.titleize
@@ -85,7 +39,6 @@
                 = image_tag group.user.profile.image.url, class: 'img-circle no-avatar-pic'
 
               / = image_tag group.user.profile.image.url, class: 'img-circle'
-
             = link_to user_profile_path(group.user), title: group.user.profile.first_name
               h3 = group.user.profile.first_name.titleize
 
@@ -96,7 +49,6 @@
         li
           .col-md-12.text-center
             = link_to user_profile_path(member), title: member.profile.first_name.titleize
-              / = image_tag member.profile.image.url, class: 'img-circle'
               - if member.profile.image.present?
                 = image_tag member.profile.image.url, class: 'img-circle'
               - else
@@ -108,7 +60,55 @@
             h3 class="text-total-credit-users-#{member.id}"
               = currency_in_usd(member.total_credit)
 
-    .col-md-12.text-center
-      h1.text-total-credits
-        | Total : &nbsp;
-        = currency_in_usd(group.total_credit)
+  ul.hidden-xs class="#{ 'small-img-saving' if group.members.size > 2 }"
+    li
+      .col-md-12.text-center
+        - if group.user_id.eql?(current_user.id)
+          = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
+            - if current_user.profile.image.present?
+              = image_tag current_user.profile.image.url, class: 'img-circle'
+            - else
+              = image_tag current_user.profile.image.url, class: 'img-circle no-avatar-pic'
+            / = image_tag current_user.profile.image.url, class: 'img-circle'
+
+          = link_to user_profile_path(current_user), title: current_user.profile.first_name.titleize
+            h3 = current_user.profile.first_name.titleize
+
+          h3 class="text-total-credit-users-#{current_user.id}"
+            = currency_in_usd(current_user.total_credit)
+
+        - else
+          = link_to user_profile_path(group.user), title: group.user.profile.first_name.titleize
+            - if group.user.profile.image.present?
+              = image_tag group.user.profile.image.url, class: 'img-circle'
+            - else
+              = image_tag group.user.profile.image.url, class: 'img-circle no-avatar-pic'
+
+            / = image_tag group.user.profile.image.url, class: 'img-circle'
+
+          = link_to user_profile_path(group.user), title: group.user.profile.first_name
+            h3 = group.user.profile.first_name.titleize
+
+          h3 class="text-total-credit-users-#{group.user.id}"
+            = currency_in_usd(group.user.total_credit)
+
+    - group.members.each do |member|
+      li
+        .col-md-12.text-center
+          = link_to user_profile_path(member), title: member.profile.first_name.titleize
+            / = image_tag member.profile.image.url, class: 'img-circle'
+            - if member.profile.image.present?
+              = image_tag member.profile.image.url, class: 'img-circle'
+            - else
+              = image_tag member.profile.image.url, class: 'img-circle no-avatar-pic'
+
+          = link_to user_profile_path(member), title: member.profile.first_name.titleize
+            h3 = member.profile.first_name.titleize
+
+          h3 class="text-total-credit-users-#{member.id}"
+            = currency_in_usd(member.total_credit)
+
+  .col-md-12.text-center
+    h1.text-total-credits
+      | Total : &nbsp;
+      = currency_in_usd(group.total_credit)

@@ -38,7 +38,11 @@ html lang="en"
     .hide
         = render 'partials/notice'
 
-    = yield
+    - if user_signed_in? && !current_user.admin?
+        .page-wrap
+            = yield
+    - else
+        = yield
     
     = render partial: 'partials/navbar'
 
