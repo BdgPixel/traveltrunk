@@ -87,14 +87,4 @@ module ApplicationHelper
 
     deal_string.html_safe
   end
-
-  def footer_height
-
-    if controller_name.eql?('home') && action_name.eql?('index')
-      "footer-height"
-    else
-      is_footer_hide = @is_footer_hide ? 'hide' : ''
-      "footer-absolute #{is_footer_hide}"
-    end
-  end
 end

@@ -18,7 +18,6 @@ class HomeController < ApplicationController
   		  @destinationable = @group || current_user
   		  @destination = @destinationable.destination
   		else
-		  	# @destination = params[:search_deals].to_dot if params[:search_deals]
 		  	@destination = Destination.new(session[:destination]) if session[:destination].present?
   		end
   	end
