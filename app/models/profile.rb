@@ -63,14 +63,13 @@ class Profile < ActiveRecord::Base
       hash['phone_number'] = nil
       hash['fax_number'] = nil
     end
-
     hash
   end
 
   def get_profile_hash(profile_params = nil)
     to_array = []
     to_hash = {}
-
+    
     if profile_params
       profile_array = [profile_params.paymentProfiles.first.billTo]
       

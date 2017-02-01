@@ -280,14 +280,99 @@ module AuthorizeNetLib
         request.transactionRequest.billTo.phoneNumber = nil
         request.transactionRequest.billTo.faxNumber = nil
       end
-
       request.transactionRequest.order = AuthorizeNet::API::OrderType.new(payment_params[:order][:invoice], payment_params[:order][:description])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
       
       response = @transaction.create_transaction(request)
 
-      unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
+      # unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
+      #   response_message = response.messages.messages.first.text
+
+      #   response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
+
+      #   # Check duplicate transaction, errorCode '11' as duplicate transaction
+      #   response_error_text = 'Please wait several minutes for another transaction' if response_error_code.eql?('11')
+        
+      #   error_messages = { 
+      #     response_message: response_message,
+      #     response_error_text: response_error_text,
+      #     response_error_code: response_error_code
+      #   }
+
+      #   raise RescueErrorsResponse.new(error_messages), response_error_code.eql?('11') ? '' : 'Failed to charge card.'
+      # end
+      
+      if response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
+        response_message = response.messages.messages.first.text
+
+        unless response.transactionResponse.responseCode.eql? '1'
+          response_status = 
+            case response.transactionResponse.responseCode
+            when '2'
+              'Declined'
+            when '3'
+              'Error'
+            when '4'
+              'Held for Review'
+            end
+
+          errors = []
+
+          address_verification = 
+            case response.transactionResponse.avsResultCode
+            when 'A'
+              'Address (Street) matches, ZIP does not'
+            when 'B'
+              'Address information not provided for AVS check'
+            when 'E'
+              'AVS error'
+            when 'G'
+              'Non-U.S. Card Issuing Bank'
+            when 'N'
+              'No Match on Address (Street) or ZIP'
+            when 'P'
+              'AVS not applicable for this transaction'
+            when 'R'
+              'Retry—System unavailable or timed out'
+            when 'S'
+              'Service not supported by issuer'
+            when 'U'
+              'Address information is unavailable'
+            when 'W'
+              'Nine digit ZIP matches, Address (Street) does not'
+            when 'Z'
+              'Five digit ZIP matches, Address (Street) does not'
+            end
+
+          errors << address_verification if address_verification
+
+          cvv_verification = 
+            case response.transactionResponse.cvvResultCode
+            when 'N'
+              'No Match'
+            when 'P'
+              'Not Processed'
+            when 'S'
+              'Should have been present'
+            when 'U'
+              'Issuer unable to process request'
+            end
+
+          errors << "CVV #{cvv_verification}" if cvv_verification
+          
+          if errors.present?
+            response_error_text = "The transaction is #{response_status}. Reasons: #{errors.join('. ')}"
+
+            error_messages = { 
+              response_message: 'Failed.',
+              response_error_text: response_error_text
+            }
+
+            raise RescueErrorsResponse.new(error_messages), response_error_text
+          end
+        end
+      else
         response_message = response.messages.messages.first.text
 
         response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse

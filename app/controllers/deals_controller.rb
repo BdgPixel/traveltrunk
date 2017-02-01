@@ -310,13 +310,14 @@ class DealsController < ApplicationController
       payment = AuthorizeNetLib::PaymentTransactions.new
       customer_authorize = AuthorizeNetLib::Customers.new
 
-      customer_profile = 
-        if current_user.customer
-          get_customer_profile = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
-          current_user.profile.get_profile_hash(get_customer_profile)
-        else
-          current_user.profile.get_profile_hash
-        end
+      customer_profile = current_user.profile.get_profile_hash
+        # old code for get customer authorize
+        # if current_user.customer
+        #   get_customer_profile = customer_authorize.get_customer_profile(current_user.customer.customer_profile_id)
+        #   current_user.profile.get_profile_hash(get_customer_profile)
+        # else
+        #   current_user.profile.get_profile_hash
+        # end
 
       response_payment = payment.charge(params_hash, customer_profile)
 
