@@ -144,3 +144,15 @@ gem 'acts-as-messageable'
 gem 'private_pub'
 
 gem 'thin'
+
+gem 'annotate'
+
+gem 'rubocop', require: false
+
+gem 'bullet', group: 'development'
+
+gem 'rack-mini-profiler'
+
+gem 'rubycritic', :require => false
+
+gem 'rails_best_practices'
