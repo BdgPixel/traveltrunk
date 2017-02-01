@@ -1,3 +1,24 @@
+# == Schema Information
+#
+# Table name: messages
+#
+#  id                         :integer          not null, primary key
+#  topic                      :string
+#  body                       :text
+#  received_messageable_id    :integer
+#  received_messageable_type  :string
+#  sent_messageable_id        :integer
+#  sent_messageable_type      :string
+#  opened                     :boolean          default(FALSE)
+#  recipient_delete           :boolean          default(FALSE)
+#  sender_delete              :boolean          default(FALSE)
+#  created_at                 :datetime
+#  updated_at                 :datetime
+#  ancestry                   :string
+#  recipient_permanent_delete :boolean          default(FALSE)
+#  sender_permanent_delete    :boolean          default(FALSE)
+#
+
 class CustomMessage < ActsAsMessageable::Message
   include PublicActivity::Model
 

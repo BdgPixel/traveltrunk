@@ -1,3 +1,17 @@
+# == Schema Information
+#
+# Table name: refunds
+#
+#  id              :integer          not null, primary key
+#  user_id         :integer
+#  trans_id        :string
+#  refund_trans_id :string
+#  confirmed       :string           default("pending")
+#  amount          :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#
+
 # Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
 
 one:
