@@ -6,24 +6,45 @@
 
 .wrapper-profile
   .container
-    .row
-      .col-sm-4.col-md-4.col-lg-3.col-sm-offset-3
-        .wrapper-img-profile
-          = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
+    - if @user.profile.present?
+      .row
+        .col-sm-4.col-md-4.col-lg-3.col-sm-offset-3
+          .wrapper-img-profile
+            = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
 
-      .col-sm-4.col-md-4.col-lg-6
-        .wrapper-user-name
-          .col-md-7.col-lg-8
-            h1 = @user.full_name
+        .col-sm-4.col-md-4.col-lg-6
+          .wrapper-user-name
+            .col-md-7.col-lg-8
+              h1 = @user.full_name
 
-            h4 = @user.profile.place_to_visit.try(:titleize) || 'Place to visit not specified'
+              h4 = @user.profile.place_to_visit.try(:titleize) || 'Place to visit not specified'
 
-            p
-              span.glyphicon.glyphicon-map-marker
+              p
+                span.glyphicon.glyphicon-map-marker
 
-              | &nbsp;
-              
-              b = @user.profile.home_airport.try(:titleize) || 'Home airport not specified'
+                | &nbsp;
+                
+                b = @user.profile.home_airport.try(:titleize) || 'Home airport not specified'
+    - else
+      / this section is for invited user, because they don't have profile yet
+      .row
+        .col-sm-4.col-md-4.col-lg-3.col-sm-offset-3
+          .wrapper-img-profile
+            = image_tag 'default_user.png', class: 'img-circle img-responsive'
+
+        .col-sm-4.col-md-4.col-lg-6
+          .wrapper-user-name
+            .col-md-7.col-lg-8
+              h1 No Name
+
+              h4 Place to visit not specified
+
+              p
+                span.glyphicon.glyphicon-map-marker
+
+                | &nbsp;
+                
+                b Home airport not specified
 
   .wrapper-profile-content
     .container
@@ -34,58 +55,98 @@
               .col-sm-offset-3.col-sm-6
                 h3.color-orange PERSONAL INFORMATION
                 
-                table.table.table-user-information.table-custom
-                  tbody
-                    tr
-                      td width='50%' Date of Birth
-                      td 
-                        | : &nbsp;
-                        = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
-                    tr
-                      td Gender:
-                      td
-                        | : &nbsp;
-                        = @user.profile.gender || 'Information not specified'
-                    tr
-                      td Address:
-                      td
-                        | : &nbsp;
-                        = @user.profile.address.try(:titleize) || 'Information not specified'
-                    
-                    - unless @user.profile.address_1.blank?
+                - if @user.profile.present?
+                  table.table.table-user-information.table-custom
+                    tbody
                       tr
-                        td Address 1:
+                        td width='50%' Date of Birth
+                        td 
+                          | : &nbsp;
+                          = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
+                      tr
+                        td Gender:
                         td
                           | : &nbsp;
-                          = @user.profile.address_1.try(:titleize) || 'Information not specified'
-
-                    - unless @user.profile.address_2.blank?
+                          = @user.profile.gender || 'Information not specified'
                       tr
-                        td Address 2:
+                        td Address:
                         td
                           | : &nbsp;
-                          = @user.profile.address_2.try(:titleize) || 'Information not specified'
+                          = @user.profile.address.try(:titleize) || 'Information not specified'
+                      
+                      - unless @user.profile.address_1.blank?
+                        tr
+                          td Address 1:
+                          td
+                            | : &nbsp;
+                            = @user.profile.address_1.try(:titleize) || 'Information not specified'
 
-                    tr
-                      td City:
-                      td
-                        | : &nbsp;
-                        = @user.profile.city || 'Information not specified'
-                    tr
-                      td State/Province:
-                      td
-                        | : &nbsp;
-                        = @user.profile.state || 'Information not specified'
-                    tr
-                      td Zip/Postal Code:
-                      td
-                        | : &nbsp;
-                        = @user.profile.postal_code || 'Information not specified'
-                    tr
-                      td County:
-                      td
-                        | : &nbsp;
-                        = @user.profile.country_name rescue 'Information not specified'
+                      - unless @user.profile.address_2.blank?
+                        tr
+                          td Address 2:
+                          td
+                            | : &nbsp;
+                            = @user.profile.address_2.try(:titleize) || 'Information not specified'
+
+                      tr
+                        td City:
+                        td
+                          | : &nbsp;
+                          = @user.profile.city || 'Information not specified'
+                      tr
+                        td State/Province:
+                        td
+                          | : &nbsp;
+                          = @user.profile.state || 'Information not specified'
+                      tr
+                        td Zip/Postal Code:
+                        td
+                          | : &nbsp;
+                          = @user.profile.postal_code || 'Information not specified'
+                      tr
+                        td County:
+                        td
+                          | : &nbsp;
+                          = @user.profile.country_name rescue 'Information not specified'
+                - else
+                  / this section is for invited user, because they don't have profile yet
+                  table.table.table-user-information.table-custom
+                    tbody
+                      tr
+                        td width='50%' Date of Birth
+                        td 
+                          | : &nbsp;
+                          | Information not specified
+                      tr
+                        td Gender:
+                        td
+                          | : &nbsp;
+                          | Information not specified
+                      tr
+                        td Address:
+                        td
+                          | : &nbsp;
+                          | Information not specified
+                      tr
+                        td City:
+                        td
+                          | : &nbsp;
+                          | Information not specified
+                      tr
+                        td State/Province:
+                        td
+                          | : &nbsp;
+                          | Information not specified
+                      tr
+                        td Zip/Postal Code:
+                        td
+                          | : &nbsp;
+                          | Information not specified
+                      tr
+                        td County:
+                        td
+                          | : &nbsp;
+                          | Information not specified
                         
               .col-sm-offset-3.col-sm-6
                 h3.color-orange SAVINGS PLAN
@@ -116,7 +177,7 @@
 
                 - else
                   .alert.alert-info
-                    | #{ @user.profile.try(:full_name) || 'No Name' } doesn't have saving plan
+                    | #{ @user.profile.try(:full_name) || 'This user' } doesn't have saving plan
 
               .col-sm-offset-3.col-sm-6
                 span.pull-right
