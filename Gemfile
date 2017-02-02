@@ -88,6 +88,20 @@ gem "non-stupid-digest-assets"
 
 gem 'web-console', '~> 3.1', '>= 3.1.1', group: :development
 
+group :development do
+  gem 'annotate'
+
+  gem 'rubocop', require: false
+
+  gem 'bullet'
+
+  gem 'rack-mini-profiler'
+
+  gem 'rubycritic', :require => false
+
+  gem 'rails_best_practices'
+end
+
 group :development, :test do
   gem 'rspec', '~> 3.4'
 
@@ -144,15 +158,3 @@ gem 'acts-as-messageable'
 gem 'private_pub'
 
 gem 'thin'
-
-gem 'annotate'
-
-gem 'rubocop', require: false
-
-gem 'bullet', group: 'development'
-
-gem 'rack-mini-profiler'
-
-gem 'rubycritic', :require => false
-
-gem 'rails_best_practices'
