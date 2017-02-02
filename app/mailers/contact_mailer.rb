@@ -3,6 +3,6 @@ class ContactMailer < ApplicationMailer
 
   def send_message(contact_params)
     @contact = contact_params
-    mail to: "msalomon@traveltrunkusa.com", subject: contact_params[:subject], from: contact_params[:email]
+    mail to: "maryssa@traveltrunk.us", subject: contact_params[:subject], from: contact_params[:email]
   end
 end
