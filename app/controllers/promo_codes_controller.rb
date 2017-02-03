@@ -34,7 +34,7 @@ class PromoCodesController < ApplicationController
               Transaction.create(
                 transaction_type: 'used_promo_code',
                 amount: amount_in_cents, 
-                customer_id: @promo_code.user.customer.customer_id,
+                customer_id: @promo_code.user.try(:customer).try(:customer_id),
                 invoice_id: invoice_cc,
                 user_id: @promo_code.user.id
               )
