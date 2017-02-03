@@ -4,7 +4,7 @@
   $('.search_mobile span.text').text("<%= init_title_destination(@destination) %>");
 <% end %>
 
-$("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
+$("#dealsHotelsList").html("<%= j render 'hotels_list', hotels_list: @hotels_list %>");
 
 <% unless @hotels_list.first[:error_response] %>
   initDealsPage(<%= raw @hotels_list.first[:num_of_page] %>, <%= raw @hotels_list.first[:num_of_hotel] %>);

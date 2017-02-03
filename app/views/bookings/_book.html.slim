@@ -9,10 +9,10 @@
 
       .modal-body
         .row
-          - if @error_response
+          - if error_response
             #error_response.alert.alert-info
               strong Notice: &nbsp;
-              = @error_response
+              = error_response
           - else
             .col-md-12
               .col-md-12
@@ -32,8 +32,8 @@
                     | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
                 p
-                  #roomRating data-rating="#{@hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
-                  .rating-text style="clear:both" = pluralize(@hotel_information["HotelSummary"]["hotelRating"], "rating")
+                  #roomRating data-rating="#{hotel_information["HotelSummary"]["hotelRating"]}" style="float:left"
+                  .rating-text style="clear:both" = pluralize(hotel_information["HotelSummary"]["hotelRating"], "rating")
 
                 p.hotel-info-addr
                 p.hotel-info-city
@@ -54,7 +54,7 @@
                     td.list-of-dates
                 hr
                 .form-book
-                  = render "bookings/form_selected_room"
+                  = render "bookings/form_selected_room", terms_and_conditions_url: terms_and_conditions_url
 
                 .form-vote
                   .form-group
@@ -63,7 +63,7 @@
                       br
                       span.cancellation-policy
 
-                  #shareHotelInfo data-share-image="#{@featured_image['url'] if @featured_image.present?}"
+                  #shareHotelInfo data-share-image="#{featured_image['url'] if featured_image.present?}"
                   span#voteConfirmationText Would you like to agree to this hotel? Let your friends know you like this option
                 
                   br

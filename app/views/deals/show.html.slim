@@ -211,11 +211,12 @@
 /               .col-md-8.col-md-offset-4
 /                 = f.submit "Send", class: "btn btn-saving btn-green"
 
-= render partial: 'bookings/book'
+= render partial: 'bookings/book', locals: { error_response: @error_response, hotel_information: @hotel_information,
+  featured_image: @featured_image, terms_and_conditions_url: @terms_and_conditions_url }
 
 - if user_signed_in?
-  = render partial: 'savings/form_add_saving'
+  = render partial: 'savings/form_add_saving', locals: { error_response: @error_response }
 - else
-  = render partial: 'bookings/form_book_for_guest'
+  = render partial: 'bookings/form_book_for_guest', locals: { error_response: @error_response }
 
-= render partial: 'savings/transfer_success'
+= render partial: 'savings/transfer_success', locals: { formatted_amount: @formatted_amount }

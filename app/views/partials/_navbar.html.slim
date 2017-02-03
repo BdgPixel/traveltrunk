@@ -106,10 +106,10 @@
 
               li.dropdown.dropdown-top-active
                 a.dropdown-toggle aria-expanded="false" aria-haspopup="true" data-toggle="dropdown" href="#" role="button"
-                  - if @notification_count.zero?
-                    span.notification-bubble.hide = @notification_count
+                  - if notification_count.zero?
+                    span.notification-bubble.hide = notification_count
                   - else
-                    span.notification-bubble = @notification_count
+                    span.notification-bubble = notification_count
 
                   - if current_user.no_profile?
                     = image_tag "thumb_default_user.png", class: "img-circle", width:"20px"
@@ -124,7 +124,7 @@
 
                 ul.dropdown-menu.dropdown-top-login
                   li = link_to 'My Profile', profile_path
-                  li = link_to "Notification (#{@notification_count})", notifications_path, id: "notificationCountLink"
+                  li = link_to "Notification (#{notification_count})", notifications_path, id: "notificationCountLink"
                   li = link_to 'Help', helps_path
                   li.divider role="separator"
                   li = link_to 'Sign Out', destroy_user_session_path, method: :delete

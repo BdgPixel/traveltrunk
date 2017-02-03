@@ -167,13 +167,13 @@ div
           br
           br
 
-    = simple_form_for @bank_account, method: @bank_account.new_record? ? :post : :put, url: @bank_account.new_record? ? create_bank_account_path : update_bank_account_path(anchor: :bank_account), html: { id: "paymentAccountProfile" } do |f|
+    = simple_form_for bank_account, method: bank_account.new_record? ? :post : :put, url: bank_account.new_record? ? create_bank_account_path : update_bank_account_path(anchor: :bank_account), html: { id: "paymentAccountProfile" } do |f|
 
       .row
         .col-md-4
           .form-group
             = f.input :credit_card, input_html: { class: "form-control  input-custom card_number", autocomplete: 'off' }
-            .credit-card-error.payment-account-error = @error_card_number
+            .credit-card-error.payment-account-error = error_card_number
 
         .col-md-2
           .form-group
@@ -198,7 +198,7 @@ div
 
             .input-group
               .input-group-addon $
-              = text_field_tag :formatted_amount_transfer, @bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
+              = text_field_tag :formatted_amount_transfer, bank_account.try(:amount_transfer), class: 'form-control input-custom amount'
               = f.hidden_field :amount_transfer, data: { stripe: 'amount-transfer' }
 
             .amount-error.payment-account-error

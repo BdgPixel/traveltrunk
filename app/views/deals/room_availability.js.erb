@@ -1,4 +1,4 @@
-$("#roomAvailability").html("<%= j render partial: 'room_availability' %>");
+$("#roomAvailability").html("<%= j render partial: 'room_availability', locals: { room_availability: @room_availability, error_response: @error_response, first_room_image: @first_room_image, error_category_room_message: @error_category_room_message, likes_grouped: @likes_grouped } %>");
 
 var rooms = <%= raw @room_availability.to_json %>;
 var europeCountries = <%= raw @europe_countries.to_json %>;

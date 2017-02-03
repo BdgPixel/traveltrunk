@@ -40,7 +40,7 @@
               .col-md-12
                 .wrapper-search-deal.wrapper-home-search-deal.hidden-xs
                   .home-search-deal
-                    = render 'deals/form_search'
+                    = render 'deals/form_search', method_name: @method_name, destination: @destination, is_remote: @is_remote
 
               .wrapper-where-search.hidden-sm.hidden-md.hidden-lg
                 .col-md-12
@@ -232,6 +232,6 @@ section.couple.parallax-image2.hidden-xs
 /         button.close aria-label="Close" data-dismiss="modal" type="button"
 /           span aria-hidden="true"  &times;
 /         h4#myModalLabel.modal-title Search
-/       = render 'deals/form_search_mobile'
+/       = render 'deals/form_search_mobile', method_name: @method_name, destination: @destination, is_remote: @is_remote
 
 / = render 'partials/footer'

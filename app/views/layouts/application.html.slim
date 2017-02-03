@@ -44,7 +44,7 @@ html lang="en"
     - else
         = yield
     
-    = render partial: 'partials/navbar'
+    = render partial: 'partials/navbar', locals: { notification_count: @notification_count }
 
     #loading
 

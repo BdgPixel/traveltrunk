@@ -45,8 +45,8 @@
 
   .amenities
     .title-mobile Amenities
-    - if @error_category_room_message
-      h4 @error_category_room_message
+    - if error_category_room_message
+      h4 error_category_room_message
 
     - if room["ValueAdds"].present?
       - if room["ValueAdds"]["@size"].eql? "1"
@@ -80,14 +80,14 @@
     .title-row
     = button_actions_in_deals_detail(room)
 
-    - if @likes_grouped.present?
+    - if likes_grouped.present?
       .members-voted.text-center
         - if current_user.group || current_user.joined_groups.present?
-          - if @likes_grouped[room['rateCode'].to_s]
+          - if likes_grouped[room['rateCode'].to_s]
             small
-              = members_of_voted(@likes_grouped[room['rateCode'].to_s])
+              = members_of_voted(likes_grouped[room['rateCode'].to_s])
               | &nbsp;agreed on this option
             
-            - if @likes_grouped[room['rateCode'].to_s].detect { |like| like.user_id.eql? current_user.id }
+            - if likes_grouped[room['rateCode'].to_s].detect { |like| like.user_id.eql? current_user.id }
               .btn-cancel-vote
-                = link_to 'Cancel Vote', deals_like_path(@room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"])
+                = link_to 'Cancel Vote', deals_like_path(room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"])

@@ -1,4 +1,4 @@
-$('.modal-body').html("<%= j render 'book' %>");
+$('.modal-body').html("<%= j render 'book', error_response: @error_response, hotel_information: @hotel_information, featured_image: @featured_image %>");
 $('.modal-header h4').text("<%= @room_availability['hotelName'] %>");
 
 if ($('#roomRating').length > 0) {

@@ -1,15 +1,15 @@
-- if @hotels_list.first[:welcome_state].eql? 'no_profile'
+- if hotels_list.first[:welcome_state].eql? 'no_profile'
   br
   .welcome-message.col-md-8.col-md-offset-2.text-justify = welcome_user_first_sign_in
-- elsif @hotels_list.first[:welcome_state].eql? 'no_destination'
+- elsif hotels_list.first[:welcome_state].eql? 'no_destination'
   br
   .welcome-message.col-md-8.col-md-offset-2.text-center
     | Enter a destination to start your search
 - else
-  - if @hotels_list.first[:error_response].blank?
+  - if hotels_list.first[:error_response].blank?
     .deals-page data-page="1"
       .row
-        - @hotels_list.first[:response].each_with_index do |page, index|
+        - hotels_list.first[:response].each_with_index do |page, index|
           div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
             .wrapper-price-deals
               - page.compact.each do |group|
@@ -84,15 +84,15 @@
               small 
                 | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
-          - if @hotels_list.first[:num_of_hotel] > 15
+          - if hotels_list.first[:num_of_hotel] > 15
             .wrapper-pagination
-              #valueOfPagination data-num-of-pages="#{@hotels_list.first[:num_of_page]}" data-num-of-hotels="#{@hotels_list.first[:num_of_hotel]}"
+              #valueOfPagination data-num-of-pages="#{hotels_list.first[:num_of_page]}" data-num-of-hotels="#{hotels_list.first[:num_of_hotel]}"
               #pagination
 
               p#pagination-info.text-center
-                | 1 - 15 of #{@hotels_list.first[:num_of_hotel]} Hotels
+                | 1 - 15 of #{hotels_list.first[:num_of_hotel]} Hotels
 
   - else
     #error_response.alert.alert-info style="margin-top: 20px"
       strong Notice: &nbsp;
-      = @hotels_list.first[:error_response]
+      = hotels_list.first[:error_response]

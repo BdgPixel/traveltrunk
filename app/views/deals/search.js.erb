@@ -4,7 +4,7 @@
   $("#slideToggleLink").text("Where would you like to be?");
 <% end %>
 
-$("#dealsHotelsList").html("<%= j render 'hotels_list' %>");
+$("#dealsHotelsList").html("<%= j render 'hotels_list', hotels_list: @hotels_list %>");
 
 if ($('.arrow-downs').length) {
   $('#slideToggleLink').css('padding-bottom', 0);

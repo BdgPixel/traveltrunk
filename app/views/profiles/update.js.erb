@@ -7,7 +7,7 @@
   <% end %>
 <% else %>
   $.get("<%= edit_profile_path %>", function(data) {
-    $('#showBankAccount').html("<%= j render 'profiles/form_modal_bank_account', is_remote: true %>");
+    $('#showBankAccount').html("<%= j render 'profiles/form_modal_bank_account', is_remote: true, bank_account: @bank_account, error_card_number: @error_card_number %>");
     $('.error').text('');
     
     if ($('form#paymentAccountProfile').length > 0)

@@ -52,8 +52,8 @@
       .col-md-4.col-offset-4
         = render partial: 'savings/form_invite_friend'
 
-    = render 'savings/form_add_saving'
-    = render 'savings/transfer_success'
+    = render 'savings/form_add_saving', error_response: @error_response
+    = render 'savings/transfer_success', formatted_amount: @formatted_amount
     = render 'promo_codes/form_modal_activation_promo_code'
 
     / later this feature will be used
@@ -108,8 +108,8 @@
         = render partial: 'savings/form_invite_friend'
 
     - if user_signed_in?
-      = render 'savings/form_add_saving'
+      = render 'savings/form_add_saving', error_response: @error_response
     - else
     
-    = render 'savings/transfer_success'
+    = render 'savings/transfer_success', formatted_amount: @formatted_amount
     = render 'promo_codes/form_modal_activation_promo_code'
