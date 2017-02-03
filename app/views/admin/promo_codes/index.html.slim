@@ -27,9 +27,9 @@
             td = number_to_currency promo_code.amount.to_f
             td
               - if promo_code.user.profile
-                = "#{promo_code.user.profile.full_name} <#{promo_code.user.email}>"
+                = "#{promo_code.user.profile.full_name} <#{promo_code.user_email}>"
               - else
-                = promo_code.user.email
+                = promo_code.user_email
 
             td = promo_code.exp_date.strftime("%B %d, %Y")
             td = titleize_text promo_code.displayed_status

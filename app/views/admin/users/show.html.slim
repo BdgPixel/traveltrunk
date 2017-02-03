@@ -10,21 +10,21 @@
       .row
         .col-sm-4.col-md-4.col-lg-3.col-sm-offset-3
           .wrapper-img-profile
-            = image_tag @user.profile.image.url, class: 'img-circle img-responsive' unless @user.profile.image.nil?
+            = image_tag @user.profile_image.url, class: 'img-circle img-responsive' unless @user.profile_image.nil?
 
         .col-sm-4.col-md-4.col-lg-6
           .wrapper-user-name
             .col-md-7.col-lg-8
               h1 = @user.full_name
 
-              h4 = @user.profile.place_to_visit.try(:titleize) || 'Place to visit not specified'
+              h4 = @user.profile_place_to_visit.try(:titleize) || 'Place to visit not specified'
 
               p
                 span.glyphicon.glyphicon-map-marker
 
                 | &nbsp;
                 
-                b = @user.profile.home_airport.try(:titleize) || 'Home airport not specified'
+                b = @user.profile_home_airport.try(:titleize) || 'Home airport not specified'
     - else
       / this section is for invited user, because they don't have profile yet
       .row
@@ -62,47 +62,47 @@
                         td width='50%' Date of Birth
                         td 
                           | : &nbsp;
-                          = @user.profile.birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
+                          = @user.profile_birth_date.to_time.strftime('%B %d, %Y') rescue 'Information not specified'
                       tr
                         td Gender:
                         td
                           | : &nbsp;
-                          = @user.profile.gender || 'Information not specified'
+                          = @user.profile_gender || 'Information not specified'
                       tr
                         td Address:
                         td
                           | : &nbsp;
-                          = @user.profile.address.try(:titleize) || 'Information not specified'
+                          = @user.profile_address.try(:titleize) || 'Information not specified'
                       
-                      - unless @user.profile.address_1.blank?
+                      - unless @user.profile_address_1.blank?
                         tr
                           td Address 1:
                           td
                             | : &nbsp;
-                            = @user.profile.address_1.try(:titleize) || 'Information not specified'
+                            = @user.profile_address_1.try(:titleize) || 'Information not specified'
 
-                      - unless @user.profile.address_2.blank?
+                      - unless @user.profile_address_2.blank?
                         tr
                           td Address 2:
                           td
                             | : &nbsp;
-                            = @user.profile.address_2.try(:titleize) || 'Information not specified'
+                            = @user.profile_address_2.try(:titleize) || 'Information not specified'
 
                       tr
                         td City:
                         td
                           | : &nbsp;
-                          = @user.profile.city || 'Information not specified'
+                          = @user.profile_city || 'Information not specified'
                       tr
                         td State/Province:
                         td
                           | : &nbsp;
-                          = @user.profile.state || 'Information not specified'
+                          = @user.profile_state || 'Information not specified'
                       tr
                         td Zip/Postal Code:
                         td
                           | : &nbsp;
-                          = @user.profile.postal_code || 'Information not specified'
+                          = @user.profile_postal_code || 'Information not specified'
                       tr
                         td County:
                         td
@@ -158,7 +158,7 @@
                         td width='50%' Plan Name
                         td 
                           | : &nbsp;
-                          = @user.subscription.plan_name
+                          = @user.subscription_plan_name
                       tr
                         td Amount
                         td 
@@ -168,7 +168,7 @@
                         td Frequency
                         td 
                           | : &nbsp;
-                          = @user.bank_account.transfer_frequency if @user.bank_account
+                          = @user.bank_account_transfer_frequency if @user.bank_account
                       tr
                         td Total savings
                         td 

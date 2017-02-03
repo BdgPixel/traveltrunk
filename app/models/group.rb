@@ -26,6 +26,9 @@ class Group < ActiveRecord::Base
   before_destroy :destroy_likes
   # after_destroy :destory_messages
 
+  # delegate the law of demeter rails best practice
+  delegate :total_credit, to: :user, prefix: true
+
   def should_generate_new_friendly_id?
     slug.blank? || name_changed?
   end

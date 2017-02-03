@@ -67,11 +67,13 @@ class User < ActiveRecord::Base
          :recoverable, :rememberable, :trackable, :validatable, :async,
          :omniauthable, :omniauth_providers => [:facebook, :google_oauth2]
 
-  # after_create :send_mail
-  
-  def send_mail
-    UserMailer.welcome(self).deliver_now
-  end
+  # delegate the law of demeter rails best practice
+  delegate :first_name, :last_name, :image, :birth_date, :gender, :address, :address_1, :home_airport, :address_2,
+    :city, :state, :postal_code, :place_to_visit,
+    to: :profile, prefix: true
+
+  delegate :plan_name, to: :subscription, prefix: true
+  delegate :transfer_frequency, :amount_transfer, to: :bank_account, prefix: true
 
   def no_profile?
     self.profile.nil? || self.profile.new_record?
@@ -180,7 +182,7 @@ class User < ActiveRecord::Base
   def self.list_of_user_collections
     user_collections = []
     self.includes(:profile).select(:id).where(admin: false).map do |user|
-      user_collections << ["#{user.profile.first_name} #{user.profile.last_name}", user.id].to_a if user.profile
+      user_collections << ["#{user.profile_first_name} #{user.profile_last_name}", user.id].to_a if user.profile
     end
     user_collections
   end

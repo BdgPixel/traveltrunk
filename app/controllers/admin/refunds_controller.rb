@@ -13,7 +13,7 @@ class Admin::RefundsController < Admin::ApplicationController
     if @response_refund_transaction.nil?
       redirect_to admin_refunds_url, notice: @error_response
     else
-      total_credit = @refund.user.total_credit - @refund.amount
+      total_credit = @refund.user_total_credit - @refund.amount
       refund_trans_id = @response_refund_transaction.transactionResponse.transId
 
       if @refund.update_attributes(confirmed: 'yes', refund_trans_id: refund_trans_id)
@@ -36,7 +36,7 @@ class Admin::RefundsController < Admin::ApplicationController
             recipient: @refund.user, 
             parameters: { 
               amount: @refund.amount, 
-              total_credit: @refund.user.total_credit,
+              total_credit: @refund.user_total_credit,
               trans_id: @refund.trans_id,
               refund_trans_id: refund_trans_id
             }

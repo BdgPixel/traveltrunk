@@ -21,6 +21,8 @@ class PromoCode < ActiveRecord::Base
 
   attr_accessor :exp_month, :exp_year, :card_number, :stripe_token, :cvc
 
+  delegate :email, to: :user, prefix: true
+
   def displayed_status
     today = Date.today
 

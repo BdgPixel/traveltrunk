@@ -43,7 +43,7 @@
               h3 = group.user.profile.first_name.titleize
 
             h3 class="text-total-credit-users-#{group.user.id}"
-              = currency_in_usd(group.user.total_credit)
+              = currency_in_usd(group.user_total_credit)
 
       - group.members.each do |member|
         li
@@ -90,7 +90,7 @@
             h3 = group.user.profile.first_name.titleize
 
           h3 class="text-total-credit-users-#{group.user.id}"
-            = currency_in_usd(group.user.total_credit)
+            = currency_in_usd(group.user_total_credit)
 
     - group.members.each do |member|
       li

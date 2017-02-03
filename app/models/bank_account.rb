@@ -195,7 +195,7 @@ class BankAccount < ActiveRecord::Base
 
     amount = self.amount_transfer.to_f
     interval_frequency, interval_count = self.transfer_type
-    plan_name = "#{user.profile.first_name.titleize} #{self.transfer_frequency} Savings Plan"
+    plan_name = "#{user.profile_first_name.titleize} #{self.transfer_frequency} Savings Plan"
 
     {
       ref_id: AuthorizeNetLib::Global.generate_random_id('ref'),

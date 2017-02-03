@@ -77,6 +77,6 @@ class PaymentProcessorMailer < ApplicationMailer
   def refund_approved(refund, transaction_type)
     @refund = refund
     @transaction_type = transaction_type
-    mail to: @refund.user.email, subject: 'Refund Approved'
+    mail to: @refund.user_email, subject: 'Refund Approved'
   end
 end

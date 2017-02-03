@@ -18,4 +18,7 @@ class Refund < ActiveRecord::Base
   belongs_to :user
 
   paginates_per 10
+
+  # delegate the law of demeter rails best practice
+  delegate :total_credit, to: :user, prefix: true
 end
