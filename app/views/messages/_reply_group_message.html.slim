@@ -1,12 +1,12 @@
 .col-sm-12.overflow-message
-  .wrapper-group-chat 
+  .wrapper-group-chat
     - if action_type.eql? 'receive'
       .chat-receiver-account
         = image_tag message.sent_messageable.profile.image.url, class: "img-circle"
 
 
     .message class="#{action_type}"
-      i.chat-name class="#{action_type.eql?('receive') ? 'text-left' : 'text-right'}" 
+      i.chat-name class="#{action_type.eql?('receive') ? 'text-left' : 'text-right'}"
         small = sender_name
 
       .message-content class="#{action_type}"

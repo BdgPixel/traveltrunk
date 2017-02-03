@@ -1,6 +1,6 @@
 class StaticPagesController < ApplicationController
   layout 'static_page'
-  
+
   def about_us; end
 
   def our_mission; end

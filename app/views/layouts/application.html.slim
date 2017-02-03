@@ -11,7 +11,7 @@ html lang="en"
         meta property="og:image" itemprop="image primaryImageOfPage" content="#{@featured_image['url']}"
 
     link href=("/favicon.ico") rel=("shortcut icon") type='image/x-icon'
-    
+
     = stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track' => true
     = yield :css
     = stylesheet_link_tag 'https://cdnjs.cloudflare.com/ajax/libs/mediaelement/3.0.1/mediaelementplayer.min.css'
@@ -43,12 +43,12 @@ html lang="en"
             = yield
     - else
         = yield
-    
+
     = render partial: 'partials/navbar', locals: { notification_count: @notification_count }
 
     #loading
 
     = yield :javascripts
-    
+
     - unless user_signed_in? && current_user.admin?
         = render 'partials/footer'

@@ -1,6 +1,6 @@
 - content_for :javascripts
   = javascript_include_tag "reservations"
-  
+
 .container
   .row
     br
@@ -18,13 +18,13 @@
 
       #cancelReservationMessage
 
-      #accordion.panel-group aria-multiselectable="true" role="tablist" 
+      #accordion.panel-group aria-multiselectable="true" role="tablist"
         .panel.panel-default
-          #headingOne.panel-heading role="tab" 
+          #headingOne.panel-heading role="tab"
             h4.panel-title
-              a aria-controls="collapseOne" aria-expanded="true" data-toggle="collapse" href="#collapseOne" role="button" 
+              a aria-controls="collapseOne" aria-expanded="true" data-toggle="collapse" href="#collapseOne" role="button"
                 | Profile Informations
-          #collapseOne.panel-collapse.collapse.in aria-labelledby="headingOne" role="tabpanel" 
+          #collapseOne.panel-collapse.collapse.in aria-labelledby="headingOne" role="tabpanel"
             .panel-body
               table.table.table-hover
                 tr
@@ -47,11 +47,11 @@
                   td
         br
         .panel.panel-default
-          #headingTwo.panel-heading role="tab" 
+          #headingTwo.panel-heading role="tab"
             h4.panel-title
-              a aria-controls="collapseTwo" aria-expanded="true" data-toggle="collapse" href="#collapseTwo" role="button" 
+              a aria-controls="collapseTwo" aria-expanded="true" data-toggle="collapse" href="#collapseTwo" role="button"
                 | Hotel And Room Informations
-          #collapseTwo.panel-collapse.collapse.in aria-labelledby="headingTwo" role="tabpanel" 
+          #collapseTwo.panel-collapse.collapse.in aria-labelledby="headingTwo" role="tabpanel"
             .panel-body
               h4 = @hotel_confirmation["Hotel"]["name"]
               p
@@ -90,7 +90,7 @@
                   td = expedia_reserved_for @hotel_confirmation['ReservationGuest']
                 tr
                   th Status
-                  td 
+                  td
                     b#statusCode = status_reservation @hotel_confirmation["status"]
                 tr
                   th Room Confirmation Number
@@ -100,13 +100,13 @@
                   td
         br
         .panel.panel-default
-          #headingThree.panel-heading role="tab" 
+          #headingThree.panel-heading role="tab"
             h4.panel-title
-              a aria-controls="collapseThree" aria-expanded="true" data-toggle="collapse" href="#collapseThree" role="button" 
+              a aria-controls="collapseThree" aria-expanded="true" data-toggle="collapse" href="#collapseThree" role="button"
                 | Charges
-          #collapseThree.panel-collapse.collapse.in aria-labelledby="headingThree" role="tabpanel" 
+          #collapseThree.panel-collapse.collapse.in aria-labelledby="headingThree" role="tabpanel"
             .panel-body
-              p style="margin:0px" 
+              p style="margin:0px"
                 font style="font-family:Tahoma,sans-serif;font-size:15px"
                   b Cost per night per room
               p style="margin-top:0"
@@ -118,7 +118,7 @@
                   th.text-center Date
                   th.text-center Room
                   th.text-center Total per night
-                
+
                 - @list_of_dates.each_with_index do |date, key|
                   tr
                     td = date
@@ -130,23 +130,23 @@
                   th Total per room
                   td.text-right = number_to_currency @hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
                   td.text-right = number_to_currency @hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['@nightlyRateTotal']
-            
+
               table.table
                 tbody
                   = expedia_surcharge @hotel_confirmation
 
-              p style="margin:0px" 
-                font style="font-family:Tahoma,sans-serif;font-size:15px" 
+              p style="margin:0px"
+                font style="font-family:Tahoma,sans-serif;font-size:15px"
                   b Total cost for entire stay
               p style="margin-top:0"
-                font style="font-family:Tahoma,sans-serif;font-size:11px" 
+                font style="font-family:Tahoma,sans-serif;font-size:11px"
                   | (including tax recovery charges and service fees)
 
               table.table
                 tbody
                   tr
-                    td style="border-radius:4px;" 
-                      p style="margin:0"  
+                    td style="border-radius:4px;"
+                      p style="margin:0"
                         font style="font-family:Tahoma,sans-serif;font-size:25px"
                           b = number_to_currency @hotel_confirmation['RateInfos']['RateInfo']['ChargeableRateInfo']['@total']
                           b &nbsp;PAID
@@ -155,28 +155,28 @@
                         p style="margin-top:0;color: #337ab7"
                           font style="font-family:Tahoma,sans-serif;font-size:11px"
                             = get_hotel_fees @hotel_confirmation["RateInfos"]["RateInfo"]["HotelFees"]
-              p 
+              p
                 font All prices are displayed in $ USD
               p style="margin:20px 0 0 0"
                 font
                   b Payment Information
-              p style="margin-top:0" 
+              p style="margin-top:0"
                 font We have charged your credit card for the full payment of this reservation.
               br
               p
-                font style="font-family:Tahoma,sans-serif;font-size:13px" 
+                font style="font-family:Tahoma,sans-serif;font-size:13px"
                   | The above charges to your credit card were made by Travelscape, LLC. View our full&nbsp;
                   = link_to "Terms & Conditions", "http://www.travelnow.com/templates/496147/terms-of-use?lang=en&amp;currency=USD" , target: "_blank"
         br
         .panel.panel-default
-          #headingFour.panel-heading role="tab" 
+          #headingFour.panel-heading role="tab"
             h4.panel-title
-              a aria-controls="collapseFour" aria-expanded="true" data-toggle="collapse" href="#collapseFour" role="button" 
+              a aria-controls="collapseFour" aria-expanded="true" data-toggle="collapse" href="#collapseFour" role="button"
                 | Cancellation Policy
-          #collapseFour.panel-collapse.collapse.in aria-labelledby="headingFour" role="tabpanel" 
+          #collapseFour.panel-collapse.collapse.in aria-labelledby="headingFour" role="tabpanel"
             .panel-body
               p = @hotel_confirmation['RateInfos']['RateInfo']['cancellationPolicy']
-              
+
       .row
         .col-md-2.pull-right
           - if @hotel_confirmation["status"].eql? 'PS'
@@ -187,10 +187,10 @@
           br
 
 #cancelReservation.modal.fade aria-labelledby="myModalLabel" role="dialog" tabindex="-1" data-backdrop="static"
-  .modal-dialog role="document" 
+  .modal-dialog role="document"
     .modal-content
       .modal-header
-        button.close aria-label="Close" data-dismiss="modal" type="button" 
+        button.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true" &times;
         h4#cancelReservation.modal-title Cancel Reservation
 

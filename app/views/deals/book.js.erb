@@ -3,7 +3,7 @@ $('.modal-header h4').text("<%= @room_availability['hotelName'] %>");
 
 if ($('#roomRating').length > 0) {
   var rating_count = parseFloat($('#roomRating').data('rating'));
-  
+
   $('#roomRating').raty({
     half: true,
     readOnly: true,

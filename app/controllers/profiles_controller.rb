@@ -3,11 +3,12 @@ class ProfilesController < ApplicationController
   before_action :set_profile, only: [:show]
 
   def show
-    @hide_informations = false
+    @hide_informations = params[:id] ? true : false
+    # @hide_informations = false
 
-    if params[:id]
-      @hide_informations = true
-    end
+    # if params[:id]
+    #   @hide_informations = true
+    # end
   end
 
   def edit
@@ -17,12 +18,11 @@ class ProfilesController < ApplicationController
 
   def update
     @bank_account = current_user.bank_account || current_user.build_bank_account
-
     current_user.profile.validate_personal_information = true
 
     respond_to do |format|
       if current_user.update_attributes(user_params)
-        if current_user.bank_account.new_record?
+        if @bank_account.new_record?
           format.html { redirect_to edit_profile_url(anchor: 'bank_account'),
             notice: 'Profile was successfully updated.' }
         else
@@ -31,6 +31,7 @@ class ProfilesController < ApplicationController
       else
         format.html { render :edit }
       end
+
       format.js
     end
   end
@@ -46,7 +47,7 @@ class ProfilesController < ApplicationController
         if @bank_account.errors[:authorize_net_error].present?
           @error_card_number = @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
         end
-        
+
         format.html { render :edit }
         format.js
       end
@@ -55,7 +56,7 @@ class ProfilesController < ApplicationController
 
   def update_bank_account
     @bank_account = current_user.bank_account
-      
+
     respond_to do |format|
       if @bank_account.update_attributes(bank_account_params)
         format.html { redirect_to profile_url, notice: 'Savings plan was successfully updated.' }
@@ -64,7 +65,7 @@ class ProfilesController < ApplicationController
         if @bank_account.errors[:authorize_net_error].present?
           @error_card_number =  @bank_account.errors[:authorize_net_error].first.split(' (6) ').join(' ')
         end
-        
+
         format.html { render :edit }
         format.js
       end
@@ -81,7 +82,7 @@ class ProfilesController < ApplicationController
 
   private
     def set_profile
-      @user = 
+      @user =
         if params[:id]
           User.find params[:id]
         else

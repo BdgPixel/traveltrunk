@@ -70,10 +70,10 @@ class PaymentsController < ApplicationController
 
           if ['suspended', 'cancelled', 'terminated', 'declined'].include? subscription_status
             recurring_authorize.cancel_subscription(response['x_subscription_id'], customer_profile_id)
-            
+
             user.create_activity(
-              key: 'payment.subscription_failed', 
-              owner: user, 
+              key: 'payment.subscription_failed',
+              owner: user,
               recipient: user,
               parameters: {
                 subscription_id: response['x_subscription_id'],
@@ -97,7 +97,7 @@ class PaymentsController < ApplicationController
   def get_authorize_net_webhook
     response = request.parameters
     PaymentProcessorMailer.delay.send_request_params_webhook(response)
-    
+
     render nothing: true, status: 200
   end
 end

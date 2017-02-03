@@ -39,7 +39,7 @@
                 i.glyphicon.glyphicon-trash
             td = link_to 'Detail', admin_user_path(user), class: 'btn btn-saving btn-orange-soft'
             td = link_to 'Correct Amount', 'javascript:void(0)', class: 'btn btn-saving btn-yellow btn-correct-amount', data: { id: user.id, current_amount: user.total_credit_in_usd }, style: 'background-color'
-                
+
     = paginate @users
 
 
@@ -67,7 +67,7 @@
           = f.label :total_credit, 'Amount'
           .form-group
             = f.input_field :total_credit, class: "form-control", placeholder: "$0.0", autofocus: true
-            
+
             span.error = flash[:error]
 
         .modal-footer

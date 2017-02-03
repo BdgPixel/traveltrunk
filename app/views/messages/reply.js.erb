@@ -41,7 +41,7 @@ $('span.errors').html('');
 
     $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
       notification_is_read: @notification.is_read, message: @reply_message %>");
-    
+
     if($('#privateChatBox').length > 0){
       $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @reply_message.sender_name,
         action_type: 'receive', message: @reply_message %>");

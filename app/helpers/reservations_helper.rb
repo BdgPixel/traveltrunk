@@ -28,7 +28,7 @@ module ReservationsHelper
 
   def expedia_nightly_rates_per_room(rates, key_date)
     tags = ""
-    
+
     if rates["@size"].to_i > 1
       rates["NightlyRate"].each_with_index do |rate, key_rate|
         tags += "<td class='text-right'>#{number_to_currency rate["@rate"]}</td>" if key_date.eql? key_rate
@@ -68,7 +68,7 @@ module ReservationsHelper
     else
       tags += "<tr><td>"
         tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>"
-          
+
           if cost['@type'].eql? 'SalesTax'
             tags += "<b>Sales Tax </b>"
             tags += "<p style='margin-top:0'>"

@@ -53,15 +53,15 @@ class Destination < ActiveRecord::Base
 
   def self.get_session_search_hashes(destination)
     today_utc = Time.now.utc.to_date
-    
-    arrival_date = 
+
+    arrival_date =
       if destination['arrival_date'].is_a?(Date)
         destination['arrival_date']
       else
         Date.parse destination['arrival_date']
       end
 
-    departure_date = 
+    departure_date =
       if destination['departure_date'].is_a?(Date)
         destination['departure_date']
       else

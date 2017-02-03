@@ -93,11 +93,11 @@ class Profile < ActiveRecord::Base
   def get_profile_hash(profile_params = nil)
     to_array = []
     to_hash = {}
-    
+
     if profile_params
       profile_array = [profile_params.paymentProfiles.first.billTo]
-      
-      profile_array.first.roxml_references.each do |xml_reference| 
+
+      profile_array.first.roxml_references.each do |xml_reference|
         to_array << [xml_reference.opts.accessor, profile_array.map(&:"#{xml_reference.opts.accessor}").first]
       end
 
@@ -106,7 +106,7 @@ class Profile < ActiveRecord::Base
     else
       to_hash = change_to_hash(self)
     end
-    
+
     to_hash
   end
 end

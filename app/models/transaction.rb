@@ -58,7 +58,7 @@ class Transaction < ActiveRecord::Base
               trans_id: transaction_id,
               transaction_type: 'payment.recurring'
             )
-            
+
             PaymentProcessorMailer.delay.subscription_charged(user.id, transaction.amount) if transaction.save
           end
         elsif ['communicationError', 'declined', 'generalError', 'settlementError'].include? transaction_detail.transaction.transactionStatus
@@ -69,8 +69,8 @@ class Transaction < ActiveRecord::Base
           subscription_status = recurring_authorize.get_subscription_status(subscription_id)
 
           user.create_activity(
-            key: 'payment.subscription_failed', 
-            owner: user, 
+            key: 'payment.subscription_failed',
+            owner: user,
             recipient: user,
             parameters: {
               subscription_id: subscription_id,
@@ -80,7 +80,7 @@ class Transaction < ActiveRecord::Base
           )
 
           subscription = Subscription.where(user_id: user.id, subscription_id: subscription_id).first
-          
+
           if subscription
             subscription.destroy
             Bank_account.where(user_id: user.id).delete_all
@@ -128,7 +128,7 @@ class Transaction < ActiveRecord::Base
 
     def set_activity
       unless ["refund", "void"].include? self.transaction_type
-        activity_key = 
+        activity_key =
           if self.transaction_type.eql? "add_to_saving"
             'payment.manual'
           elsif self.transaction_type.eql? "used_promo_code"
@@ -136,7 +136,7 @@ class Transaction < ActiveRecord::Base
           else
             'payment.recurring'
           end
-        
+
         total_credit = self.user.total_credit / 100.0
 
         if self.is_referrer
@@ -144,13 +144,13 @@ class Transaction < ActiveRecord::Base
             group = self.user.group || self.user.joined_groups.first
             total_credit_group = group.total_credit / 100.0
 
-            members = 
+            members =
               if self.user.group
                 group.try(:members).to_a << self.user
               elsif self.user.joined_groups.present?
                 group.try(:members).to_a << group.user
               end
-            
+
             # send notif to all members
             members.each { |member| _create_activity(self.user, member, activity_key, total_credit_group) }
           else
@@ -164,14 +164,14 @@ class Transaction < ActiveRecord::Base
 
     def _create_activity(owner, recipient, activity_key, total_credit)
       owner.create_activity(
-        key: activity_key, 
+        key: activity_key,
         owner: owner,
-        recipient: recipient, 
-        parameters: { 
-          amount: self.amount / 100.0, 
+        recipient: recipient,
+        parameters: {
+          amount: self.amount / 100.0,
           total_credit: total_credit,
           trans_id: self.trans_id,
-          is_request_refund: false, 
+          is_request_refund: false,
           is_referrer: self.is_referrer,
           hotel_name: self.hotel_name,
           room_description: self.room_description

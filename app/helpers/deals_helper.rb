@@ -55,7 +55,7 @@ module DealsHelper
 
   def nightly_rates_per_room(rates, key_date, in_use_mailer = false)
     tags = ""
-    
+
     if rates["@size"].to_i > 1
        rates["NightlyRate"].each_with_index do |rate, key_rate|
         if in_use_mailer
@@ -103,7 +103,7 @@ module DealsHelper
     else
       tags += "<tr><td class='border-right' style='border-right-width:1px;border-right-style:solid;border-color: #e2e2e2'>"
         tags += "<font style='font-family:Tahoma,sans-serif;font-size:13px'>"
-          
+
           if cost['@type'].eql? 'SalesTax'
             tags += "<b>Sales Tax </b>"
             tags += "<p style='margin-top:0'>"
@@ -137,7 +137,7 @@ module DealsHelper
   end
 
   def get_hotel_fees(hotel_fees)
-    fee_content = 
+    fee_content =
       if hotel_fees["@size"].to_i > 1
         hotel_fees["HotelFee"].map { |hotel_fee| "+#{hotel_fee['@amount']} due at hotel (#{hotel_fee['@description'].titleize})" }.join('<br>')
       else
@@ -176,7 +176,7 @@ module DealsHelper
   def button_actions_in_deals_detail(room)
     link = ''
 
-    rate_code, room_type_code = [room["rateCode"], 
+    rate_code, room_type_code = [room["rateCode"],
       if room["RoomType"]
         room["RoomType"]["@roomCode"]
       else
@@ -188,7 +188,7 @@ module DealsHelper
     is_credit = @total_credit >= (total_room.to_f * 100).to_i
 
     if @group
-      if @group.user_id.eql? current_user.id 
+      if @group.user_id.eql? current_user.id
         user_type = 'owner'
       else
         user_type = 'member'
@@ -199,7 +199,7 @@ module DealsHelper
           current_member_liked = false
         end
       end
-      
+
       likes_count = @likes_grouped[room['rateCode'].to_s].try(:count) || 0
       allow_booking = likes_count.eql?(@group.members.count)
       members_count = (@group.members.count + 1)
@@ -208,7 +208,7 @@ module DealsHelper
     else
       if user_signed_in?
         if @total_credit < (total_room.to_f * 100).to_i
-          path = 
+          path =
             if current_user.profile.home_airport.nil?
               edit_profile_path(no_profile: true)
             else
@@ -233,7 +233,7 @@ module DealsHelper
 
   def button_actions_in_deals_detail_ori(room)
     link = ''
-    
+
     if @group
       likes_count = @likes_grouped[room['rateCode'].to_s].try(:count) || 0
       is_less_credit_balance = @total_credit < (room['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'].to_f * 100).to_i
@@ -247,7 +247,7 @@ module DealsHelper
       else
         if likes = @likes_grouped[room['rateCode'].to_s]
           member_liked = likes.detect { |like| like.user_id.eql? current_user.id } ? true : false
-          
+
           link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], total_group_credit: (@total_credit / 100.0), allow_booking: likes_count.eql?(@group.members.count), is_group: true, member_liked: member_liked, members_count: (@group.members.count + 1), is_balance: is_less_credit_balance.eql?(true) ? false : true }
         else
           link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"], total: room["RateInfos"]["RateInfo"]["ChargeableRateInfo"]["@total"], total_group_credit: (@total_credit / 100.0), allow_booking: likes_count.eql?(@group.members.count), is_group: true, members_count: (@group.members.count + 1) }

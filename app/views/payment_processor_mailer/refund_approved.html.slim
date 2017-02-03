@@ -1,10 +1,10 @@
 p#refundApproved
   | Hi #{@refund.user.try(:profile).try(:first_name).try(:titleize)},
-  
+
   br
   br
 
-  | Your transaction with amount #{currency_in_usd(@refund.amount)} (Transaction ID #{@refund.trans_id}) has been #{@transaction_type.eql?('refund') ? 'refunded' : 'voided' }. 
+  | Your transaction with amount #{currency_in_usd(@refund.amount)} (Transaction ID #{@refund.trans_id}) has been #{@transaction_type.eql?('refund') ? 'refunded' : 'voided' }.
 
   br
   br
@@ -13,7 +13,7 @@ p#refundApproved
 
   br
   br
-    
+
   | Sincerely,
   br
   = render 'partials/footer_mailer'

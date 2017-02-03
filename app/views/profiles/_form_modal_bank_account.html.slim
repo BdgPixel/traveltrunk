@@ -1,7 +1,7 @@
 .row
   .col-md-12#bank_account
     p
-      | You decide how much you want to save, and how often. With regular, automatic deposits into  your Travel Trunk account, you’ll be amazed how quickly your funds build up! 
+      | You decide how much you want to save, and how often. With regular, automatic deposits into  your Travel Trunk account, you’ll be amazed how quickly your funds build up!
 
 - if current_user.profile.birth_date.blank? || current_user.errors.any?
   .row
@@ -83,7 +83,7 @@
 
               .modal-body
                 p Are you sure you want to stop reoccurring transaction on this account?
-                
+
               .modal-footer
                 button.button.btn.btn-saving.btn-green data-dismiss="modal" type="button" No, keep my savings plan.
                 | &nbsp;&nbsp;

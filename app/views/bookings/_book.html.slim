@@ -26,9 +26,9 @@
                   i
                     | *This image may not be that exact room titled above
                     br
-                
+
                 i
-                  small 
+                  small
                     | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
                 p
@@ -65,15 +65,15 @@
 
                   #shareHotelInfo data-share-image="#{featured_image['url'] if featured_image.present?}"
                   span#voteConfirmationText Would you like to agree to this hotel? Let your friends know you like this option
-                
+
                   br
                   br
                   #agreeTermCondition.form-group
                     = check_box_tag :agree, 1, false
-                    small 
+                    small
                       | &nbsp;I agree to the&nbsp;
                       = link_to 'Terms & Conditions', 'http://developer.ean.com/terms/en/', target: '_blank'
-                  
+
                   / later form remote true will be used
                   / change form to remote true if want enable message feature
                   = simple_form_for :like, url: deals_like_path(params[:id]), method: :get, remote: false do |f|
@@ -85,11 +85,11 @@
 
                     = submit_tag "Let's Go", id: 'linkVote', class: 'btn btn-saving btn-green'
                     / | &nbsp;&nbsp;&nbsp;&nbsp;
-                    
+
                     = link_to 'I want to keep looking', 'javascript:void(0)', data: { dismiss: 'modal' }
                     / button.btn.btn-saving.btn-orange-soft aria-label="Close" data-dismiss="modal" type="button"
                     /   | No
-                
+
                 #membersVotedList.row.col-md-12
                   .row.col-md-6
                     p

@@ -16,5 +16,5 @@ namespace :scheduler do
   task :check_pending_reservations => :environment do
     reservations = Reservation.check_pending_reservations
     puts reservations.inspect
-  end 
+  end
 end

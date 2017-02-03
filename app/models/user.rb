@@ -117,14 +117,14 @@ class User < ActiveRecord::Base
       .where(owner_id: self.id, key: 'messages.private')
       .group('activities.recipient_id').order('created_at DESC').limit(3)
       .map(&:recipient_id)
-    
+
     User.includes(:profile).where(id: recent_contact_ids)
       .order(recent_contact_ids.map{ |user_id| "ID=#{user_id} DESC" }.join(', '))
   end
 
   def expedia_room_params(hotel_id, destination, group, rate_code = nil, room_type_code = nil)
     room_hash = {}
-    
+
     if destination
       current_search = destination.get_search_params(group)
 
@@ -163,7 +163,7 @@ class User < ActiveRecord::Base
       .where("users.admin = ?", false).order("user_group_id DESC, profiles.first_name ASC").limit(10)
       .map do |u|
         {
-          id: u.id, name: "#{u.first_name || 'No Name'}", 
+          id: u.id, name: "#{u.first_name || 'No Name'}",
           email: u.email, image_url: u.profile.try(:image_url) || '/assets/default_user.png',
           group_id: u.user_group_id
         }

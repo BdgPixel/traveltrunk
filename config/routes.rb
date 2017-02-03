@@ -13,7 +13,7 @@ Rails.application.routes.draw do
   # end
 
   resources :reservations, only: [:index] do
-    collection do 
+    collection do
       post :detail
       post :cancel
     end
@@ -50,14 +50,14 @@ Rails.application.routes.draw do
   get 'static_pages/check_sound'
 
   get 'home/index'
-  
+
   get 'home/search'
 
   get  'privacy_policy' => 'policies#privacy'
   get  'refund_policy' => 'policies#refund'
 
   post 'refund_policy' => 'policies#create_contact'
-  
+
   get  'refunds/create'
 
   get  'promo_codes/activation'

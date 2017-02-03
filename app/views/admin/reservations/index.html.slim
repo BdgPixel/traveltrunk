@@ -1,7 +1,7 @@
 .pad-top-97
-.container  
+.container
   h3 Refund Reservations
-  
+
   br
 
   - if @reservations.empty?
@@ -27,7 +27,7 @@
           tr
             td = reservation.created_at.strftime("%Y/%m/%d %H:%M:%S %p")
             td
-              - if reservation.reservation_type.eql? 'guest' 
+              - if reservation.reservation_type.eql? 'guest'
                 = reservation.reservation_type.titleize
               - else
                 = reservation.user.full_name
@@ -37,10 +37,10 @@
             td = currency_in_usd(reservation.total)
             td = reservation.reservation_type.titleize
             td
-              span class="#{status_label(reservation.status)}" 
+              span class="#{status_label(reservation.status)}"
                 = reservation.status.titleize
             td
               - if reservation.status.eql?('reserved') && reservation.user_id.present?
                 = link_to 'Refund', admin_reservation_path(reservation), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure refund this reservation ?'}, :method => :put
-             
+
     = paginate @reservations

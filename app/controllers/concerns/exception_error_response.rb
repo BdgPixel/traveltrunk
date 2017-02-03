@@ -1,7 +1,7 @@
 module ExceptionErrorResponse
   def error_message(e)
     if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-      @error_response = 
+      @error_response =
         if e.error_message[:response_error_text]
           "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
         else

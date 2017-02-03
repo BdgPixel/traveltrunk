@@ -9,7 +9,7 @@
           = image_tag room["RoomImages"]["RoomImage"]["url"].gsub('http', 'https'), class: 'room-image'
         - else
           = image_tag room["RoomImages"]["RoomImage"].first["url"].gsub('http', 'https'), class: 'room-image'
-        
+
       - else
         - if first_room_image
           = image_tag first_room_image, class: 'room-image'
@@ -87,7 +87,7 @@
             small
               = members_of_voted(likes_grouped[room['rateCode'].to_s])
               | &nbsp;agreed on this option
-            
+
             - if likes_grouped[room['rateCode'].to_s].detect { |like| like.user_id.eql? current_user.id }
               .btn-cancel-vote
                 = link_to 'Cancel Vote', deals_like_path(room_availability["hotelId"], rate_code: room["rateCode"], room_type_code: room["RoomType"]["@roomCode"])

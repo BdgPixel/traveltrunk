@@ -3,7 +3,7 @@
 		.description
 			span
 				| You have used promo code. #{number_to_currency(activity.parameters[:amount])} successfully added to your TravelTrunk account. Your total credit is #{number_to_currency(activity.parameters[:total_credit])}&nbsp;
-		
-		.date 
+
+		.date
 			span
 				= activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

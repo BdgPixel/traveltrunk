@@ -3,7 +3,7 @@ class RefundsController < ApplicationController
 
   def create
     refund = current_user.refunds.new(trans_id: params[:trans_id], amount: @activity.parameters[:amount] * 100)
-    
+
     if refund.save
       @activity.parameters[:is_request_refund] = true
       @activity.save

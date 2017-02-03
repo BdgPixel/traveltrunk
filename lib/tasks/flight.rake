@@ -47,7 +47,7 @@ namespace :flight do
         puts "Already save logo to store for image #{dwlogo}"
         puts "======================"
       end
-    end  
+    end
   end
 
 end

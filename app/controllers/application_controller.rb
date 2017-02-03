@@ -30,7 +30,7 @@ class ApplicationController < ActionController::Base
     unless request.xhr?
       if user_signed_in?
         @messages = current_user.messages.conversations
-        
+
         @message_count = current_user.messages.conversations
           .select{ |c| !c.opened && !c.sent_messageable_id.eql?(current_user.id) }.count
       end

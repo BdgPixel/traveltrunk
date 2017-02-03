@@ -1,19 +1,19 @@
 p#contactUsMailer
-  / b Sender name: 
+  / b Sender name:
   / = [@contact[:first_name], @contact[:last_name]].join(' ')
   br
   br
 
-  b Sender email: 
+  b Sender email:
   = @contact[:email]
 
   br
   br
   br
-  
+
   b Message:
 
   br
   br
-  
+
   = @contact[:message]

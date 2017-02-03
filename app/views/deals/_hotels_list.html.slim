@@ -13,8 +13,8 @@
           div[id="page-#{index + 1}" class="deal-pages" style="#{ 'display: none;' unless index.zero? }"]
             .wrapper-price-deals
               - page.compact.each do |group|
-                - group.compact.each do |hotel| 
-                  - if hotel["is_notaffordable"] == false       
+                - group.compact.each do |hotel|
+                  - if hotel["is_notaffordable"] == false
                     .wrap-hotel-list
                       .col-xs-12.col-sm-6.col-md-4.pad-left-75.pad-right-75
                         .price-deals data-toggle="tooltip" data-placement="right" title="What you see is what you pay. Price includes all taxes and fees based on hotel and nights."
@@ -81,7 +81,7 @@
 
           div.text-center
             i
-              small 
+              small
                 | It is the responsibility of the hotel chain and/or the individual property to ensure the accuracy of the photos displayed. Travel Trunk is not responsible for any inaccuracies in the photos.
 
           - if hotels_list.first[:num_of_hotel] > 15

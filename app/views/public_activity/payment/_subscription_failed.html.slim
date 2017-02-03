@@ -4,6 +4,6 @@
       span
         | Your subscription with ID #{activity.parameters[:subscription_id]} is #{activity.parameters[:subscription_status].downcase} #{subscription_failed_reason(activity.parameters[:subscription_message])}. We've deleted your savings plan and you need to create a new one with correct payment information this time. &nbsp;
 
-    .date 
+    .date
       span
         = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

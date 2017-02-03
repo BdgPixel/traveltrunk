@@ -44,7 +44,7 @@ class BankAccount < ActiveRecord::Base
     begin
       response = payment_transaction.auth_credit_card(self.user.profile, self.credit_card,
         self.cvc, self.exp_card)
-      
+
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         self.errors.add(:authorize_net_error, response.messages.messages.first.text)
       end
@@ -78,8 +78,8 @@ class BankAccount < ActiveRecord::Base
     subscription = Subscription.where(user_id: self.user_id).first
 
     params_recurring = get_recurring_params
-    
-    params_recurring[:customer][:customer_id] = 
+
+    params_recurring[:customer][:customer_id] =
       if customer
         customer.customer_id
       else
@@ -98,7 +98,7 @@ class BankAccount < ActiveRecord::Base
           Customer.create(customer_id: params_recurring[:customer][:customer_id], user_id: user.id, customer_profile_id: response.profile.customerProfileId)
         end
 
-        subscription_params = 
+        subscription_params =
           {
             subscription_id: response.subscriptionId,
             amount: params_recurring[:plan][:amount] * 100,
@@ -118,7 +118,7 @@ class BankAccount < ActiveRecord::Base
       logger.error e
 
       if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-        @error_response = 
+        @error_response =
           if e.error_message[:response_error_text]
             "#{e.error_message[:response_message]} #{response_error_code}"
           else
@@ -154,7 +154,7 @@ class BankAccount < ActiveRecord::Base
         if credit_card_changed || self.changed.include?('amount_transfer') || self.changed.include?('transfer_frequency')
           selected_params = params_recurring.select { |k, v| [:subscription_id, :plan].include?(k) }
           subscription_hash = user_subscription.get_params_hash(selected_params)
-          
+
           start_date = Time.now.in_time_zone("Pacific Time (US & Canada)")
           start_date = (start_date + eval("#{params_recurring[:plan][:interval_length]}.#{params_recurring[:plan][:interval_unit]}")).strftime("%Y-%m-%d")
           params_recurring[:customer][:customer_id] = customer.customer_id
@@ -163,17 +163,17 @@ class BankAccount < ActiveRecord::Base
 
           subscription_hash.merge!(subscription_id: subscription_response.subscriptionId)
           user_subscription.update(subscription_hash)
-          
+
           if customer_payment_profile
             AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(user_subscription.subscription_id, customer_profile.customerProfileId)
           end
-        end 
+        end
       end
     rescue => e
       logger.error e
 
       if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-        @error_response = 
+        @error_response =
           if e.error_message[:response_error_text]
             "#{e.error_message[:response_message]} #{response_error_code}"
           else
@@ -224,7 +224,7 @@ class BankAccount < ActiveRecord::Base
         country: profile.country_code,
       },
       order: {
-        invoice_number: AuthorizeNetLib::Global.generate_random_id('inv') 
+        invoice_number: AuthorizeNetLib::Global.generate_random_id('inv')
       },
     }
   end
@@ -246,19 +246,19 @@ class BankAccount < ActiveRecord::Base
         PaymentProcessorMailer.delay.cancel_subscription(self.user.id)
 
         user.create_activity key: 'payment.unsubscription', owner: self.user, recipient: self.user
-        
+
         AuthorizeNetLib::RecurringBilling.delay.cancel_other_subscriptions(nil, customer_profile_id)
       rescue => e
         logger.error e.message
-        
+
         if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-          @error_response = 
+          @error_response =
             if e.error_message[:response_error_text]
               "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
             else
               e.error_message[:response_message].split('-').last.strip
             end
-            
+
           self.errors.add(:authorize_net_error, @error_response)
           false
         else

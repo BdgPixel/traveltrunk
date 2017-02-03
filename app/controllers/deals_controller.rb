@@ -21,7 +21,7 @@ class DealsController < ApplicationController
   def index
     current_user.build_profile unless current_user.profile
     @bank_account = current_user.bank_account || current_user.build_bank_account
-    
+
     if request.xhr?
       set_search_data
       respond_to :js
@@ -30,7 +30,7 @@ class DealsController < ApplicationController
 
   def search
     session[:customer_session_id] = @hotels_list.first[:customer_session_id]
-    
+
     respond_to do |format|
       format.html
       format.js
@@ -42,7 +42,7 @@ class DealsController < ApplicationController
 
     expedia_params_hash = { hotelId: params[:id] }
     @terms_and_conditions_url = "http://developer.ean.com/terms/en/"
-    
+
     @hotel_information = Expedia::Hotels.information(expedia_params_hash).first[:response]
     @title = @hotel_information['HotelSummary']['name']
 
@@ -230,7 +230,7 @@ class DealsController < ApplicationController
         itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
         room_reservation = itinerary_response[:response]["Itinerary"]
         reservation_params = set_reservation_params(room_reservation, arrival_date, departure_date, true)
-        
+
         reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest'))
         reservation.save
 
@@ -242,7 +242,7 @@ class DealsController < ApplicationController
       end
     else
       reservation_params = set_reservation_params(@reservation, arrival_date, departure_date)
-     
+
       reservation = Reservation.new(reservation_params.merge(reservation_type: 'guest', email: customer_params[:email_saving], status_code: @reservation['reservationStatusCode']))
 
       reservation.save
@@ -283,7 +283,7 @@ class DealsController < ApplicationController
 
   def guest_booking
     if customer_params[:card_number].eql?('5401999999999999') || Luhn.valid?(customer_params[:card_number])
-      create_book_for_guest 
+      create_book_for_guest
     else
       @error_response = 'Invalid credit card number'
     end
@@ -295,17 +295,17 @@ class DealsController < ApplicationController
       exp_year = params[:update_credit][:exp_year][-2, 2]
       invoice = AuthorizeNetLib::Global.generate_random_id('inv')
 
-      params_hash = { 
+      params_hash = {
         amount: params[:update_credit][:amount],
         card_number: params[:update_credit][:card_number],
         exp_date: "#{exp_month}#{exp_year}",
         cvv: params[:update_credit][:cvv],
-        order: { 
+        order: {
           invoice: invoice,
           description: 'Add to Saving'
         }
       }
-      
+
       payment = AuthorizeNetLib::PaymentTransactions.new
       customer_authorize = AuthorizeNetLib::Customers.new
 
@@ -328,7 +328,7 @@ class DealsController < ApplicationController
           amount: amount_in_cents,
           invoice_id: invoice,
           customer_id: customer_id,
-          transaction_type: 'add_to_saving', 
+          transaction_type: 'add_to_saving',
           ref_id: response_payment.refId,
           trans_id: response_payment.transactionResponse.transId,
           is_referrer: params[:is_referrer] ? true : false,
@@ -340,7 +340,7 @@ class DealsController < ApplicationController
           @user_total_credit = current_user.total_credit / 100.0
           @transaction_amount = transaction.amount / 100.0
 
-          @total_credit = 
+          @total_credit =
             if @group
               @group.total_credit / 100.0
             else
@@ -419,7 +419,7 @@ class DealsController < ApplicationController
         @room_availability = room_response[:response]
         @first_room_image = get_first_room_image(@room_availability)
         @total_credit = 0
-        
+
         @error_category_room_message = room_response[:category_room]
         @error_response = room_response[:error_response]
       end
@@ -430,7 +430,7 @@ class DealsController < ApplicationController
 
   def like
     @hotel_id = params[:id]
-    
+
     respond_to do |format|
       if @like.present?
         @like.destroy
@@ -453,10 +453,10 @@ class DealsController < ApplicationController
             recipient: joined_group.user, parameters: { hotel_id: @hotel_id, hotel_name: params[:hotel_name] }
 
           # later this feature will be used
-          # body_message = 
+          # body_message =
           #   tmp_body = "[shared: #{params[:share_image]}|#{params[:hotel_name]}|#{request.referer}]"
           #   tmp_body << "#{current_user.profile.full_name} has agreed to this hotel and room type"
-            
+
           # members = @group.all_members
           # message_hash = { topic: 'Group Message', body: body_message }
 
@@ -513,7 +513,7 @@ class DealsController < ApplicationController
   def create_destination
     arrival_date = Date.strptime(destination_params[:arrival_date], "%m/%d/%Y")
     departure_date = Date.strptime(destination_params[:departure_date], "%m/%d/%Y")
-    
+
     if params[:search_deals][:destination_string_hide]
       custom_params = destination_with_hide_params
     else
@@ -544,7 +544,7 @@ class DealsController < ApplicationController
     def set_search_data
       Expedia::Hotels.current_user = current_user
 
-      @hotels_list = 
+      @hotels_list =
         if user_signed_in?
           Expedia::Hotels.list(@destination, @group)
         else
@@ -593,7 +593,7 @@ class DealsController < ApplicationController
     end
 
     def customer_params
-      params_require = 
+      params_require =
         if params[:guest_booking]
           'guest_booking'
         elsif params[:update_credit]
@@ -601,7 +601,7 @@ class DealsController < ApplicationController
         else
           'confirmation_book'
         end
-      
+
       params.require(params_require.to_sym).permit(:email_saving, :first_name, :last_name, :address, :city,
         :state, :zip, :country, :total, :hotel_id, :card_type, :formatted_amount, :arrival_date, :departure_date,
         :departure_date, :room_type_code, :rate_key, :bed_type, :smoking_preferences, :card_number, :cvv, :exp_month, :exp_year,
@@ -694,7 +694,7 @@ class DealsController < ApplicationController
     end
 
     def set_destination_to_session(destination)
-      session[:destination] = { 
+      session[:destination] = {
         'destination_string' => destination.destination_string,
         'city' => destination.city,
         'state_province_code' => destination.state_province_code,
@@ -709,7 +709,7 @@ class DealsController < ApplicationController
 
     def expedia_room_hashes(hotel_id, destination, rate_code = nil, room_type_code = nil)
       room_hash = {}
-      
+
       if destination
         current_search = Destination.get_session_search_hashes(destination)
 
@@ -732,7 +732,7 @@ class DealsController < ApplicationController
           }
         }
       end
-      
+
       room_hash
     end
 

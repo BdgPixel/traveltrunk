@@ -26,14 +26,14 @@ class PromoCodesController < ApplicationController
           else
             if @promo_code.status.eql?('available')
               @promo_code.update_attributes(status: 'used')
-             
+
               amount_in_cents = (@promo_code.amount.to_f * 100).to_i
 
               invoice_cc = AuthorizeNetLib::Global.generate_random_id('inv_upc')
 
               Transaction.create(
                 transaction_type: 'used_promo_code',
-                amount: amount_in_cents, 
+                amount: amount_in_cents,
                 customer_id: @promo_code.user.try(:customer).try(:customer_id),
                 invoice_id: invoice_cc,
                 user_id: @promo_code.user.id

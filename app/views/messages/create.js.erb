@@ -41,12 +41,12 @@ $('span.errors').html('');
 
   <% publish_to "/private_messages/#{@message.received_messageable_id}" do %>
     lowLag.play('new_inbox');
-    
+
     $('#message-<%= @first_message.try(:id) %>').remove();
 
     $('.messages-wrapper').prepend("<%= j render 'message', action_type: 'receive',
       notification_is_read: @notification.is_read, message: @message %>");
-    
+
     if($('#privateChatBox').length > 0){
       $('#privateChatBox').append("<%= j render 'reply_message', sender_name: @message.sender_name,
         action_type: 'receive', message: @message %>");

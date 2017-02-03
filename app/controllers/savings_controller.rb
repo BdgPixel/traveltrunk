@@ -12,7 +12,7 @@ class SavingsController < ApplicationController
     if params[:open_group_chat] && @group.message.present?
       @group.message.conversation.first.read_notification!(current_user.id)
     end
-    
+
     get_message_notifications
   end
 end

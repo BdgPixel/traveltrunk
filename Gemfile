@@ -120,13 +120,13 @@ group :development, :test do
   gem 'quiet_assets'
 
   gem 'capistrano',         require: false
-  
+
   gem 'capistrano-rvm',     require: false
-  
+
   gem 'capistrano-rails',   require: false
-  
+
   gem 'capistrano-bundler', require: false
-  
+
   gem 'capistrano-passenger'
 
   gem 'capistrano-sidekiq'

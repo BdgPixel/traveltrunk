@@ -22,14 +22,14 @@ window.location = "<%= deals_show_url(params[:id]) %>";
 
 <% publish_to "/group_messages/#{ @group.id }" do %>
   lowLag.play('new_inbox');
-  
+
   var senderId = parseInt('<%= @message.sent_messageable_id %>');
   var currentUserId = $('#currentUserId').data('user-id');
 
   if($('#currentUserId').data('user-id') !== senderId){
     $('#message-<%= @first_message.try(:id) %>').remove();
     $('.messages-wrapper').prepend("<%= j render 'messages/message', action_type: 'receive', notification_is_read: false, message: @message %>");
-    
+
     if($('#groupChatBox').length > 0){
       // append new chat
       $('#groupChatBox').append("<%= j render 'messages/reply_group_message', sender_name: @message.sender_name, action_type: 'receive', message: @message %>");

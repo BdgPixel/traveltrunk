@@ -1,12 +1,12 @@
 .notif-background
-  .description 
+  .description
     span
       = link_to activity.owner.try(:profile).try(:first_name).try(:titleize), user_profile_path(activity.owner) if activity.owner
 
       | &nbsp;
 
       | would like you to join #{activity.owner.try(:profile).try(:pronoun, 'possesive') || 'his / her' } trip.
-      
+
       | &nbsp;
 
       - if activity.trackable
@@ -18,7 +18,7 @@
         | (deleted)
 
       | &nbsp;
-      
-  .date 
+
+  .date
     span
       = activity.created_at.strftime("%B %e, %Y time: %I:%M:%S %P")

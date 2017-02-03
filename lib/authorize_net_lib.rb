@@ -14,7 +14,7 @@ module AuthorizeNetLib
       random_id = "#{string_uniqe}_#{SecureRandom.urlsafe_base64(10)}"
     end
   end
-  
+
   # Customer Information Manager (CIM)
   class Customers < Global
     def create_profile(customer_params)
@@ -23,7 +23,7 @@ module AuthorizeNetLib
       request.profile = AuthorizeNet::API::CustomerProfileType.new(
         customer_params[:merchant_customer_id], customer_params[:description], customer_params[:email], nil, nil
       )
-      
+
       response = @transaction.create_customer_profile(request)
       error_params, message_params = [response.messages, 'Failed to create a new customer profile.']
       RescueErrorsResponse::get_error_messages(error_params, message_params)
@@ -71,7 +71,7 @@ module AuthorizeNetLib
       response = @transaction.delete_customer_payment_profile(request)
       error_params, message_params = [response.messages, "Failed to delete payment profile with profile id #{customer_payment_profile_id}"]
       RescueErrorsResponse::get_error_messages(error_params, message_params)
-      
+
       response
     end
  end
@@ -89,7 +89,7 @@ module AuthorizeNetLib
       request.subscription = AuthorizeNet::API::ARBSubscriptionType.new(full_name, nil, plan_params[:amount], 0.00)
       request.subscription.paymentSchedule = AuthorizeNet::API::PaymentScheduleType.new(
         AuthorizeNet::API::PaymentScheduleType::Interval.new(
-          plan_params[:interval_length], 
+          plan_params[:interval_length],
           plan_params[:interval_unit]
         ),
         plan_params[:start_date],
@@ -108,13 +108,13 @@ module AuthorizeNetLib
       request.subscription.order = AuthorizeNet::API::OrderType.new(
         recurring_params[:order][:invoice_number], 'Recurring Billing'
       )
-      
+
       request.subscription.customer = AuthorizeNet::API::CustomerDataType.new(
         AuthorizeNet::API::CustomerTypeEnum::Individual,
         customer_params[:customer_id],
         customer_params[:email]
       )
-      
+
       request.subscription.billTo = AuthorizeNet::API::NameAndAddressType.new(
         customer_params[:first_name],
         customer_params[:last_name],
@@ -141,7 +141,7 @@ module AuthorizeNetLib
 
       response = @transaction.update_subscription(request)
       error_params, message_params = [response.messages, "Failed to update a subscription."]
-      
+
       RescueErrorsResponse::get_error_messages(error_params, message_params) if response
 
       response
@@ -172,7 +172,7 @@ module AuthorizeNetLib
         raise RescueErrorsResponse.new(error_messages), 'Failed to cancel a subscription.'
       end
 
-      response  
+      response
     end
 
     def self.cancel_other_subscriptions(current_subscription_id, customer_profile_id)
@@ -210,10 +210,10 @@ module AuthorizeNetLib
     def get_subscription_status(subscription_id)
       request = AuthorizeNet::API::ARBGetSubscriptionStatusRequest.new
       request.subscriptionId = subscription_id
-      
+
       response = @transaction.get_subscription_status(request)
       error_params, message_params = [response.messages, "Failed to get a subscriptions status."]
-      
+
       RescueErrorsResponse::get_error_messages(error_params, message_params) if response
 
       response.status
@@ -223,7 +223,7 @@ module AuthorizeNetLib
   class PaymentTransactions < Global
     def charge_customer_profile(customer_profile_id, customer_payment_profile_id, amount)
       request = AuthorizeNet::API::CreateTransactionRequest.new
-       
+
       request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new()
       request.transactionRequest.amount = amount
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
@@ -237,7 +237,7 @@ module AuthorizeNetLib
         response_message = response.messages.messages.first.text
         response_error_code = response.messages.messages.first.code
 
-        error_messages = { 
+        error_messages = {
           response_message: response_message,
           response_error_code: response_error_code
         }
@@ -283,7 +283,7 @@ module AuthorizeNetLib
       request.transactionRequest.order = AuthorizeNet::API::OrderType.new(payment_params[:order][:invoice], payment_params[:order][:description])
 
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::AuthCaptureTransaction
-      
+
       response = @transaction.create_transaction(request)
 
       # unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
@@ -293,8 +293,8 @@ module AuthorizeNetLib
 
       #   # Check duplicate transaction, errorCode '11' as duplicate transaction
       #   response_error_text = 'Please wait several minutes for another transaction' if response_error_code.eql?('11')
-        
-      #   error_messages = { 
+
+      #   error_messages = {
       #     response_message: response_message,
       #     response_error_text: response_error_text,
       #     response_error_code: response_error_code
@@ -302,12 +302,12 @@ module AuthorizeNetLib
 
       #   raise RescueErrorsResponse.new(error_messages), response_error_code.eql?('11') ? '' : 'Failed to charge card.'
       # end
-      
+
       if response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
 
         unless response.transactionResponse.responseCode.eql? '1'
-          response_status = 
+          response_status =
             case response.transactionResponse.responseCode
             when '2'
               'Declined'
@@ -319,7 +319,7 @@ module AuthorizeNetLib
 
           errors = []
 
-          address_verification = 
+          address_verification =
             case response.transactionResponse.avsResultCode
             when 'A'
               'Address (Street) matches, ZIP does not'
@@ -347,7 +347,7 @@ module AuthorizeNetLib
 
           errors << address_verification if address_verification
 
-          cvv_verification = 
+          cvv_verification =
             case response.transactionResponse.cvvResultCode
             when 'N'
               'No Match'
@@ -360,11 +360,11 @@ module AuthorizeNetLib
             end
 
           errors << "CVV #{cvv_verification}" if cvv_verification
-          
+
           if errors.present?
             response_error_text = "The transaction is #{response_status}. Reasons: #{errors.join('. ')}"
 
-            error_messages = { 
+            error_messages = {
               response_message: 'Failed.',
               response_error_text: response_error_text
             }
@@ -379,8 +379,8 @@ module AuthorizeNetLib
 
         # Check duplicate transaction, errorCode '11' as duplicate transaction
         response_error_text = 'Please wait several minutes for another transaction' if response_error_code.eql?('11')
-        
-        error_messages = { 
+
+        error_messages = {
           response_message: response_message,
           response_error_text: response_error_text,
           response_error_code: response_error_code
@@ -391,7 +391,7 @@ module AuthorizeNetLib
 
       response
     end
-    
+
     def refund_transaction(params_refund)
       request = AuthorizeNet::API::CreateTransactionRequest.new
       request.refId = params_refund[:ref_id]
@@ -413,7 +413,7 @@ module AuthorizeNetLib
         response_message = response.messages.messages.first.text
         response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
 
-        error_messages = { 
+        error_messages = {
           response_message: response_message,
           response_error_text: response_error_text,
           response_error_code: response_error_code
@@ -431,14 +431,14 @@ module AuthorizeNetLib
       request.transactionRequest = AuthorizeNet::API::TransactionRequestType.new()
       request.transactionRequest.refTransId = params_refund[:trans_id]
       request.transactionRequest.transactionType = AuthorizeNet::API::TransactionTypeEnum::VoidTransaction
-      
+
       response = @transaction.create_transaction(request)
-    
+
       unless response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
         response_error_text, response_error_code = [response.transactionResponse.errors.errors.first.errorText, response.transactionResponse.errors.errors.first.errorCode] if response.transactionResponse
 
-        error_messages = { 
+        error_messages = {
           response_message: response_message,
           response_error_text: response_error_text,
           response_error_code: response_error_code
@@ -471,14 +471,14 @@ module AuthorizeNetLib
       request.transactionRequest.billTo.zip = profile.postal_code
 
       response = @transaction.create_transaction(request)
-      
+
       if response.messages.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         response_message = response.messages.messages.first.text
 
         if response.transactionResponse.responseCode.eql? '1'
           self.void_transaction({ trans_id: response.transactionResponse.transId })
         else
-          response_status = 
+          response_status =
             case response.transactionResponse.responseCode
             when '2'
               'Declined'
@@ -490,7 +490,7 @@ module AuthorizeNetLib
 
           errors = []
 
-          address_verification = 
+          address_verification =
             case response.transactionResponse.avsResultCode
             when 'A'
               'Address (Street) matches, ZIP does not'
@@ -518,7 +518,7 @@ module AuthorizeNetLib
 
           errors << address_verification if address_verification
 
-          cvv_verification = 
+          cvv_verification =
             case response.transactionResponse.cvvResultCode
             when 'N'
               'No Match'
@@ -535,7 +535,7 @@ module AuthorizeNetLib
           if errors.present?
             response_error_text = "The transaction is #{response_status}. Reasons: #{errors.join('. ')}"
 
-            error_messages = { 
+            error_messages = {
               response_message: response_message,
               response_error_text: response_error_text
             }
@@ -585,7 +585,7 @@ module AuthorizeNetLib
       error_params, message_params = [response.messages, "Failed to get transaction Details."]
 
       response_message = error_params.messages.first
-      
+
       if !response_message.code.eql?('E00040') && !response_message.text.eql?("The record cannot be found.")
         RescueErrorsResponse::get_error_messages(error_params, message_params)
 
@@ -593,7 +593,7 @@ module AuthorizeNetLib
       end
     end
   end
-  
+
   class RescueErrorsResponse < StandardError
     attr_accessor :error_message
 
@@ -604,12 +604,12 @@ module AuthorizeNetLib
     def self.get_error_messages(error_params, message_params)
       unless error_params.resultCode.eql? AuthorizeNet::API::MessageTypeEnum::Ok
         message = error_params.messages.first
-        
+
         error_messages = {
           response_message: message.text,
           response_error_code: message.code
         }
-        
+
         raise RescueErrorsResponse.new(error_messages), message.text
       end
     end

@@ -8,7 +8,7 @@ class MessagesController < ApplicationController
     if @message.is_last?
       @conversations = @message.conversation.reverse
       @conversations.last.try(:read_notification!, current_user.id)
-        
+
       get_message_notifications
     else
       redirect_to message_url(@message.conversation.first)
@@ -17,19 +17,19 @@ class MessagesController < ApplicationController
 
   def users_collection
     users_list = User.get_user_collection(params[:q], current_user.id)
-    
+
     if @group
       default_user_img = ActionController::Base.new.view_context.asset_path "default_user.png"
       users_list << { id: @group.id, name: @group.name, email: 'group', image_url: default_user_img }
     end
-    
+
     respond_to do |format|
       format.json { render json: users_list.reverse }
     end
   end
 
   def create
-    body_message = 
+    body_message =
       if message_params[:share_image]
         tmp_body = "[shared: #{message_params[:share_image]}|#{message_params[:hotel_name]}|#{message_params[:hotel_link]}]"
         tmp_body << message_params[:body] if message_params[:body]
@@ -39,7 +39,7 @@ class MessagesController < ApplicationController
 
     @recipient = User.find message_params[:user_id]
     @first_message = current_user.messages.between(current_user.id, @recipient.id).last
-    
+
     if @first_message
       @message = current_user.reply_to(@first_message, body_message)
     else
@@ -59,14 +59,14 @@ class MessagesController < ApplicationController
 
     @notification.save
 
-    @message_count = @message.received_messageable.messages.conversations.select { |c| 
+    @message_count = @message.received_messageable.messages.conversations.select { |c|
       !c.opened if c.received_messageable_id.eql?(@message.received_messageable_id) }.count
 
     respond_to { |format| format.js }
   end
 
   def send_group
-    body_message = 
+    body_message =
       if message_params[:share_image]
         tmp_body = "[shared: #{message_params[:share_image]}|#{message_params[:hotel_name]}|#{message_params[:hotel_link]}]"
         tmp_body << message_params[:body] if message_params[:body]
@@ -80,14 +80,14 @@ class MessagesController < ApplicationController
     message_hash = { topic: 'Group Message', body: body_message }
 
     @first_message = @group.message
-    
+
     if @first_message.present?
       @message = current_user.reply_to(@first_message, message_hash)
     else
       @first_message = @message = current_user.send_message(@group.members.first, message_hash)
       @group.update(message_id: @message.id)
     end
-    
+
     respond_to do |format|
       if @message.errors.any?
         format.js
@@ -133,7 +133,7 @@ class MessagesController < ApplicationController
         @message_count = @first_message.received_messageable.messages.conversations
           .select { |c| !c.opened if c.received_messageable_id.eql?(@reply_message.received_messageable_id) }.count
       end
-    
+
       format.js
     end
   end

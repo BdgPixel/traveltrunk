@@ -32,7 +32,7 @@ class Admin::PromoCodesController < Admin::ApplicationController
 
   private
     def set_promo_code
-      @promo_code = PromoCode.find params[:id]  
+      @promo_code = PromoCode.find params[:id]
     end
 
     def get_all_users

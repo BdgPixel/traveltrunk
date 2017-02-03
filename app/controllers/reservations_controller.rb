@@ -8,7 +8,7 @@ class ReservationsController < ApplicationController
       if @reservation
         itinerary_params = { itineraryId: @reservation.itinerary, email: params[:reservation][:email] }
         itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
-        
+
         if itinerary_response[:error_response]
           @error_response = "Your reservation with Itinerary ID #{@reservation.itinerary} and Email #{params[:reservation][:email]} not found on Expedia"
           redirect_to reservations_url, alert: @error_response
@@ -40,11 +40,11 @@ class ReservationsController < ApplicationController
       reason: cancel_params[:reason],
       apiExperience: 'PARTNER_AFFILIATE'
     }
-    
+
     cancel_reservation_response = Expedia::Hotels.cancel_reservation(request_hash).first
     @cancel_reservation = cancel_reservation_response[:response]
     @error_response = cancel_reservation_response[:error_response]
-    
+
     unless @error_response
       itinerary_params = { itineraryId: cancel_params[:itinerary_id], email: cancel_params[:email] }
       itinerary_response = Expedia::Hotels.view_itinerary(itinerary_params).first
@@ -53,7 +53,7 @@ class ReservationsController < ApplicationController
       reservation = Reservation.find_by(itinerary: cancel_params[:itinerary_id])
       reservation.update(status_code: @status_code)
     end
-    
+
     respond_to { |format| format.js }
   end
 end

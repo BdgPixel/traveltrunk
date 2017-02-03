@@ -70,7 +70,7 @@ class PaymentProcessorMailer < ApplicationMailer
 
   def send_request_params_webhook(params)
     @response_params = params
-    
+
     mail to: 'teguh@41studio.com', subject: 'Params webhook'
   end
 

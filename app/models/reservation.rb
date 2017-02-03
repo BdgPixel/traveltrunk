@@ -31,7 +31,7 @@ class Reservation < ActiveRecord::Base
   paginates_per 10
 
   def self.get_reservation_list
-    self.select(:id, :user_id, :hotel_name, :city, :total, :reservation_type, :status, 
+    self.select(:id, :user_id, :hotel_name, :city, :total, :reservation_type, :status,
       :email, :created_at).order(created_at: :desc)
   end
 
@@ -49,7 +49,7 @@ class Reservation < ActiveRecord::Base
         status_code = room_reservation['HotelConfirmation']['status']
 
         unless reservation.status_code.eql? status_code
-          status = 
+          status =
             case status_code
             when 'CF' then 'reserved'
             when 'PS' then 'pending'
@@ -70,7 +70,7 @@ class Reservation < ActiveRecord::Base
           else
             ReservationMailer.status_changes_notification(reservation.email,
               reservation, status_code).deliver_now
-            
+
             reservation.update(status_code: status_code, status: status)
           end
         end

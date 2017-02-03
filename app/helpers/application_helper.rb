@@ -21,7 +21,7 @@ module ApplicationHelper
         link_to(root_path, class: 'navbar-brand') do
           tags += image_tag("logo1.png")
           tags += content_tag(:span, 'TravelTrunk')
-          
+
           tags.html_safe
         end
       end
@@ -29,7 +29,7 @@ module ApplicationHelper
       link_to(root_path, class: 'navbar-brand') do
         tags += image_tag("logo1.png")
         tags += content_tag(:span, 'TravelTrunk')
-        
+
         tags.html_safe
       end
     end
@@ -77,7 +77,7 @@ module ApplicationHelper
             })
 
             concat(link_to(url, class: 'thumbnail') {
-              image_tag image, class: 'show-hotel-image' 
+              image_tag image, class: 'show-hotel-image'
             })
           end
 

@@ -4,13 +4,13 @@
       = image_tag message.sent_messageable.profile.image.url, class: "img-circle"
 
   .message class="#{action_type}"
-    i.chat-name class="#{action_type.eql?('receive') ? 'text-left' : 'text-right'}" 
+    i.chat-name class="#{action_type.eql?('receive') ? 'text-left' : 'text-right'}"
       small = sender_name
 
     .message-content class="#{action_type}"
       = generate_deal_thumbnail(message.body, false)
-      
+
     .col-sm-12.no-padding
       i.message-time-stamp class="#{action_type}"
         small #{time_ago_in_words(message.created_at)} ago
-      
+

@@ -10,8 +10,8 @@
 
           h4 Location
 
-          ul 
-            li Travel Trunk LLC Oakland, CA 94612 
+          ul
+            li Travel Trunk LLC Oakland, CA 94612
             li United States of America
             li Main Number: (415) 572-2930
 
@@ -26,13 +26,13 @@
           br
 
           h2 Contact Us
-          
+
           .row
             = simple_form_for @contact, url: refund_policy_path do |f|
               .col-md-6
                 .form-group
                   = f.input :first_name, autofocus: true, required: false, input_html: { class: 'form-control text-capitalize' }
-            
+
               .col-md-6
                 form-group
                   = f.input :last_name, required: false, input_html: { class: 'form-control text-capitalize' }

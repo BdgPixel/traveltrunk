@@ -5,7 +5,7 @@
       .row
         .col-md-12
           - if flash[:reservation_message]
-            #notice.alert.alert-info 
+            #notice.alert.alert-info
               strong Notice: &nbsp;
               = flash[:reservation_message]
 
@@ -14,7 +14,7 @@
               h4 Your reservation is pending.
               br
               p
-                i 
+                i
                   | *It will take up to 3 days for us to confirm or cancel your reservation. We will send you email when your reservation status changes.
             - else
               h4
@@ -44,7 +44,7 @@
               = status_reservation(@reservation.status_code)
             br
 
-            
+
             h4 Hotel and Room Reservation
 
             br
@@ -89,9 +89,9 @@
               = @reservation.departure_date.strftime("%B %d, %Y")
 
             p
-              | Number of adults: 
+              | Number of adults:
               = @reservation.number_of_adult
-          
+
           .col-md-6
             table.table
               - @list_of_dates.each_with_index do |date, key|
@@ -111,17 +111,17 @@
                     i
                       | (includes tax recovery charges and service fees)
 
-                td 
+                td
                   h4 = number_to_currency @charge_able_rate_info["@total"]
 
               = tax_values @charge_able_rate_info
             p
               i
                 b You have charged your credit card for the full payment of this reservation
-              
+
               br
               br
-              
+
               - if user_signed_in?
                 = link_to "Back to hotel list", deals_path, class: "btn btn-saving btn-orange-soft"
               - else

@@ -12,7 +12,7 @@ class ReservationMailer < ApplicationMailer
     @list_of_dates = (arrival_date..departure_date).to_a
     @list_of_dates.pop
     @info = info
-    
+
     mail to: @user.email, subject: 'Reservation Success'
   end
 
@@ -27,7 +27,7 @@ class ReservationMailer < ApplicationMailer
     @list_of_dates = (@arrival_date..@departure_date).to_a
     @list_of_dates.pop
     @info = info
-    
+
     mail to: @user.email, subject: 'Reservation is Pending'
   end
 
@@ -39,7 +39,7 @@ class ReservationMailer < ApplicationMailer
     @list_of_dates = (arrival_date..departure_date).to_a
     @list_of_dates.pop
     @info = info
-    
+
     mail to: @user[:email_saving], subject: 'Reservation Success'
   end
 
@@ -52,7 +52,7 @@ class ReservationMailer < ApplicationMailer
     @list_of_dates = (@arrival_date..@departure_date).to_a
     @list_of_dates.pop
     @info = info
-    
+
     mail to: @user[:email_saving], subject: 'Reservation is Pending'
   end
 

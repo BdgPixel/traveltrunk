@@ -1,7 +1,7 @@
 .pad-top-97
-.container  
+.container
   h3 Void / Refund Requests
-  
+
   br
 
   - if @refunds.empty?
@@ -27,10 +27,10 @@
             td = link_to refund.user.profile.full_name, admin_user_path(refund.user)
             td = number_to_currency(refund.amount / 100.0)
             td
-              span class="#{status_label(refund.confirmed)}" 
+              span class="#{status_label(refund.confirmed)}"
                 = refund.confirmed.titleize
             td
               - if refund.confirmed.eql? 'pending'
                 = link_to 'Approve', admin_refund_path(refund), class: 'btn btn-orange btn-xs', data: {:confirm => 'Are you sure approve this refund ?'}, :method => :put
-              
+
     = paginate @refunds

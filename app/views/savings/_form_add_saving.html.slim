@@ -55,7 +55,7 @@
 
                 - if user_signed_in?
                   = select_year nil, { start_year: Date.today.year, end_year: Date.today.year + 15 }, { name: "update_credit[exp_year]", id: "card_year", class: 'form-control card-year', data: { stripe: 'exp-year' } }
-                
+
               .col-md-6
                 = f.label :amount
                 .input-group

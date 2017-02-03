@@ -22,7 +22,7 @@
 
     .col-md-12
       .row
-        p.message-info 
+        p.message-info
           = generate_deal_thumbnail(message.body, true)
 
         - if message.topic.eql? 'Group Message'

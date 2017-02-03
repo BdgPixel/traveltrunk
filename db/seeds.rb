@@ -7,7 +7,7 @@ if admin_users_count.zero?
 
   user = User.new(email: 'admin@traveltrunk.us', password: password,
     password_confirmation: password, admin: true)
-    
+
   if user.save
     puts "Admin user created"
   else

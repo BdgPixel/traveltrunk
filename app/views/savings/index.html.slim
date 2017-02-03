@@ -6,7 +6,7 @@
 
 .div
   - if current_user.profile.home_airport
-    
+
     - if @group
       - if @group.members.any?
         = render 'people', group: @group
@@ -35,7 +35,7 @@
                 li
                   = link_to "Invite Friends", "#", id:'slideToggleLink', class: "invite-friend-link", data: { toggle: "modal", target: "#modalInviteFriends" }
                   |&emsp;&emsp;&emsp;
-                      
+
                 / li
                 /   = link_to "Promo Code", "#", data: { toggle: "modal", target: "#modalActivationPromoCode" }
                 /   |&emsp;&emsp;&emsp;
@@ -59,7 +59,7 @@
     / later this feature will be used
     / - if current_user.group || current_user.joined_groups.present?
     /   = render 'messages/group_message'
-      
+
   - else
     = render 'single_person'
     / .wrapper-header-saving.card-orange
@@ -110,6 +110,6 @@
     - if user_signed_in?
       = render 'savings/form_add_saving', error_response: @error_response
     - else
-    
+
     = render 'savings/transfer_success', formatted_amount: @formatted_amount
     = render 'promo_codes/form_modal_activation_promo_code'

@@ -3,7 +3,7 @@ class UserMailer < ApplicationMailer
   helper ReservationsHelper
 
   def welcome(user)
-    @user = user   
+    @user = user
     mail to: @user.email, subject: 'Welcome to TravelTrunk'
   end
 end

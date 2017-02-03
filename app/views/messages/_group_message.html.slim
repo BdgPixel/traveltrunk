@@ -12,6 +12,6 @@
               = render 'messages/reply_group_message', sender_name: message.sender_name,
                 action_type: 'receive',
                 message: message
-        
+
       .col-md-12.reply-box-container
         = render 'messages/form', url: send_group_messages_path

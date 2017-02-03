@@ -9,7 +9,7 @@
 
       = simple_form_for :promo_code, url: promo_codes_update_path, remote: true do |f|
         .modal-body
-          .form-group 
+          .form-group
             = f.input :token, label: false, input_html: { class: "form-control", placeholder: "Enter promo code", autofocus: true }
             span.error = flash[:error]
 

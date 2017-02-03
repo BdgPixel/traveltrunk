@@ -1,7 +1,7 @@
 .pad-top-97
 .container
   h3 List of Transactions
-  
+
   br
 
   - if @transactions.empty?
@@ -29,5 +29,5 @@
               td = link_to transaction.user.try(:full_name), admin_user_path(transaction.user)
               td = transaction.transaction_type
               td = currency_in_usd transaction.amount
-           
+
     = paginate @transactions

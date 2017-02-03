@@ -9,13 +9,13 @@
   $.get("<%= edit_profile_path %>", function(data) {
     $('#showBankAccount').html("<%= j render 'profiles/form_modal_bank_account', is_remote: true, bank_account: @bank_account, error_card_number: @error_card_number %>");
     $('.error').text('');
-    
+
     if ($('form#paymentAccountProfile').length > 0)
       paymentAccountFormValidation();
 
     initAutoNumeric('#formatted_amount_transfer', '#bank_account_amount_transfer');
     var activeItem = parseInt('<%= params[:step] %>');
-    
+
     if (activeItem == 1)
       $('#modalUserProfile .modal-title').text('Upload your profile image');
     else

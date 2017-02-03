@@ -26,7 +26,7 @@ module Skyscanner
     def self.list_flight(country=nil, currency=nil, locale=nil, originplace=nil, destinationplace=nil, outbounddate=nil, inbounddate=nil, adults=nil, locationschema=nil, cabinclass=0)
     	url =  'http://partners.api.skyscanner.net/apiservices/pricing/v1.0'
       api_key = ENV['SKYSCANNER_API_KEY']
-    	session = Typhoeus.post(url, 
+    	session = Typhoeus.post(url,
     		headers: {
     			'Content-Type' => 'application/x-www-form-urlencoded',
     			'Accept' => 'application/json'
@@ -84,17 +84,17 @@ module Skyscanner
 					@num_of_flight 	= (@flights.size rescue 0)
 					iteneraries 		= (@flights[:Itineraries] rescue [])
 					reorder_parameters(@flights) if iteneraries.present?
-					status_code 		= request.response.code 
+					status_code 		= request.response.code
 					retry_count += 1
-					sleep(1)  
+					sleep(1)
 					if status_code != 200 && (time - Time.now) == 30 || status_code != 200 && retry_count == 6
 						@error_response = eval(request.response.body)[:ValidationErrors].first[:Message] rescue "We have problem with get API"
-						return response_result(error_response: @error_response) 
+						return response_result(error_response: @error_response)
 					end
 					return response_result(response: @flights[:Itineraries], query: @flights[:Query], carriers: @carriers, places: @places, agents: @agents, num_of_flight: @num_of_flight) if (status_code.eql?(200) && iteneraries.any?) || (time - Time.now) == 30 || retry_count == 6
 					break if (status_code.eql?(200) && iteneraries.any?) || (time - Time.now) == 30 || retry_count == 6
 		    end
-    	end 
+    	end
 	  end
 
 	  def self.reorder_parameters(flights)

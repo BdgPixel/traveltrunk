@@ -1,6 +1,6 @@
 class Admin::RefundsController < Admin::ApplicationController
   include ExceptionErrorResponse
-  
+
   before_action :set_refund, only: :update
   before_action :set_customers_authorize_net, only: :update
   before_action :authenticate_user!
@@ -23,7 +23,7 @@ class Admin::RefundsController < Admin::ApplicationController
           amount: @refund.amount,
           invoice_id: AuthorizeNetLib::Global.generate_random_id('inv'),
           customer_id: @refund.user.customer.customer_id,
-          transaction_type: @transaction_type, 
+          transaction_type: @transaction_type,
           ref_id: @response_refund_transaction.refId,
           trans_id: refund_trans_id,
           user_id: @refund.user_id
@@ -31,11 +31,11 @@ class Admin::RefundsController < Admin::ApplicationController
 
         if transaction.save
           current_user.create_activity(
-            key: "payment.#{@transaction_type}", 
+            key: "payment.#{@transaction_type}",
             owner: current_user,
-            recipient: @refund.user, 
-            parameters: { 
-              amount: @refund.amount, 
+            recipient: @refund.user,
+            parameters: {
+              amount: @refund.amount,
               total_credit: @refund.user_total_credit,
               trans_id: @refund.trans_id,
               refund_trans_id: refund_trans_id
@@ -66,7 +66,7 @@ class Admin::RefundsController < Admin::ApplicationController
         exp_card =  transaction_detail.transaction.payment.creditCard.expirationDate
 
         transaction = Transaction.select(:amount, :ref_id, :trans_id).find_by(trans_id: @refund.trans_id)
-        
+
         params_refund = {
           ref_id: transaction.ref_id,
           trans_id: transaction.trans_id,
@@ -74,10 +74,10 @@ class Admin::RefundsController < Admin::ApplicationController
           last_card_number: last_card_number,
           exp_card: exp_card
         }
-        
+
         transaction_status = transaction_detail.transaction.transactionStatus
 
-        @response_refund_transaction = 
+        @response_refund_transaction =
           if transaction_status.eql? 'settledSuccessfully'
             @transaction_type = 'refund'
             payment_authorize.refund_transaction(params_refund)
@@ -85,18 +85,18 @@ class Admin::RefundsController < Admin::ApplicationController
             @transaction_type = 'void'
             payment_authorize.void_transaction(params_refund.except(:amount, :last_card_number, :exp_card))
           end
-        
+
       rescue Exception => e
         logger.error e.message
-        
+
         if e.is_a?(AuthorizeNetLib::RescueErrorsResponse)
-          @error_response = 
+          @error_response =
             if e.error_message[:response_error_text]
               "#{e.error_message[:response_message]} #{e.error_message[:response_error_text]}"
             else
               e.error_message[:response_message].split('-').last.strip
             end
-            
+
           self.errors.add(:authorize_net_error, @error_response)
           false
         else
