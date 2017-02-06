@@ -9,11 +9,7 @@ class ImageUploader < CarrierWave::Uploader::Base
     resize_to_fill(17, 17, 'North')
   end
 
-  if Rails.env.eql? 'production'
-    storage :fog
-  else
-    storage :file
-  end
+  storage :file
 
   def store_dir
     "uploads/#{model.class.to_s.underscore}/#{mounted_as}/#{model.id}"
