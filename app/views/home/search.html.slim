@@ -12,12 +12,12 @@
     .col-xs-6
       .close-top-modal
         - if @referrer.eql? 'home/index'
-          = link_to 'x', home_index_path
+          = link_to 'x', home_index_path, class: 'close-search'
         - else
           - if user_signed_in?
-            = link_to 'x', deals_search_path(params)
+            = link_to 'x', deals_search_path(params), class: 'close-search'
           - else
-            = link_to 'x', deals_search_path(params)
+            = link_to 'x', deals_search_path(params), class: 'close-search'
   .static-page
     .wrapper-where-serach-form
       .form-group

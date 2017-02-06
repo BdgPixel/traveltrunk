@@ -1097,7 +1097,7 @@ h3.hotel-name {
 .page-wrap {
   min-height: 100%;
   /* equal to footer height */
-  margin-bottom: -185px; 
+  margin-bottom: -185px;
 }
 .page-wrap:after {
   content: "";
@@ -1105,7 +1105,7 @@ h3.hotel-name {
 }
 .site-footer, .page-wrap:after {
   /* .push must be the same height as footer */
-  min-height: 185px; 
+  min-height: 185px;
   position: relative !important;
 }
 .site-footer {
@@ -1114,7 +1114,7 @@ h3.hotel-name {
 
 .footer-absolute {
   padding-top: 100px !important;
-  position: absolute !important; 
+  position: absolute !important;
 }
 
 .wrap-action-saving {
@@ -2069,11 +2069,20 @@ ul.galleries {
 
 .wrap-deals-top {
   display: table;
-} 
+}
 
 .no-pad-xs {
   @media(max-width:767px){
     padding-left:0 !important;
     padding-right:0 !important;
   }
+}
+
+.modal-open {
+  overflow: visible !important;
+  padding-right: 0 !important;
+}
+
+.close, .close-search {
+  padding: 10px !important;
 }
