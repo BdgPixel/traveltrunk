@@ -23,11 +23,12 @@ html lang="en"
     = render 'partials/google_analytic'
 
     = csrf_meta_tags
-    - if user_signed_in?
-        = subscribe_to "/private_messages/#{current_user.id}"
+     / later this feature will be used
+    / - if user_signed_in?
+    /     = subscribe_to "/private_messages/#{current_user.id}"
 
-        - if group = current_user.group || current_user.joined_groups.first
-            = subscribe_to "/group_messages/#{group.id}"
+    /     - if group = current_user.group || current_user.joined_groups.first
+    /         = subscribe_to "/group_messages/#{group.id}"
 
   body data-controller="#{controller_name}" data-action="#{action_name}"
     - if user_signed_in?
