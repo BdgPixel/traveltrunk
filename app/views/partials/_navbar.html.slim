@@ -12,7 +12,7 @@
         .wrapper-navbar-brand
           - if user_signed_in?
             - if controller_name.eql?('home') && action_name.eql?('search')
-              = link_to deals_path, id: 'logo-color-white', class: 'color hide'
+              = link_to deals_path, id: 'logo-color-white', class: 'color hide', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
