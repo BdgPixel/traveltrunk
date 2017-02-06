@@ -13,6 +13,8 @@ class HomeController < ApplicationController
 
   private
   	def get_destination
+      @is_hidden_footer = true
+
   		if user_signed_in?
   			@is_get_destination = true
   		  @destinationable = @group || current_user

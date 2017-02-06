@@ -1,7 +1,9 @@
 class PromoCodesController < ApplicationController
   before_action :authenticate_user!
 
-  def activation; end
+  def activation
+    @is_hidden_footer = true
+  end
 
   def update
     today = Date.today

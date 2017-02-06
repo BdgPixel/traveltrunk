@@ -18,10 +18,11 @@ Rails.application.config.assets.precompile += %w(
   search.js
   reservations.js
   sound_path.js
+  flights.js
   profiles.css
   savings.css
   deals.css
   height.css
-  flights.js
+  custom.css
 )
 # Rails.application.config.assets.precompile += %w( groups.js galleria.classic.min.js variables.js profiles.js deals.js holder.js profiles.css deals.css)

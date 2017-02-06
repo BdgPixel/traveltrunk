@@ -17,41 +17,41 @@
                   | TravelTrunk&nbsp;
                   b
                     i Beta
-              = link_to '/', id: 'logo-color-orange', class: 'color'
+              = link_to '/', id: 'logo-color-orange', class: 'color', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
                     i Beta
             - else
-              = link_to deals_path, id: 'logo-color-white', class: 'color'
+              = link_to deals_path, id: 'logo-color-white', class: 'color', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
                     i Beta
-              = link_to deals_path, id: 'logo-color-orange', class: 'color hide'
+              = link_to deals_path, id: 'logo-color-orange', class: 'color hide', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
                     i Beta
           - else
             - if controller_name.eql?('home') && action_name.eql?('search')
-              = link_to deals_path, id: 'logo-color-white', class: 'color hide'
+              = link_to deals_path, id: 'logo-color-white', class: 'color hide', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
                     i Beta
-              = link_to '/', id: 'logo-color-orange', class: 'color'
+              = link_to '/', id: 'logo-color-orange', class: 'color', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
                     i Beta
             - else
-              = link_to '/', id: 'logo-color-white', class: 'color'
+              = link_to '/', id: 'logo-color-white', class: 'color', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
                     i Beta
-              = link_to '/', id: 'logo-color-orange', class: 'color hide'
+              = link_to '/', id: 'logo-color-orange', class: 'color hide', data: { no_turbolink: true }
                 span
                   | TravelTrunk&nbsp;
                   b
@@ -134,13 +134,13 @@
               = link_to reservations_path, class: "login show"
                | Check Reservation
             li
-              = link_to new_user_session_path, class: "login show"
+              = link_to new_user_session_path, class: "login show", data: { no_turbolink: true }
                | Login
             li
-              = link_to new_user_registration_path, class: "navbar-btn btn-border show"
+              = link_to new_user_registration_path, class: "navbar-btn btn-border show", data: { no_turbolink: true }
                | Sign Up
 
-              = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide"
+              = link_to new_user_registration_path, class: "navbar-btn btn-orange2 hide", data: { no_turbolink: true }
                | Sign Up
 
 / later this feature will be used
