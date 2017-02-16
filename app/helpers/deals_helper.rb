@@ -215,9 +215,12 @@ module DealsHelper
               'javascript:void(0)'
             end
 
-          link = link_to "Add to savings", path, class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room,  }
+          link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room, user_credit: (@total_credit/100.0), path: path }
+
+          # # Old code later will be use again
+          # link = link_to "Add to savings", path, class: "btn btn-saving btn-yellow btn-full-size display append-credit", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room,  }
         else
-          link = link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room }
+          link = link_to "View Details", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room, user_credit: current_user.total_credit_in_usd }
         end
       else
         link += link_to "Book Now", "javascript:void(0)", class: "btn btn-saving btn-green btn-full-size room-selected", data: { id: @room_availability["hotelId"], rate_code: rate_code, room_type_code: room_type_code, total: total_room }

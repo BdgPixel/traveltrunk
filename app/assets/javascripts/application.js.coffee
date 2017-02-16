@@ -345,6 +345,13 @@ root.initLowLag = ->
     "new_inbox"
   );
 
+closeMessageTransferSuccess = ->
+  urlString = window.location.pathname.split('/')[1]
+
+  if urlString is 'deals'
+    $('.js-close-transfer-success').on 'click', ->
+      window.location = window.location.href
+
 ready = ->
   initUsersCollection()
   initLowLag()
@@ -436,6 +443,8 @@ ready = ->
   if $('video#player').length > 0
     $('video#player').mediaelementplayer()
 
+  # action close message transferr amount
+  closeMessageTransferSuccess()
   # scrollPos = 0
   # $('.modal').on('shown.bs.modal', ->
   #   scrollPos = $('body').scrollTop(0)

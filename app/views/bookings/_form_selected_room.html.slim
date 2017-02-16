@@ -52,7 +52,10 @@
             br
 
             - if user_signed_in?
-              = f.button :submit, "Book Now", class: 'btn btn-saving btn-green'
+              = f.button :submit, "Book Now", class: 'btn btn-saving btn-green js-show-btn-book', style: 'display:none'
+              / = f.button :submit, "yuhuu", class: 'btn btn-saving btn-green js-show-btn-saving', style: 'display:none'
+              = link_to "Add to savings", '', class: "btn btn-saving btn-yellow append-credit js-show-btn-saving", style: 'display:none'
+
             - else
               = link_to 'Yes', 'javascript:void(0)', id: 'linkBtnYes', class: 'btn btn-saving btn-green'
 

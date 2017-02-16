@@ -2,7 +2,7 @@
   .modal-dialog
     .modal-content
       .modal-header
-        button.close aria-label="Close" data-dismiss="modal" type="button"
+        button.js-close-transfer-success.close aria-label="Close" data-dismiss="modal" type="button"
           span aria-hidden="true" &times;
 
         h3 Transfer Success
@@ -14,4 +14,4 @@
             = "You've successfully transferred #{formatted_amount} to your TravelTrunk Account"
 
       .modal-footer
-        button.btn.btn-default data-dismiss="modal" type="button" Close
+        button.js-close-transfer-success.btn.btn-default data-dismiss="modal" type="button" Close

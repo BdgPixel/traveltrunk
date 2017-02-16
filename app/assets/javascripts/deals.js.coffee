@@ -68,7 +68,7 @@ root.roomSelected = (selector)->
     $('#modalBook').modal('show')
     $('.modal .modal-header h3').not('#myModalLabel').text(rooms.hotelName)
     $('.modal #roomRating').attr('data-rating', rooms.tripAdvisorRating)
-    
+
     if rooms.tripAdvisorRating
       $('.modal .rating-text').text(rooms.tripAdvisorRating + " ratings")
     else if rooms.tripAdvisorRating == undefined
@@ -163,7 +163,7 @@ root.roomSelected = (selector)->
     $('#confirmation_book_rate_key').val(room[0]['RateInfos']['RateInfo']['RoomGroup']['Room']['rateKey'])
     $('#confirmation_book_smoking_preferences').val(room[0]['smokingPreferences'])
     $('.modal .cancellation-policy').html(room[0]['RateInfos']['RateInfo']['cancellationPolicy'])
-    
+
     # Group section
     group = $(this)
 
@@ -207,6 +207,16 @@ root.roomSelected = (selector)->
         starOn: window.star_on_mid_image_path
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
+
+    # Show hide action button in room selected
+    that = $(this)
+    if parseFloat($(selector).data('user-credit')) < parseFloat(room[0]['RateInfos']['RateInfo']['ChargeableRateInfo']['@total'])
+      $('.js-show-btn-saving').attr('href', that.data('path'))
+      $('.js-show-btn-saving').show()
+      $('.js-show-btn-book').hide()
+    else
+      $('.js-show-btn-book').show()
+      $('.js-show-btn-saving').hide()
 
 ownerGroup = (group, hotelId, hotelName, room) ->
   membersVotedStr = group.siblings('.members-voted').text().trim()
@@ -262,7 +272,7 @@ memberGroup = (group, hotelId, hotelName, room) ->
 
   if group.data('current-member-liked')
     linkModalAddToSavingForm = $('#linkModalAddToSavingForm')
-    
+
     if group.data('is-credit') == false
       $('.form-book').show()
       $('.form-vote').hide()
@@ -420,6 +430,9 @@ appendCreditform = ->
 
     clearValidationMessage()
 
+    $('#modalSavingsForm').on 'shown.bs.modal', ->
+      $('#modalBook').modal 'hide'
+
 checkImage = (previousSrc, numberOfImages, i)->
   image = new Image()
 
@@ -492,7 +505,7 @@ shareRecipientAutocomplete = ->
     zindex: 9999
     onAdd: (item)->
       $(selector).tokenInput("clear")
-      
+
       if item.email
         if item.email is 'group'
           $('form.new_message').attr('action', '/conversations/send_group')
@@ -551,14 +564,14 @@ $(document).ready ->
 
   else if controller == 'deals' && action == 'show'
     setTimeout( ->
-      coverflow = $('#coverflow').flipster 
+      coverflow = $('#coverflow').flipster
         touch: true
         buttons: true
         loop: true
 
       $('#coverflow').removeClass('on-loader')
-    , 100) 
-    
+    , 100)
+
     initAutoNumeric('.formatted-amount', '.amount')
     initAutoNumeric('.formatted-amount', '.amount-saving')
     shareRecipientAutocomplete()
@@ -610,7 +623,7 @@ $(document).ready ->
         starOn: window.star_on_mid_image_path
         starOff: window.star_off_mid_image_path
         starHalf: window.star_half_mid_image_path
-    
+
     $('#linkBtnYes').on 'click', ->
       $('.payment-errors').text('')
 
