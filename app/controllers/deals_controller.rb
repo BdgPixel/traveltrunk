@@ -295,8 +295,15 @@ class DealsController < ApplicationController
       exp_year = params[:update_credit][:exp_year][-2, 2]
       invoice = AuthorizeNetLib::Global.generate_random_id('inv')
 
+      amount =
+        if params[:update_credit][:amount].present?
+          params[:update_credit][:amount]
+        else
+          params[:update_credit][:formatted_amount]
+        end
+
       params_hash = {
-        amount: params[:update_credit][:amount],
+        amount: amount,
         card_number: params[:update_credit][:card_number],
         exp_date: "#{exp_month}#{exp_year}",
         cvv: params[:update_credit][:cvv],
@@ -321,7 +328,7 @@ class DealsController < ApplicationController
       response_payment = payment.charge(params_hash, customer_profile)
 
       if response_payment.messages.resultCode.eql? 'Ok'
-        amount_in_cents = (params[:update_credit][:amount].to_f * 100).to_i
+        amount_in_cents = (amount.to_f * 100).to_i
         customer_id = current_user.customer.customer_id if current_user.customer
 
         transaction = current_user.transactions.new(
