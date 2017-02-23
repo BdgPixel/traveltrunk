@@ -1,4 +1,4 @@
-server '198.12.148.208', user: 'developer', roles: %w{app db web}
+server '45.33.111.21', user: 'developer', roles: %w{app db web}
 
 set :deploy_to, "/home/traveltrunk/rails_apps/#{fetch(:application)}_#{fetch(:stage)}"
 
