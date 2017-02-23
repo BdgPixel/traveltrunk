@@ -13,3 +13,5 @@ set :linked_dirs, fetch(:linked_dirs, []).push('log', 'tmp/pids', 'tmp/cache', '
 set :config_dirs, %W{config config/environments/#{fetch(:stage)} public/uploads}
 
 set :config_files, %w{config/database.yml config/secrets.yml config/sidekiq.yml .env.production .ruby-gemset}
+
+set :sidekiq_env, fetch(:stage)
