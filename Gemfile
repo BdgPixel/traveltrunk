@@ -134,8 +134,6 @@ group :development, :test do
   gem 'did_you_mean'
 end
 
-gem 'rails_12factor', group: :production
-
 # Sidekiq web UI dependency
 gem 'sinatra', :require => nil
 
