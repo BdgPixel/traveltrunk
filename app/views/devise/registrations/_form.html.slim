@@ -38,7 +38,7 @@
 
           .col-md-4.pad-left-10
             .form-group
-              = select_year Date.today, { field_name: 'birth_date(1i)', prefix: 'user[profile_attributes]', start_year: 1950, end_year: 1998 }, { class: 'form-control' }
+              = select_year Date.today, { field_name: 'birth_date(1i)', prefix: 'user[profile_attributes]', start_year: 1920, end_year: 2000 }, { class: 'form-control' }
 
     .col-md-12
       - if controller_name.eql? 'registrations'
